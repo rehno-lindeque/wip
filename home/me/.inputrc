@@ -1,0 +1,20 @@
+# TODO: does this file work in nix?
+
+## [Use vi shortcuts in terminal](http://vim.wikia.com/wiki/Use_vi_shortcuts_in_terminal
+# set editing-mode vi
+# set keymap vi-command
+
+## [Bringing all the awesomeness of VI to the bash command prompt](https://gist.github.com/jsjohnst/68444)
+#set -o vi
+ 
+## Goto begin of line
+#bind -m vi-command C-a:vi-insert-beg
+#bind -m vi-insert C-a:vi-insert-beg
+ 
+## Goto end of line
+#bind -m vi-command C-e:vi-append-eol
+#bind -m vi-insert C-e:vi-append-eol
+ 
+## clear screen
+#bind -m vi-command C-l:clear-screen
+#bind -m vi-insert C-l:clear-screen

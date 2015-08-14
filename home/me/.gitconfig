@@ -1,0 +1,81 @@
+[user]
+        # email = your@email.com
+        # name = Your Name 
+
+[core]
+        # Not needed if you have set EDITOR
+        # editor = /usr/bin/bin
+
+[difftool]
+        external = diffuse
+
+[diff]
+        tool = diffuse
+
+[color]
+        interactive = true
+        diff = true
+        ui = auto   # true ?
+
+[color "branch"]
+        current = yellow reverse
+        local = yellow
+        remote = green
+
+[color "diff"]
+        meta = white dim
+        frag = magenta bold
+        old = yellow # bold
+        new = green # bold
+
+[color "status"]
+        added = yellow
+        changed = green
+
+# github url shorthand
+# $ git clone gh:github/github-services
+[url "https://github.com/"]
+        insteadOf = gh:
+
+# gist url shorthand
+# $ git clone gist:github/0000001
+[url "https://gist.github.com/"]
+        insteadOf = gist:
+
+# bitbucket url shorthand
+# $ git clone bb:walesmd/codeigniter-erkana-auth
+[url "https://bitbucket.org/"]
+        insteadOf = bb:
+
+# automatically fetch pull requests on the origin remote 
+# see https://gist.github.com/piscisaureus/3342247
+[remote "origin"]
+	fetch = +refs/pull/*/head:refs/remotes/origin/pr/*
+
+# TODO: see http://michaelwales.com/articles/make-gitconfig-work-for-you/ 
+# [alias]
+#     addremove = !git r && git add . --all
+#     aliases = !git config --list | grep 'alias\\.' | sed 's/alias\\.\\([^=]*\\)=\\(.*\\)/\\1\\ \t => \\2/' | sort
+#     all = add . --all
+#     amend = !git log -n 1 --pretty=tformat:%s%n%n%b | git commit -F - --amend
+#     br = branch -av
+#     brname = !git branch | grep "^*" | awk '{ print $2 }'
+#     brdel = branch -D
+#     ci = commit
+#     changes = "!f() { git log --pretty=format:'* %s' $1..$2; }; f"
+#     churn = !git log --all -M -C --name-only --format='format:' "$@" | sort | grep -v '^$' | uniq -c | sort | awk 'BEGIN {print "count,file"} {print $1 "," $2}'
+#     co = checkout
+#     details = log -n1 -p --format=fuller
+#     export = archive -o latest.tar.gz -9 --prefix=latest/
+#     unstage = reset HEAD --
+#     g = !git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+#     in = pull --dry-run
+#     l = "!f() { git log $* | grep '^commit ' | cut -f 2 -d ' '; }; f"
+#     out = log --branches --not --remotes
+#     r = !git ls-files -z --deleted | xargs -0 git rm
+#     root = rev-parse --show-toplevel
+#     st = status
+#     subup = submodule update --init
+#     tags = tag -l
+#     this = !git init && git add . && git commit -m \"Initial commit.\"
+#     trim = !git reflog expire --expire=now --all && git gc --prune=now
