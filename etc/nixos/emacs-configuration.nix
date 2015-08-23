@@ -3,6 +3,7 @@
 , ... 
 }:
 
+# TODO: extract to emacs-custom.nix
 let emacs-custom = pkgs.emacsWithPackages
       (with pkgs.emacsPackages; with pkgs.emacsPackagesNg; [
         # auctex
@@ -35,7 +36,7 @@ let emacs-custom = pkgs.emacsWithPackages
         coffee
         # markdown-mode
         # nix-mode # doesn't seem to be available yet?
-        
+
         # Testing / debugging
         # flycheck
 

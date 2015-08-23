@@ -6,7 +6,7 @@
 
 # Add unstable packages to nix without running entirely off of the unstable channel 
 # This allows import <unstable> {} to be used in /etc/nixos/configuration.nix
-export NIX_PATH=$NIX_PATH:unstablepkgs=/nix/var/nix/profiles/per-user/root/channels/nixos-unstable/nixpkgs:devpkgs=/home/me/projects/config/nixpkgs
+export NIX_PATH=$NIX_PATH:unstablepkgs=/nix/var/nix/profiles/per-user/root/channels/nixos-unstable/nixpkgs:devpkgs=/home/rehno/projects/config/nixpkgs
 
 # Use VIM mode for bash (TODO: is there a nicer way of doing this in NixOS)
 # TODO: Any way to have a visual indication of normal mode / insert mode

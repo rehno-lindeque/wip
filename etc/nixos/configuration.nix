@@ -2,8 +2,6 @@
 
 # NixOS configuration-as-tutorial for Haskell developers
 
-# TODO: NOTE THAT THIS IS NOT READY YET (and it might not be for a while)
-
 # About this configuration:
 # * This is is a large configuration that gets you set up with NixOS very rapidly while at the same time trying to teach you everything it can about basic Nix configuration.
 # * We try to keep things "Haskell"-themed. You might like this config if you use/are interested in any of:
@@ -112,34 +110,36 @@
 
   # Enable networking.
   networking = {
-    # hostName = ""; # Define your hostname.
-    # hostId = "";
-    # # networkmanager.enable = false; 
-    # # wireless.enable = true; 
+    hostName = # Define your hostname. #gitignore
+    hostId = # Your host id comes here (this is usually auto-generated) #gitignore
+    # networkmanager.enable = false;
+    # wireless.enable = true;
   };
 
   # List services that you want to enable.
   # User account.
   # * Set a password using
-  #   $ useradd -m me ; passwd me
-  users.extraUsers.me = {
-    group = "users";
-    uid = 105;
-    createHome = true;
-    home = "/home/me";
-    # description = "Name Surname";
-    # extraGroups = [ "wheel" ]; # essentials
-    extraGroups = [ 
-      "wheel"          # TODO: allows your user to access stored passwords?
-                       # * you need wheel in order to use sudo for example
-      "audio"          # ?
-      "video"          # ?
-      "networkmanager" # ?
-      "mysql"          # needed? allows you to use the running mysql service via your user (usefull for software development)
-                       # * you will see that the /var/mysql/* files that are created belongs to the mysql user & group
-    ];
-    isSystemUser = false;
-    useDefaultShell = true;
+  #   $ useradd -m rehno ; passwd rehno
+  users.extraUsers = {
+    #gitignore
+      group = "users";
+      uid = 105;
+      createHome = true;
+      home = # "/home/me"; #gitignore
+      description = # "Name Surname"; #gitignore
+      # extraGroups = [ "wheel" ]; # essentials
+      extraGroups = [ 
+        "wheel"          # TODO: allows your user to access stored passwords?
+                         # * you need wheel in order to use sudo for example
+        "audio"          # ?
+        "video"          # ?
+        "networkmanager" # ?
+        "mysql"          # needed? allows you to use the running mysql service via your user (usefull for software development)
+                         # * you will see that the /var/mysql/* files that are created belongs to the mysql user & group
+      ];
+      isSystemUser = false;
+      useDefaultShell = true;
+    };
   };
 
   # Select internationalisation properties.

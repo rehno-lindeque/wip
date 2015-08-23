@@ -45,7 +45,7 @@
       displayManager = {
         auto = {
           # enable = true;
-          # user = "me";
+          # user = "rehno";
         };
       };
 

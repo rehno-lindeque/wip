@@ -2,13 +2,17 @@
  
 import XMonad
 import XMonad.Layout
+import XMonad.Layout.MagicFocus as Magic
 import XMonad.Config.Desktop
 import XMonad.Config.Gnome
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageDocks
 import XMonad.Util.Run
 import XMonad.Util.EZConfig
+-- import XMonad.StackSet
+import XMonad.Actions.WindowGo
 import System.IO
+
  
 main = do
     h <- xmobarProc
@@ -21,7 +25,6 @@ main = do
       . myMisc 
       $ myConfig
         
-
 -- myKeys :: SetupCfg_
 myKeys cfg = cfg 
   { modMask = mod1Mask 
@@ -30,29 +33,37 @@ myKeys cfg = cfg
   -- modMask = controlMask -- control instead of alt
   --
   }
+  `additionalKeysP` windows 
   `additionalKeysP` productivity 
   `additionalKeysP` browsers 
   `additionalKeysP` editors 
   `additionalKeysP`
-  [ 
+  [
   -- ((mod4Mask, xK_q), spawn "sudo killall trayer" >> restart "xmonad" True)
   -- ((mod4Mask, xK_b), sendMessage ToggleStruts)
   ]
   where
+    windows =
+      [
+      -- [ ("M-j", windows focusDown)
+      -- , ("M-k", windows focusUp  )
+      ]
     productivity =
       [ ("M-p", spawn "dmenu_run -fn 16 -nb '#333' -l 15 -b") -- dmenu is a quick launcher
       -- , ("M-p", spawn "yeganesh -x -- -fn 16 -nb '#333' -l 10 -b") -- yeganesh runs dmenu, showing popular selections first 
       --                                                              -- another set of possible flags: yeganesh -x -- -fn '-*-terminus-*-r-normal-*-*-120-*-*-*-*-iso8859-*'
       -- , ("M-S-P", spawn "gmrun")   -- gmrun 
-      , ("M-S-v", spawn "chromium-browser --new-window https://github.com/begriffs/haskell-vim-now#keybindings-and-commands") -- vim haskell cheatsheet
+      -- , ("M-S-v", spawn "chromium-browser --new-window https://github.com/begriffs/haskell-vim-now#keybindings-and-commands") -- vim haskell cheatsheet
       ]
     browsers =
-      [ ("M-c", spawn "chromium")
+      [ ("M-b", raiseBrowser)
+      -- ("M-c", spawn "chromium")
       ]
     editors =  
-      [ ("M-e", spawn "emacs")
-      , ("M-s", spawn "sublime")
-      , ("M-y", spawn "yi")
+      [ ("M-e", raiseEditor)
+      -- , ("M-e", spawn "emacs")
+      , ("M-s", runOrRaiseMaster "sublime" (className =? "sublime"))
+      , ("M-y", runOrRaiseMaster "yi" (className =? "yi"))
       ]
       --, ("M-S-<Return>", spawn $ XMonad.terminal conf)
       --, ("M-C-<Return>", spawn "urxvt -e tmux attach")
@@ -66,8 +77,6 @@ myKeys cfg = cfg
       --, ("M-S-space", setLayout $ XMonad.layoutHook conf)
       --, ("M-n", refresh)
       --, ("M-<Tab>", windows W.focusDown)
-      --, ("M-j", windows W.focusDown)
-      --, ("M-k", windows W.focusUp  )
       --, ("M-<Down>", windows W.focusDown)
       --, ("M-<Up>", windows W.focusUp  )
       --, ("M-<Left>", windows W.focusUp)
@@ -144,6 +153,9 @@ myHooks cfg = cfg
 
 -- myLayout :: SetupCfg_
 myLayout cfg = cfg 
+  -- Swaps the windows around, which is annoying
+  -- { layoutHook = magicFocus (Tall 1 (3/100) (1/2)) ||| tiled ||| Mirror tiled ||| Full
+  -- , handleEventHook = Magic.promoteWarp
   { layoutHook = tiled ||| Mirror tiled ||| Full
   }
   where
