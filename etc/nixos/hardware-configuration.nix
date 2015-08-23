@@ -23,11 +23,12 @@
       fsType = "ext4";
     };
 
-  swapDevices =
-    [ # { label = "swap"; }
-      { device = "/dev/disk/by-uuid/e990939c-a825-497e-aec6-facc74823e90"; }
-    ];
+  # Don't list the swap device explictly for now due to a bug with systemctl, see nipkgs #5202, #5193, 5258
+  # swapDevices =
+  #   [ # { label = "swap"; }
+  #     { device = "/dev/disk/by-uuid/e990939c-a825-497e-aec6-facc74823e90"; }
+  #   ];
 
   nix.maxJobs = 8;
-  services.virtualboxGuest.enable = true;
+  virtualisation.virtualbox.guest.enable = true;
 }

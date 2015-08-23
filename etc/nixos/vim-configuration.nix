@@ -1,10 +1,14 @@
 { config
 , pkgs
-, ... 
+, ...
 }:
 
+# TODO: extract to vim-custom.nix
+let devpkgs = import <devpkgs> {}; 
+in
 {
   environment.systemPackages = with pkgs.vimPlugins ; [ 
+
     # Vim
     pkgs.vimHugeX  # see an editor famous for its advanced key stroke combinations - being good at vi is like being an olympic athlete
                    # * TODO: compare vimHugeX versus vim
@@ -20,29 +24,41 @@
     # syntastic    # ?
     # vim-bbye     # ?
     # vim-indent-guides # ?
-    # gitignore    # ?
-                   # Git
+    # gitignore      # ?
+
+    # Git
     fugitive       # ?
     extradite      # ?
-                   # Bars, panels, and files
+
+    # Search (TODO: unfortunately, neither of these are available)
+    # ack
+    # ag
+
+    # Bars, panels, and files
     vim-nerdtree-tabs # ? # Begriffs uses scrooloose/nerdtree'
     vim-airline     # better status line showing you which mode you're in, git info etc (light-weight version of powerline specializing in vim) 
     pkgs.powerline-fonts # fonts that improve the looks of airline
     ctrlp          # easily open files using ctrl+p
     tagbar         # ?
-                   # Text manipulation
+
+    # Text manipulation
     easy-align     # alignment for comments, operators, etc
     Gundo          # ?
     commentary # ?
     tabular # ?
     surround       # manipulate / add surrounding brackets, quotes, etc
     gitgutter      # adds git icons (line added, removed, changed etc) to the gutter
+    # vim-expand-region # TODO
 
     # vim-indent-object # ?
     # Allow pane movement to jump out of vim into tmux
     tmux-navigator # ?
+
     # Colorscheme
     wombat256      # grey color-scheme
+
+    # General programming
+    # Syntastic
 
     # Nix
     # vim-addon-nix # does not appear to work well
@@ -53,8 +69,11 @@
     # Haskell
     # haskell-vim # ?
     haskellConceal # ? # begriffs uses haskellConcealPlus
-    ghcmod # ?
-    neco-ghc # ?
-    # vim-hoogle # ?
+    # neco-ghc # ?
+    Hoogle           # quick documentation search for haskell
+    stylish-haskell # formatting assistant for haskell code
+    lushtags # ? (ctags, works with tagbar)
+    # devpkgs.vimPlugins.ghcmod # ?
+    # ghc-mod-vim # ?
   ];
 }

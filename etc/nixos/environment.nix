@@ -5,20 +5,38 @@
 
 let # devpkgs = import <devpkgs> {}; 
     ghc = pkgs.haskell.packages.ghc7101;
-    ghcEnv = ghc.ghcWithPackages 
-               (self: with self; [
-                   # usefull for compiling miscelaneous haskell things
+    withHoogle = pkgs.haskell.lib.withHoogle;
+    ghcEnv = # withHoogle 
+             ( ghc.ghcWithPackages
+               ( self: with self; [
+                   /* usefull for compiling miscelaneous haskell things */
                    cabal-install
                    zlib
-                   # needed for emacs haskell plugins
+                   /* type-lookup etc for various editors */
+                   # ghc-mod-dev
+                   ghc-mod
+                   /* search plugins for various editors */
+                   # hoogle
+                   hoogle-index
+                   # Hayoo
+                   # hayoo-cli
+                   /* needed for stylish plugins (vim) */
+                   stylish-haskell
+                   /* needed for emacs haskell plugins */
                    hasktags
+                   # vim haskell tags
+                   # lushtags # needed?
                    # haskell-docs
                    present
-                   # needed for xmonad
+                   /* needed for vim tagbar */
+                   hscope
+                   codex
+                   /* needed for xmonad */
                    xmonad
                    xmonad-contrib
                    xmonad-extras
-                 ]);
+                 ])
+               );
 in
 {
   environment = {
@@ -50,14 +68,17 @@ in
       yimacs = "yi --as=emacs";
       # config = "su ; cd /etc/nixos"; # TODO: how to start in /etc/nixos path?
       # upgrade = "sudo NIX_PATH=\"$NIX_PATH:unstablepkgs=${<unstablepkgs>}\" nixos-rebuild switch --upgrade";
-      upgrade = "sudo -E nixos-rebuild switch --upgrade -I devpkgs=/home/me/projects/config/nixpkgs -I unstablepkgs=/nix/var/nix/profiles/per-user/root/channels/nixos-unstable/nixpkgs";
+      # upgrade = "sudo -E nixos-rebuild switch --upgrade -I devpkgs=/home/me/projects/config/nixpkgs -I unstablepkgs=/nix/var/nix/profiles/per-user/root/channels/nixos-unstable/nixpkgs";
       # see also [nix? alias](https://nixos.org/wiki/Howto_find_a_package_in_NixOS#Aliases)
+      upgrade = "sudo -E nixos-rebuild switch --upgrade -I devpkgs=/home/me/projects/config/nixpkgs";
       nixq = "nix-env --query --available --attr-path --description | fgrep --ignore-case --color";
       nixhq = "nix-env --file \"<unstablepkgs>\" --query --available --attr-path --attr haskellPackages --description | fgrep --ignore-case --color"; # query haskellPackages
       nixnq = "nix-env --file \"<unstablepkgs>\" --query --available --attr-path --attr nodePackages    --description | fgrep --ignore-case --color"; # query nodePackages
       nixgc = "nix-collect-garbage --delete-older-than 30d; nix-store --optimise;"; # garbage collect old stuff and optimise
       # editor shorthands
       vimrecent = "vim `git diff HEAD~1 --name-only`"; # open recently modified (git tracked) files
+      vimrc = "vim ~/.vimrc"; # quickly open vimrc file for editing vim settings
+      vimenv = "vim /etc/nixos/environment.nix"; # quickly open vimrc file for editing vim settings
     };
 
     # shellInit
@@ -67,12 +88,14 @@ in
     # * Search for packages by name:
     #   $ nix-env -qaP | grep wget
     # * To get access to new haskellPackages, evil-god-state, etc... use the unstable channel (see the top of this file)
-    systemPackages = with pkgs ; [ 
+    systemPackages = with pkgs ; [
       # Basics
       wget
       # curl
       pstree
-  
+      unzip
+      silver-searcher     # ag command lets you grep very fast and can be used in vim
+
       # Nix packaging
       nix-repl
       nix-prefetch-scripts # use this to generate sha for github packages while building nix expressions using pkgs.fetchFromGitHub
@@ -93,6 +116,7 @@ in
       # * see vim-configuration.nix; for coders in motion 
       # * see emacs-configuration.nix; the famous structured editor, emacs understands the parse structure of your favourite programming language
       yi-custom
+      sublime3
 
       # Development
       gitFull                       # the most popular version control system
@@ -103,7 +127,9 @@ in
       awscli                        # command-line interface for AWS
       mycli                         # (awesome) command-line interface for MySQL
       # pgcli                       # (awesome) command-line interface for PostgreSQL
-      elm-custom                    # elm configuration (with tweaks to make it compile)
+      # elm-custom                    # elm configuration (with tweaks to make it compile)
+      # elm                           # Elm compiler + tools
+      elmPackages.elm-compiler
 
       # Terminal
       # TODO: gnome-terminal
@@ -118,13 +144,13 @@ in
 
       # Web
       chromium
- 
+
       # Communication 
       # xchat 
       hipchat
       # slack # todo
 
-      # Layout    
+      # Layout
       # xmobar # TODO
       haskellPackages.xmonad
 
@@ -134,11 +160,12 @@ in
       oxygen-gtk3
       # kde4.oxygen_icons
       # gtk-engine-murrine
-      
+
       # Security
       gnome3.gnome_keyring
 
       # Development dependencies 
+      ctags       # quick way to browse symbols (seems to collide with emacs ctags in tagbar at the moment though, I had to nix-env -i ctags)
       # ghc
       ghcEnv      # TODO: rename to ghc-custom ?
       # haskellPlatform
@@ -153,89 +180,91 @@ in
 
 
       # TODO: investigate
-        # terminator
-        # mpd
-        # ncmpcpp
-        # gmrun
-        # dmenu
-        # trayer
-        # dzen2
-        # pv
-        # lsof
-        # libreoffice
-        # htop
-        # ctags
-        # xclip
-        # xscreensaver
-        # arandr autorandr
-        # firefox
-        # alsaLib alsaPlugins alsaUtils
-        # transmission
-        # unrar
-        # pavucontrol
-        # chromium flashplayer
-        # evince
-        # ppp
-        # cpufrequtils
-        # file
-        # htop
-        # feh
-        # mutt offlineimap
-        # keychain
-        # zsh
-        # cmake
-        # gcc
-        # gdb
-        # gimp
-        # gitAndTools.gitFull
-        # gnupg
-        # gnupg1
-        # gnumake
-        # gperf
-        # imagemagick
-        # lsof
-        # man
-        # netcat
-        # nmap
-        # parted
-        # pulseaudio
-        # pythonFull
-        # ruby
-        # stdmanpages
-        # tcpdump
-        # units
-        # unrar
-        # unzip
-        # vlc
-        # wget
-        # zip
-        # conkeror
-        # scrot
-        # unetbootin
-        # wine
-        # wireshark
-        # xorg.xkill
-        # xpdf
-        # xulrunner
-        # haskellPackages.xmonad
-        # haskellPackages.xmonadContrib
-        # haskellPackages.xmonadExtras
-        # haskellPackages.xmobar
-        # stalonetray
-        # wpa_supplicant_gui
-        # xfontsel
-        # xlibs.xev
-        # xlibs.xinput
-        # xlibs.xmessage
-        # xlibs.xmodmap
+      # terminator
+      # mpd
+      # ncmpcpp
+      # gmrun
+      # dmenu
+      # trayer
+      # dzen2
+      # pv
+      # lsof
+      # libreoffice
+      # htop
+      # xclip
+      # xscreensaver
+      # arandr autorandr
+      # firefox
+      # alsaLib alsaPlugins alsaUtils
+      # transmission
+      # unrar
+      # pavucontrol
+      # chromium flashplayer
+      # evince
+      # ppp
+      # cpufrequtils
+      # file
+      # htop
+      # feh
+      # mutt offlineimap
+      # keychain
+      # zsh
+      # cmake
+      # gcc
+      # gdb
+      # gimp
+      # gitAndTools.gitFull
+      # gnupg
+      # gnupg1
+      # gnumake
+      # gperf
+      # imagemagick
+      # lsof
+      # man
+      # netcat
+      # nmap
+      # parted
+      # pulseaudio
+      # pythonFull
+      # ruby
+      # stdmanpages
+      # tcpdump
+      # units
+      # unrar
+      # vlc
+      # wget
+      # zip
+      # conkeror
+      # scrot
+      # unetbootin
+      # wine
+      # wireshark
+      # xorg.xkill
+      # xpdf
+      # xulrunner
+      # haskellPackages.xmonad
+      # haskellPackages.xmonadContrib
+      # haskellPackages.xmonadExtras
+      # haskellPackages.xmobar
+      # stalonetray
+      # wpa_supplicant_gui
+      # xfontsel
+      # xlibs.xev
+      # xlibs.xinput
+      # xlibs.xmessage
+      # xlibs.xmodmap
 
     ];
     # unixODBCDrivers
 
     variables = rec {
-      # Set vim as the [standard editor](http://stackoverflow.com/a/2596835/167485) for git and other programs
+      # Set vim as the [standard editor](http://stackoverflow.com/a/2596835/167485) for git, xmonad and other programs
       VISUAL = "vim";
-      EDITOR = VISUAL; 
+      EDITOR = VISUAL;
+      # Make chrome the default browser (used by xmonad http://hackage.haskell.org/package/xmonad-contrib-0.11.4/docs/XMonad-Actions-WindowGo.html#v:raiseBrowser and other programs)
+      BROWSER = "chromium-browser";
+      # Helper to get to user home, even in su
+      ME_HOME = "/home/me";
     };
 
     # wvdial
