@@ -2,6 +2,11 @@
         # email = your@email.com
         # name = Your Name 
 
+[filter "gitignore"]
+        # clean = "sed '/#gitignore$/'d"
+        clean = "sed 's/\\(.*\\=\\s*\\).*\\(#.*\\)#gitignore\\s*$/\\1\\2#GITIGNORE/' | sed 's/\\(\\s*\\).*\\(#.*\\)#gitignore\\s*$/\\1\\2#GITIGNORE/' | sed 's/^\\(\\s*\\).*#gitignore\\s*$/\\1#GITIGNORE/' | sed 's/#GITIGNORE/#gitignore/'"
+        smudge = "sed '/#gitignore$/'d"
+
 [core]
         # Not needed if you have set EDITOR
         # editor = /usr/bin/bin
