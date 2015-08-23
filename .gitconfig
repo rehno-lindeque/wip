@@ -1,0 +1,5 @@
+# TODO: unfortunately this doesn't seem to work in custom .gitconfig it has to be in ~/.gitconfig
+# [filter "gitignore"]
+#         # clean = "sed '/#gitignore$/'d"
+#         clean = "sed 's/\\(.*\\=\\s*\\).*\\(#.*\\)#gitignore\\s*$/\\1\\2#GITIGNORE/' | sed 's/\\(\\s*\\).*\\(#.*\\)#gitignore\\s*$/\\1\\2#GITIGNORE/' | sed 's/^\\(\\s*\\).*#gitignore\\s*$/\\1#GITIGNORE/' | sed 's/#GITIGNORE/#gitignore/'"
+#         smudge = "sed '/#gitignore$/'d"

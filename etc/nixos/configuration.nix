@@ -112,10 +112,10 @@
 
   # Enable networking.
   networking = {
-    # hostName = ""; # Define your hostname.
-    # hostId = "";
-    # # networkmanager.enable = false; 
-    # # wireless.enable = true; 
+    hostName = # Define your hostname. #gitignore
+    hostId = # Your host id comes here (this is usually auto-generated) #gitignore
+    # networkmanager.enable = false;
+    # wireless.enable = true;
   };
 
   # List services that you want to enable.
@@ -126,8 +126,8 @@
     group = "users";
     uid = 105;
     createHome = true;
-    home = "/home/me";
-    # description = "Name Surname";
+    home = # "/home/me"; #gitignore
+    description = # "Name Surname"; #gitignore
     # extraGroups = [ "wheel" ]; # essentials
     extraGroups = [ 
       "wheel"          # TODO: allows your user to access stored passwords?

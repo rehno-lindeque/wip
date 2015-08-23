@@ -1,0 +1,4 @@
+# Use this file to ignore specific lines in dotfiles (usernames etc)
+# See http://stackoverflow.com/a/16244970/167485
+
+*.nix filter=gitignore
