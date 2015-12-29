@@ -23,20 +23,34 @@
     extraOptions = ''
       gc-keep-outputs = true
       gc-keep-derivations = true
-    '';
+    ''; 
+
+    # export NIX_PATH=$NIX_PATH:unstablepkgs=/nix/var/nix/profiles/per-user/root/channels/nixos-unstable/nixpkgs:devpkgs=/home/rehno/projects/config/nixpkgs
+    nixPath = [
+      # Default nix paths
+      "/nix/var/nix/profiles/per-user/root/channels/nixos"
+      "nixos-config=/etc/nixos/configuration.nix"
+      "/nix/var/nix/profiles/per-user/root/channels"
+      # Added
+      "unstablepkgs=/nix/var/nix/profiles/per-user/root/channels/nixos-unstable/nixpkgs"
+      "devpkgs=/home/rehno/projects/config/nixpkgs"
+    ];
 
     binaryCaches = [
-      # using hydra.cryp.to based on https://github.com/NixOS/nixpkgs/issues/7792#issuecomment-100887882
-      # also be aware of this bug: https://nixos.org/wiki/Haskell#Recovering_from_GHC.27s_non-deterministic_library_ID_bug
-      http://hydra.cryp.to                    # a bunch of people seem to have this one, is it a mirror of hydra.nixos.org ?  
-      # http://hydra.nixos.org                # seems to be the standard build server?
-      # http://cache.nixos.org                # many people have this one, but I'm not sure whether it will work well for the unstable channel? see bendlas/nixos-config/nixpkgs-config.nix
+      "http://cache.nixos.org/"
+      "http://hydra.nixos.org/"
     ];
-    trustedBinaryCaches = [
-      http://hydra.cryp.to
-      # http://hydra.nixos.org
-      # http://cache.nixos.org
+    /* trustedBinaryCaches = [ */
+    /*   # http://hydra.cryp.to */
+    /*   http://hydra.nixos.org */
+    /*   # http://hydra.nixos.org-1 ?? */
+    /*   # http://cache.nixos.org */
+    /* ]; */
+    binaryCachePublicKeys = [
+      "tuegel.mooo.com-1:hZ9VCbn2eRfZl3VVYxkFakWH2SSA18vDv87xxT7BKus="
+      "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+      "hydra.nixos.org-1:CNHJZBh9K4tP3EKF6FkkgeVYsS3ohTl+oS0Qa8bezVs="
     ];
-
   };
 }
+

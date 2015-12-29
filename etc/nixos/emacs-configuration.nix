@@ -36,6 +36,7 @@ let emacs-custom = pkgs.emacsWithPackages
         coffee
         # markdown-mode
         # nix-mode # doesn't seem to be available yet?
+        jade
 
         # Testing / debugging
         # flycheck
@@ -50,6 +51,8 @@ let emacs-custom = pkgs.emacsWithPackages
         # Unknown
         # calfw
         # notmuch
+
+
       ]);
     startEmacsServer = pkgs.writeScript "start-emacs-server"
       ''

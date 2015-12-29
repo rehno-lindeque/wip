@@ -1,6 +1,7 @@
 { config
 , pkgs
-, ... 
+# , haskellPackages ? pkgs.haskellPackages # TODO?
+, ...
 }:
 
 {
@@ -12,7 +13,7 @@
     xserver = {
       enable = true;
       layout = "us";
-     
+
       # Disable capslock (useful for switching caps to a mod key in xmonad/elsewhere)
       # xkbOptions = "ctrl:nocaps";
       # Make capslock into an additional escape key
@@ -22,8 +23,8 @@
       # * Slightly more familiar than KDE for people who are used to working with Ubuntu
       # * This works well with xmonad
       desktopManager = {
-        gnome3.enable = true;
-        default = "gnome3";
+        # gnome3.enable = true;
+        # default = "gnome3";
         # Why this? does it help xmonad? ("the plain xmonad experience")
         xterm.enable = false;
       };
@@ -41,7 +42,7 @@
         };
         # default = "xmonad";
       };
-    
+
       displayManager = {
         auto = {
           # enable = true;
@@ -73,5 +74,10 @@
     # rabbitmq.enable = true;
     # redis.enable = true;
     # dropbox.enable = true;
+    ihaskell = {
+      enable = true;
+      # extraPackages = [  ];
+      # haskellPackages = haskellPackages;
+    };
   };
 }

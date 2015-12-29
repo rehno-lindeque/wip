@@ -1,8 +1,10 @@
 # TODO: does this file work in nix?
 
-## [Use vi shortcuts in terminal](http://vim.wikia.com/wiki/Use_vi_shortcuts_in_terminal
-# set editing-mode vi
-# set keymap vi-command
+# [Use vi shortcuts in terminal](http://vim.wikia.com/wiki/Use_vi_shortcuts_in_terminal
+set editing-mode vi
+set keymap vi-command
+# set keymap vi # (alternative from http://unix.stackexchange.com/a/4872)
+set show-mode-in-prompt on # from http://stackoverflow.com/a/17144421/167485
 
 ## [Bringing all the awesomeness of VI to the bash command prompt](https://gist.github.com/jsjohnst/68444)
 #set -o vi

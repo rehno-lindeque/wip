@@ -6,12 +6,15 @@
 
 # Add unstable packages to nix without running entirely off of the unstable channel 
 # This allows import <unstable> {} to be used in /etc/nixos/configuration.nix
-export NIX_PATH=$NIX_PATH:unstablepkgs=/nix/var/nix/profiles/per-user/root/channels/nixos-unstable/nixpkgs:devpkgs=/home/rehno/projects/config/nixpkgs
+# export NIX_PATH=$NIX_PATH:unstablepkgs=/nix/var/nix/profiles/per-user/root/channels/nixos-unstable/nixpkgs:devpkgs=/home/rehno/projects/config/nixpkgs
 
 # Use VIM mode for bash (TODO: is there a nicer way of doing this in NixOS)
 # TODO: Any way to have a visual indication of normal mode / insert mode
 # TODO: OTOH, perhaps switch to zsh
 set -o vi
+
+# Bash prompt (TODO? This includes git branch)
+export PS1="\e[1;32m\t \W$(__git_ps1 " (%s)") \n\\$ \[$(tput sgr0)\e[m\]"
 
 # # Create a [nix? alias](https://nixos.org/wiki/Howto_find_a_package_in_NixOS#Aliases)
 # # E.g. search for emacs packages and browse around in less:

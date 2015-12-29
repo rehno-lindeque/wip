@@ -4,10 +4,10 @@
 }:
 
 # TODO: extract to vim-custom.nix
-let devpkgs = import <devpkgs> {}; 
+let devpkgs = import <devpkgs> {};
 in
 {
-  environment.systemPackages = with pkgs.vimPlugins ; [ 
+  environment.systemPackages = with pkgs.vimPlugins ; [
 
     # Vim
     pkgs.vimHugeX  # see an editor famous for its advanced key stroke combinations - being good at vi is like being an olympic athlete
@@ -49,6 +49,7 @@ in
     surround       # manipulate / add surrounding brackets, quotes, etc
     gitgutter      # adds git icons (line added, removed, changed etc) to the gutter
     # vim-expand-region # TODO
+    # YouCompleteMe # TODO
 
     # vim-indent-object # ?
     # Allow pane movement to jump out of vim into tmux
@@ -62,6 +63,9 @@ in
 
     # Nix
     # vim-addon-nix # does not appear to work well
+
+    # Jade / Stylus
+    pkgs.vim-jade # syntax-highlighting + indentation for jade
 
     # CoffeeScript
     coffee-script # syntax-highlighting for coffee-script

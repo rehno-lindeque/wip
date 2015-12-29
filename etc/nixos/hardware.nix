@@ -1,9 +1,10 @@
-{ ... 
+{ pkgs
+, ...
 }:
 
-{ 
+{
   hardware = {
-  
+
     # amdHybridGraphics
     # bluetooth
     # bumblebee
@@ -12,7 +13,7 @@
     # enableKSM
     # firmware
     # nvidiaOptimus
-    
+
     opengl = {
       enable = true;
       # driSupport = true;      # ?
@@ -22,12 +23,21 @@
       # s3tcSupport = true; # use patent encumbered texture-compression feature
       # videoDrivers
     };
-  
+
     # parallels
     # pcmcia
     # pulseaudio
     # sane
     # trackpoint
-   
+
+    pulseaudio = {
+      enable = true;
+      daemon.logLevel = "error";
+      support32Bit = true;
+      # package = pkgs.pulseaudioFull;
+    };
   };
+
+  sound.enable = true;
+  sound.enableOSSEmulation = false;
 }
