@@ -14,10 +14,12 @@
       enable = true;
       layout = "us";
 
-      # Disable capslock (useful for switching caps to a mod key in xmonad/elsewhere)
+      # Key bindings
+      # * Disable capslock (useful for switching caps to a mod key in xmonad/elsewhere)
       # xkbOptions = "ctrl:nocaps";
-      # Make capslock into an additional escape key
-      xkbOptions = "caps:escape";
+      # * Terminate current session using ctrl + alt + backspace (usefull on macs)
+      # * Make capslock into an additional escape key
+      xkbOptions = "terminate:ctrl_alt_bksp, caps:escape";
 
       # Gnome desktop
       # * Slightly more familiar than KDE for people who are used to working with Ubuntu

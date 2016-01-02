@@ -25,7 +25,7 @@
       gc-keep-derivations = true
     ''; 
 
-    # export NIX_PATH=$NIX_PATH:unstablepkgs=/nix/var/nix/profiles/per-user/root/channels/nixos-unstable/nixpkgs:devpkgs=/home/rehno/projects/config/nixpkgs
+    # export NIX_PATH=$NIX_PATH:unstablepkgs=/nix/var/nix/profiles/per-user/root/channels/nixos-unstable/nixpkgs:devpkgs=${config.users.users.me.home}/projects/config/nixpkgs
     nixPath = [
       # Default nix paths
       "/nix/var/nix/profiles/per-user/root/channels/nixos"
@@ -33,7 +33,7 @@
       "/nix/var/nix/profiles/per-user/root/channels"
       # Added
       "unstablepkgs=/nix/var/nix/profiles/per-user/root/channels/nixos-unstable/nixpkgs"
-      "devpkgs=/home/rehno/projects/config/nixpkgs"
+      "devpkgs=${config.users.users.me.home}/projects/config/nixpkgs"
     ];
 
     binaryCaches = [

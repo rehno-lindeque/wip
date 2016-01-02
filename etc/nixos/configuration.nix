@@ -63,15 +63,19 @@
 {
   imports =
     [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
+      # ./macbookair2013/configuration.nix #gitignore
+      # ./virtualbox2015/configuration.nix #gitignore
       # general configurations
+      ./boot.nix
       ./hardware.nix
-      ./package-overrides.nix
       ./environment.nix
-      ./services.nix
+      ./fonts.nix
       ./nix.nix
       ./nixpkgs.nix
-      ./fonts.nix
+      ./package-overrides.nix
+      ./services.nix
+      ./system.nix
+      ./users.nix
       # development
       ./circuithub/services.nix
       # package-specific configurations
@@ -83,20 +87,20 @@
 
   # Boot settings.
   boot = {
-    initrd = {
-      # Disable journaling check on boot because virtualbox doesn't need it
-      checkJournalingFS = false; 
-      # Make it pretty
-      kernelModules = [ "fbcon" ];
-    };
+    # initrd = {
+    #   # Disable journaling check on boot because virtualbox doesn't need it
+    #   checkJournalingFS = false; 
+    #   # Make it pretty
+    #   kernelModules = [ "fbcon" ];
+    # };
 
     # Use the GRUB 2 boot loader.
-    loader.grub = {
-      enable = true;
-      version = 2;
-      # Define on which hard drive you want to install Grub.
-      device = "/dev/sda";
-    };
+    # loader.grub = {
+    #   enable = true;
+    #   version = 2;
+    #   # Define on which hard drive you want to install Grub.
+    #   device = "/dev/sda";
+    # };
 
     #loader = {
     #  gummiboot.enable = true;
@@ -106,40 +110,6 @@
     # Wireless module (turn this on once this is running natively)
     # extraModulePackages = [ config.boot.kernelPackages.broadcom_sta ];
     # initrd.kernelModules = [ "wl" ];
-  };
-
-  # Enable networking.
-  networking = {
-    hostName = # Define your hostname. #gitignore
-    hostId = # Your host id comes here (this is usually auto-generated) #gitignore
-    # networkmanager.enable = false;
-    # wireless.enable = true;
-  };
-
-  # List services that you want to enable.
-  # User account.
-  # * Set a password using
-  #   $ useradd -m rehno ; passwd rehno
-  users.extraUsers = {
-    #gitignore
-      group = "users";
-      uid = 105;
-      createHome = true;
-      home = # "/home/me"; #gitignore
-      description = # "Name Surname"; #gitignore
-      # extraGroups = [ "wheel" ]; # essentials
-      extraGroups = [ 
-        "wheel"          # TODO: allows your user to access stored passwords?
-                         # * you need wheel in order to use sudo for example
-        "audio"          # ?
-        "video"          # ?
-        "networkmanager" # ?
-        "mysql"          # needed? allows you to use the running mysql service via your user (usefull for software development)
-                         # * you will see that the /var/mysql/* files that are created belongs to the mysql user & group
-      ];
-      isSystemUser = false;
-      useDefaultShell = true;
-    };
   };
 
   # Select internationalisation properties.

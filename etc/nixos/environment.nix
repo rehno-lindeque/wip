@@ -66,9 +66,9 @@ in
       yimacs    = "yi --as=emacs";
       # config = "su ; cd /etc/nixos"; # TODO: how to start in /etc/nixos path?
       # upgrade = "sudo NIX_PATH=\"$NIX_PATH:unstablepkgs=${<unstablepkgs>}\" nixos-rebuild switch --upgrade";
-      # upgrade = "sudo -E nixos-rebuild switch --upgrade -I devpkgs=/home/rehno/projects/config/nixpkgs -I unstablepkgs=/nix/var/nix/profiles/per-user/root/channels/nixos-unstable/nixpkgs";
+      # upgrade = "sudo -E nixos-rebuild switch --upgrade -I devpkgs=${config.users.users.me.home}/projects/config/nixpkgs -I unstablepkgs=/nix/var/nix/profiles/per-user/root/channels/nixos-unstable/nixpkgs";
       # see also [nix? alias](https://nixos.org/wiki/Howto_find_a_package_in_NixOS#Aliases)
-      upgrade   = "sudo -E nixos-rebuild switch --upgrade -I devpkgs=/home/rehno/projects/config/nixpkgs";
+      upgrade   = "sudo -E nixos-rebuild switch --upgrade -I devpkgs=${config.users.users.me.home}/projects/config/nixpkgs";
       nixq      = "nix-env --query --available --attr-path --description | fgrep --ignore-case --color";
       # nixhq     = "nix-env --file \"<unstablepkgs>\" --query --available --attr-path --attr haskellPackages --description | fgrep --ignore-case --color"; # query haskellPackages
       nixhq     = "nix-env --file \"<nixpkgs>\" --query --available --attr-path --attr haskellPackages --description | fgrep --ignore-case --color"; # query haskellPackages
@@ -84,6 +84,7 @@ in
       vimwin    = "_lambda(){ gnome-terminal -x sh -c \"vim $1\"; }; _lambda"; # Open vim in a new gnome-terminal window
       vimfind   = "_lambda(){ vim $(find -type f -name $@); }; _lambda"; # Open vim with the file in the search result
       vimgrep   = "_lambda(){ vim $(grep $@ -R -l); }; _lambda"; # Open vim with the files containing the search string
+      diffetc   = "diff --brief -Nr /etc/nixos/ ${config.users.users.me.home}/projects/config/dotfiles/etc/nixos | sed \"s/Files\\s//g; s/\\sand//g; s/differ//g\" | while read line ; do touch \${line}; diffuse \${line}; done;";
     };
 
     # shellInit
@@ -160,7 +161,7 @@ in
 
       # Communication
       # xchat
-      hipchat
+      # hipchat
       # slack # todo
 
       # Layout
@@ -175,6 +176,7 @@ in
       # gtk-engine-murrine
 
       # Configuration
+      # gnome3.dconf
       gnome3.gnome_settings_daemon
 
       # Security
@@ -278,8 +280,10 @@ in
       EDITOR  = VISUAL;
       # Make chrome the default browser (used by xmonad http://hackage.haskell.org/package/xmonad-contrib-0.11.4/docs/XMonad-Actions-WindowGo.html#v:raiseBrowser and other programs)
       BROWSER = "chromium-browser";
-      # Helper to get to user home, even in su
-      ME_HOME = # "/home/me"; #gitignore
+      # Helpers to get to the primary user's username and home path, even as su
+      ME = "${config.users.users.me.name}";      # this is somewhat similar to logname (except only for the primary user)
+      ME_HOME = "${config.users.users.me.home}";
+      ME_DOTFILES = "${config.users.users.me.home}/projects/config/dotfiles";
     };
 
     # wvdial

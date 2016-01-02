@@ -1,0 +1,11 @@
+{
+  ...
+}:
+
+{
+  environment = {
+    variables = {
+    };
+  };
+}
+
