@@ -62,7 +62,7 @@
 
 {
   imports =
-    [ # Include the results of the hardware scan.
+    [
       # ./macbookair2013/configuration.nix #gitignore
       # ./virtualbox2015/configuration.nix #gitignore
       # general configurations

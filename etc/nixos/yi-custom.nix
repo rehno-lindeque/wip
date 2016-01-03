@@ -1,5 +1,5 @@
 { pkgs
-, haskellPackages ? pkgs.haskellPackages # pkgs.haskell.packages.ghc7102
+, haskellPackages ? pkgs.haskellPackages
 , ...
 }:
 

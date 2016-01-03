@@ -64,6 +64,29 @@ nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
 command -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
 nnoremap \ :Ag<SPACE>
 
+" open a file in a new gnome-terminal window
+function! GnomeTermOpenFile(action, line)
+  if a:action == 'h'
+
+    " Get the filename
+    "let filename = fnameescape(fnamemodify(a:line, ':p'))
+    let filename = shellescape(fnamemodify(a:line, ':p'))
+
+    " Close CtrlP
+    call ctrlp#exit()
+
+    " Open the file (See http://askubuntu.com/a/485007)
+    silent! execute '!gnome-terminal -x sh -c "vim ' filename '";'
+
+  else
+
+    " Use CtrlP's default file opening function
+    call call('ctrlp#acceptfile', [a:action, a:line])
+
+  endif
+endfunction
+let g:ctrlp_open_func = { 'files': 'GnomeTermOpenFile' }
+
 " }}}
 """"""""""
 " Tags {{{
