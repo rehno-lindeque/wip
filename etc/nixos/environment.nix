@@ -62,29 +62,61 @@ in
     # sessionVariables
 
     shellAliases = {
-      yim       = "yi --as=vim";
-      yimacs    = "yi --as=emacs";
-      # config = "su ; cd /etc/nixos"; # TODO: how to start in /etc/nixos path?
-      # upgrade = "sudo NIX_PATH=\"$NIX_PATH:unstablepkgs=${<unstablepkgs>}\" nixos-rebuild switch --upgrade";
-      # upgrade = "sudo -E nixos-rebuild switch --upgrade -I devpkgs=${config.users.users.me.home}/projects/config/nixpkgs -I unstablepkgs=/nix/var/nix/profiles/per-user/root/channels/nixos-unstable/nixpkgs";
+      yim       = ''yi --as=vim'';
+      yimacs    = ''yi --as=emacs'';
+      # config = ''su ; cd /etc/nixos''; # TODO: how to start in /etc/nixos path?
+      # upgrade = ''sudo NIX_PATH="$NIX_PATH:unstablepkgs=${<unstablepkgs>}" nixos-rebuild switch --upgrade'';
+      # upgrade = ''sudo -E nixos-rebuild switch --upgrade -I devpkgs=${config.users.users.me.home}/projects/config/nixpkgs -I unstablepkgs=/nix/var/nix/profiles/per-user/root/channels/nixos-unstable/nixpkgs'';
       # see also [nix? alias](https://nixos.org/wiki/Howto_find_a_package_in_NixOS#Aliases)
-      upgrade   = "sudo -E nixos-rebuild switch --upgrade -I devpkgs=${config.users.users.me.home}/projects/config/nixpkgs";
-      nixq      = "nix-env --query --available --attr-path --description | fgrep --ignore-case --color";
-      # nixhq     = "nix-env --file \"<unstablepkgs>\" --query --available --attr-path --attr haskellPackages --description | fgrep --ignore-case --color"; # query haskellPackages
-      nixhq     = "nix-env --file \"<nixpkgs>\" --query --available --attr-path --attr haskellPackages --description | fgrep --ignore-case --color"; # query haskellPackages
-      nixnq     = "nix-env --file \"<nixpkgs>\" --query --available --attr-path --attr nodePackages --description | fgrep --ignore-case --color"; # query nodePackages
-      nixgq     = "nix-env --file \"<nixpkgs>\" --query --available --attr-path --attr goPackages --description | fgrep --ignore-case --color"; # query goPackages
-      nixeq     = "nix-env --file \"<nixpkgs>\" --query --available --attr-path --attr elmPackages --description | fgrep --ignore-case --color"; # query elmPackages
-      nixgc     = "nix-collect-garbage --delete-older-than 30d; nix-store --optimise;"; # garbage collect old stuff and optimise
+      upgrade   = ''sudo -E nixos-rebuild switch --upgrade -I devpkgs=${config.users.users.me.home}/projects/config/nixpkgs'';
+      nixq      = ''nix-env --query --available --attr-path --description | fgrep --ignore-case --color'';
+      # nixhq     = ''nix-env --file "<unstablepkgs>" --query --available --attr-path --attr haskellPackages --description | fgrep --ignore-case --color''; # query haskellPackages
+      nixhq     = ''nix-env --file "<nixpkgs>" --query --available --attr-path --attr haskellPackages --description | fgrep --ignore-case --color''; # query haskellPackages
+      nixnq     = ''nix-env --file "<nixpkgs>" --query --available --attr-path --attr nodePackages --description | fgrep --ignore-case --color''; # query nodePackages
+      nixgq     = ''nix-env --file "<nixpkgs>" --query --available --attr-path --attr goPackages --description | fgrep --ignore-case --color''; # query goPackages
+      nixeq     = ''nix-env --file "<nixpkgs>" --query --available --attr-path --attr elmPackages --description | fgrep --ignore-case --color''; # query elmPackages
+      nixgc     = ''nix-collect-garbage --delete-older-than 30d; nix-store --optimise;''; # garbage collect old stuff and optimise
       # editor shorthands
-      vimrecent = "vim `git diff HEAD~1 --name-only`";    # open recently modified (git tracked) files
-      vimrc     = "vim ~/.vimrc";                         # quickly open vimrc file for editing vim settings
-      vimenv    = "vim /etc/nixos/environment.nix";       # quickly open environment.nix
-      vimvim    = "vim /etc/nixos/vim-configuration.nix"; # quickly open vim-configuration.nix
-      vimwin    = "_lambda(){ gnome-terminal -x sh -c \"vim $1\"; }; _lambda"; # Open vim in a new gnome-terminal window
-      vimfind   = "_lambda(){ vim $(find -type f -name $@); }; _lambda"; # Open vim with the file in the search result
-      vimgrep   = "_lambda(){ vim $(grep $@ -R -l); }; _lambda"; # Open vim with the files containing the search string
-      diffetc   = "diff --brief -Nr /etc/nixos/ ${config.users.users.me.home}/projects/config/dotfiles/etc/nixos | sed \"s/Files\\s//g; s/\\sand//g; s/differ//g\" | while read line ; do touch \${line}; diffuse \${line}; done;";
+      vimrecent = ''vim `git diff HEAD~1 --name-only`'';    # open recently modified (git tracked) files
+      vimrc     = ''vim ~/.vimrc'';                         # quickly open vimrc file for editing vim settings
+      vimenv    = ''vim /etc/nixos/environment.nix'';       # quickly open environment.nix
+      vimvim    = ''vim /etc/nixos/vim-configuration.nix''; # quickly open vim-configuration.nix
+      vimwin    = ''_lambda(){ gnome-terminal -x sh -c "vim $1"; }; _lambda''; # Open vim in a new gnome-terminal window
+      vimfind   = ''_lambda(){ vim $(find -type f -name $@); }; _lambda''; # Open vim with the file in the search result
+      vimgrep   = ''_lambda(){ vim $(grep $@ -R -l); }; _lambda''; # Open vim with the files containing the search string
+      diffetc   =
+        ''
+        diff -qNr /etc/nixos/ ${config.users.users.me.home}/projects/config/dotfiles/etc/nixos | sed "s/Files\\s//g; s/\\sand//g; s/differ//g" | while read line ; do
+          touch $line
+          diffuse $line
+        done;
+        '';
+      diffhome  = 
+        ''
+        diff --unidirectional-new-file -qr ${config.users.users.me.home} ${config.users.users.me.home}/projects/config/dotfiles/home/me | while read line ; do
+          echo $line
+          case $line in
+            Files*)
+              args=`sed "s/Files\\s//g; s/\\sand//g; s/differ//g" <(echo "$line")`
+              touch $args
+              diffuse $args
+              ;;
+          esac
+        done
+        '';
+      diffroot  = 
+        ''
+        diff --unidirectional-new-file -qr /root ${config.users.users.me.home}/projects/config/dotfiles/home/root | while read line ; do
+          echo $line
+          case $line in
+            Files*)
+              args=`sed "s/Files\\s//g; s/\\sand//g; s/differ//g" <(echo "$line")`
+              touch $args
+              diffuse $args
+              ;;
+          esac
+        done
+        '';
     };
 
     # shellInit
@@ -291,4 +323,8 @@ in
 
   };
 }
+
+# This is a [modeline](http://stackoverflow.com/a/3958516/167485) for vim that can make editing this file easier inside vim
+# It is probably not necessary if you have settings for .nix files already defined, see :help auto-setting (TODO: better nix vim settings)
+# vim: set softtabstop=2 tabstop=2 shiftwidth=2 expandtab autoindent syntax=nix nocompatible :
 

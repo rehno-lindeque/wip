@@ -186,15 +186,22 @@ instance LayoutModifier ExpandFocused Window where
       max2 (a0,a1) (b0,b1) = (max a0 b0, max a1 b1)
 
       -- Screen coordinates
-      (x0, y0, w, h)                     = (rect_x srect, rect_y srect, rect_width srect, rect_height srect)
-      (x1, y1)                           = (x0, y0) `add2` fromIntegral2 (w,h)
-      delta                              = (floor $ ratio * fromIntegral w, floor $ ratio * fromIntegral h)
+      (x0, y0, w, h) = (rect_x srect, rect_y srect, rect_width srect, rect_height srect)
+      (x1, y1)       = (x0 + fromIntegral w, y0 + fromIntegral h)
+      delta          = (floor $ ratio * fromIntegral w, floor $ ratio * fromIntegral h)
 
       -- constrain rectangle to bounds
-      contrainRect Rectangle{..} = _
+      constrainPoint (x,y) = min2 (x1,y1) (max2 (x0, y0) (x,y))
 
       -- constrain rectangle to bounds
-      constrainPoint (x,y) = _
+      contrainRect Rectangle{..} =
+        let (x,y) = min (x1, y1) (max (x0,y0) (rect_x, rect_y))
+        in Rectangle
+            { rect_x      = x
+            , rect_y      = y
+            , rect_width  = min rect_width  (max 0 (w - fromIntegral x))
+            , rect_height = min rect_height (max 0 (h - fromIntegral y))
+            }
 
       -- screen bounded subtraction / addition
       bsub :: (Ord n, Num n) => (n, n) -> (n,n) -> (n, n)
