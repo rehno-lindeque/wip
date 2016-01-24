@@ -1,5 +1,5 @@
 { pkgs
-, ... 
+, ...
 }:
 
 # Use
@@ -18,6 +18,48 @@ let
 in
 {
   allowUnfree = true;
+  packageOverrides = super: with super; {
+    all = with pkgs; buildEnv {  # pkgs is your overriden set of packages itself
+      name = "me-packages";
+      paths = [
+        # System tools
+        ncdu             # Disk usage analyzer (ncurses ui)
+        powertop         # Analyze laptop power consumption
+        pciutils         # List PCI devices using lspci
+
+        # Browsers
+        tor
+
+        # Development tools
+        # gitAndTools.hub
+        # haskellPackages.pandoc
+        pythonPackages.mycli
+
+        # Data science
+        gnuplot
+        # maxima
+        # octave
+        ihaskell
+        (
+          with pythonPackages;
+          [
+            ipython
+            numpy
+            scipy
+            matplotlib
+            cvxopt
+          ]
+        )
+
+        # Emulators
+        # wine
+
+        # Media players
+        spotify
+        vlc
+      ];
+    };
+  };
 
   # packageOverrides = super: {
   #   # yi-custom = import ./yi-custom.nix { pkgs = devpkgs; };
