@@ -12,7 +12,6 @@
       # Specific configuration for my macbook air
       ./boot.nix
       ./fileSystems.nix
-      ./environment.nix
       ./networking.nix
       ./nix.nix
       ./nixpkgs.nix

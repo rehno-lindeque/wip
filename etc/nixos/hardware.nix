@@ -9,35 +9,22 @@
     # bluetooth
     # bumblebee
     # cpu
-    # enableAllFirmware
     # enableKSM
     # firmware
     # nvidiaOptimus
 
     opengl = {
       enable = true;
-      # driSupport = true;      # ?
-      # driSupport32Bit = true; # ?
-      # package
-      # package32
-      # s3tcSupport = true; # use patent encumbered texture-compression feature
-      # videoDrivers
+      driSupport = true;
+      driSupport32Bit = false;
+      s3tcSupport = true; # use patent encumbered texture-compression feature
     };
-
-    # parallels
-    # pcmcia
-    # pulseaudio
-    # sane
-    # trackpoint
 
     pulseaudio = {
       enable = true;
       daemon.logLevel = "error";
       support32Bit = true;
-      # package = pkgs.pulseaudioFull;
+      package = pkgs.pulseaudioFull; # TODO: what does this do?
     };
   };
-
-  sound.enable = true;
-  sound.enableOSSEmulation = false;
 }

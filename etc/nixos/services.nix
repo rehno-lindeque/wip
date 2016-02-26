@@ -1,6 +1,6 @@
-{ config
+{
+  config
 , pkgs
-# , haskellPackages ? pkgs.haskellPackages # TODO?
 , ...
 }:
 
@@ -33,6 +33,7 @@
 
       # Enable XMonad Desktop Environment. (Optional)
       windowManager = {
+        default = "xmonad";
         xmonad = {
           enable = true; 
           enableContribAndExtras = true;
@@ -42,7 +43,6 @@
           #    haskellPackages.xmonadContrib
           #  ];
         };
-        # default = "xmonad";
       };
 
       displayManager = {

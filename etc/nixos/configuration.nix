@@ -1,6 +1,5 @@
 
-
-# NixOS configuration-as-tutorial for Haskell developers
+# NixOS configuration-as-tutorial
 
 # About this configuration:
 # * This is is a large configuration that gets you set up with NixOS very rapidly while at the same time trying to teach you everything it can about basic Nix configuration.
@@ -16,10 +15,6 @@
 
 # How to get started
 # * You should not start out with this configuration - use a minimal configuration.nix to install nixos, then swap this one in
-# * Once you've swapped 
-
-# Additional notes: 
-# * Note that gnome3 tends to install quite a lot of things from the internet
 # * After copying this configuration for the first time, run:
 #   $ nixos-rebuild switch # activate this configuration
 #                          # * the first time I used this command I found I had to
@@ -34,35 +29,15 @@
 #   e.g. https://github.com/search?l=nix&q=mysql&type=Code
 #        https://gist.github.com/search?l=nix&q=mysql
 
-{ config
+{
+  config
 , pkgs
-
-# * Start by adding the nixos-unstable channel:
-#   $ nix-channel --add http://nixos.org/channels/nixos-unstable
-#   $ nix-channel --update
-
-# TODO: I no longer do this:
-# # * To have <unstable> available as a path in /etc/nixos/configuration.nix do:
-# #   $ echo "export NIX_PATH=\$NIX_PATH:unstable=/nix/var/nix/profiles/per-user/root/channels/nixos-unstable/nixpkgs" >> /root/.bashrc
-# #   and then restart your shell so that
-# #   $ echo $NIX_PATH
-# #   looks correct
-# #   You can also double-check that this worked by running
-# #   $ nix-repl
-# #   nix-repl> <unstable>
-# #             /nix/var/nix/profiles/per-user/root/channels/nixos-unstable/nixpkgs
-# #   nix-repl> (import <unstable> {}).emacs
-# #   $ nixos-rebuild
-# # * I sometimes set my nixos channel == my unstable channel if the two don't work well together for whatever reason. (e.g. at the moment mysql only works well for me in full unstable)
-
-# TODO: explain how to add <devpkgs>
-
 , ... 
 }:
 
 {
   imports =
-    [ # Include the results of the hardware scan.
+    [
       # ./macbookair2013/configuration.nix #gitignore
       # ./virtualbox2015/configuration.nix #gitignore
       # general configurations
@@ -73,11 +48,13 @@
       ./nix.nix
       ./nixpkgs.nix
       ./package-overrides.nix
+      ./programs.nix
       ./services.nix
+      ./sound.nix
       ./system.nix
       ./users.nix
       # development
-      ./circuithub/services.nix
+      # ./circuithub/services.nix
       # package-specific configurations
       ./vim-configuration.nix
       ./emacs-configuration.nix
@@ -85,49 +62,9 @@
       # ./vbox-video-dri.nix
     ];
 
-  # Boot settings.
-  boot = {
-    # initrd = {
-    #   # Disable journaling check on boot because virtualbox doesn't need it
-    #   checkJournalingFS = false; 
-    #   # Make it pretty
-    #   kernelModules = [ "fbcon" ];
-    # };
-
-    # Use the GRUB 2 boot loader.
-    # loader.grub = {
-    #   enable = true;
-    #   version = 2;
-    #   # Define on which hard drive you want to install Grub.
-    #   device = "/dev/sda";
-    # };
-
-    #loader = {
-    #  gummiboot.enable = true;
-    #  # efi.canTouchEfiVariables = true;
-    #};
- 
-    # Wireless module (turn this on once this is running natively)
-    # extraModulePackages = [ config.boot.kernelPackages.broadcom_sta ];
-    # initrd.kernelModules = [ "wl" ];
-  };
-
-  # Select internationalisation properties.
-  # i18n = {
-  #   consoleFont = "lat9w-16";
-  #   consoleKeyMap = "us";
-  #   defaultLocale = "en_US.UTF-8";
-  # };
-
   # Configure daemons started automatically by systemd
   systemd = {
     services.mysql.wantedBy = pkgs.lib.mkForce []; # Needed? Force mysql to start?
-  };
-
-  # Program settings
-  programs = {
-    bash.enableCompletion = true; # needed?
-    ssh.startAgent = true;        # don't type in a password on every SSH connection that is made
   };
 
 }

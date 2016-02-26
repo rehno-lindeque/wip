@@ -27,13 +27,48 @@ in
         powertop         # Analyze laptop power consumption
         pciutils         # List PCI devices using lspci
 
-        # Browsers
-        tor
+        # Web
+        torbrowser
+        # dropbox
+        # dropbox-cli
+
+        # Communication
+        # xchat
+        # hipchat
+        # slack # todo
+
+        # Layout
+        # xmonad-with-packages             # Ultra-customizable (haskell) tiling window manager 
+        # (Needed for compiling .xmonad/xmonad.hs) 
+        (
+          with haskellPackages;
+          [
+            xmonad
+            xmonad-contrib
+            xmonad-extras
+            xmonad-screenshot
+            xmobar
+          ]
+        )
 
         # Development tools
         # gitAndTools.hub
         # haskellPackages.pandoc
         pythonPackages.mycli
+        (
+          with elmPackages;
+          [
+            elm
+            elm-compiler
+            elm-make
+            elm-package
+            elm-reactor
+          ]
+        )
+        awscli                        # command-line interface for AWS
+        # mycli                       # command-line interface for MySQL
+        # pgcli                       # command-line interface for PostgreSQL
+        heroku
 
         # Data science
         gnuplot
@@ -50,9 +85,6 @@ in
             cvxopt
           ]
         )
-
-        # Emulators
-        # wine
 
         # Media players
         spotify

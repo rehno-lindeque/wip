@@ -14,6 +14,8 @@ import qualified XMonad.Config.Gnome          as Config
 import qualified XMonad.Hooks.DynamicLog      as Hooks
 import qualified XMonad.Hooks.ManageDocks     as Hooks
 import qualified XMonad.Layout                as Layout
+import qualified XMonad.Layout.Fullscreen     as Layout
+import qualified XMonad.Layout.NoBorders      as Layout
 import qualified XMonad.Layout.Accordion      as Layout
 import           XMonad.Layout.LayoutModifier (LayoutModifier)
 import qualified XMonad.Layout.LayoutModifier as Layout
@@ -21,6 +23,7 @@ import qualified XMonad.Layout.MagicFocus     as Layout
 import qualified XMonad.StackSet              as Stack
 import           XMonad.Util.EZConfig
 import           XMonad.Util.Run
+import Graphics.X11.ExtraTypes.XF86
 
 main = do
     h <- xmobarProc
@@ -45,6 +48,7 @@ myKeys cfg = cfg
   `additionalKeysP` productivity
   `additionalKeysP` browsers
   `additionalKeysP` editors
+  -- `additionalKeysP` audio
   `additionalKeysP`
   [
   -- ((mod4Mask, xK_q), spawn "sudo killall trayer" >> restart "xmonad" True)
@@ -76,6 +80,16 @@ myKeys cfg = cfg
       -- , ("M-e", spawn "emacs")
       , ("M-s", Actions.runOrRaiseMaster "sublime" (className =? "sublime"))
       , ("M-y", Actions.runOrRaiseMaster "yi" (className =? "yi"))
+      ]
+    audio =
+      [
+        ("<XF86AudioLowerVolume>", spawn "amixer -q -D pulse sset Master 5%-")
+      , ("<XF86AudioMute>",        spawn "amixer -q -D pulse sset Master toggle")
+      , ("<XF86AudioRaiseVolume>", spawn "amixer -q -D pulse sset Master 5%+")
+      , ("<XF86AudioPlay>",        spawn "dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause")
+      -- , ("<XF86AudioStop>",        spawn "spotify")
+      -- , ("<XF86AudioPrev>",        spawn "spotify")
+      -- , ("<XF86AudioNext>",        spawn "spotify")
       ]
       --, ("M-S-<Return>", spawn $ XMonad.terminal conf)
       --, ("M-C-<Return>", spawn "urxvt -e tmux attach")
@@ -261,7 +275,13 @@ myLayout cfg = cfg
   -- Swaps the windows around, which is annoying
   -- { layoutHook = magicFocus (Tall 1 (3/100) (1/2)) ||| tiled ||| Mirror tiled ||| Full
   -- , handleEventHook = Magic.promoteWarp
-  { layoutHook = expandFocused (1 / 100) (tiled {-||| Mirror tiled-}) ||| Layout.Accordion ||| Full
+  { layoutHook = expandFocused (1 / 100)
+                  (
+                    tiled
+                    {-||| Mirror tiled-}
+                  )
+                  ||| Layout.Accordion
+                  ||| Layout.noBorders (Layout.fullscreenFull Layout.Full)
   }
   where
     -- default tiling algorithm partitions screen into two panes

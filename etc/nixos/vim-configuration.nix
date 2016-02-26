@@ -65,7 +65,7 @@ in
     # vim-addon-nix # does not appear to work well
 
     # Jade / Stylus
-    pkgs.vim-jade # syntax-highlighting + indentation for jade
+    vim-jade # syntax-highlighting + indentation for jade
 
     # CoffeeScript
     coffee-script # syntax-highlighting for coffee-script

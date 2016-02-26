@@ -6,8 +6,6 @@
   # Enable networking.
   networking = {
     hostName = # Define your hostname. #gitignore
-    # networkmanager.enable = true; # TODO: an alternative to wireless.enable?
-    wireless.enable = true;
   };
 }
 
