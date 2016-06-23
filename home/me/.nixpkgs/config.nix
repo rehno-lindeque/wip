@@ -1,5 +1,5 @@
 { pkgs
-, ... 
+, ...
 }:
 
 # Use
@@ -8,16 +8,166 @@
 
 let
   # devpkgs = import <devpkgs> {}; 
-  # yipkgs = pkgs.haskell.packages.ghc7101.ghcWithPackages 
-  #            (ps: with ps; [
-  #                yi
-  #                yi-language  # collection of language plugins for yi
-  #                yi-contrib # collection of usefull plugins
-  #            ]);
   stdenv = pkgs.stdenv;
+  # TODO: Remove
+  /* inherit (with pkgs; import ./eth-env.nix { inherit pkgs stdenv fetchFromGitHub fetchurl unzip makeWrapper makeDesktopItem buildEnv myEnvFun; }) ethEnv; #gitignore */
+  #gitignore
 in
 {
   allowUnfree = true;
+  packageOverrides = super: with super; rec {
+
+    inherit (import ./yi-custom.nix { inherit pkgs; }) yi-custom;
+
+    # Work environments
+    # Enter an environment like this:
+    #
+    #   $ load-env-analysis
+    #
+    analysisEnv = myEnvFun
+      {
+        name = "analysis";
+        buildInputs = with python34Packages; [
+          python34
+          numpy
+          toolz
+          ipython
+          numpy
+          scipy
+          matplotlib
+          pandas
+          # cvxopt
+        ];
+      };
+
+    # My non-system packages
+    # Install and update using:
+    #
+    #   $ nix-env -i me-packages
+    #
+    mycli = pkgs.pythonPackages.mycli;    # command-line interface for MySQL
+
+    all = with pkgs; buildEnv {  # pkgs is your overriden set of packages itself
+      name = "me-packages";
+      paths =
+        [
+          # System tools
+          # ncdu               # Disk usage analyzer (ncurses ui)
+          # powertop         # Analyze laptop power consumption
+          # pciutils         # List PCI devices using lspci
+          # unrar              # Extract files from .rar
+          zip                # Create .zip archives
+          # tree               # Directory listings in tree format
+
+          # Web
+          torbrowser
+          # dropbox
+          # dropbox-cli
+
+          # Communication
+          # xchat
+          # hipchat
+          # slack # todo
+          # irssi
+
+          # Text editors
+          # * see ~/.nixpkgs/yi.nix; a vim + emacs alternative for haskellers
+          # * see vim-configuration.nix; for coders in motion 
+          # * see emacs-configuration.nix; the famous structured editor, emacs understands the parse structure of your favourite programming language
+          yi-custom
+          # sublime3
+
+          # Layout
+          # xmonad-with-packages             # Ultra-customizable (haskell) tiling window manager 
+          # (Needed for compiling .xmonad/xmonad.hs) 
+          (
+            with haskellPackages;
+            [
+              xmonad
+              xmonad-contrib
+              xmonad-extras
+              xmonad-screenshot
+              xmobar
+            ]
+          )
+
+          # Development tools
+          nixops
+          # gitAndTools.hub
+          # haskellPackages.pandoc
+          # Python tools need a work-around to be installed in this way
+          # (
+          #   with pythonPackages;
+          #   [
+          #     mycli     # command-line interface for MySQL
+          #     # pgcli   # command-line interface for PostgreSQL
+          #   ]
+          # )
+          (
+            with elmPackages;
+            [
+              elm
+              elm-compiler
+              elm-make
+              elm-package
+              elm-reactor
+            ]
+          )
+          awscli    # command-line interface for AWS
+          # mycli   # command-line interface for MySQL
+          # pgcli   # command-line interface for PostgreSQL
+          # ec2_api_tools
+          # inotify-tools
+          # heroku
+
+          # Electronics design automation
+          kicad
+
+          # Data science
+          gnuplot
+          # maxima
+          # octave
+          # ihaskell
+          # analysisEnv
+
+          # Emulators
+          # wine
+          # linuxPackages.virtualbox
+
+          # Media players
+          spotify
+          vlc
+
+          # Artistic
+          gimp
+
+          # Uncategorized
+          /* dropbox-cli */
+          /* eog */
+          /* file-roller */
+          /* firefox */
+          /* lynx */
+          /* gimp */
+          /* glxinfo */
+          /* inkscape */
+          /* kicad */
+          /* lame */
+          /* libressl */
+          /* lsof */
+          /* mysql-workbench */
+          /* nodejs */
+          /* pcre */
+          /* python */
+          /* rtorrent */
+          /* scrot */
+          /* shotwell */
+          /* skype */
+          /* zlib */
+          /* zlib-static */
+        ];
+    };
+
+  };
 
   # packageOverrides = super: {
   #   # yi-custom = import ./yi-custom.nix { pkgs = devpkgs; };
@@ -39,15 +189,5 @@ in
   #   "unstablepkgs=/nix/var/nix/profiles/per-user/root/channels/nixos-unstable/nixpkgs"
   #   "devpkgs=/home/rehno/projects/config/nixpkgs"
   # ];
-
-  /* elmEnv = stdenv.mkDerivation { */
-  /*   name = "elm-env"; */
-  /*   buildInputs = [ */
-  /*     pkgs.elmPackages.elm-compiler */
-  /*     pkgs.elmPackages.elm-make */
-  /*     pkgs.elmPackages.elm-package */
-  /*     # pkgs.elmPackages.elm-reactor */
-  /*   ]; */
-  /* }; */
 
 }

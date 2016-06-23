@@ -10,7 +10,7 @@
 
     # perform nix garbage collection (delete unused programs) automatically for stuff older than 30 days 
     gc = {
-      automatic = true;
+      automatic = false;
       dates = "03:15"; # most people are asleep at 03:15 in the morning, so this might be a good time to run it
       options = "--delete-older-than 30d";
     };
@@ -25,7 +25,7 @@
       gc-keep-derivations = true
     ''; 
 
-    # export NIX_PATH=$NIX_PATH:unstablepkgs=/nix/var/nix/profiles/per-user/root/channels/nixos-unstable/nixpkgs:devpkgs=/home/rehno/projects/config/nixpkgs
+    # export NIX_PATH=$NIX_PATH:unstablepkgs=/nix/var/nix/profiles/per-user/root/channels/nixos-unstable/nixpkgs:devpkgs=${config.users.users.me.home}/projects/config/nixpkgs
     nixPath = [
       # Default nix paths
       "/nix/var/nix/profiles/per-user/root/channels/nixos"
@@ -33,12 +33,12 @@
       "/nix/var/nix/profiles/per-user/root/channels"
       # Added
       "unstablepkgs=/nix/var/nix/profiles/per-user/root/channels/nixos-unstable/nixpkgs"
-      "devpkgs=/home/rehno/projects/config/nixpkgs"
+      "devpkgs=${config.users.users.me.home}/projects/config/nixpkgs"
     ];
 
     binaryCaches = [
-      "http://cache.nixos.org/"
-      "http://hydra.nixos.org/"
+      http://cache.nixos.org/
+      http://hydra.nixos.org/
     ];
     /* trustedBinaryCaches = [ */
     /*   # http://hydra.cryp.to */
@@ -50,6 +50,7 @@
       "tuegel.mooo.com-1:hZ9VCbn2eRfZl3VVYxkFakWH2SSA18vDv87xxT7BKus="
       "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
       "hydra.nixos.org-1:CNHJZBh9K4tP3EKF6FkkgeVYsS3ohTl+oS0Qa8bezVs="
+      "hydra.cryp.to-1:8g6Hxvnp/O//5Q1bjjMTd5RO8ztTsG8DKPOAg9ANr2g="
     ];
   };
 }

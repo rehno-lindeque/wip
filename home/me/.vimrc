@@ -17,6 +17,17 @@ augroup END
 " Remember info about open buffers on close
 set viminfo^=%
 
+"""""""""""""""""
+" Keyboard layout
+"""""""""""""""""
+
+function! SwapLayout()
+  :set langmap=yh,nj,ik,ol,jy,pn,PN,\\;p,\\:P,h\\;,H\\:
+  " let mapleader = "\<Backspace>" " use spacebar as a leader key for plugin keystrokes
+endfunction
+
+command Swp call SwapLayout()
+
 " }}}
 """"""""""""
 " Search {{{
@@ -63,6 +74,29 @@ nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
 " bind \ (backward slash) to grep shortcut
 command -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
 nnoremap \ :Ag<SPACE>
+
+" open a file in a new gnome-terminal window
+function! GnomeTermOpenFile(action, line)
+  if a:action == 'h'
+
+    " Get the filename
+    "let filename = fnameescape(fnamemodify(a:line, ':p'))
+    let filename = shellescape(fnamemodify(a:line, ':p'))
+
+    " Close CtrlP
+    call ctrlp#exit()
+
+    " Open the file (See http://askubuntu.com/a/485007)
+    silent! execute '!gnome-terminal -x sh -c "vim ' filename '";'
+
+  else
+
+    " Use CtrlP's default file opening function
+    call call('ctrlp#acceptfile', [a:action, a:line])
+
+  endif
+endfunction
+let g:ctrlp_open_func = { 'files': 'GnomeTermOpenFile' }
 
 " }}}
 """"""""""
@@ -128,38 +162,6 @@ endfunction
 au BufEnter /*.hs call LoadHscope()
 
 " }}}
-""""""""""""
-" Leader {{{
-""""""""""""
-
-let mapleader = "\<Space>" " use spacebar as a leader key for plugin keystrokes
-
-" type <Space>o to open a new file:
-nnoremap <Leader>o :CtrlP<CR>
-
-" type <Space>w to save file (a lot faster than :w<Enter>)
-" also, quit, buffer prev, buffer next, buffer delete, etc
-nnoremap <Leader><Leader> :w<CR>
-nnoremap <Leader>w :w<CR>
-nnoremap <Leader>wq :wq<CR>
-nnoremap <Leader>q :q<CR>
-nnoremap <Leader>bp :bp<CR>
-nnoremap <Leader>bn :bn<CR>
-nnoremap <Leader>bd :bd<CR>
-nnoremap <Leader> :
-
-" copy & paste to system clipboard with <Space>p and <Space>y:
-vmap <Leader>y "+y
-vmap <Leader>d "+d
-nmap <Leader>p "+p
-nmap <Leader>P "+P
-vmap <Leader>p "+p
-vmap <Leader>P "+P
-
-" enter visual line mode with <Space><Space>:
-"nmap <Leader><Leader> V
-
-" }}}
 """"""""""""""
 " Editing {{{
 """"""""""""""
@@ -183,6 +185,17 @@ nmap FF ?
 " nnoremap <C-K> m`O<Esc>``
 nnoremap <Esc>j o<Esc>
 nnoremap <Esc>k O<Esc>
+" See http://stackoverflow.com/a/37211433/167485
+" insert blank lines with <enter> (this is basically an advanced form of nnoremap <CR> i<CR>)
+" function! NewlineWithEnter()
+"     if !&modifiable
+"         execute "normal! \<CR>"
+"     else
+"         execute "normal! i\<CR>\<ESC>l"
+"         execute "startinsert"
+"     endif
+" endfunction
+" nnoremap <CR> :call NewlineWithEnter()<CR>
 
 " allow the . to execute once for each line of a visual selection
 vnoremap . :normal .<CR>
@@ -234,14 +247,88 @@ let g:multi_cursor_exit_from_insert_mode = 0  " dont exit from multiple cursors 
 " map <Leader>a<bar> :Align <bar><CR>
 " " Prompt for align character
 " map <leader>ap :Align
-" 
-" " Enable some tabular presets for Haskell
-" let g:haskell_tabular = 1
 
-" vmap <Enter> <Plug>(EasyAlign) " Start interactive EasyAlign in visual mode (e.g. vip<Enter>)
-" nmap ga <Plug>(EasyAlign)      " Start interactive EasyAlign for a motion/text object (e.g. gaip)
+" Enable some tabular presets for Haskell
+let g:haskell_tabular = 1
+
+" (Note: don't add comments after mapping - it breaks)
+" Start interactive EasyAlign in visual mode (e.g. vip<Enter>)
+vmap <Enter> <Plug>(EasyAlign)
+" Start interactive EasyAlign for a motion/text object (e.g. gaip)
+nmap ga <Plug>(EasyAlign)
+
+" Surround shortcuts for visual mode
+vmap ) S)
+vmap ] S]
+" vmap } S} " Let's not remap this one because it hobbles your ability to visually select blocks
+vmap - S-
+vmap ' S'
+vmap " S"
+vmap ` S`
 
 " }}}
+" }}}
+""""""""""""
+" Leader {{{
+""""""""""""
+
+" use spacebar and backspace interchangably for leader keys (see http://superuser.com/a/693644)
+" let mapleader = "\<Space>"
+let mapleader = "λ"
+map <Space> λ
+map <Backspace> λ
+
+" Show the current command in progress (useful for leader keys)
+set showcmd
+
+" Swap keyboard layout
+nnoremap <Leader>ss :Swp<CR>
+
+" type <Space>o to open a new file:
+nnoremap <Leader>o :CtrlP<CR>
+
+" type <Space>w to save file (a lot faster than :w<Enter>)
+" also, quit, buffer prev, buffer next, buffer delete, etc
+" nnoremap <Leader><Leader> :w<CR>
+" nnoremap λλ :w<CR>
+nnoremap <Leader><Space> :w<CR>
+nnoremap <Leader><Backspace> :w<CR>
+nnoremap <Leader>w :w<CR>
+nnoremap <Leader>wq :wq<CR>
+nnoremap <Leader>q :q<CR>
+nnoremap <Leader>Q :q!<CR>
+nnoremap <Leader>bp :bp<CR>
+nnoremap <Leader>bn :bn<CR>
+nnoremap <Leader>bd :bd<CR>
+" nnoremap <Leader> :
+
+nnoremap <Leader>bp :bp<CR>
+nnoremap <Leader>bn :bn<CR>
+nnoremap <Leader>bd :bd<CR>
+
+" copy & paste to system clipboard with <Space>p and <Space>y:
+vnoremap <Leader>y "+y
+vnoremap <Leader>d "+d
+nnoremap <Leader>p "+p
+nnoremap <Leader>P "+P
+vnoremap <Leader>p "+p
+vnoremap <Leader>P "+P
+
+" enter visual line mode with <Space><Space>:
+"nmap <Leader><Leader> V
+
+" }}}
+""""""""""""""""""""""""
+" Tabs, buffers, etc {{{
+""""""""""""""""""""""""
+
+" Gnome-Terminal-like navigation
+" nnoremap <C-PageUp>bp :bp<CR> " Doesnt seem to work
+" nnoremap <C-PageDown>bn :bn<CR> " Doesnt seem to work
+" nnoremap <C-S-t> :tabnew<CR>
+" inoremap <C-S-t> <Esc>:tabnew<CR>
+" inoremap <C-S-w> <Esc>:tabclose<CR> " needed?
+
 " }}}
 """""""""""""""""
 " Status line {{{
@@ -249,24 +336,24 @@ let g:multi_cursor_exit_from_insert_mode = 0  " dont exit from multiple cursors 
 
 set laststatus=2 " Make the pretty airline status appear on the first buffer
 " let g:airline_powerline_fonts = 1 " Use the pretty powerline fonts with the airline status line
-let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#enabled  = 1
 " let g:airline#extensions#tabline#left_sep = ' '
 " let g:airline#extensions#tabline#left_alt_sep = '|'
-let g:airline#extensions#branch#enabled = 1
+let g:airline#extensions#branch#enabled   = 1
 " let g:airline#extensions#syntastic#enabled = 1
-let g:airline#extensions#ctrlp#enabled = 1
-let g:airline#extensions#hunks#enabled = 1
+let g:airline#extensions#ctrlp#enabled    = 1
+let g:airline#extensions#hunks#enabled    = 1
 let g:airline#extensions#undotree#enabled = 1
-let g:airline#extensions#tabline#enabled = 1
-let g:airline_theme='dark'
-let g:airline_symbols = {}
-let g:airline_symbols.whitespace = 'Ξ'
-let g:airline_left_sep = '▶'
-let g:airline_right_sep = '◀'
-let g:airline_symbols.linenr = '¶ '
-let g:airline_symbols.branch = '⎇ '
-let g:airline_symbols.paste = 'ρ'
-let g:airline_detect_modified=1
+let g:airline#extensions#tabline#enabled  = 1
+let g:airline_theme                       = 'dark'
+let g:airline_symbols                     = {}
+let g:airline_symbols.whitespace          = 'Ξ'
+let g:airline_left_sep                    = '▶'
+let g:airline_right_sep                   = '◀'
+let g:airline_symbols.linenr              = '¶ '
+let g:airline_symbols.branch              = '⎇ '
+let g:airline_symbols.paste               = 'ρ'
+let g:airline_detect_modified             = 1
 " let g:airline_detect_paste=1 " doesn't work with leader key copy/paste
 
 " set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ CWD:\ %r%{getcwd()}%h\ \ \ Line:\ %l " Format the status line
@@ -309,6 +396,9 @@ set showbreak=\ ↪\   " show line breaks (due to wrapping text) with a pretty i
 " Mode switching {{{
 """"""""""""""""""""
 
+" Kill the damned Ex mode.
+nnoremap Q <nop>
+
 " set esckeys " removes the delay after the escape that makes vim feel sluggish exiting visual mode (this will break any sequences using escape in insert mode.)
 set timeoutlen=1800 ttimeoutlen=0 " an alternative to esckeys above (but I'm not sure how it works)
 
@@ -316,6 +406,12 @@ set timeoutlen=1800 ttimeoutlen=0 " an alternative to esckeys above (but I'm not
 inoremap kj <ESC>
 " noremap jj <ESC>
 " inoremap jk <ESC>
+
+" autocomplete in insert mode
+inoremap jk <C-p>
+
+" undo in insert mode
+inoremap jj <C-u>
 
 " prevent escape from moving one character back (interferes with vim-multiple-cursors) 
 " let CursorColumnI = 0 "the cursor column position in INSERT
@@ -428,7 +524,8 @@ nnoremap <silent> <leader>hz :HoogleClose<CR>
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip     " MacOSX/Linux
 set wildignore+=*/node_modules/* " NodeJS
 
-let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
+" let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
+let g:ctrlp_custom_ignore = '\v[\/](node_modules|target|dist)|(\.(swp|ico|git|svn))$'
 " let g:ctrlp_custom_ignore = {
 "   \ 'dir':  '\v[\/]\.(git|hg|svn)$',
 "   \ 'file': '\v\.(exe|so|dll)$',
@@ -444,12 +541,14 @@ let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
 set t_Co=256 
 
 " soften the highlight color (it's a crazy bright yellow by default)
-hi Search cterm=NONE ctermfg=lightgrey ctermbg=black
+" hi Search cterm=NONE ctermfg=lightgrey ctermbg=black
+hi Search cterm=NONE ctermfg=lightmagenta ctermbg=darkmagenta
 
 " turn on syntax highlighting in all files
 filetype plugin indent on
 syntax on
 au BufNewFile,BufRead *.coffee set filetype=coffee " for some reason this seems to be required by coffee-script filetype - don't know why
+au BufNewFile,BufRead *.jade set filetype=jade " for some reason this seems to be required by jade filetype - don't know why
 
 " git gutter
 let g:gitgutter_override_sign_column_highlight = 0
@@ -488,6 +587,10 @@ function! AutoHighlightToggle()
 endfunction
 " call AutoHighlightToggle()
 
+" GHC type highlight
+hi ghcmodType ctermbg=blue
+let g:ghcmod_type_highlight = 'ghcmodType'
+
 " }}}
 
 " From begriff's haskell-vim-now:
@@ -521,10 +624,7 @@ endfunction
 " 
 " " Find custom built ghc-mod, codex etc
 " let $PATH = $PATH . ':' . expand("~/.haskell-vim-now/bin")
-" 
-" " Kill the damned Ex mode.
-" nnoremap Q <nop>
-" 
+"
 " " }}}
 " 
 " " Vundle {{{

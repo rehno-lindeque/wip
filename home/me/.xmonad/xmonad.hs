@@ -6,8 +6,10 @@
 {-# LANGUAGE TypeSynonymInstances  #-}
 
 import           Data.Ratio
+import           Graphics.X11.ExtraTypes.XF86
 import           System.IO
 import           XMonad                       as XM
+import qualified XMonad.Actions.CycleWS       as Actions (nextWS, prevWS, shiftToNext, shiftToPrev)
 import qualified XMonad.Actions.WindowGo      as Actions
 import qualified XMonad.Config.Desktop        as Config
 import qualified XMonad.Config.Gnome          as Config
@@ -15,9 +17,11 @@ import qualified XMonad.Hooks.DynamicLog      as Hooks
 import qualified XMonad.Hooks.ManageDocks     as Hooks
 import qualified XMonad.Layout                as Layout
 import qualified XMonad.Layout.Accordion      as Layout
+import qualified XMonad.Layout.Fullscreen     as Layout
 import           XMonad.Layout.LayoutModifier (LayoutModifier)
 import qualified XMonad.Layout.LayoutModifier as Layout
 import qualified XMonad.Layout.MagicFocus     as Layout
+import qualified XMonad.Layout.NoBorders      as Layout
 import qualified XMonad.StackSet              as Stack
 import           XMonad.Util.EZConfig
 import           XMonad.Util.Run
@@ -45,6 +49,7 @@ myKeys cfg = cfg
   `additionalKeysP` productivity
   `additionalKeysP` browsers
   `additionalKeysP` editors
+  -- `additionalKeysP` audio
   `additionalKeysP`
   [
   -- ((mod4Mask, xK_q), spawn "sudo killall trayer" >> restart "xmonad" True)
@@ -54,11 +59,22 @@ myKeys cfg = cfg
     -- This configuration tries to keep the layout somewhat stable in order to provide a consistent environment
     navigation =
       [ ("M-<Space>", sendMessage NextLayout)
-      -- , ("M-j", windows (Stack.focusUp . Stack.swapDown) {->> sendMessage NextLayout-}) --TODO
-      -- , ("M-S-j", windows Stack.focusDown)
-      -- , ("M-k", windows (Stack.focusDown . Stack.swapUp))
-      -- , ("M-S-k", windows Stack.focusDown)
-      -- , ("M-<Tab>", windows (Stack.focusUp . Stack.swapDown))
+      , ("M-S-j" , windows (Stack.swapDown) {->> sendMessage NextLayout-}) -- TODO ?
+      , ("M-j"   , windows Stack.focusDown)
+      , ("M-S-k" , windows (Stack.swapUp))
+      , ("M-k"   , windows Stack.focusUp)
+      , ("M-S-n" , windows (Stack.swapDown))
+      , ("M-n"   , windows Stack.focusDown)
+      , ("M-S-i" , windows (Stack.swapUp))
+      , ("M-i"   , windows Stack.focusUp)
+      , ("M-l"   , Actions.nextWS)
+      , ("M-S-l" , Actions.shiftToNext)
+      , ("M-h"   , Actions.prevWS)
+      , ("M-S-h" , Actions.shiftToPrev)
+      , ("M-o"   , Actions.nextWS)
+      , ("M-S-o" , Actions.shiftToNext)
+      , ("M-y"   , Actions.prevWS)
+      , ("M-S-y" , Actions.shiftToPrev)
       ]
     productivity =
       [ ("M-p", spawn "dmenu_run -fn 16 -nb '#333' -l 15 -b") -- dmenu is a quick launcher
@@ -74,8 +90,18 @@ myKeys cfg = cfg
     editors =
       [ ("M-e", Actions.raiseEditor)
       -- , ("M-e", spawn "emacs")
-      , ("M-s", Actions.runOrRaiseMaster "sublime" (className =? "sublime"))
-      , ("M-y", Actions.runOrRaiseMaster "yi" (className =? "yi"))
+      -- , ("M-s", Actions.runOrRaiseMaster "sublime" (className =? "sublime"))
+      -- , ("M-y", Actions.runOrRaiseMaster "yi" (className =? "yi"))
+      ]
+    audio =
+      [
+      --  ("<XF86AudioLowerVolume>", spawn "amixer -q -D pulse sset Master 5%-")
+      --, ("<XF86AudioMute>",        spawn "amixer -q -D pulse sset Master toggle")
+      --, ("<XF86AudioRaiseVolume>", spawn "amixer -q -D pulse sset Master 5%+")
+      --, ("<XF86AudioPlay>",        spawn "dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause")
+      -- , ("<XF86AudioStop>",        spawn "spotify")
+      -- , ("<XF86AudioPrev>",        spawn "spotify")
+      -- , ("<XF86AudioNext>",        spawn "spotify")
       ]
       --, ("M-S-<Return>", spawn $ XMonad.terminal conf)
       --, ("M-C-<Return>", spawn "urxvt -e tmux attach")
@@ -186,15 +212,22 @@ instance LayoutModifier ExpandFocused Window where
       max2 (a0,a1) (b0,b1) = (max a0 b0, max a1 b1)
 
       -- Screen coordinates
-      (x0, y0, w, h)                     = (rect_x srect, rect_y srect, rect_width srect, rect_height srect)
-      (x1, y1)                           = (x0, y0) `add2` fromIntegral2 (w,h)
-      delta                              = (floor $ ratio * fromIntegral w, floor $ ratio * fromIntegral h)
+      (x0, y0, w, h) = (rect_x srect, rect_y srect, rect_width srect, rect_height srect)
+      (x1, y1)       = (x0 + fromIntegral w, y0 + fromIntegral h)
+      delta          = (floor $ ratio * fromIntegral w, floor $ ratio * fromIntegral h)
 
       -- constrain rectangle to bounds
-      contrainRect Rectangle{..} = _
+      constrainPoint (x,y) = min2 (x1,y1) (max2 (x0, y0) (x,y))
 
       -- constrain rectangle to bounds
-      constrainPoint (x,y) = _
+      contrainRect Rectangle{..} =
+        let (x,y) = min (x1, y1) (max (x0,y0) (rect_x, rect_y))
+        in Rectangle
+            { rect_x      = x
+            , rect_y      = y
+            , rect_width  = min rect_width  (max 0 (w - fromIntegral x))
+            , rect_height = min rect_height (max 0 (h - fromIntegral y))
+            }
 
       -- screen bounded subtraction / addition
       bsub :: (Ord n, Num n) => (n, n) -> (n,n) -> (n, n)
@@ -254,7 +287,13 @@ myLayout cfg = cfg
   -- Swaps the windows around, which is annoying
   -- { layoutHook = magicFocus (Tall 1 (3/100) (1/2)) ||| tiled ||| Mirror tiled ||| Full
   -- , handleEventHook = Magic.promoteWarp
-  { layoutHook = expandFocused (1 / 100) (tiled {-||| Mirror tiled-}) ||| Layout.Accordion ||| Full
+  { layoutHook = expandFocused (1 / 100)
+                  (
+                    tiled
+                    {-||| Mirror tiled-}
+                  )
+                  ||| Layout.Accordion
+                  ||| Layout.noBorders (Layout.fullscreenFull Layout.Full)
   }
   where
     -- default tiling algorithm partitions screen into two panes

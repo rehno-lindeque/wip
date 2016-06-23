@@ -9,6 +9,9 @@ else
   mkdir -p ~/.config/yi
   ln ./home/me/.config/yi/yi.hs ~/.config/yi/yi.hs
 
+  mkdir -p ~/.config/pgcli
+  ln ./home/me/.config/pgcli/config ~/.config/pgcli/config
+
   ln ./home/me/.emacs ~/
 
   # Can't soft link .gitconfig
