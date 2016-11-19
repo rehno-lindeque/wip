@@ -45,14 +45,30 @@
       nixeq      = ''nix-env --file "<nixpkgs>" --query --available --attr-path --attr elmPackages --description | fgrep --ignore-case --color''; # query elmPackages
       nixgc      = ''nix-collect-garbage --delete-older-than 30d; nix-store --optimise;''; # garbage collect old stuff and optimise
       # editor s horthands
-      vimrecent  = ''vim `git diff HEAD~1 --relative --name-only`'';            # open recently modified (git tracked) files
-      vimrc      = ''vim ~/.vimrc'';                                            # quickly open vimrc file for editing vim settings
-      vimenv     = ''vim /etc/nixos/environment.nix'';                          # quickly open environment.nix
-      vimvim     = ''vim /etc/nixos/vim-configuration.nix'';                    # quickly open vim-configuration.nix
-      vimpkgs    = ''vim $HOME/.nixpkgs/config.nix'';                           # quickly open ~/.nixpkgs/config.nix
-      vimwin     = ''_lambda(){ gnome-terminal -x sh -c "vim $1"; }; _lambda''; # Open vim in a new gnome-terminal window
-      vimfind    = ''_lambda(){ vim $(find -type f -name "$@"); }; _lambda'';    # Open vim with the file in the search result
-      vimgrep    = ''_lambda(){ vim $(ag $@ -l); }; _lambda'';                  # Open vim with the files containing the search string
+      vi         = ''vim'';
+      virecent   = ''vim `git diff HEAD~1 --relative --name-only`'';            # open recently modified (git tracked) files
+      virc       = ''vim ~/.vimrc'';                                            # quickly open vimrc file for editing vim settings
+      vienv      = ''vim /etc/nixos/environment.nix'';                          # quickly open environment.nix
+      vivi       = ''vim /etc/nixos/vim-configuration.nix'';                    # quickly open vim-configuration.nix
+      vipkgs     = ''vim $HOME/.nixpkgs/config.nix'';                           # quickly open ~/.nixpkgs/config.nix
+      viwin      = ''_lambda(){ gnome-terminal -x sh -c "vim $1"; }; _lambda''; # open vim in a new gnome-terminal window
+      /* vifind     = ''_lambda(){ vim $(find -type f -name "$@"); }; _lambda'';   # open vim with the file in the search result */
+      vigrep     = ''_lambda(){ vim $(ag $@ -l); }; _lambda'';                  # open vim with the files containing the search string
+      yirecent   = ''yi `git diff HEAD~1 --relative --name-only`'';             # open recently modified (git tracked) files
+      yifind     = ''_lambda(){ yi $(find -type f -name "$@"); }; _lambda'';     # open yi with the file in the search result
+      vifind     =
+        # open vim with the file in the search result
+        ''
+        _lambda(){
+          local f=$(find -name "$@")
+          if [ -d "$f" ] ; then
+            vim $(find -type d -name "$@")
+          elif [ -n "$f" ] ; then
+            vim $(find -type f -name "$@")
+          else
+            echo "Could not find \"$@\""
+          fi
+        }; _lambda'';
       diffr  =
         ''
         _lambda(){
@@ -93,6 +109,7 @@
           esac
         done
         '';
+      clip = ''xclip -selection clipboard'';
     };
 
     # shellInit
@@ -139,6 +156,7 @@
       elmPackages.elm-make
       elmPackages.elm-package
       elmPackages.elm-reactor
+      heroku-beta
 
       # Terminal
       gnome3.gnome_terminal
@@ -152,7 +170,7 @@
       # tree                           # show a directory tree (like ls -R, but prettier)
 
       # Web
-      chromium
+      google-chrome
       # Layout
       haskellPackages.xmonad # TODO: haskellPackages-custom
 
@@ -164,12 +182,13 @@
       # gtk-engine-murrine
 
       # Configuration
+      # gnome3.dconf
       gnome3.gnome_settings_daemon
 
       # Security
       gnome3.gnome_keyring
 
-      # Development dependencies 
+      # Development dependencies
       ctags       # quick way to browse symbols (seems to collide with emacs ctags in tagbar at the moment though, I had to nix-env -i ctags)
       # ghc
       ghc-custom

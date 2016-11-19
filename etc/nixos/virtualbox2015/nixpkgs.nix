@@ -34,6 +34,7 @@ in
         # elmPackages = devpkgs.elmPackages;
         vim-jade = unstablepkgs.vimPlugins.vim-jade;
         heroku-beta = devpkgs.heroku;
+        /* heroku-beta = goPackages.heroku.bin; */
 
         # packages in unstable
         elmPackages = devpkgs.elmPackages;

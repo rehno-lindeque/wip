@@ -53,11 +53,12 @@
       ./sound.nix
       ./system.nix
       ./users.nix
+      ./virtualisation.nix
       # development
       # ./circuithub/services.nix #gitignore
       # package-specific configurations
       ./vim-configuration.nix
-      ./emacs-configuration.nix
+      # ./emacs-configuration.nix # See services.emacs for the new way of doing this
       # hacks
       # ./vbox-video-dri.nix
     ];

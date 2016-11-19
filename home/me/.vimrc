@@ -185,6 +185,11 @@ nmap FF ?
 " nnoremap <C-K> m`O<Esc>``
 nnoremap <Esc>j o<Esc>
 nnoremap <Esc>k O<Esc>
+
+" insert spaces in normal mode
+nnoremap <Esc>h i <Esc>
+nnoremap <Esc>l a <Esc>
+
 " See http://stackoverflow.com/a/37211433/167485
 " insert blank lines with <enter> (this is basically an advanced form of nnoremap <CR> i<CR>)
 " function! NewlineWithEnter()

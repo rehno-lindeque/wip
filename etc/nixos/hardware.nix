@@ -36,6 +36,12 @@
       support32Bit = true;
       # package = pkgs.pulseaudioFull;
     };
+
+    /* sane = */
+    /*   { */
+    /*     enable = true; # Enable this to use a scanner */
+    /*     extraBackends = [ pkgs.hplipWithPlugin ]; # HP drivers */
+    /*   }; */
   };
 
   sound.enable = true;

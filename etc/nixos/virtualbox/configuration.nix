@@ -9,4 +9,6 @@
       ./boot.nix
       ./virtualisation.nix
     ];
+
+  # services.xserver.videoDrivers = [ "virtualbox" "modesetting" ]; # (recent bug in updating guest additions)
 }

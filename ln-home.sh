@@ -1,3 +1,7 @@
+# TODO: This method has been deprecated, use diffetc, diffhome instead
+echo "TODO: Delete this script"
+exit
+
 if [ -e ~/.bashrc ]; then
 
   echo "dotfiles exist, be carefull!"

@@ -11,10 +11,11 @@ let
   stdenv = pkgs.stdenv;
   # TODO: Remove
   /* inherit (with pkgs; import ./eth-env.nix { inherit pkgs stdenv fetchFromGitHub fetchurl unzip makeWrapper makeDesktopItem buildEnv myEnvFun; }) ethEnv; #gitignore */
-  #gitignore
+  inherit (pkgs.callPackage ./eth-env.nix {}) ethEnv ethClassicEnv;
 in
 {
   allowUnfree = true;
+  services.emacs.enable = true;
   packageOverrides = super: with super; rec {
 
     inherit (import ./yi-custom.nix { inherit pkgs; }) yi-custom;
@@ -51,6 +52,10 @@ in
       name = "me-packages";
       paths =
         [
+          # Private #gitignore
+          # ethEnv    #gitignore
+          # ethClassicEnv    #gitignore
+
           # System tools
           # ncdu               # Disk usage analyzer (ncurses ui)
           # powertop         # Analyze laptop power consumption
@@ -61,6 +66,7 @@ in
 
           # Web
           torbrowser
+          # ipfs
           # dropbox
           # dropbox-cli
 
@@ -72,24 +78,10 @@ in
 
           # Text editors
           # * see ~/.nixpkgs/yi.nix; a vim + emacs alternative for haskellers
-          # * see vim-configuration.nix; for coders in motion 
+          # * see vim-configuration.nix; for coders in motion
           # * see emacs-configuration.nix; the famous structured editor, emacs understands the parse structure of your favourite programming language
           yi-custom
           # sublime3
-
-          # Layout
-          # xmonad-with-packages             # Ultra-customizable (haskell) tiling window manager 
-          # (Needed for compiling .xmonad/xmonad.hs) 
-          (
-            with haskellPackages;
-            [
-              xmonad
-              xmonad-contrib
-              xmonad-extras
-              xmonad-screenshot
-              xmobar
-            ]
-          )
 
           # Development tools
           nixops
@@ -103,19 +95,7 @@ in
           #     # pgcli   # command-line interface for PostgreSQL
           #   ]
           # )
-          (
-            with elmPackages;
-            [
-              elm
-              elm-compiler
-              elm-make
-              elm-package
-              elm-reactor
-            ]
-          )
-          awscli    # command-line interface for AWS
-          # mycli   # command-line interface for MySQL
-          # pgcli   # command-line interface for PostgreSQL
+          # awscli    # command-line interface for AWS
           # ec2_api_tools
           # inotify-tools
           # heroku
@@ -132,7 +112,6 @@ in
 
           # Emulators
           # wine
-          # linuxPackages.virtualbox
 
           # Media players
           spotify
@@ -141,9 +120,14 @@ in
           # Artistic
           gimp
 
+          # File browsers
+          gnome3.eog
+
+          # Screen capture
+          gnome3.gnome-screenshot
+
           # Uncategorized
           /* dropbox-cli */
-          /* eog */
           /* file-roller */
           /* firefox */
           /* lynx */

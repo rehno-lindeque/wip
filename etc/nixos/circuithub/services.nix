@@ -1,4 +1,5 @@
 { pkgs
+, config
 , ...
 }:
 
@@ -10,7 +11,7 @@
     postgresql = {
       enable = true;
       package = pkgs.postgresql95;
-      #gitignore
+      initialScript = pkgs.writeText "postgresql-init.sql" '' CREATE ROLE ${config.users.users.me.name} WITH superuser login createdb; '';
       authentication = pkgs.lib.mkForce
         ''
         local   all             all                                     trust

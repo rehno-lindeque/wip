@@ -24,6 +24,7 @@
                                    # * you need wheel in order to use sudo for example
                   "audio"          # ?
                   "video"          # ?
+                  "scanner"        # Group created by hardware.sane
                   "networkmanager" # Needed to allow connecting to the network
                   "mysql"          # Allows you to use the running mysql service via your user (usefull for software development)
                                    # * you will see that the /var/mysql/* files that are created belongs to the mysql user & group

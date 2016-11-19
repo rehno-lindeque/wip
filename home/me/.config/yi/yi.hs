@@ -1,5 +1,6 @@
 {-# LANGUAGE OverloadedStrings #-}
 
+-- import           Control.Monad.Trans
 -- import           Control.Applicative ((<|>), (*>), Applicative)
 -- import           Control.Lens ((%~), (&))
 -- import           Control.Monad
@@ -7,7 +8,7 @@ import           Data.Monoid          ((<>))
 -- import           Data.Bits
 import           Yi
 -- import           Yi.Search (resetRegexE)
--- import           Yi.Fuzzy
+import           Yi.Fuzzy
 import           Yi.Hoogle
 import           Yi.Style.Monokai
 import           Yi.UI.Pango          (start)
@@ -138,16 +139,24 @@ myKeymapSet bindings = V.mkKeymapSet $ V.defVimConfig `override` \super this ->
 
 myBindings :: (V.EventString -> EditorM ()) -> [V.VimBinding]
 myBindings eval =
-    let nmap  eventString action = V.mkStringBindingE V.Normal V.Drop (eventString, action, id)
-        nsmap eventString action = V.mkStringBindingE (V.Search V.Normal Forward) V.Drop (eventString, action, id)
-        imap  eventString action = V.VimBindingE (\evs state ->
+    let -- YiM actions
+        nmapY  eventString action = V.mkStringBindingY V.Normal (eventString, action, id)
+        -- EditorM actions
+        nmapE  eventString action = V.mkStringBindingE V.Normal V.Drop (eventString, action, id)
+        nsmapE eventString action = V.mkStringBindingE (V.Search V.Normal Forward) V.Drop (eventString, action, id)
+        imapE  eventString action = V.VimBindingE (\evs state ->
             case V.vsMode state of
                 V.Insert _ -> fmap (const (action >> return V.Continue))
                                    (evs `V.matchesString` eventString)
                 _          -> V.NoMatch)
     in [
-         imap "<Home>" (withCurrentBuffer moveToSol)
-       , imap "<End>"  (withCurrentBuffer moveToEol)
+         -- File management
+         nmapY "<C-p>" fuzzyOpen
+
+         -- Motion
+       , imapE "<Home>" (withCurrentBuffer moveToSol)
+       , imapE "<End>"  (withCurrentBuffer moveToEol)
+
          -- nsmap "ff"     (eval "/")
          -- nsmap "ff"     searchBinding
          -- nmap "ff"     -- V.continueSearching id

@@ -14,6 +14,10 @@
         vim-multiple-cursors = pkgs.vimPlugins.vim-multiple-cursors;    # multiple cursors for vim (similar to sublime multiple-cursors)
         vim-nerdtree-tabs = pkgs.vimPlugins.vim-nerdtree-tabs;          #
         ghc-mod-vim = pkgs.vimPlugins.ghc-mod-vim;
+
+        # customizations
+        /* yi-custom = import ./yi-custom.nix { pkgs = pkgs; }; */
+        ghc-custom = import ./ghc-custom.nix { pkgs = pkgs; };
       };
 
     };

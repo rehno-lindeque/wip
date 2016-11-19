@@ -1,4 +1,4 @@
-export NIX_PATH=$NIX_PATH:unstablepkgs=/nix/var/nix/profiles/per-user/root/channels/nixos-unstable/nixpkgs:devpkgs=/home/me/projects/config/nixpkgs
+# export NIX_PATH=$NIX_PATH:unstablepkgs=/nix/var/nix/profiles/per-user/root/channels/nixos-unstable/nixpkgs:devpkgs=/home/rehno/projects/config/nixpkgs
 
 
 # Use VIM mode for bash (TODO: is there a nicer way of doing this in NixOS)

@@ -10,10 +10,10 @@ let emacs-custom = pkgs.emacsWithPackages
         # company
         # company-ghc
         # diminish
-        helm  # Incremental completion
+        # helm  # Incremental completion
 
         # SCM integration
-        magit
+        # magit
         # git-auto-commit-mode
         # git-timemachine
 
@@ -22,28 +22,28 @@ let emacs-custom = pkgs.emacsWithPackages
         # use-package
 
         # Editing
-        god-mode
-        evil
-        evil-god-state
+        /* god-mode */
+        /* evil */
+        /* evil-god-state */
         # evil-indent-textobject
         # evil-leader
         # evil-surround
         # org-plus-contrib # org is the basic package
 
         # Programming languages
-        haskell-mode
+        # haskell-mode
         # #ghc-mod
-        coffee
+        # coffee
         # markdown-mode
         # nix-mode # doesn't seem to be available yet?
-        jade
+        # jade
 
         # Testing / debugging
         # flycheck
 
         # Themes
         # moe-theme
-        monokai-theme
+        /* monokai-theme */
         # zenburn-theme
         # deviant-theme
         # color-theme-sanityinc-tomorrow

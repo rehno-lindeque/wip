@@ -3,5 +3,8 @@
 }:
 
 {
-  nix.maxJobs = 8;
+  nix =
+    {
+      maxJobs = 3; # 8
+    };
 }

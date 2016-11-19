@@ -22,7 +22,6 @@
     fontconfig = { 
       enable = true;
       ultimate.enable = true;
-      dpi = 180; # 192; # 96;
       antialias = true;
       defaultFonts = {
         monospace = [
