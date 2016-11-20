@@ -18,6 +18,7 @@
               group = "users";
               uid = 105;
               createHome = true;
+              home = "/home/${config.users.users.me.name}";
               extraGroups =
                 [
                   "wheel"          # TODO: allows your user to access stored passwords?
@@ -25,6 +26,7 @@
                   "audio"          # ?
                   "video"          # ?
                   "scanner"        # Group created by hardware.sane
+                  # "keyboard"     # Used by (custom) actkbd user service
                   "networkmanager" # Needed to allow connecting to the network
                   "mysql"          # Allows you to use the running mysql service via your user (usefull for software development)
                                    # * you will see that the /var/mysql/* files that are created belongs to the mysql user & group

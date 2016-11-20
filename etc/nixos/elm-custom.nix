@@ -15,9 +15,9 @@ in (haskellPackages.override {
     # elm-package = markNotBroken super.elm-package;
   };
 }).ghcWithPackages(self: with self; [
-    elm-compiler
-    elm-make
-    elm-package
-    elm-repl
+    # elm-compiler
+    # elm-make
+    # elm-package
+    # elm-repl
 ])
 

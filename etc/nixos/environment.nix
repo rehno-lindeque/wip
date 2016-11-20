@@ -156,7 +156,7 @@
       elmPackages.elm-make
       elmPackages.elm-package
       elmPackages.elm-reactor
-      heroku-beta
+      # heroku-beta
 
       # Terminal
       gnome3.gnome_terminal
@@ -168,6 +168,7 @@
       # tmux                           # use multiple terminals inside one terminal (like xmonad for your terminal)
       # vifm                           # file manager with vi-like keybindings
       # tree                           # show a directory tree (like ls -R, but prettier)
+      # feh                            # quickly preview image files (I'm using this with actkbd to display cheatsheets)
 
       # Web
       google-chrome

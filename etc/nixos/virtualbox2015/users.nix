@@ -6,7 +6,6 @@
   users.users = {
     me = {
       name = # "me"; #gitignore
-      home = # "/home/me"; #gitignore
       description = # "Name Surname"; #gitignore
     };
     /* circuithub #gitignore */

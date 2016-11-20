@@ -5,16 +5,32 @@
 
 {
   services = {
-    acpid.enable = true;  # Power control events (power/sleep buttons, notebook lid, power adapter etc)
+    # Power control events (power/sleep buttons, notebook lid, power adapter etc)
+    # See also https://github.com/ajhager/airnix/blob/master/configuration.nix#L91
+    acpid =
+      {
+        enable = true;
+        lidEventCommands =
+          # TODO: Check that this works on macbook pro
+          #       I.e. $ ls /proc/acpi/button/lid/LID0/state
+          ''
+          LID_STATE=/proc/acpi/button/lid/LID0/state
+          if [ $(/run/current-system/sw/bin/awk '{print $2}' $LID_STATE) = 'closed' ]; then
+            systemctl suspend
+          fi
+          '';
+      };
+
     dbus.enable = true;   # TODO: ?
     locate.enable = true;
-    mpd.enable = true;    # TODO: ?
+    # mpd.enable = true;    # TODO: ?
     upower.enable = true; # TODO: ?
+    tlp.enable = true;
 
     xserver = {
       xkbVariant = "mac";
       videoDrivers = [ "intel" "nouveau" ];
-      vaapiDrivers = [ pkgs.vaapiIntel ];
+      /* vaapiDrivers = [ pkgs.vaapiIntel ]; */
 
       # Customize the trackpad
       # * This is an alternative to the synaptics driver
@@ -125,22 +141,22 @@
     # };
   
     # Activate these if you're not using xmonad to control media keys
-    actkbd = {
-      enable = true;
-      bindings = [
-        # Media keys
-        { keys = [ 113 ]; events = [ "key" ]; command = "${pkgs.alsaUtils}/bin/amixer -q set Master toggle"; }
-        { keys = [ 114 ]; events = [ "key" "rep" ]; command = "${pkgs.alsaUtils}/bin/amixer -q set Master 5-"; }
-        { keys = [ 115 ]; events = [ "key" "rep" ]; command = "${pkgs.alsaUtils}/bin/amixer -q set Master 5+"; }
-        # Screen backlight
-        { keys = [ 224 ]; events = [ "key" "rep" ]; command = "${pkgs.light}/bin/light -U 4"; }
-        { keys = [ 225 ]; events = [ "key" "rep" ]; command = "${pkgs.light}/bin/light -A 4"; }
-        # Keyboard backlight
-        { keys = [ 229 ]; events = [ "key" "rep" ]; command = "${pkgs.kbdlight}/bin/kbdlight up"; }
-        { keys = [ 230 ]; events = [ "key" "rep" ]; command = "${pkgs.kbdlight}/bin/kbdlight down"; }
-        # Remap menu key to cheatsheet for now
-        { keys = [ 230 ]; events = [ "key" "rep" ]; command =  "eog ${config.users.users.me.home}/cheatsheets/workman.png"; }
-      ];
-    };
+    # actkbd = {
+    #   enable = true;
+    #   bindings = [
+    #     # Media keys
+    #     { keys = [ 113 ]; events = [ "key" ]; command = "${pkgs.alsaUtils}/bin/amixer -q set Master toggle"; }
+    #     { keys = [ 114 ]; events = [ "key" "rep" ]; command = "${pkgs.alsaUtils}/bin/amixer -q set Master 5-"; }
+    #     { keys = [ 115 ]; events = [ "key" "rep" ]; command = "${pkgs.alsaUtils}/bin/amixer -q set Master 5+"; }
+    #     # Screen backlight
+    #     { keys = [ 224 ]; events = [ "key" "rep" ]; command = "${pkgs.light}/bin/light -U 4"; }
+    #     { keys = [ 225 ]; events = [ "key" "rep" ]; command = "${pkgs.light}/bin/light -A 4"; }
+    #     # Keyboard backlight
+    #     { keys = [ 229 ]; events = [ "key" "rep" ]; command = "${pkgs.kbdlight}/bin/kbdlight up"; }
+    #     { keys = [ 230 ]; events = [ "key" "rep" ]; command = "${pkgs.kbdlight}/bin/kbdlight down"; }
+    #     # Remap menu key to cheatsheet for now
+    #     { keys = [ 230 ]; events = [ "key" "rep" ]; command =  "eog ${config.users.users.me.home}/cheatsheets/workman.png"; }
+    #   ];
+    # };
   };
 }

@@ -1,13 +1,11 @@
 {
   config
 , pkgs
-, lib
 , ...
 }:
 
 {
   services = {
-    # openssh.enable = false;  # Use this to start an sshd daemon (to enable remote login)
     ntp.enable = true;         # Keep system clock updated
 
     # Enable the X11 windowing system.
@@ -69,6 +67,25 @@
         ];
       };
     */
+    # Activate these if you're not using xmonad to control media keys
+    # To find keyboard devices:
+    #   $ cat /proc/bus/input/devices 
+    # or alternatively: 
+    #   $ ls /dev/input/by-id
+    # To find key stroke codes:
+    #   $ actkbd -s -d /dev/input/by-id/$mykbd
+    # actkbd = {
+    #   enable = true;
+    #   bindings = [
+    #     # Cheatsheets
+    #     { keys = [ 127 ]; events = [ "key" "rep" ]; command = "${pkgs.feh}/bin/feh -NZx -g 640x480 /home/me/projects/config/dotfiles/cheatsheets/workman_keyboard_layout.png"; }
+    #     { keys = [ 118 ]; events = [ "key" "rep" ]; command = "${pkgs.feh}/bin/feh -NZx -g 640x480 /home/me/projects/config/dotfiles/cheatsheets/workman_keyboard_layout.png"; }
+    #     { keys = [ 58 ]; events = [ "key" "rep" ]; command = "${pkgs.feh}/bin/feh -NZx -g 640x480 /home/me/projects/config/dotfiles/cheatsheets/workman_keyboard_layout.png"; }
+    #     { keys = [ 126 ]; events = [ "key" "rep" ]; command = "${pkgs.feh}/bin/feh -NZx -g 640x480 /home/me/projects/config/dotfiles/cheatsheets/workman_keyboard_layout.png"; }
+    #     { keys = [ 60 ]; events = [ "key" "rep" ]; command = "${pkgs.feh}/bin/feh -NZx -g 640x480 /home/me/projects/config/dotfiles/cheatsheets/workman_keyboard_layout.png"; }
+    #     { keys = [ 64 ]; events = [ "key" "rep" ]; command = "bash -c '${pkgs.feh}/bin/feh -NZx -g 640x480 /home/me/projects/config/dotfiles/cheatsheets/workman_keyboard_layout.png'"; }
+    #   ];
+    # };
 
     # Security
     gnome3.gnome-keyring.enable = true; # gnome's default keyring (TODO: better description)

@@ -12,9 +12,11 @@
     # Extra hardware configuration for macbooks
     extraModprobeConfig = ''
       # TODO: Not sure if noncq is needed for macbook SSD's, but https://github.com/mbbx6spp/mbp-nixos/blob/master/etc/nixos/configuration.nix has this
-      options libata.force=noncq
+      # TODO: doesn't seem to work...
+      # options libata.force=noncq
 
       # TODO: mpb-nixos has this resume option, but not sure if it's really helpful
+      # TODO: doesn't seem to work...
       # options resume=/dev/sda5
 
       # Sound module for Apple Macs
@@ -43,6 +45,11 @@
                             # * https://github.com/Ericson2314/nixos-configuration/blob/nixos/mac-pro/wireless.nix#L9
             # "i915"          # ? https://github.com/fread2281/dotfiles/blob/master/nixos/laptop.nix#L17
           ];
+        kernelModules =
+          [
+            # "fbcon"    # Make it pretty (support fonts in the terminal)
+                         # modprobe: FATAL: Module fbcon not found in directory /nix/store/________________________________-kernel-modules/lib/modules/4.4.2
+          ];
       };
     kernelModules =
       [
@@ -54,7 +61,6 @@
     extraModulePackages =
       [
         config.boot.kernelPackages.broadcom_sta  # Broadcom wireless device
-                                                 
       ];
   };
 }

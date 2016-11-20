@@ -52,7 +52,7 @@ in
       "hydra.nixos.org-1:CNHJZBh9K4tP3EKF6FkkgeVYsS3ohTl+oS0Qa8bezVs="
       "hydra.cryp.to-1:8g6Hxvnp/O//5Q1bjjMTd5RO8ztTsG8DKPOAg9ANr2g="
     ];
-    requireSignedBinaryCaches = false; #gitignore # Needed for personal hydra cache
+    requireSignedBinaryCaches = false; # Needed for personal hydra cache
     trustedBinaryCaches = 
     [
       myhydraserver

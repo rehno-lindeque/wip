@@ -5,7 +5,7 @@
 {
   users.users = {
     me = {
-      home = # "/home/me"; #gitignore
+      name = # "me"; #gitignore
       description = # "Name Surname"; #gitignore
     };
   };

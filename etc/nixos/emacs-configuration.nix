@@ -52,30 +52,32 @@ let emacs-custom = pkgs.emacsWithPackages
         # calfw
         # notmuch
 
-
       ]);
     startEmacsServer = pkgs.writeScript "start-emacs-server"
       ''
-          #!/bin/sh
-          . ${config.system.build.setEnvironment}
-          ${emacs-custom}/bin/emacs --daemon
+       #!/bin/sh
+       . ${config.system.build.setEnvironment}
+       ${emacs-custom}/bin/emacs --daemon
       '';
 in
 {
-  environment.systemPackages = with pkgs // pkgs.emacs24PackagesNg ; [ 
-    emacs-custom 
-  ];
+  environment.systemPackages =
+    with pkgs // pkgs.emacs24PackagesNg;
+    [ 
+      emacs-custom 
+    ];
 
-  systemd.user.services.emacs = {
-    description = "Emacs Daemon";
-    enable = true;
-    # environment.SSH_AUTH_SOCK = "%h/.gnupg/S.gpg-agent.ssh";
-    serviceConfig = {
-      Type = "forking";
-      ExecStart = "${startEmacsServer}";
-      ExecStop = "${emacs-custom}/bin/emacsclient --eval (kill-emacs)";
-      Restart = "always";
-    };
-    wantedBy = [ "default.target" ];
-  };
+  # TODO: This appears to break systemd --user
+  /* systemd.user.services.emacs = { */
+  /*   description = "Emacs Daemon"; */
+  /*   enable = true; */
+  /*   # environment.SSH_AUTH_SOCK = "%h/.gnupg/S.gpg-agent.ssh"; */
+  /*   serviceConfig = { */
+  /*     Type = "forking"; */
+  /*     ExecStart = "${startEmacsServer}"; */
+  /*     ExecStop = "${emacs-custom}/bin/emacsclient --eval (kill-emacs)"; */
+  /*     Restart = "always"; */
+  /*   }; */
+  /*   wantedBy = [ "default.target" ]; */
+  /* }; */
 }

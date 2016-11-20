@@ -12,7 +12,7 @@
       };
       packageOverrides = pkgs: {
         # Bluetooth stuff
-        bluez = pkgs.bluez5;
+        # bluez = pkgs.bluez5;
         # Enable thunderbolt
         # * https://github.com/mbbx6spp/mbp-nixos/blob/master/etc/nixos/configuration.nix#L194
         # Full support for Broadcom wireless modem (not sure if this is necessary?)

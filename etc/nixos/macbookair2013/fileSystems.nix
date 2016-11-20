@@ -7,7 +7,7 @@
     "/" = {
       device = "/old-root/nixos";
       fsType = "none";
-      "options" = "bind";
+      options = [ "bind" ];
     };
     "/old-root" = {
       device = "/dev/sda6";
