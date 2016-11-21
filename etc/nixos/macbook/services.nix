@@ -23,9 +23,9 @@
 
     dbus.enable = true;   # TODO: ?
     locate.enable = true;
-    # mpd.enable = true;    # TODO: ?
+    # mpd.enable = true;    # music player daemon
     upower.enable = true; # TODO: ?
-    tlp.enable = true;
+    tlp.enable = true;     # Advanced Power Management for Linux
 
     xserver = {
       xkbVariant = "mac";

@@ -56,9 +56,7 @@ in
     trustedBinaryCaches = 
     [
       myhydraserver
-      #gitignore
       /* http://hydra.cryp.to/ */
-      /* https://hydra.nixos.org/ */
       /* http://192.168.56.102:3000/ */
       /* https://ryantrinkle.com:5443/ */
     ];

@@ -109,6 +109,7 @@
           esac
         done
         '';
+      git-unpushed-branches = ''git log --branches --not --remotes --simplify-by-decoration --decorate --oneline'';
       clip = ''xclip -selection clipboard'';
     };
 
