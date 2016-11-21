@@ -15,6 +15,7 @@
       ./networking.nix
       ./nix.nix
       ./nixpkgs.nix
+      ./services.nix
       ./users.nix
     ];
 }

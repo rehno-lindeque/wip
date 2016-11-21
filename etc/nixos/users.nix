@@ -35,7 +35,8 @@
                 ];
               isSystemUser = false;
               useDefaultShell = true;
-              openssh.authorizedKeys.keyFiles = [ "${config.users.users.me.home}/.ssh/id_rsa.pub" ];
+              # TODO: remove - there's probably no reason to put our own pub key in the authorized keys
+              # openssh.authorizedKeys.keyFiles = [ "${config.users.users.me.home}/.ssh/id_rsa.pub" ];
             };
         };
     };
