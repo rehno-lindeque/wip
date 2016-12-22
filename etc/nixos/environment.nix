@@ -11,7 +11,15 @@
     # blcr
     # checkConfigurationOptions
     # enableBashCompletion
-    # etc
+
+    /* etc = { */
+    /*   gitconfig.source = */
+    /*     '' */
+    /*       [difftool] */
+    /*         external = diffuse */
+    /*     ''; */
+    /* }; */
+
     # extraInit
     # freetds
     # gnome3
@@ -149,7 +157,6 @@
       # tig                         # text-mode browser/interactive commit tool for git 
       diffuse                       # usefull for doing graphical diffs via `git difftool`
                                     # * see also (......TODO difftool config....)
-      awscli                        # command-line interface for AWS
       # elm-custom                    # elm configuration (with tweaks to make it compile)
       # elm                           # Elm compiler + tools
       elmPackages.elm

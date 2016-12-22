@@ -64,6 +64,7 @@
           # { keys = [ 135 ]; events = [ "key" "rep" ]; command = "eog ${config.users.users.me.home}/cheatsheets/workman.png"; }
           { keys = [ 134 ]; events = [ "key" "rep" ]; command = "eog ${config.users.users.me.home}/cheatsheets/workman.png"; }
           { keys = [ 21 ]; events = [ "key" "rep" ]; command = "eog ${config.users.users.me.home}/cheatsheets/workman.png"; }
+          { keys = [ 64 39 ]; events = [ "key" "rep" ]; command = "gnome-screenshot -i"; }
         ];
       };
     */
