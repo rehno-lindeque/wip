@@ -413,6 +413,8 @@ inoremap kj <ESC>
 " inoremap jk <ESC>
 
 " autocomplete in insert mode
+" TODO: go to end of word and...
+" inoremap jk <C-0>e<C-p>
 inoremap jk <C-p>
 
 " undo in insert mode

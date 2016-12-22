@@ -95,10 +95,11 @@ in
           #     # pgcli   # command-line interface for PostgreSQL
           #   ]
           # )
-          # awscli    # command-line interface for AWS
+          # awscli        # command-line interface for AWS
           # ec2_api_tools
           # inotify-tools
           # heroku
+          # xorg.xev  # A utility for looking up X keycodes and other input event codes
 
           # Electronics design automation
           kicad
