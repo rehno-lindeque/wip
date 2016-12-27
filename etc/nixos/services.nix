@@ -101,6 +101,8 @@
 
     # Editors
     emacs.enable = true;
-
   };
+
+    
+
 }

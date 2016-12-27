@@ -32,6 +32,7 @@
                                    # * you will see that the /var/mysql/* files that are created belongs to the mysql user & group
                   # "postgres"       # Allows you to use the running postgres service via your user (usefull for software development)
                   # "psql"           # Postgres sql
+                  # "plugdev"        # Access external storage devices
                 ];
               isSystemUser = false;
               useDefaultShell = true;
