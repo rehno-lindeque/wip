@@ -7,6 +7,7 @@
     [
       <nixpkgs/nixos/modules/profiles/qemu-guest.nix>
       ./boot.nix
+      ./hardware.nix
       ./virtualisation.nix
     ];
 
