@@ -33,6 +33,7 @@
                   # "postgres"       # Allows you to use the running postgres service via your user (usefull for software development)
                   # "psql"           # Postgres sql
                   # "plugdev"        # Access external storage devices
+                  "git"            # Access to all git repositories
                 ];
               isSystemUser = false;
               useDefaultShell = true;

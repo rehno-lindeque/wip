@@ -100,6 +100,7 @@ in
           # inotify-tools
           # heroku
           # xorg.xev  # A utility for looking up X keycodes and other input event codes
+          # pgadmin
 
           # Electronics design automation
           kicad

@@ -102,7 +102,4 @@
     # Editors
     emacs.enable = true;
   };
-
-    
-
 }
