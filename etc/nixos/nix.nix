@@ -52,6 +52,7 @@ in
     trustedBinaryCaches = 
     [
       myhydraserver
+      https://hydra.circuithub.com
     ];
   };
 }

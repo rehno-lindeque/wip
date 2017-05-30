@@ -42,5 +42,4 @@ in
       /* extraPackages = [pkgs.linuxPackages.virtualboxGuestAdditions]; */
     };
   };
-  services.xserver.useGlamor = true;
 }

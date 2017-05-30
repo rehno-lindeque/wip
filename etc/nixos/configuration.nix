@@ -38,16 +38,17 @@
 {
   imports =
     [
+      # ./macbookpro115/configuration.nix #gitignore
       # ./macbookair2013/configuration.nix #gitignore
       # ./virtualbox2015/configuration.nix #gitignore
       # general configurations
       ./boot.nix
       ./hardware.nix
       ./environment.nix
+      ./fileSystems.nix
       ./fonts.nix
       ./nix.nix
       ./nixpkgs.nix
-      ./package-overrides.nix
       ./programs.nix
       ./services.nix
       ./sound.nix
@@ -58,17 +59,11 @@
       # development
       # ./circuithub/services.nix #gitignore
       # package-specific configurations
-      ./vim-configuration.nix
+      # ./vim-configuration.nix
       # ./emacs-configuration.nix # See services.emacs for the new way of doing this
       # hacks
       # ./vbox-video-dri.nix
     ];
-
-  # Configure daemons started automatically by systemd
-  systemd = {
-    services.mysql.wantedBy = pkgs.lib.mkForce []; # Needed? Force mysql to start?
-  };
-
 }
 
 # This is a [modeline](http://stackoverflow.com/a/3958516/167485) for vim that can make editing this file easier inside vim

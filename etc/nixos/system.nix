@@ -14,13 +14,21 @@ with lib;
         ''
           mkdir -m 0700 -p ${config.users.users.me.home}/projects/config
           mkdir -m 0700 -p ${config.users.users.me.home}/projects/development
-          chown ${config.users.users.me.name}:${config.users.users.me.group} ${config.users.users.me.home}/projects
-          chown ${config.users.users.me.name}:${config.users.users.me.group} ${config.users.users.me.home}/projects/config
-          chown ${config.users.users.me.name}:${config.users.users.me.group} ${config.users.users.me.home}/projects/development
+          mkdir -m 0700 -p ${config.users.users.me.home}/public/documentation
+          mkdir -m 0700 -p ${config.users.users.me.home}/public/video
+          mkdir -m 0700 -p ${config.users.users.me.home}/personal
+          mkdir -m 0700 -p ${config.users.users.me.home}/transient
+          chown -R ${config.users.users.me.name}:${config.users.users.me.group} ${config.users.users.me.home}/projects
+          chown -R ${config.users.users.me.name}:${config.users.users.me.group} ${config.users.users.me.home}/public
+          chown -R ${config.users.users.me.name}:${config.users.users.me.group} ${config.users.users.me.home}/personal
+          chown -R ${config.users.users.me.name}:${config.users.users.me.group} ${config.users.users.me.home}/transient
         '';
+
+      # TODO: make sure /tmp/ram exists?
     };
+
     # The NixOS release to be compatible with for stateful data such as databases.
-    stateVersion = "16.09";
+    stateVersion = "17.03";
   };
 }
 

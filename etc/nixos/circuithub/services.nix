@@ -5,7 +5,15 @@
 
 {
   services = {
-    rabbitmq.enable = true;
+    # Development
+
+    # Note that rabbitmq adds 2 seconds to systemd startup
+    #
+    # $ systemd-analyze blame | grep rabbitmq
+    # 2.010s rabbitmq.service
+    #
+    /* rabbitmq.enable = true; */
+                            
     redis.enable = true;
     journald.rateLimitBurst = 1000;
     postgresql = {
@@ -24,6 +32,8 @@
           track_activity_query_size=16384
         '';
     };
+    # Virtual Private Network
+    /* strongswan.enable = true; */
   };
 }
 

@@ -10,10 +10,10 @@ in
   ( self: with self; [
     /* usefull for compiling miscelaneous haskell things */
     cabal-install
-    zlib
+    /* zlib */
     /* type-lookup etc for various editors */
     # ghc-mod-dev
-    ghc-mod
+    /* ghc-mod */
     /* refactoring tools */
     # HaRe # TODO
     /* search plugins for various editors */
@@ -22,19 +22,19 @@ in
     # Hayoo
     # hayoo-cli
     /* needed for stylish plugins (vim) */
-    stylish-haskell
+    /* stylish-haskell */
     /* needed for emacs haskell plugins */
-    hasktags
+    /* hasktags */
     # vim haskell tags
     # lushtags # needed?
     # haskell-docs
     # present (broken)
     /* needed for vim tagbar */
-    hscope
-    codex
+    /* hscope */
+    /* codex */
     /* needed for xmonad */
-    xmonad
-    xmonad-contrib
-    xmonad-extras
+    /* xmonad */
+    /* xmonad-contrib */
+    /* xmonad-extras */
   ])
 

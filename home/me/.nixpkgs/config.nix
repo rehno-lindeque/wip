@@ -7,11 +7,14 @@
 # to update
 
 let
-  # devpkgs = import <devpkgs> {}; 
+  # devpkgs = import <devpkgs> {};
   stdenv = pkgs.stdenv;
   # TODO: Remove
   /* inherit (with pkgs; import ./eth-env.nix { inherit pkgs stdenv fetchFromGitHub fetchurl unzip makeWrapper makeDesktopItem buildEnv myEnvFun; }) ethEnv; #gitignore */
   inherit (pkgs.callPackage ./eth-env.nix {}) ethEnv ethClassicEnv;
+  peek = pkgs.callPackage ./peek.nix {};
+  moonscript = pkgs.callPackage ./moonscript.nix {};
+  gifine = pkgs.callPackage ./gifine.nix { inherit moonscript; };
 in
 {
   allowUnfree = true;
@@ -19,6 +22,29 @@ in
   packageOverrides = super: with super; rec {
 
     inherit (import ./yi-custom.nix { inherit pkgs; }) yi-custom;
+
+    /* spotify = */
+    /*     pkgs.callPackage */
+    /*       ( pkgs.fetchurl */
+    /*         { */
+    /*           url = https://github.com/thall/nixpkgs/blob/9069aafecc104fc2dc39157b32f59eddaf957a51/pkgs/applications/audio/spotify/default.nix; */
+    /*           sha256 = "1l0ppsps3rz63854i3cfsy4mnkin4pg44fqxx32ykl30ybqzf4y5"; */
+    /*         } */
+    /*       ) */
+    /*       {}; */
+
+    spotify = pkgs.lib.overrideDerivation super.spotify
+      (let version = "1.0.47.13.gd8e05b1f-47";
+        in
+          (attrs: {
+            name = "spotify-${version}";
+            src =
+              fetchurl {
+                url = "http://repository-origin.spotify.com/pool/non-free/s/spotify-client/spotify-client_${version}_amd64.deb";
+                sha256 = "0079vq2nw07795jyqrjv68sc0vqjy6abjh6jjd5cg3hqlxdf4ckz";
+              };
+          })
+      );
 
     # Work environments
     # Enter an environment like this:
@@ -40,6 +66,26 @@ in
           # cvxopt
         ];
       };
+
+    # Maintenance environment
+    # Enter an environment like this:
+    #
+    #   $ load-env-maintenance
+    #
+    maintenanceEnv = myEnvFun
+      {
+        name = "maintenance";
+        buildInputs = with python34Packages; [
+          lm_sensors # temperature
+          usbutils   # list usb devices
+          powertop   # power/battery management analysis and advice
+          libsysfs   # list options that are set for a loaded kernel module
+                     # * https://wiki.archlinux.org/index.php/kernel_modules#Obtaining_information
+          radeontop  # investigate gpu usage
+          bmon       # monitor network traffic
+        ];
+      };
+
 
     # My non-system packages
     # Install and update using:
@@ -64,6 +110,9 @@ in
           zip                # Create .zip archives
           # tree               # Directory listings in tree format
 
+          # Identity
+          keybase
+
           # Web
           torbrowser
           # ipfs
@@ -80,10 +129,10 @@ in
           # * see ~/.nixpkgs/yi.nix; a vim + emacs alternative for haskellers
           # * see vim-configuration.nix; for coders in motion
           # * see emacs-configuration.nix; the famous structured editor, emacs understands the parse structure of your favourite programming language
-          yi-custom
+          /* yi-custom */
           # sublime3
 
-          # Development tools
+          # Development and ops
           nixops
           # gitAndTools.hub
           # haskellPackages.pandoc
@@ -101,6 +150,8 @@ in
           # heroku
           # xorg.xev  # A utility for looking up X keycodes and other input event codes
           # pgadmin
+          patchelf
+          sshuttle    # Quick zero-setup VPN over ssh
 
           # Electronics design automation
           kicad
@@ -116,7 +167,8 @@ in
           # wine
 
           # Media players
-          spotify
+          mopidy
+          spotify # TODO: replace this with mopidy
           vlc
 
           # Artistic
@@ -127,6 +179,11 @@ in
 
           # Screen capture
           gnome3.gnome-screenshot
+          # peek
+          # gifine
+
+          # Working environments
+          maintenanceEnv
 
           # Uncategorized
           /* dropbox-cli */

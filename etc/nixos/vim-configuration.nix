@@ -12,16 +12,18 @@ in
     # Vim
     pkgs.vimHugeX  # see an editor famous for its advanced key stroke combinations - being good at vi is like being an olympic athlete
                    # * TODO: compare vimHugeX versus vim
-    pkgs.neovim    # fork of vim with a more modern plugin architecture
+    # pkgs.neovim    # fork of vim with a more modern plugin architecture
+
+
 
     # Vim plugins
     vundle         # Vundle manages bundles (vim plugins)
                    # Support bundles
     vim-multiple-cursors
+    syntastic      # Warning / Error highlighting 
     tslime         # ?
     vimproc        # ?
     # supertab     # ?
-    # syntastic    # ?
     # vim-bbye     # ?
     # vim-indent-guides # ?
     # gitignore      # ?
@@ -56,19 +58,24 @@ in
     tmux-navigator # ?
 
     # Colorscheme
-    wombat256      # grey color-scheme
+    /* wombat256      # grey color-scheme */
+    gruvbox     
 
     # General programming
     # Syntastic
 
     # Nix
     # vim-addon-nix # does not appear to work well
+    vim-nix
 
     # Jade / Stylus
     vim-jade # syntax-highlighting + indentation for jade
 
     # CoffeeScript
     coffee-script # syntax-highlighting for coffee-script
+
+    # Elm
+    elm-vim
 
     # Haskell
     # haskell-vim # ?

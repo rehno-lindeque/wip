@@ -1,0 +1,43 @@
+From 7888d32caa7e0205022189bc61e6129237cd0148 Mon Sep 17 00:00:00 2001
+From: Alex Deucher <alexander.deucher@amd.com>
+Date: Thu, 5 Jan 2017 12:39:01 -0500
+Subject: [PATCH 05/10] drm/radeon: drop verde dpm quirks
+
+fixes:
+https://bugs.freedesktop.org/show_bug.cgi?id=98897
+https://bugs.launchpad.net/bugs/1651981
+
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
+Cc: Adrian Fiergolski <A.Fiergolski@gmail.com>
+---
+ drivers/gpu/drm/radeon/si_dpm.c | 13 -------------
+ 1 file changed, 13 deletions(-)
+
+diff --git a/drivers/gpu/drm/radeon/si_dpm.c b/drivers/gpu/drm/radeon/si_dpm.c
+index 8b5e697..13ba73f 100644
+--- a/drivers/gpu/drm/radeon/si_dpm.c
++++ b/drivers/gpu/drm/radeon/si_dpm.c
+@@ -3008,19 +3008,6 @@ static void si_apply_state_adjust_rules(struct radeon_device *rdev,
+ 		    (rdev->pdev->device == 0x6817) ||
+ 		    (rdev->pdev->device == 0x6806))
+ 			max_mclk = 120000;
+-	} else if (rdev->family == CHIP_VERDE) {
+-		if ((rdev->pdev->revision == 0x81) ||
+-		    (rdev->pdev->revision == 0x83) ||
+-		    (rdev->pdev->revision == 0x87) ||
+-		    (rdev->pdev->device == 0x6820) ||
+-		    (rdev->pdev->device == 0x6821) ||
+-		    (rdev->pdev->device == 0x6822) ||
+-		    (rdev->pdev->device == 0x6823) ||
+-		    (rdev->pdev->device == 0x682A) ||
+-		    (rdev->pdev->device == 0x682B)) {
+-			max_sclk = 75000;
+-			max_mclk = 80000;
+-		}
+ 	} else if (rdev->family == CHIP_OLAND) {
+ 		if ((rdev->pdev->revision == 0xC7) ||
+ 		    (rdev->pdev->revision == 0x80) ||
+-- 
+2.5.5
+

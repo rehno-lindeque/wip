@@ -13,13 +13,6 @@
       fsType = "ext4";
     };
 
-  fileSystems."/tmp/ram" = 
-    {
-      device = "tmpfs";
-      fsType = "tmpfs";
-      options = [ "size=5m" ];
-    };
-
   swapDevices =
     [ # { label = "swap"; }
       { device = "/dev/disk/by-uuid/e990939c-a825-497e-aec6-facc74823e90"; }

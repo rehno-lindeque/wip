@@ -19,6 +19,12 @@
         mount -t ext4 /dev/sda6 /mnt-root/old-root ;
       '';
     };
+
+    # TODO: is this still needed? macbookpro115 simply includes <nixpkgs/nixos/modules/hardware/network/broadcom-43xx.nix>
+    extraModulePackages =
+      [
+        config.boot.kernelPackages.broadcom_sta  # Broadcom wireless device
+      ];
   };
 }
 

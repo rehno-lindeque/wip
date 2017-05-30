@@ -9,7 +9,9 @@ import           Data.Ratio
 import           Graphics.X11.ExtraTypes.XF86
 import           System.IO
 import           XMonad                       as XM
-import qualified XMonad.Actions.CycleWS       as Actions (nextWS, prevWS, shiftToNext, shiftToPrev)
+import qualified XMonad.Actions.CycleWS       as Actions (nextWS, prevWS,
+                                                          shiftToNext,
+                                                          shiftToPrev)
 import qualified XMonad.Actions.WindowGo      as Actions
 import qualified XMonad.Config.Desktop        as Config
 import qualified XMonad.Config.Gnome          as Config
@@ -27,9 +29,9 @@ import           XMonad.Util.EZConfig
 import           XMonad.Util.Run
 
 main = do
-    h <- xmobarProc
+    -- h <- xmobarProc
     xmonad
-      . setupXmobar h
+      -- . setupXmobar h
       . myBorders
       . myKeys
       . myHooks
@@ -171,7 +173,7 @@ type SetupCfg_ = forall l.
 
 -- myMisc :: SetupCfg_
 myMisc cfg = cfg
-  { terminal = "gnome-terminal" -- "urxvt"
+  { terminal = "sakura" -- "gnome-terminal" -- "urxvt"
   }
 
 -- myBorders :: SetupCfg_
@@ -287,7 +289,7 @@ myLayout cfg = cfg
   -- Swaps the windows around, which is annoying
   -- { layoutHook = magicFocus (Tall 1 (3/100) (1/2)) ||| tiled ||| Mirror tiled ||| Full
   -- , handleEventHook = Magic.promoteWarp
-  { layoutHook = expandFocused (1 / 100)
+  { layoutHook = -- expandFocused (1 / 100)
                   (
                     tiled
                     {-||| Mirror tiled-}
@@ -305,18 +307,18 @@ myLayout cfg = cfg
     -- percent of screen to increment when resizing
     delta = 5 / 100
 
-xmobarProc :: IO Handle
-xmobarProc = spawnPipe "/run/current-system/sw/bin/xmobar $HOME/.xmobar/xmobarrc"
+-- xmobarProc :: IO Handle
+-- xmobarProc = spawnPipe "/run/current-system/sw/bin/xmobar $HOME/.xmobar/xmobarrc"
 
-setupXmobar h cfg = cfg
-  { manageHook = Hooks.manageDocks <+> manageHook cfg
-  , layoutHook = Hooks.avoidStruts $ layoutHook cfg
-  , logHook = Hooks.dynamicLogWithPP Hooks.xmobarPP
-    { Hooks.ppOutput = hPutStrLn h
-    , Hooks.ppTitle = Hooks.xmobarColor "black" "" . Hooks.shorten 50
-    , Hooks.ppLayout = const "" -- to disable the layout info on xmobar
-    }
-  }
+-- setupXmobar h cfg = cfg
+--   { manageHook = Hooks.manageDocks <+> manageHook cfg
+--   , layoutHook = Hooks.avoidStruts $ layoutHook cfg
+--   , logHook = Hooks.dynamicLogWithPP Hooks.xmobarPP
+--     { Hooks.ppOutput = hPutStrLn h
+--     , Hooks.ppTitle = Hooks.xmobarColor "black" "" . Hooks.shorten 50
+--     , Hooks.ppLayout = const "" -- to disable the layout info on xmobar
+--     }
+--   }
 
 
 startup :: X ()

@@ -4,6 +4,9 @@
 , ...
 }:
 
+
+let terminalemulator = "sakura";
+in
 {
   environment = {
 
@@ -25,7 +28,7 @@
     # gnome3
 
     # keep the current route for new shell environments
-    interactiveShellInit = ". ${pkgs.gnome3.vte}/etc/profile.d/vte.sh";
+    # interactiveShellInit = ". ${pkgs.gnome3.vte}/etc/profile.d/vte.sh";
 
     # kdePackages
     # loginShellInit
@@ -40,6 +43,8 @@
     shellAliases = {
       yim        = ''yi --as=vim'';
       yimacs     = ''yi --as=emacs'';
+      chshell    = ''cd ~/projects/development/circuithub ; nix-shell --arg dev true'';
+      git-conflicts = ''_lambda(){ git status -s | grep UU | sed "s/UU //"; }; _lambda''; # open vim with unmerged files
       # config   = ''su ; cd /etc/nixos''; # TODO: how to start in /etc/nixos path?
       # upgrade  = ''sudo NIX_PATH="$NIX_PATH:unstablepkgs=${<unstablepkgs>}" nixos-rebuild switch --upgrade'';
       # upgrade  = ''sudo -E nixos-rebuild switch --upgrade -I devpkgs=${config.users.users.me.home}/projects/config/nixpkgs -I unstablepkgs=/nix/var/nix/profiles/per-user/root/channels/nixos-unstable/nixpkgs'';
@@ -52,18 +57,25 @@
       nixgq      = ''nix-env --file "<nixpkgs>" --query --available --attr-path --attr goPackages --description | fgrep --ignore-case --color''; # query goPackages
       nixeq      = ''nix-env --file "<nixpkgs>" --query --available --attr-path --attr elmPackages --description | fgrep --ignore-case --color''; # query elmPackages
       nixgc      = ''nix-collect-garbage --delete-older-than 30d; nix-store --optimise;''; # garbage collect old stuff and optimise
+      term       = ''${terminalemulator}'';                                     # shortcut to open a terminal
+      # services shorthands (similar to upstart)
+      start      = ''systemctl start'';
+      stop       = ''systemctl stop'';
+      restart    = ''systemctl restart'';
+      status     = ''systemctl status'';
       # editor s horthands
       vi         = ''vim'';
-      virecent   = ''vim `git diff HEAD~1 --relative --name-only`'';            # open recently modified (git tracked) files
-      virc       = ''vim ~/.vimrc'';                                            # quickly open vimrc file for editing vim settings
-      vienv      = ''vim /etc/nixos/environment.nix'';                          # quickly open environment.nix
-      vivi       = ''vim /etc/nixos/vim-configuration.nix'';                    # quickly open vim-configuration.nix
-      vipkgs     = ''vim $HOME/.nixpkgs/config.nix'';                           # quickly open ~/.nixpkgs/config.nix
-      viwin      = ''_lambda(){ gnome-terminal -x sh -c "vim $1"; }; _lambda''; # open vim in a new gnome-terminal window
+      virecent   = ''vim `git diff HEAD~1 --relative --name-only`'';                          # open recently modified (git tracked) files
+      viconflict = ''_lambda(){ vim $(git status -s | grep UU | sed "s/UU //"); }; _lambda''; # open vim with unmerged files
+      # virc       = ''vim ~/.vimrc'';                                            # quickly open vimrc file for editing vim settings
+      vienv      = ''vim /etc/nixos/environment.nix'';                             # quickly open environment.nix
+      vivi       = ''vim /etc/nixos/vim-configuration.nix'';                       # quickly open vim-configuration.nix
+      vipkgs     = ''vim $HOME/.nixpkgs/config.nix'';                              # quickly open ~/.nixpkgs/config.nix
+      /* viwin      = ''_lambda(){ gnome-terminal -x sh -c "vim $1"; }; _lambda''; # open vim in a new gnome-terminal window */
       /* vifind     = ''_lambda(){ vim $(find -type f -name "$@"); }; _lambda'';   # open vim with the file in the search result */
-      vigrep     = ''_lambda(){ vim $(ag $@ -l); }; _lambda'';                  # open vim with the files containing the search string
-      yirecent   = ''yi `git diff HEAD~1 --relative --name-only`'';             # open recently modified (git tracked) files
-      yifind     = ''_lambda(){ yi $(find -type f -name "$@"); }; _lambda'';     # open yi with the file in the search result
+      vigrep     = ''_lambda(){ vim $(ag $@ -l); }; _lambda'';                     # open vim with the files containing the search string
+      yirecent   = ''yi `git diff HEAD~1 --relative --name-only`'';                # open recently modified (git tracked) files
+      yifind     = ''_lambda(){ yi $(find -type f -name "$@"); }; _lambda'';       # open yi with the file in the search result
       vifind     =
         # open vim with the file in the search result
         ''
@@ -76,6 +88,27 @@
           else
             echo "Could not find \"$@\""
           fi
+        }; _lambda'';
+      findexec =
+        ''
+        _lambda(){
+          echo "About to run: find . -type f -exec" "$@" "{} \;"
+          read
+          (find . -type f -exec "$@" {} \;)
+        }; _lambda'';
+      findsed =
+        ''
+        _lambda(){
+          echo "About to run: find . -type f -exec sed -ri" "$@" "{} \;"
+          read
+          (find . -type f -exec sed -ri "$@" {} \;)
+        }; _lambda'';
+      simplesed =
+        ''
+        _lambda(){
+          echo "About to run: find . -type f -exec sed -ri s/$1/$2/g" "{} \;"
+          read
+          (find . -type f -exec sed -ri s/$1/$2/g {} \;)
         }; _lambda'';
       diffr  =
         ''
@@ -119,6 +152,7 @@
         '';
       git-unpushed-branches = ''git log --branches --not --remotes --simplify-by-decoration --decorate --oneline'';
       clip = ''xclip -selection clipboard'';
+      battery = ''cat /sys/class/power_supply/BAT0/capacity'';
     };
 
     # shellInit
@@ -151,6 +185,9 @@
       #              # * In my configuration I was thinking of remap capslock to mod1 (which is usually alt) and then allow it to be used as escape 
       #              #   (for easy vim mode switching)
 
+      # Editors
+      me-vim
+
       # Development
       gitFull                       # the most popular version control system
                                     # * if you don't want to pull in so many dependencies you can use
@@ -159,15 +196,17 @@
                                     # * see also (......TODO difftool config....)
       # elm-custom                    # elm configuration (with tweaks to make it compile)
       # elm                           # Elm compiler + tools
-      elmPackages.elm
-      elmPackages.elm-compiler
-      elmPackages.elm-make
-      elmPackages.elm-package
-      elmPackages.elm-reactor
+      /* elmPackages.elm */
+      /* elmPackages.elm-compiler */
+      /* elmPackages.elm-make */
+      /* elmPackages.elm-package */
+      /* elmPackages.elm-reactor */
       # heroku-beta
 
-      # Terminal
-      gnome3.gnome_terminal
+      # Terminal emulators (choose one)
+      # gnome3.gnome_terminal
+      sakura
+      # termite
 
       # Productivity
       dmenu                            # execute programs from a top-level menu
@@ -180,13 +219,14 @@
 
       # Web
       google-chrome
-      # Layout
-      haskellPackages.xmonad # TODO: haskellPackages-custom
+     
+      # Networking
+      networkmanager_strongswan        # Connect to ipsec VPN with strongswan key exchange
 
       # Aesthetics
       gnome3.gtk
       # oxygen-gtk2
-      oxygen-gtk3
+      # oxygen-gtk3
       # kde4.oxygen_icons
       # gtk-engine-murrine
 
@@ -205,12 +245,14 @@
       # zlib        # useful for compiling several haskell packages e.g. elm's BuildFromSource.hs
       # zlibStatic # useful for compiling several haskell packages e.g. elm's BuildFromSource.hs
 
+      # Hardware control
+      light
+
       # TODO: investigate
       # terminator
       # mpd
       # ncmpcpp
       # gmrun
-      # dmenu
       # trayer
       # dzen2
       # pv

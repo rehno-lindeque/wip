@@ -23,7 +23,6 @@
                 [
                   "wheel"          # TODO: allows your user to access stored passwords?
                                    # * you need wheel in order to use sudo for example
-                  "audio"          # ?
                   "video"          # ?
                   "scanner"        # Group created by hardware.sane
                   # "keyboard"     # Used by (custom) actkbd user service
