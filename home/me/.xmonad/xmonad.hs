@@ -70,13 +70,13 @@ myKeys cfg = cfg
       , ("M-S-i" , windows (Stack.swapUp))
       , ("M-i"   , windows Stack.focusUp)
       , ("M-l"   , Actions.nextWS)
-      , ("M-S-l" , Actions.shiftToNext)
+      , ("M-S-l" , Actions.shiftToNext >> Actions.nextWS)
       , ("M-h"   , Actions.prevWS)
-      , ("M-S-h" , Actions.shiftToPrev)
-      , ("M-o"   , Actions.nextWS)
-      , ("M-S-o" , Actions.shiftToNext)
-      , ("M-y"   , Actions.prevWS)
-      , ("M-S-y" , Actions.shiftToPrev)
+      , ("M-S-h" , Actions.shiftToPrev >> Actions.prevWS)
+      -- , ("M-o"   , Actions.nextWS)
+      -- , ("M-S-o" , Actions.shiftToNext)
+      -- , ("M-y"   , Actions.prevWS)
+      -- , ("M-S-y" , Actions.shiftToPrev)
       ]
     productivity =
       [ ("M-p", spawn "dmenu_run -fn 16 -nb '#333' -l 15 -b") -- dmenu is a quick launcher
