@@ -151,7 +151,8 @@ in
           # xorg.xev  # A utility for looking up X keycodes and other input event codes
           # pgadmin
           patchelf
-          sshuttle    # Quick zero-setup VPN over ssh
+          # sshuttle    # Quick zero-setup VPN over ssh
+          git-crypt
 
           # Electronics design automation
           kicad
@@ -175,6 +176,7 @@ in
           gimp
 
           # File browsers
+          gnome3.nautilus
           gnome3.eog
 
           # Screen capture
