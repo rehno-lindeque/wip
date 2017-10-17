@@ -10,6 +10,8 @@
 [core]
         # Not needed if you have set EDITOR
         # editor = /usr/bin/bin
+        # Globally exclude some files
+        excludesfile = ~/.gitignore_global
 
 [difftool]
         external = diffuse

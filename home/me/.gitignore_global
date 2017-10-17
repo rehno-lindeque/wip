@@ -1,0 +1,3 @@
+# Globally ignore .nix-gc-roots
+# See https://nixos.wiki/wiki/Garbage_Collection#Proper_nix-shell_GC_pinning
+.nix-gc-roots
