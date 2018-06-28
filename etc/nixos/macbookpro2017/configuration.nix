@@ -2,7 +2,7 @@
 
 {
   imports =
-    [ 
+    [
       ../macbookpro115/configuration.nix
       ./networking.nix
     ];

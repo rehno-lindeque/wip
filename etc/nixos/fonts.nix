@@ -40,7 +40,6 @@
       hinting = {
         autohint = false;
         enable = true;
-        style = "slight";
       };
       includeUserConf = true;
       #includeUserConf = false;

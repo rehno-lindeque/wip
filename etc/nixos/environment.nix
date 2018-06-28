@@ -41,22 +41,28 @@ in
     # sessionVariables
 
     shellAliases = {
-      yim        = ''yi --as=vim'';
-      yimacs     = ''yi --as=emacs'';
-      chshell    = ''cd ~/projects/development/circuithub ; nix-shell --arg dev true'';
-      git-conflicts = ''_lambda(){ git status -s | grep UU | sed "s/UU //"; }; _lambda''; # open vim with unmerged files
+      yim        = ''yi --keymap=vim --frontend=vty'';
+      yimacs     = ''yi --keymap=emacs'';
+      chshell    = ''cd ~/projects/development/circuithub/mono ; nix-shell --arg dev true'';
+      git-conflicts = ''_lambda(){ git status -s | grep \\\(UU\\\|AA\\\) | sed "s/\(UU\|AA\) //"; }; _lambda''; # open vim with unmerged files
+      git-branches = ''git for-each-ref --sort=-committerdate refs/heads/ --format="%(committerdate:short) %(authorname) %(refname:short)"''; # list branches by date
+      git-branches-diff = ''diff --color --side-by-side --suppress-common-lines <(git for-each-ref --sort=-objectname refs/heads --format="%(committerdate:short) %(refname:strip=2) %(authorname)") <(git for-each-ref --sort=-objectname refs/remotes/origin --format="%(committerdate:short) %(refname:strip=3) %(authorname)")''; # diff with origin branches
       # config   = ''su ; cd /etc/nixos''; # TODO: how to start in /etc/nixos path?
       # upgrade  = ''sudo NIX_PATH="$NIX_PATH:unstablepkgs=${<unstablepkgs>}" nixos-rebuild switch --upgrade'';
       # upgrade  = ''sudo -E nixos-rebuild switch --upgrade -I devpkgs=${config.users.users.me.home}/projects/config/nixpkgs -I unstablepkgs=/nix/var/nix/profiles/per-user/root/channels/nixos-unstable/nixpkgs'';
       # see also  [nix? alias](https://nixos.org/wiki/Howto_find_a_package_in_NixOS#Aliases)
       upgrade    = ''sudo -E nixos-rebuild switch --upgrade -I devpkgs=${config.users.users.me.home}/projects/config/nixpkgs'';
       switch     = ''sudo -E nixos-rebuild switch -I devpkgs=${config.users.users.me.home}/projects/config/nixpkgs'';
+      nixos-rebuild-unstable = ''nixos-rebuild -I /root/.nix-defexpr/channels/nixos-unstable'';
+      nixos-list-generations = ''nix-env --list-generations --profile /nix/var/nix/profiles/system'';
       nixq       = ''nix-env --query --available --attr-path --description | fgrep --ignore-case --color'';
       nixhq      = ''nix-env --file "<nixpkgs>" --query --available --attr-path --attr haskellPackages --description | fgrep --ignore-case --color''; # query haskellPackages
       nixnq      = ''nix-env --file "<nixpkgs>" --query --available --attr-path --attr nodePackages --description | fgrep --ignore-case --color''; # query nodePackages
       nixgq      = ''nix-env --file "<nixpkgs>" --query --available --attr-path --attr goPackages --description | fgrep --ignore-case --color''; # query goPackages
       nixeq      = ''nix-env --file "<nixpkgs>" --query --available --attr-path --attr elmPackages --description | fgrep --ignore-case --color''; # query elmPackages
+      nixpq      = ''nix-env --file "<nixpkgs>" --query --available --attr-path --attr pythonPackages --description | fgrep --ignore-case --color''; # query pythonPackages
       nixgc      = ''nix-collect-garbage --delete-older-than 30d; nix-store --optimise;''; # garbage collect old stuff and optimise
+      nix-roots  = ''nix-store --gc --print-roots''; # print garbage collector roots
       term       = ''${terminalemulator}'';                                     # shortcut to open a terminal
       # services shorthands (similar to upstart)
       start      = ''systemctl start'';
@@ -66,11 +72,12 @@ in
       # editor s horthands
       vi         = ''vim'';
       virecent   = ''vim `git diff HEAD~1 --relative --name-only`'';                          # open recently modified (git tracked) files
-      viconflict = ''_lambda(){ vim $(git status -s | grep UU | sed "s/UU //"); }; _lambda''; # open vim with unmerged files
+      viconflict = ''_lambda(){ vim $(git status -s | grep \\\(UU\\\|AA\\\) | sed "s/^\(UU\|AA\) //"); }; _lambda''; # open vim with unmerged files
       # virc       = ''vim ~/.vimrc'';                                            # quickly open vimrc file for editing vim settings
       vienv      = ''vim /etc/nixos/environment.nix'';                             # quickly open environment.nix
       vivi       = ''vim /etc/nixos/vim-configuration.nix'';                       # quickly open vim-configuration.nix
-      vipkgs     = ''vim $HOME/.nixpkgs/config.nix'';                              # quickly open ~/.nixpkgs/config.nix
+      vipkgs     = ''vim $HOME/.config/nixpkgs'';                                  # quickly open ~/.config/nixpkgs
+      vioverlays = ''vim $HOME/.config/nixpkgs/overlays/all.nix'';                 # quickly open ~/.config/nixpkgs/overlays/all.nix
       /* viwin      = ''_lambda(){ gnome-terminal -x sh -c "vim $1"; }; _lambda''; # open vim in a new gnome-terminal window */
       /* vifind     = ''_lambda(){ vim $(find -type f -name "$@"); }; _lambda'';   # open vim with the file in the search result */
       vigrep     = ''_lambda(){ vim $(ag $@ -l); }; _lambda'';                     # open vim with the files containing the search string
@@ -124,7 +131,7 @@ in
           ${config.environment.variables.DIFFTOOL} $line
         done;
         '';
-      diffhome   = 
+      diffhome   =
         ''
         diff --unidirectional-new-file -qr ${config.users.users.me.home} ${config.users.users.me.home}/projects/config/dotfiles/home/me | while read line ; do
           echo $line
@@ -137,7 +144,7 @@ in
           esac
         done
         '';
-      diffroot   = 
+      diffroot   =
         ''
         diff --unidirectional-new-file -qr /root ${config.users.users.me.home}/projects/config/dotfiles/home/root | while read line ; do
           echo $line
@@ -152,7 +159,11 @@ in
         '';
       git-unpushed-branches = ''git log --branches --not --remotes --simplify-by-decoration --decorate --oneline'';
       clip = ''xclip -selection clipboard'';
+      simpledate = ''date +%Y-%m-%d'';
       battery = ''cat /sys/class/power_supply/BAT0/capacity'';
+
+      # temporary helpers (fix problems)
+      disablegpe16 = ''echo "disable" > /sys/firmware/acpi/interrupts/gpe16'';
     };
 
     # shellInit
@@ -177,51 +188,6 @@ in
       # pluginnames2nix      # utility to generate nix derivations for vim (see nixpkgs.nix)
       # vim2nix      # utility to generate nix derivations for vim (see nixpkgs.nix)
 
-      # Shell
-      # fish           # modern featureful shell
-
-      # Input
-      # xcape        # allow modifier keys (ctrl / shift / alt / etc) to be used like regular keys (e.g. escape)
-      #              # * In my configuration I was thinking of remap capslock to mod1 (which is usually alt) and then allow it to be used as escape 
-      #              #   (for easy vim mode switching)
-
-      # Editors
-      me-vim
-
-      # Development
-      gitFull                       # the most popular version control system
-                                    # * if you don't want to pull in so many dependencies you can use
-      # tig                         # text-mode browser/interactive commit tool for git 
-      diffuse                       # usefull for doing graphical diffs via `git difftool`
-                                    # * see also (......TODO difftool config....)
-      # elm-custom                    # elm configuration (with tweaks to make it compile)
-      # elm                           # Elm compiler + tools
-      /* elmPackages.elm */
-      /* elmPackages.elm-compiler */
-      /* elmPackages.elm-make */
-      /* elmPackages.elm-package */
-      /* elmPackages.elm-reactor */
-      # heroku-beta
-
-      # Terminal emulators (choose one)
-      # gnome3.gnome_terminal
-      sakura
-      # termite
-
-      # Productivity
-      dmenu                            # execute programs from a top-level menu
-      haskellPackages.yeganesh         # display popular selections in dmenu first # TODO: haskellPackages-custom
-      xclip                            # copy to your clipboard from the terminal 
-      # tmux                           # use multiple terminals inside one terminal (like xmonad for your terminal)
-      # vifm                           # file manager with vi-like keybindings
-      # tree                           # show a directory tree (like ls -R, but prettier)
-      # feh                            # quickly preview image files (I'm using this with actkbd to display cheatsheets)
-
-      # Web
-      google-chrome
-     
-      # Networking
-      networkmanager_strongswan        # Connect to ipsec VPN with strongswan key exchange
 
       # Aesthetics
       gnome3.gtk
@@ -230,94 +196,12 @@ in
       # kde4.oxygen_icons
       # gtk-engine-murrine
 
-      # Configuration
-      # gnome3.dconf
-      gnome3.gnome_settings_daemon
-
       # Security
       gnome3.gnome_keyring
 
-      # Development dependencies
-      ctags       # quick way to browse symbols (seems to collide with emacs ctags in tagbar at the moment though, I had to nix-env -i ctags)
-      # ghc
-      ghc-custom
-      elfutils    # linker, assembler, strip, etc (elfutils is a replacement for the older binutils)
-      # zlib        # useful for compiling several haskell packages e.g. elm's BuildFromSource.hs
-      # zlibStatic # useful for compiling several haskell packages e.g. elm's BuildFromSource.hs
-
       # Hardware control
       light
-
-      # TODO: investigate
-      # terminator
-      # mpd
-      # ncmpcpp
-      # gmrun
-      # trayer
-      # dzen2
-      # pv
-      # lsof
-      # libreoffice
-      # htop
-      # xclip
-      # xscreensaver
-      # arandr autorandr
-      # firefox
-      # alsaLib alsaPlugins alsaUtils
-      # transmission
-      # unrar
-      # pavucontrol
-      # chromium flashplayer
-      # evince
-      # ppp
-      # cpufrequtils
-      # file
-      # htop
-      # feh
-      # mutt offlineimap
-      # keychain
-      # zsh
-      # cmake
-      # gcc
-      # gdb
-      # gimp
-      # gitAndTools.gitFull
-      # gnupg
-      # gnupg1
-      # gnumake
-      # gperf
-      # imagemagick
-      # lsof
-      # man
-      # netcat
-      # nmap
-      # parted
-      # pythonFull
-      # ruby
-      # stdmanpages
-      # tcpdump
-      # units
-      # unrar
-      # wget
-      # zip
-      # conkeror
-      # scrot
-      # unetbootin
-      # wine
-      # wireshark
-      # xorg.xkill
-      # xpdf
-      # xulrunner
-      # stalonetray
-      # wpa_supplicant_gui
-      # xfontsel
-      # xlibs.xev
-      # xlibs.xinput
-      # xlibs.xmessage
-      # xlibs.xmodmap
-
     ];
-    # unixODBCDrivers
 
     variables = rec {
       # Set vim as the [standard editor](http://stackoverflow.com/a/2596835/167485) for git, xmonad and other programs
@@ -331,6 +215,7 @@ in
       ME = "${config.users.users.me.name}";      # this is somewhat similar to logname (except only for the primary user)
       ME_HOME = "${config.users.users.me.home}";
       ME_DOTFILES = "${config.users.users.me.home}/projects/config/dotfiles";
+      ME_CHANNELS = "${config.users.users.me.home}/.nix-defexpr/channels";
     };
 
     # wvdial

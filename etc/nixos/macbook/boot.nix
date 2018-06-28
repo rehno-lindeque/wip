@@ -66,9 +66,6 @@
         "bcm5974"       # Apple trackpad (this doesn't appear to be strictly necessary)
         "hid_apple"     # Apple keyboard (this doesn't appear to be strictly necessary)
 
-        #macbookair only?
-        "wl"            # Wireless internet
-
         #macbook ___? (TODO)
         # "brcmsmac"      # wireless Needed?
         # "brcmfmac"      # wireless Needed?
@@ -91,6 +88,5 @@
         # so there isn't a good way to remove it from boot.kernelModules. Thus blacklisting.
         "atkbd"
       ];
-
   };
 }

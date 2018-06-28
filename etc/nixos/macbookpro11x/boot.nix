@@ -19,31 +19,61 @@ let
    macbook-apple-gmux =
       { name = "macbook-apple-gmux";
         /* patch = ./apple-gmux.patch; */
-        patch = "${pkgs.arch-linux-macbook.outPath}/apple-gmux.patch";
+        patch = "${pkgs.arch-linux-macbook.outPath}/01-apple-gmux.patch";
       };
    macbook-intel-pstate-backport =
       { name = "macbook-intel-pstate-backport";
         patch = "intel-pstate-backport.patch";
       };
+
    # https://wiki.archlinux.org/index.php/Mac#Suspend_.26_Power_Off_.2811.2C4.2B.29
    # https://bugzilla.kernel.org/show_bug.cgi?id=103211
    macbook-suspend =
       { name = "macbook-suspend";
-        patch = "${pkgs.arch-linux-macbook.outPath}/macbook-suspend.patch";
+        patch = "${pkgs.arch-linux-macbook.outPath}/02-macbook-suspend.patch";
       };
-    macbook-poweroff-quirk-workaround =
-      { name = "poweroff-quirk-workaround.patch";
-        patch = "${pkgs.arch-linux-macbook.outPath}/poweroff-quirk-workaround.patch";
+    macbook-apple-poweroff-quirk-workaround =
+      { name = "apple-poweroff-quirk-workaround.patch";
+        patch = "${pkgs.arch-linux-macbook.outPath}/03-apple-poweroff-quirk-workaround.patch";
+        # See https://aur.archlinux.org/pkgbase/linux-macbook/?comments=all#comment-602949
+        # patch = pkgs.fetchurl {
+        #   url = "https://patchwork.kernel.org/patch/9821775/raw/";
+        #   sha256 =  "0nh279ddwc0xipncrwvf6mgjlc3zfz8321ilbgn440nsk5gv9g23";
+        # };
       };
     change-default-console-loglevel =
       { name = "change-default-console-loglevel";
         patch = "${pkgs.arch-linux-macbook.outPath}/change-default-console-loglevel.patch";
       };
-    /* radeon-si-dpm = */
-    /*   { name = "radeon-si-dpm"; */
-    /*     patch = ./radeon-si-dpm.patch; */
-    /*   }; */
 
+    linux_default =
+      {
+        kernelPackages = pkgs.linuxPackages;
+        kernelPatches =
+          [
+            # Makes backlight and suspend work
+            # macbook-apple-gmux
+
+            # macbook-intel-pstate-backport
+            # macbook-suspend
+            # macbook-apple-poweroff-quirk-workaround
+
+            # # Needed?
+            # change-default-console-loglevel
+          ];
+      };
+    linux_4_14 =
+      {
+        kernelPackages = pkgs.linuxPackages_4_14;
+        kernelPatches = linux_default.kernelPatches ++ [];
+        blacklistedKernelModules = [];
+      };
+    linux_latest =
+      {
+        kernelPackages = pkgs.linuxPackages_latest;
+        kernelPatches = linux_default.kernelPatches ++ [];
+        blacklistedKernelModules = [];
+      };
 in
 {
 
@@ -67,11 +97,17 @@ in
 
 
   boot =
-    {
+    rec {
       # TODO: see https://github.com/fooblahblah/nixos/blob/63457072af7b558f63cc5ccec5a75b90a14f35f7/hardware-configuration-mbp.nix
-      initrd = 
+      initrd =
         {
-          availableKernelModules = [ "xhci_pci" "ahci" "usbhid" "usb_storage" "sd_mod" ];
+          availableKernelModules = [
+              "xhci_pci"
+              "ahci"
+              "usbhid"
+              "usb_storage"
+              "sd_mod"
+            ];
 
           luks.devices =
             [
@@ -82,33 +118,10 @@ in
             ];
         };
 
-      # kernelPackages = pkgs.linuxPackages_4_11;
-      kernelPackages = pkgs.linuxPackages_4_4;
-      # kernelPatches =
-      #   [
-      #     # Makes backlight and suspend work
-      #     macbook-apple-gmux
+      # inherit (linux_default) kernelPackages kernelPatches;
+      inherit (linux_4_14) kernelPackages kernelPatches blacklistedKernelModules;
+      # inherit (linux_latest) kernelPackages kernelPatches blacklistedKernelModules;
 
-      #     # # Macbook pro 11,5 screen flicker when AC adapter plugged in
-      #     # # Fixes flicker and overheating when graphics card is set to performance mode
-      #     # # See https://bugs.freedesktop.org/show_bug.cgi?id=98897
-      #     # # Fixed with latest 4.9.6 kernel
-      #     # radeon-si-dpm
-
-      #     # # Only needed with the 4.8 kernel
-      #     # # This is already present in 4.10 upwards:
-      #     # # https://github.com/NixOS/nixpkgs/blob/690a83091bd0e10ce7c70b081c861a6ff2a6d532/pkgs/os-specific/linux/kernel/common-config.nix#L69
-      #     # macbook-intel-pstate-backport
-
-      #     # Needed?
-      #     macbook-suspend
-
-      #     # # Needed?
-      #     # macbook-poweroff-quirk-workaround
-
-      #     # # Needed?
-      #     # change-default-console-loglevel
-      #   ];
       kernelParams =
         [
           # Adding 'acpi_osi=' to kernel parameters reportedly brings the battery life of a MacBook Air 2013 from 5 hours to 11-12 hours. See this forum post for more information.
@@ -117,7 +130,7 @@ in
           # * https://bugzilla.kernel.org/show_bug.cgi?id=177151#c10
           # * https://bugs.freedesktop.org/show_bug.cgi?id=96645 (TODO: patch)
           "acpi_osi="
-        ];
+        ] ++ (if lib.versionOlder kernelPackages.kernel.version "4.10" then [] else [ "intremap=nosid" ]);
 
       loader.grub.enable = false;
 
@@ -143,7 +156,7 @@ in
         options snd_hda_intel power_save=1
         '' +
         # Make the function keys (F1-F12) the default, and put media keys behind the fn key
-        # * https://wiki.archlinux.org/index.php/Apple_Keyboard#Function_keys_do_not_work 
+        # * https://wiki.archlinux.org/index.php/Apple_Keyboard#Function_keys_do_not_work
         ''
         options hid_apple fnmode=2
         '' +

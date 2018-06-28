@@ -19,23 +19,12 @@ in
           ${base}
 
           """"""""""""""
-          " Motion {{{
+          " Haskell {{{
           """"""""""""""
-          " beginning/end of line
-          nnoremap <Esc>h ^<Esc>
-          nnoremap <Esc>l $<Esc>
-          " word/character motion
-          " noremap H h
-          " noremap L l
-          " noremap h B
-          " noremap l E
-          " }}}
+          " Use par for prettier line formatting
+          set formatprg="PARINIT='rTbgqR B=.,?_A_a Q=_s>|' par\ -w72"
 
-          let g:workman_normal_workman = 0
-          let g:workman_insert_workman = 0
-          let g:workman_normal_qwerty = 0
-          let g:workman_insert_qwerty = 0
-
+          " Lint
           function! Ale_linters_haskell_hdevtools2_GetCommand(buffer) abort
              return 'hdevtools check -g -Wall '
               \   .  get(g:, 'hdevtools_options', "")
@@ -78,6 +67,28 @@ in
           \   'command_callback': 'Ale_linters_haskell_hlint_Command',
           \   'callback': 'Ale_linters_haskell_hlint_Handle',
           \})
+
+          " }}}
+          """"""""""""""
+          " Motion {{{
+          """"""""""""""
+          " beginning/end of line
+          nnoremap <Esc>h ^<Esc>
+          nnoremap <Esc>l $<Esc>
+          " word/character motion
+          " noremap H h
+          " noremap L l
+          " noremap h B
+          " noremap l E
+          " }}}
+
+          let g:workman_normal_workman = 0
+          let g:workman_insert_workman = 0
+          let g:workman_normal_qwerty = 0
+          let g:workman_insert_qwerty = 0
+
+          " }}}
+
           let g:ale_linters =
             \ {'haskell': ['hlint2','hdevtools2']
             \ ,'Elm': ['elm-make']
@@ -90,6 +101,15 @@ in
           let g:ale_sign_error = 'e'
           let g:ale_sign_warning = 'w'
 
+          """"""""""""""
+          " Buffers {{{
+          """"""""""""""
+          " See https://unix.stackexchange.com/questions/329641/can-i-remap-ctrl-j-and-ctrl-k-in-vim/329648
+          " Note that this conflicts with tmux-navigator
+          let g:C_Ctrl_j = 'off'
+          nnoremap <silent> <C-j> :bn<CR>
+          nnoremap <silent> <C-k> :bp<CR>
+          " }}}
       '';
   vam = {
      knownPlugins = pkgs.vimPlugins //
@@ -162,7 +182,7 @@ in
 
       # vim-indent-object # ?
       # Allow pane movement to jump out of vim into tmux
-      { name = "tmux-navigator"; }  # ?
+      # { name = "tmux-navigator"; }  # ?
 
       # Colorscheme
       /* wombat256      # grey color-scheme */

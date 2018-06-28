@@ -9,7 +9,7 @@
       opengl =
         {
           extraPackages =
-            [ 
+            [
               pkgs.libvdpau-va-gl
               pkgs.vaapiVdpau
               # pkgs.vaapiIntel # ?

@@ -1,12 +1,9 @@
-{ pkgs
-, haskellPackages ? pkgs.haskellPackages
+{ haskell
+, haskellPackages
 , ...
 }:
 
-let withHoogle = pkgs.haskell.lib.withHoogle;
-in
-  # withHoogle
-  haskellPackages.ghcWithHoogle
+haskellPackages.ghcWithHoogle
   ( self: with self; [
     /* usefull for compiling miscelaneous haskell things */
     cabal-install

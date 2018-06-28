@@ -8,13 +8,7 @@
       <nixpkgs/nixos/modules/installer/scan/not-detected.nix>
 
       # ...
-      # ../macbookpro/configuration.nix
-      ../macbookpro/services.nix
-      # ../macbook/boot.nix
-      ../macbook/networking.nix
-      ../macbook/powerManagement.nix
-      ../macbook/hardware.nix
-      ../macbook/services.nix
+      ../macbookpro/configuration.nix
 
       # Configuration for the retina screen
       ../retina/configuration.nix

@@ -4,9 +4,8 @@
 }:
 
 {
-  imports =
-    [
-      ../macbook/configuration.nix
-      ./services.nix
-    ];
+  imports = [
+    ../macbook/configuration.nix
+    ./services.nix
+  ];
 }

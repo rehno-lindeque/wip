@@ -3,7 +3,7 @@
 }:
 
 {
-  powerManagement = 
+  powerManagement =
     {
       enable = true;
 

@@ -6,8 +6,7 @@
 {
   imports =
     [
-      ./boot.nix
-      ./environment.nix
+      # ./boot.nix
       ./hardware.nix
       ./networking.nix
       ./powerManagement.nix

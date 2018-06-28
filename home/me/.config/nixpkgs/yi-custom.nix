@@ -12,6 +12,7 @@ let
           /* yi = pkgs.haskell.lib.addExtraLibraries super.yi [ self.yi-gtk ]; */
           /* yi-fuzzy-open = lib.appendConfigureFlag (lib.dontHaddock pkgs.haskellPackages.yi-fuzzy-open "--ghc-option=-XFlexibleContexts"); */
           /* yi = super.yi_0_13_3; */
+          # yi = pkgs.haskell.lib.addBuildDepend super.yi [ self.yi-core ];
         };
 
     };
@@ -20,11 +21,15 @@ let
     with self;
     [
       /* yi */
-      yi-language
-      yi-fuzzy-open
-      yi-monokai
-      yi-snippet
-      lens
+      # yi-language
+      # yi-fuzzy-open
+      # yi-monokai
+      # yi-snippet
+      # lens
+      yi-core
+      yi-misc-modes
+      yi-mode-haskell
+      yi-mode-javascript
     ];
 
 in

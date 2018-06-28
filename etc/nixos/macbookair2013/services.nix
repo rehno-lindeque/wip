@@ -7,22 +7,22 @@
   services = {
     openssh.enable = false;  # Use this to start an sshd daemon (to enable remote login)
 
-    # Power control events (power/sleep buttons, notebook lid, power adapter etc)
-    # See also https://github.com/ajhager/airnix/blob/master/configuration.nix#L91
-    acpid =
-      {
-        enable = true;
-        lidEventCommands =
-          # TODO: I think that this may not work on macbookpro11x due to suspend problems?
-          #       I.e. $ ls /proc/acpi/button/lid/LID0/state
-          #       (On the other hand, emperically this seems to work automatically on macbookpro11x with a patch applied. How do we test?)
-          ''
-          LID_STATE=/proc/acpi/button/lid/LID0/state
-          if [ $(/run/current-system/sw/bin/awk '{print $2}' $LID_STATE) = 'closed' ]; then
-            systemctl suspend
-          fi
-          '';
-      };
+    # # Power control events (power/sleep buttons, notebook lid, power adapter etc)
+    # # See also https://github.com/ajhager/airnix/blob/master/configuration.nix#L91
+    # acpid =
+    #   {
+    #     enable = true;
+    #     # lidEventCommands =
+    #     #   # TODO: I think that this may not work on macbookpro11x due to suspend problems?
+    #     #   #       I.e. $ ls /proc/acpi/button/lid/LID0/state
+    #     #   #       (On the other hand, emperically this seems to work automatically on macbookpro11x with a patch applied. How do we test?)
+    #     #   ''
+    #     #   LID_STATE=/proc/acpi/button/lid/LID0/state
+    #     #   if [ $(/run/current-system/sw/bin/awk '{print $2}' $LID_STATE) = 'closed' ]; then
+    #     #     systemctl suspend
+    #     #   fi
+    #     #   '';
+    #   };
 
     xserver = {
       videoDrivers = [ "intel" "nouveau" ];

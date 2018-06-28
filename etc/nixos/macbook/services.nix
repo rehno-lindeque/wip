@@ -7,10 +7,13 @@
 
 {
   services = {
-    dbus.enable = true;   # TODO: ?
+    dbus.enable = true;
     locate.enable = true;
     # mpd.enable = true;    # music player daemon
-    upower.enable = true; # TODO: ?
+    upower.enable = true;
+
+    # TODO: 17.09
+    # fstrim.enable = true;
 
     # Advanced Power Management for Linux
     tlp =
@@ -238,27 +241,37 @@
     #     night = 2300;
     #   };
     # };
-
-    # control screen brightness with brightness buttons
-    illum.enable = true;
   
-    # Activate these if you're not using xmonad to control media keys
-    # actkbd = {
-    #   enable = true;
-    #   bindings = [
-    #     # Media keys
-    #     { keys = [ 113 ]; events = [ "key" ]; command = "${pkgs.alsaUtils}/bin/amixer -q set Master toggle"; }
-    #     { keys = [ 114 ]; events = [ "key" "rep" ]; command = "${pkgs.alsaUtils}/bin/amixer -q set Master 5-"; }
-    #     { keys = [ 115 ]; events = [ "key" "rep" ]; command = "${pkgs.alsaUtils}/bin/amixer -q set Master 5+"; }
-    #     # Screen backlight
-    #     { keys = [ 224 ]; events = [ "key" "rep" ]; command = "${pkgs.light}/bin/light -U 4"; }
-    #     { keys = [ 225 ]; events = [ "key" "rep" ]; command = "${pkgs.light}/bin/light -A 4"; }
-    #     # Keyboard backlight
-    #     { keys = [ 229 ]; events = [ "key" "rep" ]; command = "${pkgs.kbdlight}/bin/kbdlight up"; }
-    #     { keys = [ 230 ]; events = [ "key" "rep" ]; command = "${pkgs.kbdlight}/bin/kbdlight down"; }
-    #     # Remap menu key to cheatsheet for now
-    #     { keys = [ 230 ]; events = [ "key" "rep" ]; command =  "eog ${config.users.users.me.home}/cheatsheets/workman.png"; }
-    #   ];
-    # };
+    # Power control events (power/sleep buttons, notebook lid, power adapter etc)
+    # See also https://github.com/ajhager/airnix/blob/master/configuration.nix#L91
+    # Alternatively https://bbs.archlinux.org/viewtopic.php?pid=1495332#p1495332
+    acpid = {
+      enable = true;
+      # lidEventCommands =
+      #   let
+      #     lockCommand =
+      #       # When using slim:
+      #       # ''${pkgs.su}/bin/su ${config.users.users.me.name} -c ${pkgs.slim}/bin/slimlock ;''
+      #       # When using lightdm:
+      #       # ''${pkgs.su}/bin/su ${config.users.users.me.name} -c XDG_SEAT_PATH="/org/freedesktop/DisplayManager/Seat0" ${pkgs.lightdm}/bin/dm-tool lock ;'';
+      #   in ''
+      #     LID="/proc/acpi/button/lid/LID0/state"
+      #     state=`cat $LID | ${pkgs.gawk}/bin/awk '{print $2}'`
+      #     case "$state" in
+      #       *close*)
+      #           # {pkgs.util-linux}/bin/logger -t lid-handler "attempt to close lid ($state)" ;
+      #           ${lockCommand}
+      #           ;;
+      #       *)
+      #           #{pkgs.util-linux}/bin/logger -t lid-handler "Failed to detect lid state ($state)" ;
+      #           ;;
+      #     esac
+      #     '';
+    };
   };
+
+  # systemd = {
+  #   packages = [ pkgs.arch-linux-macbook.wakeup ];
+  #   units."macbook-wakeup.service".wantedBy = [ "multi-user.target" ];
+  # };
 }

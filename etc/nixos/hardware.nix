@@ -15,11 +15,13 @@
       # package = pkgs.pulseaudioFull;
     };
 
-    /* sane = */
-    /*   { */
-    /*     enable = true; # Enable this to use a scanner */
-    /*     extraBackends = [ pkgs.hplipWithPlugin ]; # HP drivers */
-    /*   }; */
+    # Scanner
+    # sane =
+    #   {
+    #     enable = true; # Enable this to use a scanner */
+    #     # extraBackends = [ pkgs.hplipWithPlugin ]; # HP drivers */
+    #     # netConf = "192.168.1.97";
+    #   };
   };
 
   sound.enable = true;

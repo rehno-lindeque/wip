@@ -10,15 +10,16 @@
 #       };
 # in
 {
-  powerManagement = 
-    {
-      # See macbook-wakeup
-      powerDownCommands =
-        ''
-        awk '$1 !~ /^LID/ && $3 ~ /enabled/ {print $1}' /proc/acpi/wakeup | xargs -I{} echo '{}' > /proc/acpi/wakeup
-        awk '$1 ~ /^LID/ && $3 ~ /disabled/ {print $1}' /proc/acpi/wakeup | xargs -I{} echo '{}' > /proc/acpi/wakeup
-        '';
-    };
+  # Doesn't seem to work:
+  # powerManagement = 
+  #   {
+  #     # See macbook-wakeup
+  #     powerDownCommands =
+  #       ''
+  #       awk '$1 !~ /^LID/ && $3 ~ /enabled/ {print $1}' /proc/acpi/wakeup | xargs -I{} echo '{}' > /proc/acpi/wakeup
+  #       awk '$1 ~ /^LID/ && $3 ~ /disabled/ {print $1}' /proc/acpi/wakeup | xargs -I{} echo '{}' > /proc/acpi/wakeup
+  #       '';
+  #   };
 
   # services.acpid.lidEventCommands =
 

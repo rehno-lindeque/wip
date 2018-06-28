@@ -1,0 +1,13 @@
+diff --git a/actkbd.c b/actkbd.c
+index 0d71eaa..d9e9701 100644
+--- a/actkbd.c
++++ b/actkbd.c
+@@ -295,7 +295,7 @@ int main(int argc, char **argv) {
+ 	showkey = 0;
+ 
+     if (detach) {
+-	switch (daemon(0, 0))
++	switch (daemon(0, 1))
+ 	{
+ 	    case 0:
+     		break;

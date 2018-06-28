@@ -1,5 +1,7 @@
 {
   pkgs
+, config
+, lib
 , ...
 }:
 
@@ -38,6 +40,17 @@
                     destination = "/etc/udev/rules.d/20-hw1.rules";
                   };
       in [ hw1 ];
+          # # See https://www.baslerweb.com/en/support/downloads/software-downloads/pylon-5-0-9-linux-x86-64-bit/
+          # # https://www.baslerweb.com/fp-1496750153/media/downloads/software/pylon_software/pylon-5.0.9.10389-x86_64.tar.gz
+          # pylon = pkgs.writeTextFile
+          #           {
+          #             # Enable user access to all basler cameras
+          #             name = "69-basler-camera.rules";
+          #             text = ''
+          #               SUBSYSTEM=="usb", ATTRS{idVendor}=="2676", MODE:="0666", TAG+="uaccess", TAG+="udev-acl";
+          #               '';
+          #           };
+      # in [ hw1 pylon ];
 
     # Power saving settings
     # * See also http://unix.stackexchange.com/questions/65948/how-do-i-make-powertops-suggestions-permanent
@@ -80,7 +93,7 @@
       ACTION=="add", SUBSYSTEM=="pci", ATTR{power/control}="auto"
       '' +
       # From https://wiki.archlinux.org/index.php/MacBookPro11,x#Powersave
-      (
+      (lib.optionalString (!config.macbook.hardware.sdCardReader.enable)
         # Disabling the internal cardreader may save battery life.
         # $ lsusb -d 05ac:8406
         # Bus 002 Device 002: ID 05ac:8406 Apple, Inc. 
