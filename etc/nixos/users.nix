@@ -160,7 +160,7 @@
 
                 # Media players
                 # mopidy
-                # vlc
+                vlc
                 spotify # TODO: replace with mopidy
 
                 # Artistic
@@ -176,6 +176,9 @@
 
                 # Office
                 # simple-scan
+
+                # Aesthetics
+                hicolor_icon_theme    # Seems to be desired by some gnome or gtk applications (syncthing)?
 
                 # TODO: investigate
                 # terminator

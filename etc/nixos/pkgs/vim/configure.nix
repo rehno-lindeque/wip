@@ -129,16 +129,16 @@ in
              buildInputs = pkgs.vimPlugins.vim-airline.buildInputs ++ [ pkgs.powerline-fonts ];
            };
 
-           "ale" = buildVimPlugin {
-             name = "ale";
-             src = pkgs.fetchFromGitHub {
-               owner = "w0rp";
-               repo = "ale";
-               rev = "8b890caa31411cd022156dca8e4c7f4c5fb65fc9";
-               sha256 = "029ga38wp59fm3ihc1axx8wn8jfrfqjby49k3h7qhxzff706jibv";
-             };
-             dependencies = [];
-           };
+           # "ale" = buildVimPlugin {
+           #   name = "ale";
+           #   src = pkgs.fetchFromGitHub {
+           #     owner = "w0rp";
+           #     repo = "ale";
+           #     rev = "10e1545630943aa98320b62f97f79a6f85340e51";
+           #     sha256 = "0000000000000000000000000000000000000000000000000000";
+           #   };
+           #   dependencies = [];
+           # };
 
          };
 

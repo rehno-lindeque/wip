@@ -162,6 +162,9 @@ in
       simpledate = ''date +%Y-%m-%d'';
       battery = ''cat /sys/class/power_supply/BAT0/capacity'';
 
+      # Generate a new gpg key
+      # nixos.gnupg = 
+
       # temporary helpers (fix problems)
       disablegpe16 = ''echo "disable" > /sys/firmware/acpi/interrupts/gpe16'';
     };

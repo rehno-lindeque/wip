@@ -25,7 +25,6 @@
       };
 
       # Identity/Key/Cloud storage management
-      # TODO: 17.09
       keybase.enable = true;
       kbfs = {
         enable = true;
@@ -34,6 +33,11 @@
 
       # Turn on auto-mount
       devmon.enable = true;
+
+      syncthing = {
+        enable = true;
+        # dataDir = "${config.users.users.me.home}/private-share/syncthing"; (THIS IS NOT THE DATA DIR, it is the config dir)
+      };
 
       # Enable the X11 windowing system.
       xserver =

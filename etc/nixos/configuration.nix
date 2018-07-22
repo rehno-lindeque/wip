@@ -31,6 +31,7 @@
       ./fonts.nix
       ./i18n.nix
       ./macbook.nix
+      ./networking.nix
       ./nix.nix
       ./nixpkgs.nix
       ./programs.nix
