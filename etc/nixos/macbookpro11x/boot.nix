@@ -134,13 +134,6 @@ in
 
       loader.grub.enable = false;
 
-      # Use the systemd-boot EFI boot loader.
-      loader.systemd-boot.enable = true;
-      loader.efi.canTouchEfiVariables = true;
-
-      # Don't hold onto /tmp
-      cleanTmpDir = true;
-
       # Apparently needed to make sound output and mic work
       # TODO: is model=115 correct? I've see model=101 but this isn't in any documentation on the internet
       #       we may want to make this model=auto or leave it out entirely
