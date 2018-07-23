@@ -27,10 +27,12 @@
           SUBSYSTEMS=="usb", ATTRS{idVendor}=="05ac", ATTRS{idProduct}=="8290", RUN+="${pkgs.remove-usb-device} 05ac 8290"
           ''
         ) +
+          # TODO: This seems no longer necessary
           # Disable XHC1 acpi to avoid resume directly after suspend
           # See
           # * https://joshtronic.com/2017/03/13/getting-suspend-in-linux-working-on-a-macbook-pro/
           # * https://github.com/simonvandel/dotfiles/blob/f254a4a607257faee295ce798ed215273c342850/nixos/vandel-macair/configuration.nix#L45
-          ''SUBSYSTEM=="pci", KERNEL=="0000:00:14.0", ATTR{power/wakeup}="disabled"'';
+          # ''SUBSYSTEM=="pci", KERNEL=="0000:00:14.0", ATTR{power/wakeup}="disabled"'';
+          "";
     };
 }

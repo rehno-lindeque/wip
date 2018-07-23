@@ -178,7 +178,7 @@
                 # simple-scan
 
                 # Aesthetics
-                hicolor_icon_theme    # Seems to be desired by some gnome or gtk applications (syncthing)?
+                hicolor_icon_theme    # Seems to be desired by some gnome or gtk applications (syncthing-gtk)?
 
                 # TODO: investigate
                 # terminator

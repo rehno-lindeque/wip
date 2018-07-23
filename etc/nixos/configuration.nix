@@ -19,9 +19,7 @@
 
       # configuration
       # ./macbookpro2017/configuration.nix #gitignore
-      # ./macbookpro115/configuration.nix #gitignore
       # ./macbookair2013/configuration.nix #gitignore
-      # ./virtualbox2015/configuration.nix #gitignore
 
       # general configurations
       ./boot.nix

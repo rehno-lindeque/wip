@@ -54,7 +54,7 @@
           # by the driver or WWAN blacklists above (separate with spaces).
           # Use lsusb to get the ids.
           # ---
-          # Note that apple trackpad does have explicit autosuspend support. 
+          # Note that apple trackpad does have explicit autosuspend support.
           # * See http://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/commit/?id=88da765f4d5f59f67a7a51c8f5d608a836b32133
           ''
           USB_WHITELIST="05ac:0274"
