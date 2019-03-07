@@ -5,6 +5,11 @@
 , ...
 }:
 
+let
+
+  kernelPackages = config.boot.kernelPackages;
+
+in
 {
   services =
     {

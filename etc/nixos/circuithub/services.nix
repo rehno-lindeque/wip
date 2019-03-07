@@ -84,11 +84,11 @@
     # 2.010s rabbitmq.service
     #
     /* rabbitmq.enable = true; */
-                            
+
     journald.rateLimitBurst = 1000;
     postgresql =
       {
-        enable = true;
+        # enable = true;
         package = pkgs.postgresql95;
         initialScript = pkgs.writeText "postgresql-init.sql" '' CREATE ROLE ${config.users.users.me.name} WITH superuser login createdb; '';
         authentication = pkgs.lib.mkForce

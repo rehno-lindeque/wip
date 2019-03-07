@@ -32,35 +32,43 @@ in
       # + ''
       #   build-extra-platforms = aarch64-linux
       # ''
+      # optional, useful when the builder has a faster internet connection than yours
+      + ''
+      builders-use-substitutes = true
+      ''
     ;
 
     # Uncomment to build distributed
-    # distributedBuilds = true;
+    distributedBuilds = true;
     # Note that your local root must have the slave in ~/.ssh/known_hosts
     # TODO: use programs.ssh.knownHosts?
     buildMachines =
       [ # Automatically build arm expressions on my raspberry pi
-        { hostName = "192.168.0.11";
+        # { hostName = "192.168.0.11"; # home
+        # { hostName = "192.168.100.228"; # work
+        { hostName = "192.168.100.135"; # work-wifi
+        # # { hostName = "192.168.0.12"; # home/work
           sshUser = "root"; # TODO: change
           sshKey = "/home/me/.ssh/id_accesspoint";
           system = "aarch64-linux";
           maxJobs = 1;
+          supportedFeatures = [ "big-parallel" ];
         }
-        # Build stuff in a distributed fashion when at picofactory
-        # { hostName = "picofactory-conference"; # 192.168.1.141
-        { hostName = "192.168.1.141";
-          sshUser = "picofactory-buildfarm";
-          sshKey = "/home/me/.ssh/id_picofactory_buildfarm";
-          system = "x86_64-linux";
-          maxJobs = 1;
-        }
-        # { hostName = "picofactory-kitting"; # 192.168.1.129
-        { hostName = "192.168.1.129";
-          sshUser = "picofactory-buildfarm";
-          sshKey = "/home/me/.ssh/id_picofactory_buildfarm";
-          system = "x86_64-linux";
-          maxJobs = 1;
-        }
+        # # Build stuff in a distributed fashion when at picofactory
+        # # { hostName = "picofactory-conference"; # 192.168.1.141
+        # { hostName = "192.168.1.141";
+        #   sshUser = "picofactory-buildfarm";
+        #   sshKey = "/home/me/.ssh/id_picofactory_buildfarm";
+        #   system = "x86_64-linux";
+        #   maxJobs = 1;
+        # }
+        # # { hostName = "picofactory-kitting"; # 192.168.1.129
+        # { hostName = "192.168.1.129";
+        #   sshUser = "picofactory-buildfarm";
+        #   sshKey = "/home/me/.ssh/id_picofactory_buildfarm";
+        #   system = "x86_64-linux";
+        #   maxJobs = 1;
+        # }
       ];
 
 
@@ -80,11 +88,13 @@ in
     ];
     binaryCachePublicKeys = [
       "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+      "arm.cachix.org-1:fGqEJIhp5zM7hxe/Dzt9l9Ene9SY27PUyx3hT9Vvei0="
     ];
-    # requireSignedBinaryCaches = false; # Needed for personal hydra cache (at the moment)
+    requireSignedBinaryCaches = false; # Needed for personal hydra cache (at the moment)
     trustedBinaryCaches = [
       myhydraserver
       https://hydra.circuithub.com
+      https://arm.cachix.org
     ];
 
     # TEMPORARY: for nix copy (aka nix-copy-closure)

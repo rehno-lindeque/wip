@@ -16,6 +16,18 @@ in
             '';
           };
         };
+        thunderboltPre2015 = {
+          # See https://github.com/Dunedan/mbp-2016-linux/issues/24#issuecomment-311006923
+          enable = mkOption {
+            type = types.bool;
+            default = true;
+            description = ''
+              Ostensibly this only works on macbooks older that 2015.
+              If you don't use 
+              permanently because Apple didn't bother to support Thunderbolt 
+            '';
+          };
+        };
       };
     };
   };

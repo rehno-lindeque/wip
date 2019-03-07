@@ -1,4 +1,3 @@
-# This is not the service itself, but a modification to the actkbd service
 { config, lib, pkgs, ... }:
 
 with lib;

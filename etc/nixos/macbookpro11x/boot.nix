@@ -1,6 +1,7 @@
 {
   pkgs
 , lib
+, config
 , ... 
 }:
 
@@ -49,24 +50,32 @@ let
     linux_default =
       {
         kernelPackages = pkgs.linuxPackages;
-        kernelPatches =
-          [
-            # Makes backlight and suspend work
-            # macbook-apple-gmux
+        # kernelPatches =
+        #   [
+        #     # Makes backlight and suspend work
+        #     # macbook-apple-gmux
 
-            # macbook-intel-pstate-backport
-            # macbook-suspend
-            # macbook-apple-poweroff-quirk-workaround
+        #     # macbook-intel-pstate-backport
+        #     # macbook-suspend
+        #     # macbook-apple-poweroff-quirk-workaround
 
-            # # Needed?
-            # change-default-console-loglevel
-          ];
+        #     # # Needed?
+        #     # change-default-console-loglevel
+        #   ];
       };
     linux_4_14 =
       {
         kernelPackages = pkgs.linuxPackages_4_14;
         kernelPatches = linux_default.kernelPatches ++ [];
         blacklistedKernelModules = [];
+      };
+    # linux_4_17 =
+    #   {
+    #     kernelPackages = pkgs.linuxPackages_4_17;
+    #   };
+    linux_4_20 =
+      {
+        kernelPackages = pkgs.linuxPackages_4_20;
       };
     linux_latest =
       {
@@ -118,19 +127,28 @@ in
             ];
         };
 
-      # inherit (linux_default) kernelPackages kernelPatches;
-      inherit (linux_4_14) kernelPackages kernelPatches blacklistedKernelModules;
+      # inherit (linux_default) kernelPackages;
+      # inherit (linux_4_14) kernelPackages kernelPatches blacklistedKernelModules;
+      # inherit (linux_4_17) kernelPackages;
       # inherit (linux_latest) kernelPackages kernelPatches blacklistedKernelModules;
+      inherit (linux_4_20) kernelPackages;
 
       kernelParams =
-        [
+        let
+          # kernelVersion = config.boot.kernelPackages.kernel.version;
+          kernelVersion = kernelPackages.kernel.version;
+        in
           # Adding 'acpi_osi=' to kernel parameters reportedly brings the battery life of a MacBook Air 2013 from 5 hours to 11-12 hours. See this forum post for more information.
           # * https://wiki.archlinux.org/index.php/Mac#Power_management
           # * https://wiki.archlinux.org/index.php/MacBookPro11,x#Kernel_parameters
           # * https://bugzilla.kernel.org/show_bug.cgi?id=177151#c10
           # * https://bugs.freedesktop.org/show_bug.cgi?id=96645 (TODO: patch)
-          "acpi_osi="
-        ] ++ (if lib.versionOlder kernelPackages.kernel.version "4.10" then [] else [ "intremap=nosid" ]);
+          ( if lib.versionOlder kernelVersion "4.17"
+            then [ "acpi_osi=" ] # TODO: May not be necessary anymore
+            else [ "acpi_osi=Darwin" ] # TODO: May not be necessary?
+          )
+          # [ "acpi_osi=Darwin" ]
+          ++ (if lib.versionOlder kernelVersion "4.10" then [] else [ "intremap=nosid" ]);
 
       loader.grub.enable = false;
 
@@ -158,24 +176,24 @@ in
         # shows that it is off by default while https://wiki.archlinux.org/index.php/ATI#Powersaving implies that it is supported for R6xx and newer chips
         ''
         options radeon.dpm=1
-        '' +
-        # Turning on explicitly (probably default)
-        # active state power management seems like a good idea
-        # * See http://www.phoronix.com/scan.php?page=news_item&px=MTQxMzM
         ''
-        options radeon.aspm=1
-        '' +
-        # Turning on explicitly (probably default)
-        # * https://kernelnewbies.org/Linux_3.13#head-f95c198f6fdc7defe36f470dc8369cf0e16898df
-        # * See http://blog.laplante.io/2014/07/disable-radeon-power-management-newer-linux-kernels/
-        ''
-        options radeon.runpm=1
-        '' +
-        # allows graphical boot and instant console switching etc
-        # * See https://wiki.archlinux.org/index.php/kernel_mode_setting
-        ''
-        options radeon.modeset=1
-        ''
+        # # Turning on explicitly (probably default)
+        # # active state power management seems like a good idea
+        # # * See http://www.phoronix.com/scan.php?page=news_item&px=MTQxMzM
+        # ''
+        # options radeon.aspm=1
+        # '' +
+        # # Turning on explicitly (probably default)
+        # # * https://kernelnewbies.org/Linux_3.13#head-f95c198f6fdc7defe36f470dc8369cf0e16898df
+        # # * See http://blog.laplante.io/2014/07/disable-radeon-power-management-newer-linux-kernels/
+        # ''
+        # options radeon.runpm=1
+        # '' +
+        # # allows graphical boot and instant console switching etc
+        # # * See https://wiki.archlinux.org/index.php/kernel_mode_setting
+        # ''
+        # options radeon.modeset=1
+        # ''
         # This option is a nice idea, but seems to freeze startup after forcible shutdown
         # ''
         # options resume=/dev/sda4

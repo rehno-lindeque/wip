@@ -11,6 +11,12 @@
     /*                   # TODO: Doesn't appear to be necessary... */
     /*    ]; */
     /* }; */
+    initrd = {
+      kernelModules =
+       [
+         "evdev"    # Is this necessary for actkbd to work properly?
+       ];
+    };
     # Start a root shell if something goes wrong during stage 1 of the boot process (there is no authentiatcation for the root shell)
     kernelParams = [ "boot.shell_on_fail" ];
 

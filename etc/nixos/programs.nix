@@ -4,7 +4,12 @@
 
 {
   programs = {
-    bash.enableCompletion = true; # auto-completion in bash
+    bash = {
+      enableCompletion = true; # auto-completion in bash
+      interactiveShellInit = ''
+        export HISTCONTROL=ignorespace;
+      '';
+    };
     ssh = {
       startAgent = true;        # don't type in a password on every SSH connection that is made
       # agentTimeout = "96h";     # TODO: How long should we set this?

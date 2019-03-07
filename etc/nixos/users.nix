@@ -50,8 +50,13 @@
                 # pciutils         # List PCI devices using lspci
                 # unrar              # Extract files from .rar
                 zip                # Create .zip archives
+                btrfsProgs
                 # tree               # Directory listings in tree format
                 kbfs                # Keybase filesystem
+                # xorg.luit-2_x
+                nix-top
+                nix-du
+                appimage-run
 
                 # Identity
                 keybase
@@ -61,7 +66,9 @@
                 # daedalus
 
                 # Networking
+                ipfs
                 ipfs-swarm-key-gen
+                ipfs-migrator
                 # trickle
                 # networkmanager_strongswan        # Connect to ipsec VPN with strongswan key exchange
 
@@ -90,6 +97,12 @@
                 # vifm                           # file manager with vi-like keybindings
                 # tree                           # show a directory tree (like ls -R, but prettier)
                 # feh                            # quickly preview image files (I'm using this with actkbd to display cheatsheets)
+                flameshot                        # quick image/screenshot annotation tool
+                                                 # TODO: add to dbus.packages and possibly extraGSettingsOverrides
+                simplescreenrecorder             # record your screen
+                xosd                             # display text overlay over the screen
+                xorg.xmodmap                     # modify keyboard layout on the fly
+                tldr                             # summaries of man pages
 
                 # Configuration
                 # gnome3.dconf
@@ -103,11 +116,14 @@
                 elfutils    # linker, assembler, strip, etc (elfutils is a replacement for the older binutils)
                 # zlib        # useful for compiling several haskell packages e.g. elm's BuildFromSource.hs
                 # zlibStatic # useful for compiling several haskell packages e.g. elm's BuildFromSource.hs
+                cabal2nix
 
                 # Editors
                 me-vim
                 # sublime3
-                yi
+                # yi
+                # me-yi
+                # kakoune
 
                 # Software development
                 gitFull                       # the most popular version control system
@@ -165,6 +181,7 @@
 
                 # Artistic
                 gimp
+                # blender
 
                 # Shell
                 # fish           # modern featureful shell
@@ -176,6 +193,7 @@
 
                 # Office
                 # simple-scan
+                gnumeric
 
                 # Aesthetics
                 hicolor_icon_theme    # Seems to be desired by some gnome or gtk applications (syncthing-gtk)?

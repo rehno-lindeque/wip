@@ -303,13 +303,13 @@ nnoremap <Leader>w :w<CR>
 nnoremap <Leader>wq :wq<CR>
 nnoremap <Leader>q :q<CR>
 nnoremap <Leader>Q :q!<CR>
-nnoremap <Leader>bp :bp<CR>
-nnoremap <Leader>bn :bn<CR>
+" nnoremap <Leader>bp :bp<CR>
+" nnoremap <Leader>bn :bn<CR>
 nnoremap <Leader>bd :bd<CR>
 " nnoremap <Leader> :
 
-nnoremap <Leader>bp :bp<CR>
-nnoremap <Leader>bn :bn<CR>
+" nnoremap <Leader>bp :bp<CR>
+" nnoremap <Leader>bn :bn<CR>
 nnoremap <Leader>bd :bd<CR>
 
 " copy & paste to system clipboard with <Space>p and <Space>y:

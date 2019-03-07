@@ -43,6 +43,13 @@ in
     shellAliases = {
       yim        = ''yi --keymap=vim --frontend=vty'';
       yimacs     = ''yi --keymap=emacs'';
+      yicua      = ''yi --keymap=cua'';
+      yidev      = ''nix-shell ${config.users.users.me.home}/.config/yi/shell.nix --run "cd ${config.users.users.me.home}/.config/yi; cabal run yi" '';
+      yishell    = ''cd ${config.users.users.me.home}/.config/yi; nix-shell'';
+      # norman     = ''xmodmap ${pkgs.norman-keyboard-layout}/xmodmap/xmodmap.norman'';
+      norman     = ''xmodmap ${pkgs.me-keyboard-layout}'';
+      jlimaj     = ''xmodmap ${pkgs.me-keyboard-layout}'';
+      qwerty     = ''setxkbmap us'';
       chshell    = ''cd ~/projects/development/circuithub/mono ; nix-shell --arg dev true'';
       git-conflicts = ''_lambda(){ git status -s | grep \\\(UU\\\|AA\\\) | sed "s/\(UU\|AA\) //"; }; _lambda''; # open vim with unmerged files
       git-branches = ''git for-each-ref --sort=-committerdate refs/heads/ --format="%(committerdate:short) %(authorname) %(refname:short)"''; # list branches by date
@@ -161,6 +168,8 @@ in
       clip = ''xclip -selection clipboard'';
       simpledate = ''date +%Y-%m-%d'';
       battery = ''cat /sys/class/power_supply/BAT0/capacity'';
+      diskuse-by-size = ''du -h -d 1 --apparent-size -c --threshold=10000 2>/dev/null | sort -h'';
+      netstat-open-ports = ''netstat -tnlp'';
 
       # Generate a new gpg key
       # nixos.gnupg = 
@@ -183,8 +192,10 @@ in
       unzip
       silver-searcher     # ag command lets you grep very fast and can be used in vim
 
+      # Diagnostic
+      diagnostic-env
+
       # Nix packaging
-      nix-repl
       nix-prefetch-scripts # use this to generate sha for github packages while building nix expressions using pkgs.fetchFromGitHub
       # nox                # an interactive installer for nix (it is slightly more newbie-friendly than nix-env)
                            # * I don't use this right now because it seems a little bit buggy at the moment
