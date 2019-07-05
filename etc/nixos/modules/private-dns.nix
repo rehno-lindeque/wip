@@ -7,7 +7,7 @@
 # https://wiki.archlinux.org/index.php/Stubby
 
 let
-  inherit (lib) mkOption mkIf types;
+  inherit (lib) mkOption mkIf mkMerge types;
   cfg = config.services.privateDns;
 in
 {
@@ -61,13 +61,15 @@ in
   };
   config = mkIf cfg.enable {
 
-    networking = {
-      nameservers = [];
-      hosts = lib.optionalAttrs cfg.useTor
-        { "127.0.0.1" = [ "dns4torpnlfs2ifuz2s2yf3fc7rdmsbhm6rw75euj35pac6ap25zgqad.onion" ]; };
-    } // mkIf config.networking.networkmanager.enable {
-      networkmanager.dns = "none";
-    };
+    networking = mkMerge [
+      { nameservers = [];
+        hosts = lib.optionalAttrs cfg.useTor
+          { "127.0.0.1" = [ "dns4torpnlfs2ifuz2s2yf3fc7rdmsbhm6rw75euj35pac6ap25zgqad.onion" ]; };
+      }
+      (mkIf config.networking.networkmanager.enable {
+        networkmanager.dns = "none";
+      })
+    ];
 
     services.tor = lib.optionalAttrs cfg.useTor {
       enable = true;
