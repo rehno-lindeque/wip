@@ -6,9 +6,12 @@
 
 with lib;
 
+let
+  resetPermissionsOnBoot = false;
+in
 {
   system = {
-    activationScripts = {
+    activationScripts = optionalAttrs resetPermissionsOnBoot {
       # Make sure the main user has the desired directory structure
       myDirectories = stringAfter [ "stdio" "users" ] (''
           echo "Reset home directory permissions"
@@ -61,5 +64,6 @@ with lib;
     # autoUpgrade = {
     #   channel = "https://nixos.org/channels/nixos-18.03";
     # };
+    nixos.tags = [ "linux-${config.boot.kernelPackages.kernel.version}" ];
   };
 }

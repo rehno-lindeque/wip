@@ -50,7 +50,12 @@ in
       norman     = ''xmodmap ${pkgs.me-keyboard-layout}'';
       jlimaj     = ''xmodmap ${pkgs.me-keyboard-layout}'';
       qwerty     = ''setxkbmap us'';
+
       chshell    = ''cd ~/projects/development/circuithub/mono ; nix-shell --arg dev true'';
+      buildershell = ''cd ~/projects/config/remotebuilders-network ; nix-shell'';
+      homeshell = ''cd ~/projects/config/home-network ; nix-shell'';
+      factoryshell = ''cd ~/projects/development/circuithub/mono/factory-infrastructure ; nix-shell'';
+
       git-conflicts = ''_lambda(){ git status -s | grep \\\(UU\\\|AA\\\) | sed "s/\(UU\|AA\) //"; }; _lambda''; # open vim with unmerged files
       git-branches = ''git for-each-ref --sort=-committerdate refs/heads/ --format="%(committerdate:short) %(authorname) %(refname:short)"''; # list branches by date
       git-branches-diff = ''diff --color --side-by-side --suppress-common-lines <(git for-each-ref --sort=-objectname refs/heads --format="%(committerdate:short) %(refname:strip=2) %(authorname)") <(git for-each-ref --sort=-objectname refs/remotes/origin --format="%(committerdate:short) %(refname:strip=3) %(authorname)")''; # diff with origin branches
@@ -61,6 +66,7 @@ in
       upgrade    = ''sudo -E nixos-rebuild switch --upgrade -I devpkgs=${config.users.users.me.home}/projects/config/nixpkgs'';
       switch     = ''sudo -E nixos-rebuild switch -I devpkgs=${config.users.users.me.home}/projects/config/nixpkgs'';
       nixos-rebuild-unstable = ''nixos-rebuild -I /root/.nix-defexpr/channels/nixos-unstable'';
+      nixos-env = ''nix-env --profile /nix/var/nix/profiles/system'';
       nixos-list-generations = ''nix-env --list-generations --profile /nix/var/nix/profiles/system'';
       nixq       = ''nix-env --query --available --attr-path --description | fgrep --ignore-case --color'';
       nixhq      = ''nix-env --file "<nixpkgs>" --query --available --attr-path --attr haskellPackages --description | fgrep --ignore-case --color''; # query haskellPackages
@@ -134,7 +140,15 @@ in
       diffetc    =
         ''
         diff -qNr /etc/nixos/ ${config.users.users.me.home}/projects/config/dotfiles/etc/nixos -x result | sed "s/Files\\s//g; s/\\sand//g; s/differ//g" | while read line ; do
-          touch $line
+          for f in $line
+          do
+            if [[ ! -f "$f" ]]
+            then
+              read -p "Create $f? " -n 1 -r reply </dev/tty
+              echo
+              if [[ $reply =~ ^[Yy]$ ]]; then touch "$f"; fi
+            fi
+          done
           ${config.environment.variables.DIFFTOOL} $line
         done;
         '';
@@ -165,6 +179,8 @@ in
         done
         '';
       git-unpushed-branches = ''git log --branches --not --remotes --simplify-by-decoration --decorate --oneline'';
+      git-grep-all = ''_lambda(){ git rev-list --all | xargs git grep $@; }; _lambda'';
+      git-find-file = ''git log --all -- '';
       clip = ''xclip -selection clipboard'';
       simpledate = ''date +%Y-%m-%d'';
       battery = ''cat /sys/class/power_supply/BAT0/capacity'';
@@ -176,6 +192,7 @@ in
 
       # temporary helpers (fix problems)
       disablegpe16 = ''echo "disable" > /sys/firmware/acpi/interrupts/gpe16'';
+      randmac = "printf '%02x' $((0x$(od /dev/urandom -N1 -t x1 -An | cut -c 2-) & 0xFE | 0x02)); od /dev/urandom -N5 -t x1 -An | sed 's/ /:/g'";
     };
 
     # shellInit

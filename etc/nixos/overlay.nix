@@ -17,6 +17,10 @@ let
   };
 in
 {
+  linux_5_1_rc4 = self.callPackage ./linux-5.1-rc4.nix {};
+  linuxPackages_5_1_rc4 = self.recurseIntoAttrs (self.linuxPackagesFor self.linux_5_1_rc4);
+
+
   # See https://github.com/NixOS/nixpkgs/blob/e715283dcaffcd78faed82b483924141a281bdca/pkgs/applications/networking/remote/teamviewer/default.nix
   # See https://github.com/NixOS/nixpkgs/issues/26137
   # teamviewer = self.teamviewer.overrideAttrs (oldAttrs: rec {

@@ -77,6 +77,10 @@ let
       {
         kernelPackages = pkgs.linuxPackages_4_20;
       };
+    linux_5_1 =
+      {
+        kernelPackages = pkgs.linuxPackages_5_1_rc4;
+      };
     linux_latest =
       {
         kernelPackages = pkgs.linuxPackages_latest;
@@ -127,11 +131,12 @@ in
             ];
         };
 
-      # inherit (linux_default) kernelPackages;
+      inherit (linux_default) kernelPackages;
       # inherit (linux_4_14) kernelPackages kernelPatches blacklistedKernelModules;
       # inherit (linux_4_17) kernelPackages;
       # inherit (linux_latest) kernelPackages kernelPatches blacklistedKernelModules;
-      inherit (linux_4_20) kernelPackages;
+      # inherit (linux_4_20) kernelPackages;
+      # inherit (linux_5_1) kernelPackages;
 
       kernelParams =
         let
@@ -156,8 +161,8 @@ in
       # TODO: is model=115 correct? I've see model=101 but this isn't in any documentation on the internet
       #       we may want to make this model=auto or leave it out entirely
       extraModprobeConfig =
+        # options libata.force=noncq
         ''
-        options libata.force=noncq
         options snd_hda_intel index=0 model=intel-mac-auto id=PCH
         options snd_hda_intel index=1 model=intel-mac-auto id=HDMI
         options snd_hda_intel model=115
@@ -175,8 +180,8 @@ in
         # $ systool -v -m radeon | grep dpm 
         # shows that it is off by default while https://wiki.archlinux.org/index.php/ATI#Powersaving implies that it is supported for R6xx and newer chips
         ''
-        options radeon.dpm=1
         ''
+        # options radeon.dpm=1
         # # Turning on explicitly (probably default)
         # # active state power management seems like a good idea
         # # * See http://www.phoronix.com/scan.php?page=news_item&px=MTQxMzM

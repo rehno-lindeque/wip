@@ -33,6 +33,7 @@
                   # "psql"           # Postgres sql
                   # "plugdev"        # Access external storage devices
                   "git"            # Access to all git repositories
+                  # "wireshark"      # Permission to capture with wireshark
                 ];
               isSystemUser = false;
               useDefaultShell = true;
@@ -193,7 +194,8 @@
 
                 # Office
                 # simple-scan
-                gnumeric
+                # gnumeric
+                # pdfshuffler
 
                 # Aesthetics
                 hicolor_icon_theme    # Seems to be desired by some gnome or gtk applications (syncthing-gtk)?

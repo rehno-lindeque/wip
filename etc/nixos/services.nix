@@ -278,41 +278,50 @@
       # # Editors
       # emacs.enable = true;
 
-      # # Printing
-      # printing = {
-      #   enable = true;
-      # #   # browsing = true;
-      # #   # defaultShared = true;
-      # };
+      # Printing
+      printing = {
+        enable = true;
+      #   # browsing = true;
+      #   # defaultShared = true;
+      };
 
-      # avahi = {
-      #   enable = true;
-      #   nssmdns = true;
-      #   # publish = {
-      #   #   enable = true;
-      #   #   userServices = true;
-      #   # };
-      # };
+      avahi = {
+        enable = true;
+        nssmdns = true;
+        # publish = {
+        #   enable = true;
+        #   userServices = true;
+        # };
+      };
 
       # samba = {
       #   enable = true;
       #   nsswins = true;
       # };
-    };
 
-    # # Serve binary caches (experimental)
-    # # Cant seem to get this working for outside connections:
-    # # nix-shell -p nix-serve --run 'nix-serve --listen 192.168.1.203:5000'
-    # # nix-shell -p nix-serve --run 'nix-serve --listen 0.0.0.0:5000'
-    # # nix-shell -p nix-serve --run 'nix-serve --listen *:5000'
-    # services.nix-serve = {
-    #   enable = true;
-    #   # bindAddress = "192.168.1.0";
-    #   # bindAddress = "0.0.0.0";
-    #   # bindAddress = "192.168.1.137";
-    # };
-    # # nix.sshServe = {
-    # #   enable = true;
-    # #   keys = [];
-    # # };
+      # # Serve binary caches (experimental)
+      # # Cant seem to get this working for outside connections:
+      # # nix-shell -p nix-serve --run 'nix-serve --listen 192.168.1.203:5000'
+      # # nix-shell -p nix-serve --run 'nix-serve --listen 0.0.0.0:5000'
+      # # nix-shell -p nix-serve --run 'nix-serve --listen *:5000'
+      # services.nix-serve = {
+      #   enable = true;
+      #   # bindAddress = "192.168.1.0";
+      #   # bindAddress = "0.0.0.0";
+      #   # bindAddress = "192.168.1.137";
+      # };
+      # # nix.sshServe = {
+      # #   enable = true;
+      # #   keys = [];
+      # # };
+
+      privateDns = {
+        enable = true;
+        useTor = false;
+        specificNameServers = {
+          #gitignore
+          #gitignore
+        };
+      };
+  };
 }

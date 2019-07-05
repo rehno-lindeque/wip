@@ -44,16 +44,43 @@ in
     # TODO: use programs.ssh.knownHosts?
     buildMachines =
       [ # Automatically build arm expressions on my raspberry pi
-        # { hostName = "192.168.0.11"; # home
-        # { hostName = "192.168.100.228"; # work
-        { hostName = "192.168.100.135"; # work-wifi
-        # # { hostName = "192.168.0.12"; # home/work
+        # { hostName = "192.168.0.23"; # home rpi
+        #   sshUser = "root"; # TODO: change
+        #   sshKey = "/home/me/.ssh/id_accesspoint";
+        #   system = "aarch64-linux";
+        #   maxJobs = 1;
+        #   supportedFeatures = [ "big-parallel" "kvm" ];
+        # }
+
+        # { hostName = "192.168.100.135"; # work rpi
+        { hostName = "192.168.0.18"; # work rpi
+          # sshUser = "picofactory-buildfarm";
           sshUser = "root"; # TODO: change
-          sshKey = "/home/me/.ssh/id_accesspoint";
+          sshKey = "/home/me/.ssh/id_picofactory_buildfarm";
           system = "aarch64-linux";
           maxJobs = 1;
-          supportedFeatures = [ "big-parallel" ];
+          supportedFeatures = [ "big-parallel" "kvm" ];
         }
+        # { hostName = "192.168.100.203";
+        #   sshUser = "root";
+        #   sshKey = "/home/me/.ssh/id_accesspoint";
+        #   system = "aarch64-linux";
+        #   maxJobs = 0;
+        #   supportedFeatures = [ "big-parallel" "kvm" ];
+        # }
+
+
+#         # ec2 aarch64
+#         { hostName = "3.84.253.193";
+#           sshUser = "root"; # TODO: change
+#           sshKey = "/home/me/.ssh/id_accesspoint";
+#           system = "aarch64-linux";
+#           # maxJobs = 4;
+#           maxJobs = 16;
+#           speedFactor = 99;
+#           supportedFeatures = [ "big-parallel" "kvm" ];
+#         }
+
         # # Build stuff in a distributed fashion when at picofactory
         # # { hostName = "picofactory-conference"; # 192.168.1.141
         # { hostName = "192.168.1.141";

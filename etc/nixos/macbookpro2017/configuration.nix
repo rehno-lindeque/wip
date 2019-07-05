@@ -54,10 +54,16 @@
       homeProjectsDevelopment = "${config.users.users.me.home}/projects/development";
     in
       (importInputs "${homeProjectsDevelopment}/circuithub/mono/shell.nix" { dev = true; })
-      ++ [ 
-        # Patched version of linux
+      ++ [
+        # Patched version of linux for rpi (todo: update)
         /nix/store/ilkyfznsagirkjvrg89sgf1j96g8pai9-linux-4.19.26-dev
         /nix/store/i17hyy2n5cwn0fgjhl7r4bb51j4h6p00-linux-4.19.26
+        # amazon ec2 image for aarch64 ami (todo: update)
+        /nix/store/kf24wjavfjsmckvql17m4mm0534ci9vq-nixos-disk-image
+        # nixops aarch64 remote builder (drv doesn't work for this)
+        # /nix/store/x59kcx0ylgnjs31hgsckhwpk1rgcc9wb-nixops-machines.drv
+        # nixops raspberry pi 3B+ linux image (todo: update)
+        /nix/store/p7nm0nni4kpz7i9sy0p705a4kz1ffz6c-linux-4.19.13
       ];
 
   # TODO: basler camera hardware module

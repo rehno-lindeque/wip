@@ -49,6 +49,9 @@
       # ./modules/diwata
       ./modules/tiny-http-server.nix
 
+      # collections of services
+      ./modules/private-dns.nix
+
       # development
       # ./circuithub/services.nix #gitignore
       # ./circuithub/networking.nix #gitignore
