@@ -13,10 +13,23 @@
       # defaultUserShell = "/run/current-system/sw/bin/gnome-terminal";
       users =
         {
+          # Limited sandbox user
+          #sandy = {
+          #  group = "nogroup";
+          #  isNormalUser = true;
+          #  createHome = true;
+          #  extraGroups = [];
+          #  isSystemUser = false;
+          #  packages = with pkgs; [
+          #    # Horrible proprietary crap
+          #    striata-reader-env
+          #  ];
+          #};
+
           me =
             {
               group = "users";
-              uid = 105;
+              uid = 1005;
               createHome = true;
               home = "/home/${config.users.users.me.name}";
               extraGroups =
@@ -51,13 +64,14 @@
                 # pciutils         # List PCI devices using lspci
                 # unrar              # Extract files from .rar
                 zip                # Create .zip archives
-                btrfsProgs
+                # btrfsProgs
                 # tree               # Directory listings in tree format
                 kbfs                # Keybase filesystem
                 # xorg.luit-2_x
                 nix-top
                 nix-du
-                appimage-run
+                # appimage-run
+                nixos-generators
 
                 # Identity
                 keybase
@@ -68,8 +82,8 @@
 
                 # Networking
                 ipfs
-                ipfs-swarm-key-gen
-                ipfs-migrator
+                # ipfs-swarm-key-gen
+                # ipfs-migrator
                 # trickle
                 # networkmanager_strongswan        # Connect to ipsec VPN with strongswan key exchange
 
@@ -148,6 +162,7 @@
                 # sqlcrush
                 # nix-diff-drv
                 # teamviewer
+                # insomnia
 
                 # Database tools
                 # pgadmin
@@ -158,7 +173,7 @@
                 gnome3.eog
 
                 # Screen capture
-                gnome3.gnome-screenshot
+                # gnome3.gnome-screenshot
                 # peek
                 # gifine
 

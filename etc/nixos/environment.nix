@@ -56,10 +56,12 @@ in
       buildershell = ''cd ~/projects/config/remotebuilders-network ; nix-shell'';
       homeshell = ''cd ~/projects/config/home-network ; nix-shell'';
       factoryshell = ''cd ~/projects/development/circuithub/mono/factory-infrastructure ; nix-shell'';
+      accountingshell = ''cd ~/private-personal/accounting/'';
 
-      git-conflicts = ''_lambda(){ git status -s | grep \\\(UU\\\|AA\\\) | sed "s/\(UU\|AA\) //"; }; _lambda''; # open vim with unmerged files
+      git-conflicts = ''git diff --name-only --diff-filter=U'';
       git-branches = ''git for-each-ref --sort=-committerdate refs/heads/ --format="%(committerdate:short) %(authorname) %(refname:short)"''; # list branches by date
       git-branches-diff = ''diff --color --side-by-side --suppress-common-lines <(git for-each-ref --sort=-objectname refs/heads --format="%(committerdate:short) %(refname:strip=2) %(authorname)") <(git for-each-ref --sort=-objectname refs/remotes/origin --format="%(committerdate:short) %(refname:strip=3) %(authorname)")''; # diff with origin branches
+      git-diff-relative = ''git diff --relative'';
       # config   = ''su ; cd /etc/nixos''; # TODO: how to start in /etc/nixos path?
       # upgrade  = ''sudo NIX_PATH="$NIX_PATH:unstablepkgs=${<unstablepkgs>}" nixos-rebuild switch --upgrade'';
       # upgrade  = ''sudo -E nixos-rebuild switch --upgrade -I devpkgs=${config.users.users.me.home}/projects/config/nixpkgs -I unstablepkgs=/nix/var/nix/profiles/per-user/root/channels/nixos-unstable/nixpkgs'';
@@ -69,6 +71,7 @@ in
       nixos-rebuild-unstable = ''nixos-rebuild -I /root/.nix-defexpr/channels/nixos-unstable'';
       nixos-env = ''nix-env --profile /nix/var/nix/profiles/system'';
       nixos-list-generations = ''nix-env --list-generations --profile /nix/var/nix/profiles/system'';
+      nix-list-generations = ''nix-env --list-generations'';
       nixq       = ''nix-env --query --available --attr-path --description | fgrep --ignore-case --color'';
       nixhq      = ''nix-env --file "<nixpkgs>" --query --available --attr-path --attr haskellPackages --description | fgrep --ignore-case --color''; # query haskellPackages
       nixnq      = ''nix-env --file "<nixpkgs>" --query --available --attr-path --attr nodePackages --description | fgrep --ignore-case --color''; # query nodePackages
@@ -211,7 +214,7 @@ in
       silver-searcher     # ag command lets you grep very fast and can be used in vim
 
       # Diagnostic
-      diagnostic-env
+      # diagnostic-env
 
       # Nix packaging
       nix-prefetch-scripts # use this to generate sha for github packages while building nix expressions using pkgs.fetchFromGitHub
@@ -230,6 +233,7 @@ in
 
       # Security
       gnome3.gnome_keyring
+      # gocryptfs
 
       # Hardware control
       light

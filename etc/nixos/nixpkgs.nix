@@ -29,6 +29,11 @@ let
     #   url = "https://github.com/rehno-lindeque/nixpkgs/commit/805ea2480411b2973f111a9fa26c1adad4de63ce.patch";
     #   sha256 = "0hqj21nym9491jk20dihd0bdmndr1vc3im6i3323wn3ww3jf3w5m";
     # })
+    # (builtins.fetchurl {
+    #   name = "addOpenGLRunpath.patch";
+    #   url = "https://patch-diff.githubusercontent.com/raw/NixOS/nixpkgs/pull/60985.patch";
+    #   sha256 = "0vwdxqf1mv5psjz7y9q1rpfn5vd4kgsihbcf9psvakziw7cf03hp";
+    # })
   ];
   nixpkgsVersion = lib.fileContents <nixpkgs/.version>;
   nixpkgsVersionSuffix = lib.fileContents <nixpkgs/.version-suffix>;
@@ -52,18 +57,18 @@ in
       allowUnfree = true;
 
       # Non-overlay overrides
-      packageOverrides = pkgs: {
-        # See https://nixos.wiki/wiki/Cheatsheet#Customizing_Packages
-        # unstable = import <nixos-unstable> { config = config.nixpkgs.config; };
-      };
+      # packageOverrides = pkgs: {
+      #   # See https://nixos.wiki/wiki/Cheatsheet#Customizing_Packages
+      #   # unstable = import <nixos-unstable> { config = config.nixpkgs.config; };
+      # };
     };
     overlays = [
       (import ./overlay.nix)
       # (import "${nixpkgs-mozilla}/rust-overlay.nix")
-      #gitignore
+      # (import "/home/me/projects/development/ml-papers-pkgs/overlay.nix") #gitignore
     ];
-    pkgs = import patchedPkgs {
-      inherit (config.nixpkgs) config overlays system;
-    };
+    # pkgs = import patchedPkgs {
+    #   inherit (config.nixpkgs) config overlays system;
+    # };
   };
 }

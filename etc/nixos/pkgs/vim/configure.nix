@@ -30,12 +30,12 @@ in
               \   .  get(g:, 'hdevtools_options', "")
               \   . ' -p %s %t'
           endfunction
-          call ale#linter#Define('haskell', {
-          \   'name': 'hdevtools2',
-          \   'executable': 'hdevtools',
-          \   'command_callback': 'Ale_linters_haskell_hdevtools2_GetCommand',
-          \   'callback': 'ale#handlers#HandleGhcFormat',
-          \})
+          " call ale#linter#Define('haskell', {
+          " \   'name': 'hdevtools2',
+          " \   'executable': 'hdevtools',
+          " \   'command_callback': 'Ale_linters_haskell_hdevtools2_GetCommand',
+          " \   'callback': 'ale#handlers#HandleGhcFormat',
+          " \})
           function! Ale_linters_haskell_hlint_Command(buffer) abort
               let l:opts = ""
             if exists("g:ghcmod_hlint_options")
@@ -61,12 +61,12 @@ in
               endfor
               return l:output
           endfunction
-          call ale#linter#Define('haskell', {
-          \   'name': 'hlint2',
-          \   'executable': 'hlint',
-          \   'command_callback': 'Ale_linters_haskell_hlint_Command',
-          \   'callback': 'Ale_linters_haskell_hlint_Handle',
-          \})
+          " call ale#linter#Define('haskell', {
+          " \   'name': 'hlint2',
+          " \   'executable': 'hlint',
+          " \   'command_callback': 'Ale_linters_haskell_hlint_Command',
+          " \   'callback': 'Ale_linters_haskell_hlint_Handle',
+          " \})
 
           " }}}
           """"""""""""""

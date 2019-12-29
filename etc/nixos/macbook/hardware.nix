@@ -15,5 +15,8 @@
 
     # Grant group access to the keyboard backlight.
     leds.enable = true;
+
+    # Enable YubiKey support
+    yubikey.enable = true;
   };
 }

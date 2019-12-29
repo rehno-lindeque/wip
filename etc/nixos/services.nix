@@ -107,10 +107,19 @@
       /* services.chrony.enable = true; */
       # timesyncd.enable = true;
 
+
+      # jupyterlab.enable = true;
+
       # Interplanetary File System
       ipfs = {
-        # enable = true;
-        # emptyRepo = true;
+        enable = true;
+        emptyRepo = true;
+        defaultMode = "offline";
+        # autoMount = true; # Not supported in offline mode
+        extraFlags = [
+          # See https://github.com/ipfs/go-ipfs/issues/3320#issuecomment-511467441
+          "--routing=dhtclient"
+        ];
         # extraConfig = {
         # };
       };
@@ -249,9 +258,9 @@
             '';
           in [
             { keys = [ 29 57 ]; events = [ "key" ]; command = "DISPLAY=:0 HOME=${me-home} ${feh-bin} -NZ ${workman_keyboard_layout}/workman_keyboard_layout.png &"; }
-            { keys = [ 113 ]; events = [ "key" ]; command = "XDG_RUNTIME_DIR=/run/user/105 ${pkgs.alsaUtils}/bin/amixer -q set Master toggle &"; }
-            { keys = [ 114 ]; events = [ "key" "rep" ]; command = "XDG_RUNTIME_DIR=/run/user/105 ${pkgs.alsaUtils}/bin/amixer -q set Master 5%- unmute &"; }
-            { keys = [ 115 ]; events = [ "key" "rep" ]; command = "XDG_RUNTIME_DIR=/run/user/105 ${pkgs.alsaUtils}/bin/amixer -q set Master 5%+ unmute &"; }
+            { keys = [ 113 ]; events = [ "key" ]; command = "XDG_RUNTIME_DIR=/run/user/1005 ${pkgs.alsaUtils}/bin/amixer -q set Master toggle &"; }
+            { keys = [ 114 ]; events = [ "key" "rep" ]; command = "XDG_RUNTIME_DIR=/run/user/1005 ${pkgs.alsaUtils}/bin/amixer -q set Master 5%- unmute &"; }
+            { keys = [ 115 ]; events = [ "key" "rep" ]; command = "XDG_RUNTIME_DIR=/run/user/1005 ${pkgs.alsaUtils}/bin/amixer -q set Master 5%+ unmute &"; }
             { keys = [ 229 ]; events = [ "key" "rep" ]; command = "${pkgs.kbdlight}/bin/kbdlight down &"; }
             { keys = [ 230 ]; events = [ "key" "rep" ]; command = "${pkgs.kbdlight}/bin/kbdlight up &"; }
             { keys = [ 224 ]; events = [ "key" "rep" ]; command = "${pkgs.light}/bin/light -U 4 &"; }

@@ -46,7 +46,7 @@ in
         #     '';
         # };
         specificNameServers = mkOption {
-          type = types.attrsOf types.string;
+          type = types.attrsOf types.str;
           default = {};
           example = {
             "home" = "192.168.0.1";
@@ -81,7 +81,13 @@ in
     services.stubby = {
       enable = true;
       listenAddresses = [ "127.0.0.1@53000" "0::1@53000" ];
-      extraConfig = ''dnssec_trust_anchors: "${pkgs.dnsmasq}/share/dnsmasq/trust-anchors.conf"'';
+      # TODO: add dnssec: I think stubby needs to remove DynamicUser = true and do this instead
+      # * https://github.com/NixOS/nixpkgs/pull/38667#issuecomment-388724688
+      # * https://dnsprivacy.org/wiki/display/DP/Configuring+Stubby#ConfiguringStubby-StorageofZero-configTrustanchor
+      # extraConfig = ''
+      #   dnssec: GETDNS_EXTENSION_TRUE
+      #   dnssec_trust_anchors: "${pkgs.dnsmasq}/share/dnsmasq/trust-anchors.conf"
+      # '';
     } // lib.optionalAttrs cfg.useTor {
       authenticationMode = "GETDNS_AUTHENTICATION_NONE";
       upstreamServers = ''
@@ -123,7 +129,10 @@ in
     users.groups =
       lib.optionalAttrs cfg.useTor { torsocks-dns-proxy = {}; };
 
-    systemd.services = lib.optionalAttrs cfg.useTor {
+    systemd.services = {
+      "dnsmasq".after = [ "network-online.service" "stubby.service" ];
+      "dnsmasq".wants = [ "network-online.service" "stubby.service" ];
+    } // lib.optionalAttrs cfg.useTor {
       "torsock-dns-proxy" = {
         enable = true;
         wantedBy = [ "multi-user.target" ];
@@ -172,6 +181,9 @@ in
           ''
           ${serversString}
 
+          # privacy
+          domain-needed
+          bogus-priv
           # ignore resolv.conf
           no-resolv
           # speed up queries for recent domains
@@ -180,11 +192,12 @@ in
           listen-address=::1,127.0.0.1
           interface=lo
           bind-interfaces
-          '' + lib.optionalString (!cfg.useTor)
-            ''
-            # forward dns validation provided by stubby
-            proxy-dnssec
-            '';
+          '';
+          # '' + lib.optionalString (!cfg.useTor)
+          #   ''
+          #   # forward dns validation provided by stubby
+          #   proxy-dnssec
+          #   '';
     };
   };
 }

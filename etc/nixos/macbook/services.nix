@@ -8,7 +8,7 @@
 {
   services = {
     dbus.enable = true;
-    locate.enable = true;
+    # locate.enable = true;
     # mpd.enable = true;    # music player daemon
     upower.enable = true;
 

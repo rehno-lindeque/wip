@@ -16,6 +16,7 @@
       # hardware modules
       ./modules/leds.nix
       ./modules/macbook.nix
+      ./modules/yubikey.nix
 
       # configuration
       # ./macbookpro2017/configuration.nix #gitignore
@@ -51,6 +52,9 @@
 
       # collections of services
       ./modules/private-dns.nix
+
+      # WIP
+      # /home/me/projects/development/jupyterlab-service/default.nix
 
       # development
       # ./circuithub/services.nix #gitignore

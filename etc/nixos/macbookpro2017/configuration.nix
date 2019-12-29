@@ -53,8 +53,8 @@
         # in [ drv ];
       homeProjectsDevelopment = "${config.users.users.me.home}/projects/development";
     in
-      (importInputs "${homeProjectsDevelopment}/circuithub/mono/shell.nix" { dev = true; })
-      ++ [
+      # (importInputs "${homeProjectsDevelopment}/circuithub/mono/shell.nix" {}) ++
+      [
         # Patched version of linux for rpi (todo: update)
         /nix/store/ilkyfznsagirkjvrg89sgf1j96g8pai9-linux-4.19.26-dev
         /nix/store/i17hyy2n5cwn0fgjhl7r4bb51j4h6p00-linux-4.19.26

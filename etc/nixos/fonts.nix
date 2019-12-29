@@ -5,12 +5,13 @@
 
 {
   fonts = {
-    # enableCoreFonts = true;
-    enableFontDir = true;
-    enableGhostscriptFonts = true;
+    # enableFontDir = true;
+    # enableGhostscriptFonts = true;
     fonts = with pkgs; [
+      source-code-pro
+      # hasklig
       # inconsolata         # monospaced
-      ubuntu_font_family  # Ubuntu fonts
+      # ubuntu_font_family  # Ubuntu fonts
       # corefonts
       # liberation_ttf
       # dejavu_fonts
@@ -19,33 +20,11 @@
       # fira
       # lmodern
     ];
+    enableDefaultFonts = true;
     fontconfig = { 
-      enable = true;
-      ultimate.enable = true;
-      antialias = true;
-      defaultFonts = {
-        monospace = [
-          "Source Code Pro"
-          "Meslo LG S for Lcarsline"
-          "DejaVu Sans Mono"
-        ];
-        sansSerif = [
-          "Ubuntu"
-          "DejaVu Sans"
-        ];
-        serif = [
-          "PT Serif" "Liberation Serif"
-        ];
-      };
-      hinting = {
-        autohint = false;
-        enable = true;
-      };
-      includeUserConf = true;
-      #includeUserConf = false;
       subpixel = {
-        lcdfilter = "default";
-        rgba = "rgb";
+        # lcdfilter has no effect at high resolutions (> 200 DPI)
+        # lcdfilter = "none";
       };
     };
   };
