@@ -1,2 +1,6 @@
-http://nixos.org/channels/nixos-unstable nixos-unstable
-https://nixos.org/channels/nixos-16.09 nixos
+https://nixos.org/channels/nixos-19.09 nixos
+https://nixos.org/channels/nixos-18.03 nixos-18.03
+https://nixos.org/channels/nixos-18.09 nixos-18.09
+https://github.com/rehno-lindeque/nixos-hardware/archive/master.tar.gz nixos-hardware
+https://nixos.org/channels/nixos-unstable nixos-unstable
+https://nixos.org/channels/nixpkgs-unstable nixpkgs-unstable
