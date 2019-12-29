@@ -52,6 +52,7 @@ in
       qwerty     = ''setxkbmap us'';
 
       chshell    = ''cd ~/projects/development/circuithub/mono ; nix-shell --arg dev true'';
+      notebookshell = ''cd ~/projects/config/notebook-network ; nix-shell'';
       buildershell = ''cd ~/projects/config/remotebuilders-network ; nix-shell'';
       homeshell = ''cd ~/projects/config/home-network ; nix-shell'';
       factoryshell = ''cd ~/projects/development/circuithub/mono/factory-infrastructure ; nix-shell'';

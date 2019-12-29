@@ -1,8 +1,13 @@
 { pkgs
 , config
+, lib
 , ...
 }:
 
+let
+  udevMouseProxy = false; # Turn on to deploy mouse proxy
+in
+lib.recursiveUpdate
 {
   # #
   # # Redirect localhost routes to circuithub.test subdomains
@@ -85,6 +90,7 @@
     #
     /* rabbitmq.enable = true; */
 
+    redis.enable = true;
     journald.rateLimitBurst = 1000;
     postgresql =
       {
@@ -107,5 +113,61 @@
     # Virtual Private Network
     /* strongswan.enable = true; */
 
+    /*
+    nginx =
+      { enable =
+          true;
+
+        virtualHosts =
+          { "localhost" =
+            {
+              # enableACME = true;
+              # forceSSL = true;
+              locations."/" = { proxyPass = "https://www.....com/"; };
+              extraConfig = ''
+                add_header 'Access-Control-Allow-Origin' '*';
+                add_header 'X-Frame-Options' 'allow-from *';
+                '';
+                # add_header 'Content-Security-Policy' 'frame-ancestors * filesystem:';
+                # add_header 'X-Frame-Options' 'allow-from *';
+                # add_header 'Access-Control-Allow-Origin' '*';
+                # add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS';
+                # add_header 'Access-Control-Allow-Headers' 'DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range';
+                # add_header 'Access-Control-Expose-Headers' 'Content-Length,Content-Range';
+                # add_header X-Frame-Options "";
+                # proxy_hide_header X-Frame-Options
+              # extraConfig = ''
+              #   add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
+              #   add_header X-Content-Type-Options nosniff;
+              #   add_header X-XSS-Protection "1; mode=block";
+              #   add_header X-Frame-Options DENY;
+              # '';
+            };
+          };
+
+         # "${cfg.hostname}" = {
+         #   forceSSL = true;
+         #   enableACME = true;
+         #   locations."/" = { proxyPass = "http://127.0.0.1:5232"; };
+         #   extraConfig = ''
+         #     add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
+         #     add_header X-Content-Type-Options nosniff;
+         #     add_header X-XSS-Protection "1; mode=block";
+         #     add_header X-Frame-Options DENY;
+         #   '';
+         # };
+      };
+      */
+
+
   };
+
 }
+(if ! udevMouseProxy then {} else
+{
+  boot.kernelModules = [ "uinput" ];
+  services.udev.extraRules = ''
+    KERNEL=="uinput", MODE="0666"
+    KERNEL=="event*", MODE="0666"
+  '';
+})
