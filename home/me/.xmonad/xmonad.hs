@@ -41,13 +41,13 @@ main = do
 
 -- myKeys :: SetupCfg_
 myKeys cfg = cfg
-  { modMask = mod1Mask
-  -- modMask = mod4Mask   -- super instead of alt (usually Windows key)
+  -- { modMask = mod1Mask
+  { modMask = mod4Mask   -- super instead of alt (usually Windows key)
   -- modMask = lockMask   -- capslock instead of alt
   -- modMask = controlMask -- control instead of alt
   --
   }
-  `additionalKeysP` navigation
+  `additionalKeysP` navigation `additionalKeys` [((mod1Mask, xK_Tab), windows Stack.focusDown)]
   `additionalKeysP` productivity
   `additionalKeysP` browsers
   `additionalKeysP` editors
@@ -325,5 +325,6 @@ startup :: X ()
 startup = do
   -- spawn "dropbox start"
   -- spawn "trayer --edge top --align right --SetDockType true --SetPartialStrut true --expand true --widthtype percent --width 10 --height 25"
+  spawn "xmodmap -e 'add mod4 = Menu'"
   return ()
 

@@ -59,6 +59,10 @@
 [remote "origin"]
 	fetch = +refs/pull/*/head:refs/remotes/origin/pr/*
 
+
+[gpg]
+	program = gpg2
+
 # TODO: see http://michaelwales.com/articles/make-gitconfig-work-for-you/ 
 # [alias]
 #     addremove = !git r && git add . --all
@@ -86,3 +90,5 @@
 #     tags = tag -l
 #     this = !git init && git add . && git commit -m \"Initial commit.\"
 #     trim = !git reflog expire --expire=now --all && git gc --prune=now
+[submodule]
+	recurse = true

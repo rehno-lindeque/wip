@@ -50,28 +50,27 @@ in
     # Maintenance environment
     # Enter an environment like this:
     #
-    #   $ load-env-maintenance
+    #   $ nix-shell -p maintenance
     #
-    maintenanceEnv = myEnvFun
-      {
-        name = "maintenance";
-        buildInputs = with python34Packages; [
-          lm_sensors # temperature
-          usbutils   # list usb devices
-          powertop   # power/battery management analysis and advice
-          libsysfs   # list options that are set for a loaded kernel module
-                     # * https://wiki.archlinux.org/index.php/kernel_modules#Obtaining_information
-          radeontop  # investigate gpu usage
-          bmon       # monitor network traffic
-          pciutils   # list pci devices via lspci
-          lshw       # list detailed hardware configuration
-          iw         # wireless scan
-          wirelesstools # more wireless
-          rfkill     # more wireless (https://ianweatherhogg.com/tech/2015-08-05-rfkill-connman-enable-wifi.html)
-          # To read more about wpa_supplicant see:
-          # https://github.com/NixOS/nixpkgs/issues/10804#issuecomment-154971201
-        ];
-      };
+    maintenanceEnv = with pkgs; buildEnv {
+      name = "maintenance";
+      paths = with python34Packages; [
+        lm_sensors # temperature
+        usbutils   # list usb devices
+        powertop   # power/battery management analysis and advice
+        libsysfs   # list options that are set for a loaded kernel module
+                   # * https://wiki.archlinux.org/index.php/kernel_modules#Obtaining_information
+        radeontop  # investigate gpu usage
+        bmon       # monitor network traffic
+        pciutils   # list pci devices via lspci
+        lshw       # list detailed hardware configuration
+        iw         # wireless scan
+        wirelesstools # more wireless
+        rfkill     # more wireless (https://ianweatherhogg.com/tech/2015-08-05-rfkill-connman-enable-wifi.html)
+        # To read more about wpa_supplicant see:
+        # https://github.com/NixOS/nixpkgs/issues/10804#issuecomment-154971201
+      ];
+    };
 
     # busybox environment
     # Enter an environment like this:
