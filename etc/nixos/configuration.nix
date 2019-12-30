@@ -28,13 +28,17 @@ in
     [
       # Custom modules
       "${myModules}/modules/hardware/macbook"
-      "${myModules}/modules/hardware/macbook/sdCardReader"
+      "${myModules}/modules/hardware/macbook/sdcardreader"
       "${myModules}/modules/hardware/macbook/bluetooth"
       "${myModules}/modules/hardware/leds"
       "${myModules}/modules/hardware/yubikey"
 
       # Helpful custom module aliases
       "${myModules}/modules/rename.nix"
+
+      # collections of services
+      "${myModules}/modules/services/private-dns.nix"
+
 
       # configuration
       # ./macbookpro2017/configuration.nix #gitignore
@@ -67,8 +71,6 @@ in
       # ./modules/diwata
       ./modules/tiny-http-server.nix
 
-      # collections of services
-      ./modules/private-dns.nix
 
       # WIP
       # /home/me/projects/development/jupyterlab-service/default.nix
