@@ -85,17 +85,7 @@
       # * From https://github.com/wkennington/nixos/blob/master/laptop/base.nix#L23
       ''
       ACTION=="add", SUBSYSTEM=="pci", ATTR{power/control}="auto"
-      '' +
-      # From https://wiki.archlinux.org/index.php/MacBookPro11,x#Powersave
-      (lib.optionalString (!config.macbook.hardware.sdCardReader.enable)
-        # Disabling the internal cardreader may save battery life.
-        # $ lsusb -d 05ac:8406
-        # Bus 002 Device 002: ID 05ac:8406 Apple, Inc. 
-        ''
-        SUBSYSTEMS=="usb", ATTRS{idVendor}=="05ac", ATTRS{idProduct}=="8406", RUN+="${pkgs.remove-usb-device} 05ac 8406"
-        ''
-      );
-
+      '';
         # TODO
         # ACTION=="add", SUBSYSTEM=="module", TEST=="parameters/power_save", ATTR{parameters/power_save}="1"
         # ACTION=="add", SUBSYSTEM=="usb", TEST=="power/control", ATTR{power/control}="auto"

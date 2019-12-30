@@ -213,9 +213,6 @@ in
       unzip
       silver-searcher     # ag command lets you grep very fast and can be used in vim
 
-      # Diagnostic
-      # diagnostic-env
-
       # Nix packaging
       nix-prefetch-scripts # use this to generate sha for github packages while building nix expressions using pkgs.fetchFromGitHub
       # nox                # an interactive installer for nix (it is slightly more newbie-friendly than nix-env)

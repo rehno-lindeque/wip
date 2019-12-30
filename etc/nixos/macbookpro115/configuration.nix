@@ -7,4 +7,6 @@
       ../macbookpro11x/configuration.nix
       ./services.nix
     ];
+
+    hardware.macbook.model = "11,5";
 }

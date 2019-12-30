@@ -10,13 +10,31 @@
 , ...
 }:
 
+let
+  # Track master branches of personal repos (impure)
+  fetchLatest = { path, url }:
+    if builtins.pathExists path then
+      path
+    else
+      builtins.fetchGit { inherit url; ref = "master"; };
+
+  myModules = fetchLatest {
+    path = "/home/me/projects/config/my-nixos-modules";
+    url = "git://github.com/rehno-lindeque/my-nixos-modules.git";
+  };
+in
 {
   imports =
     [
-      # hardware modules
-      ./modules/leds.nix
-      ./modules/macbook.nix
-      ./modules/yubikey.nix
+      # Custom modules
+      "${myModules}/modules/hardware/macbook"
+      "${myModules}/modules/hardware/macbook/sdCardReader"
+      "${myModules}/modules/hardware/macbook/bluetooth"
+      "${myModules}/modules/hardware/leds"
+      "${myModules}/modules/hardware/yubikey"
+
+      # Helpful custom module aliases
+      "${myModules}/modules/rename.nix"
 
       # configuration
       # ./macbookpro2017/configuration.nix #gitignore
@@ -29,7 +47,6 @@
       ./fileSystems.nix
       ./fonts.nix
       ./i18n.nix
-      ./macbook.nix
       ./networking.nix
       ./nix.nix
       ./nixpkgs.nix
