@@ -56,45 +56,15 @@
       # (importInputs "${homeProjectsDevelopment}/circuithub/mono/shell.nix" {}) ++
       [
         # Patched version of linux for rpi (todo: update)
-        /nix/store/ilkyfznsagirkjvrg89sgf1j96g8pai9-linux-4.19.26-dev
-        /nix/store/i17hyy2n5cwn0fgjhl7r4bb51j4h6p00-linux-4.19.26
+        # /nix/store/ilkyfznsagirkjvrg89sgf1j96g8pai9-linux-4.19.26-dev
+        # /nix/store/i17hyy2n5cwn0fgjhl7r4bb51j4h6p00-linux-4.19.26
         # amazon ec2 image for aarch64 ami (todo: update)
-        /nix/store/kf24wjavfjsmckvql17m4mm0534ci9vq-nixos-disk-image
+        # /nix/store/kf24wjavfjsmckvql17m4mm0534ci9vq-nixos-disk-image
         # nixops aarch64 remote builder (drv doesn't work for this)
         # /nix/store/x59kcx0ylgnjs31hgsckhwpk1rgcc9wb-nixops-machines.drv
         # nixops raspberry pi 3B+ linux image (todo: update)
-        /nix/store/p7nm0nni4kpz7i9sy0p705a4kz1ffz6c-linux-4.19.13
+        # /nix/store/p7nm0nni4kpz7i9sy0p705a4kz1ffz6c-linux-4.19.13
       ];
-
-  # TODO: basler camera hardware module
-  # * https://www.baslerweb.com/en/support/downloads/software-downloads/pylon-5-0-9-linux-x86-64-bit/
-  # * https://www.baslerweb.com/fp-1496750153/media/downloads/software/pylon_software/pylon-5.0.9.10389-x86_64.tar.gz
-  # * https://github.com/AravisProject/aravis/blob/master/aravis.rules
-  services.udev.packages = # if hardware.basler.enable
-      let
-          basler-camera = pkgs.writeTextFile
-                    {
-                      # Enable user access to all basler cameras
-                      name = "basler-camera";
-                      text = ''
-                        SUBSYSTEM=="usb", ATTRS{idVendor}=="2676", MODE:="0666", TAG+="uaccess"
-                        '';
-                      destination = "/etc/udev/rules.d/69-basler-camera.rules";
-                    };
-      in [ basler-camera ];
-
-  # services.udev.extraRules =
-  #   # Permission to use the basler camera usb
-  #   # $ lsusb -d 2676:ba02
-  #   # Bus 002 Device 024: ID 2676:ba02 Basler AG ace
-  #   # (lib.optionalString (!config.hardware.basler.enable)
-  #     ''
-  #     SUBSYSTEMS=="usb", ATTRS{idVendor}=="2676", ATTRS{idProduct}=="ba02", MODE="0666", TAG+="uaccess", TAG+="udev-acl"
-  #     # Basler (https://github.com/AravisProject/aravis/blob/master/aravis.rules)
-  #     # SUBSYSTEM=="usb", ATTRS{idVendor}=="2676", MODE:="0666", TAG+="uaccess", TAG+="udev-acl"
-  #     '';
-
-  # };
 
 
 

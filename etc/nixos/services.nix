@@ -288,25 +288,23 @@
       # emacs.enable = true;
 
       # Printing
-      printing = {
-        enable = true;
-      #   # browsing = true;
-      #   # defaultShared = true;
-      };
-
-      avahi = {
-        enable = true;
-        nssmdns = true;
-        # publish = {
-        #   enable = true;
-        #   userServices = true;
-        # };
-      };
-
-      # samba = {
+      # printing = {
       #   enable = true;
-      #   nsswins = true;
+      # #   # browsing = true;
+      # #   # defaultShared = true;
       # };
+
+      # avahi = {
+      #   # For this to work wireguard vpn MUST be disabled
+      #   enable = true;
+      #   nssmdns = true;
+      #   # publish = {
+      #   #   enable = true;
+      #   #   userServices = true;
+      #   # };
+      #   # openFirewall = true;
+      # };
+
 
       # # Serve binary caches (experimental)
       # # Cant seem to get this working for outside connections:

@@ -27,10 +27,12 @@ in
   imports =
     [
       # Custom modules
+      "${myModules}/modules/hardware/basler-camera"
+      "${myModules}/modules/hardware/leds"
       "${myModules}/modules/hardware/macbook"
       "${myModules}/modules/hardware/macbook/sdcardreader"
       "${myModules}/modules/hardware/macbook/bluetooth"
-      "${myModules}/modules/hardware/leds"
+      "${myModules}/modules/hardware/teensy"
       "${myModules}/modules/hardware/yubikey"
 
       # Helpful custom module aliases
@@ -38,7 +40,6 @@ in
 
       # collections of services
       "${myModules}/modules/services/private-dns.nix"
-
 
       # configuration
       # ./macbookpro2017/configuration.nix #gitignore

@@ -22,8 +22,21 @@ in
 
   pdfshuffler = self.callPackage ./pkgs/pdfshuffler {};
 
+  # ledger-live-desktop = self.callPackage ./pkgs/ledger-live-desktop {};
+
   striata-reader = self.callPackage ./pkgs/striata-reader {};
   striata-reader-env = self.callPackage ./pkgs/striata-reader/env.nix {};
+
+  sss-cli = self.callPackage ./pkgs/sss-cli {
+    # rustPlatform = self.makeRustPlatform rustNightly;
+  };
+
+  teensyduino = self.callPackage /home/me/projects/development/nixpkgs/pkgs/development/arduino/arduino-core {
+    withGui = true;
+    withTeensyduino = true;
+  };
+
+  mnemonic = self.callPackage ./pkgs/scripts/mnemonic {};
 
   # See https://github.com/NixOS/nixpkgs/blob/e715283dcaffcd78faed82b483924141a281bdca/pkgs/applications/networking/remote/teamviewer/default.nix
   # See https://github.com/NixOS/nixpkgs/issues/26137

@@ -2,9 +2,6 @@
 , ...
 }:
 
-let
-  myhydraserver = # http://mydomain.com:3000; #gitignore
-in
 {
   nix = {
     # package = pkgs.nixUnstable; # ?
@@ -110,17 +107,17 @@ in
     # ];
 
     binaryCaches = [
-      myhydraserver
+      http://hydra.circuithub.com
       http://cache.nixos.org/
     ];
     binaryCachePublicKeys = [
       "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
       "arm.cachix.org-1:fGqEJIhp5zM7hxe/Dzt9l9Ene9SY27PUyx3hT9Vvei0="
+      "hydra.circuithub.com:tt5GsRxotmMj6nDFuiYGxKEWSZiDiywb0OEDdrfRXZk="
     ];
-    requireSignedBinaryCaches = false; # Needed for personal hydra cache (at the moment)
+    # requireSignedBinaryCaches = false; # Needed for personal hydra cache (at the moment)
     trustedBinaryCaches = [
-      myhydraserver
-      https://hydra.circuithub.com
+      # http://hydra.circuithub.com
       https://arm.cachix.org
     ];
 

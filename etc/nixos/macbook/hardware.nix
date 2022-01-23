@@ -22,4 +22,7 @@
     # disable sd card reader to save on battery (enabled by default)
     macbook.sdCardReader.enable = false;
   };
+
+  # bluetooth manager service
+  # services.blueman.enable = true;
 }

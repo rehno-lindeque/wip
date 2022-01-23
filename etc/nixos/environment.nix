@@ -68,6 +68,7 @@ in
       # see also  [nix? alias](https://nixos.org/wiki/Howto_find_a_package_in_NixOS#Aliases)
       upgrade    = ''sudo -E nixos-rebuild switch --upgrade -I devpkgs=${config.users.users.me.home}/projects/config/nixpkgs'';
       switch     = ''sudo -E nixos-rebuild switch -I devpkgs=${config.users.users.me.home}/projects/config/nixpkgs'';
+      nix-env-unstable = ''nix-env -f https://github.com/NixOS/nixpkgs-channels/archive/nixos-unstable.tar.gz'';
       nixos-rebuild-unstable = ''nixos-rebuild -I /root/.nix-defexpr/channels/nixos-unstable'';
       nixos-env = ''nix-env --profile /nix/var/nix/profiles/system'';
       nixos-list-generations = ''nix-env --list-generations --profile /nix/var/nix/profiles/system'';

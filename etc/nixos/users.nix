@@ -79,6 +79,10 @@
 
                 # Crypto
                 # daedalus
+                # sss-cli
+                # mnemonicode
+                # ssss
+                # paperkey
 
                 # Networking
                 ipfs
@@ -164,6 +168,9 @@
                 # teamviewer
                 # insomnia
 
+                # Hardware development
+                teensyduino
+
                 # Database tools
                 # pgadmin
                 # diwata
@@ -211,6 +218,7 @@
                 # simple-scan
                 # gnumeric
                 # pdfshuffler
+                # xsane
 
                 # Aesthetics
                 hicolor_icon_theme    # Seems to be desired by some gnome or gtk applications (syncthing-gtk)?

@@ -15,6 +15,9 @@
       # package = pkgs.pulseaudioFull;
     };
 
+    ledger.enable = true;
+    teensy.enable = true;
+
     # Scanner
     # sane =
     #   {

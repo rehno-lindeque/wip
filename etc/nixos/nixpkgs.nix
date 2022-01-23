@@ -34,6 +34,11 @@ let
     #   url = "https://patch-diff.githubusercontent.com/raw/NixOS/nixpkgs/pull/60985.patch";
     #   sha256 = "0vwdxqf1mv5psjz7y9q1rpfn5vd4kgsihbcf9psvakziw7cf03hp";
     # })
+    # (builtins.fetchurl {
+    #   name = "teensyduino.patch";
+    #   url = "https://github.com/rehno-lindeque/nixpkgs/commit/5663fac4f3a79f096c3ce73581cabab1ebd98577.patch";
+    #   sha256 = "0ywnpz2dnbis7w3ji79i8cvw28j4yw0syhfqj6s5jbj75m6lx601";
+    # })
   ];
   nixpkgsVersion = lib.fileContents <nixpkgs/.version>;
   nixpkgsVersionSuffix = lib.fileContents <nixpkgs/.version-suffix>;
