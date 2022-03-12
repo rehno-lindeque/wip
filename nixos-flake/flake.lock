@@ -1,0 +1,61 @@
+{
+  "nodes": {
+    "nixos-images": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "narHash": "sha256-1R3CAYfvRH30gdSA5tz3Lwv8oTxCa1v06dIGsfaDy/g=",
+        "path": "../nixos-images",
+        "type": "path"
+      },
+      "original": {
+        "path": "../nixos-images",
+        "type": "path"
+      }
+    },
+    "nixos-profiles": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "narHash": "sha256-Y4AF9gg4hqggPTqyA1Nx1VU8t84HVBYLtfWVvBfL0n4=",
+        "path": "../nixos-profiles",
+        "type": "path"
+      },
+      "original": {
+        "path": "../nixos-profiles",
+        "type": "path"
+      }
+    },
+    "nixpkgs": {
+      "locked": {
+        "lastModified": 1646933238,
+        "narHash": "sha256-RZJnLN0o4B35eTnUc2tEAD12X5TNeeJhhvH3Fd6Pmdo=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "bacbfd713b4781a4a82c1f390f8fe21ae3b8b95b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "nixos-21.11",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "root": {
+      "inputs": {
+        "nixos-images": "nixos-images",
+        "nixos-profiles": "nixos-profiles",
+        "nixpkgs": "nixpkgs"
+      }
+    }
+  },
+  "root": "root",
+  "version": 7
+}
