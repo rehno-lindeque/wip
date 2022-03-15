@@ -8,8 +8,8 @@
   outputs = {self, ...}: {
     nixosModules = {
       isoImage = import ./nixos-modules/iso-image self;
-      sdImage = import ./nixos-modules/iso-image self;
-      netbootImage = import ./nixos-modules/iso-image self;
+      sdImage = import ./nixos-modules/sd-image self;
+      netboot = import ./nixos-modules/netboot self;
     };
   };
 }
