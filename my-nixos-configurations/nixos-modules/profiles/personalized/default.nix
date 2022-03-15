@@ -403,5 +403,18 @@ in {
           # xlibs.xmodmap
         ];
     };
+
+    # My personal keyboard layouts
+    environment.systemPackages = let
+      norman = pkgs.writeScriptBin "norman" ''
+        ${pkgs.xorg.setxkbmap}/bin/setxkbmap us -variant norman
+      '';
+      qwerty = pkgs.writeScriptBin "qwerty" ''
+        ${pkgs.xorg.setxkbmap}/bin/setxkbmap us
+      '';
+    in [
+      norman
+      qwerty
+    ];
   };
 }
