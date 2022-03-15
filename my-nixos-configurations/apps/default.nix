@@ -6,7 +6,7 @@
 }: let
   nc = "\\e[0m"; # No Color
   white = "\\e[1;37m";
-  yellow="\\e[1;33m";
+  yellow = "\\e[1;33m";
 in {
   help = {
     type = "app";
@@ -34,7 +34,7 @@ in {
     description = "build an iso image";
     program =
       (writeScript "build-installer-iso" ''
-        nix build ${../.}#nixosConfigurations.installer.config.system.build.isoImage
+        nix build .#nixosConfigurations.installer.config.system.build.isoImage
       '')
       .outPath;
   };
