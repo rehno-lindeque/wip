@@ -26,9 +26,9 @@ in {
     (args @ {pkgs, ...}: let
       module = import "${flake.inputs.nixpkgs}/nixos/modules/profiles/all-hardware.nix" args;
       config = lib.mkIf cfg.enable (
-        builtins.removeAttrs module ["imports"]
         # Fix import of zydas-zd1211 profile
-        // import "${flake.inputs.nixpkgs}/nixos/modules/hardware/network/zydas-zd1211.nix" args
+        import "${flake.inputs.nixpkgs}/nixos/modules/hardware/network/zydas-zd1211.nix" args
+        // builtins.removeAttrs module ["imports"]
       );
     in {inherit config;})
   ];

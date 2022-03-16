@@ -1,4 +1,4 @@
-# A NixOS flake, but with more modules exposed
+# A nixpkgs (NixOS) flake, but with more modules exposed
 [![built with nix](https://builtwithnix.org/badge.svg)](https://builtwithnix.org)
 
 Right now nixpkgs doesn't expose everything that is used internally in its flake. This defines a flake with more of the internal modules exposed.

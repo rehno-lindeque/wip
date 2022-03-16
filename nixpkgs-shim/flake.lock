@@ -1,0 +1,61 @@
+{
+  "nodes": {
+    "nixpkgs": {
+      "locked": {
+        "lastModified": 1647282937,
+        "narHash": "sha256-K8Oo6QyFCfiEWTRpQVfzcwI3YNMKlz6Tu8rr+o3rzRQ=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "64fc73bd74f04d3e10cb4e70e1c65b92337e76db",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "nixos-21.11",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs-shim-images": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "narHash": "sha256-chzipDrWoTbQtDdcNMASuUcw+TXQRNZ1S4tM8iAFgsM=",
+        "path": "/home/me/projects/config/wip/nixpkgs-shim-images",
+        "type": "path"
+      },
+      "original": {
+        "path": "/home/me/projects/config/wip/nixpkgs-shim-images",
+        "type": "path"
+      }
+    },
+    "nixpkgs-shim-profiles": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "narHash": "sha256-8Dr1AhQzUtykey2ZGDTlzOz8dQkjCTC4XOwZgqihfY0=",
+        "path": "/home/me/projects/config/wip/nixpkgs-shim-profiles",
+        "type": "path"
+      },
+      "original": {
+        "path": "/home/me/projects/config/wip/nixpkgs-shim-profiles",
+        "type": "path"
+      }
+    },
+    "root": {
+      "inputs": {
+        "nixpkgs": "nixpkgs",
+        "nixpkgs-shim-images": "nixpkgs-shim-images",
+        "nixpkgs-shim-profiles": "nixpkgs-shim-profiles"
+      }
+    }
+  },
+  "root": "root",
+  "version": 7
+}

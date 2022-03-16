@@ -19,7 +19,11 @@ in {
 
   imports = [
     # Conditionally import the profile module
-    (args: let
+    (args @ {
+      pkgs,
+      modules,
+      ...
+    }: let
       module = import "${flake.inputs.nixpkgs}/nixos/modules/profiles/clone-config.nix" args;
       config = lib.mkIf cfg.enable module.config;
     in

@@ -22,9 +22,8 @@ in {
     (args @ {pkgs, ...}: let
       module = builtins.removeAttrs (import "${flake.inputs.nixpkgs}/nixos/modules/profiles/installation-device.nix" args) ["imports"];
       config = lib.mkIf cfg.enable (
-        module.config
         # Fix import of profiles
-        // {
+        {
           profiles.cloneConfig.enable = true;
         }
         # Fix import of hardware
@@ -32,6 +31,7 @@ in {
         // import "${flake.inputs.nixpkgs}/nixos/modules/installer/scan/not-detected.nix" args
         # Fix import of channels
         // import "${flake.inputs.nixpkgs}/nixos/modules/installer/cd-dvd/channel.nix" args
+        // module.config
       );
     in
       module // {inherit config;})

@@ -2,16 +2,16 @@
   "nodes": {
     "nixpkgs": {
       "locked": {
-        "lastModified": 1647006242,
-        "narHash": "sha256-8vmXnvipjYyk8/iMmPivjYOw4Eyce8ZrmqPwHJoB3FA=",
-        "owner": "rehno-lindeque",
+        "lastModified": 1647282937,
+        "narHash": "sha256-K8Oo6QyFCfiEWTRpQVfzcwI3YNMKlz6Tu8rr+o3rzRQ=",
+        "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "77d6ab5f834ccb8e5155a8fd86089ff4e3add391",
+        "rev": "64fc73bd74f04d3e10cb4e70e1c65b92337e76db",
         "type": "github"
       },
       "original": {
-        "owner": "rehno-lindeque",
-        "ref": "flake-profile-modules",
+        "owner": "nixos",
+        "ref": "nixos-21.11",
         "repo": "nixpkgs",
         "type": "github"
       }

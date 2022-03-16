@@ -20,7 +20,7 @@ in {
 
   imports = [
     # Conditionally import the profile module
-    (args: let
+    (args@{pkgs, ...}: let
       module = import "${flake.inputs.nixpkgs}/nixos/modules/profiles/graphical.nix" args;
       config = lib.mkIf cfg.enable module;
     in {inherit config;})

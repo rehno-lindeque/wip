@@ -24,13 +24,13 @@ My technological world as a nix flake (and sub-flakes).
 │           ├── nukbox
 │           ├── personalized
 │           └── workstation
-├── nixos-flake
-├── nixos-images
+├── nixpkgs-shim
+├── nixpkgs-shim-images
 │   └── nixos-modules
 │       ├── iso-image
 │       ├── netboot
 │       └── sd-image
-└── nixos-profiles
+└── nixpkgs-shim-profiles
     └── nixos-modules
         └── profiles
             ├── all-hardware
