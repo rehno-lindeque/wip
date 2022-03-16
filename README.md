@@ -15,33 +15,14 @@ My technological world as a nix flake (and sub-flakes).
 │   └── dev-shells
 │       ├── nix-environment
 │       └── python-environment
-├── my-nixos-configurations
-│   ├── apps
-│   ├── dev-shell
-│   └── nixos-modules
-│       └── profiles
-│           ├── installer
-│           ├── nukbox
-│           ├── personalized
-│           └── workstation
-├── nixpkgs-shim
-├── nixpkgs-shim-images
-│   └── nixos-modules
-│       ├── iso-image
-│       ├── netboot
-│       └── sd-image
-└── nixpkgs-shim-profiles
+└── my-nixos-configurations
+    ├── apps
+    ├── dev-shell
     └── nixos-modules
         └── profiles
-            ├── all-hardware
-            ├── base
-            ├── clone-config
-            ├── demo
-            ├── docker-container
-            ├── graphical
-            ├── hardened
-            ├── headless
-            ├── installation-device
-            ├── minimal
-            └── qemu-guest
+            ├── desktop
+            ├── installer
+            ├── nukbox
+            ├── personalized
+            └── workstation
 ```

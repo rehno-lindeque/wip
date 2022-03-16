@@ -71,13 +71,17 @@
         "nixpkgs-shim-profiles": "nixpkgs-shim-profiles"
       },
       "locked": {
-        "narHash": "sha256-tRY/XNXY7HO69nJ4it+JoaBJKW66BZcpk6HIdb7wkYk=",
-        "path": "/home/me/projects/config/wip/nixpkgs-shim",
-        "type": "path"
+        "lastModified": 1647458605,
+        "narHash": "sha256-7gI98CH33sBi6oGWQ1BrVmZ8C0gmM3ow0XiTSG+33hk=",
+        "owner": "rehno-lindeque",
+        "repo": "nixpkgs-shim",
+        "rev": "b31cb73d6bc89e0dc8721a9c7dbe033538409cf1",
+        "type": "github"
       },
       "original": {
-        "path": "/home/me/projects/config/wip/nixpkgs-shim",
-        "type": "path"
+        "owner": "rehno-lindeque",
+        "repo": "nixpkgs-shim",
+        "type": "github"
       }
     },
     "nixpkgs-shim-images": {
@@ -88,13 +92,17 @@
         ]
       },
       "locked": {
-        "narHash": "sha256-fuOB3F7Sz9PX3QTLSIImnM3WEC57QCrXPW54MQdeOKs=",
-        "path": "/home/me/projects/config/wip/nixpkgs-shim-images",
-        "type": "path"
+        "lastModified": 1647446752,
+        "narHash": "sha256-chzipDrWoTbQtDdcNMASuUcw+TXQRNZ1S4tM8iAFgsM=",
+        "owner": "rehno-lindeque",
+        "repo": "nixpkgs-shim-images",
+        "rev": "f747aabeb560dfd3970d9864dd9cabb187f8ce80",
+        "type": "github"
       },
       "original": {
-        "path": "/home/me/projects/config/wip/nixpkgs-shim-images",
-        "type": "path"
+        "owner": "rehno-lindeque",
+        "repo": "nixpkgs-shim-images",
+        "type": "github"
       }
     },
     "nixpkgs-shim-profiles": {
@@ -105,13 +113,17 @@
         ]
       },
       "locked": {
-        "narHash": "sha256-3LNeNhDktbe6/jfowMSKHVgEOxbQMpJjBcQN9+VmLFc=",
-        "path": "/home/me/projects/config/wip/nixpkgs-shim-profiles",
-        "type": "path"
+        "lastModified": 1647458553,
+        "narHash": "sha256-dUFqgmNYqB8RlPMJX30U2TAehAhdB3QyLY7udba+9YA=",
+        "owner": "rehno-lindeque",
+        "repo": "nixpkgs-shim-profiles",
+        "rev": "43ed67b90a86a1be86da334ed9178b08fe1bceb0",
+        "type": "github"
       },
       "original": {
-        "path": "/home/me/projects/config/wip/nixpkgs-shim-profiles",
-        "type": "path"
+        "owner": "rehno-lindeque",
+        "repo": "nixpkgs-shim-profiles",
+        "type": "github"
       }
     },
     "nixpkgs-stable": {
