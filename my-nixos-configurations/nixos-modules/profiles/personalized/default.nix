@@ -27,7 +27,7 @@ in {
 
   config = lib.mkIf cfg.enable {
     # Set a password using
-    # useradd -m $ME ; passwd $ME
+    # passwd me
     users.users.me = rec {
       name = "me";
       description = "Rehno Lindeque";

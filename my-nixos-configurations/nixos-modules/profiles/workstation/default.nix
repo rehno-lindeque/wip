@@ -53,7 +53,7 @@ in {
 
     hardware = {
       opengl = {
-        enable = true;
+        enable = lib.mkDefault true;
       };
 
       pulseaudio = {
@@ -69,14 +69,16 @@ in {
     networking = {
       # nmtui or nmcli can be used to control network manager
       networkmanager = {
-        enable = true;
+        enable = lib.mkDefault true;
       };
       firewall = {
-        enable = true;
+        enable = lib.mkDefault true;
       };
     };
 
     nix = {
+      package = pkgs.nixUnstable;
+
       # Don't eliminate build dependencies or derivations for live paths during garbage-collection
       # https://nixos.wiki/wiki/FAQ#How_to_keep_build-time_dependencies_around_.2F_be_able_to_rebuild_while_being_offline.3F
       extraOptions = ''
@@ -97,26 +99,26 @@ in {
 
     programs = {
       bash = {
-        enableCompletion = true; # auto-completion in bash
+        enableCompletion = lib.mkDefault true; # auto-completion in bash
         interactiveShellInit = ''
           export HISTCONTROL=ignorespace;
         '';
       };
 
       ssh = {
-        startAgent = true;
+        startAgent = lib.mkDefault true;
         agentTimeout = "1h";
       };
     };
 
     sound = {
-      enable = true;
+      enable = lib.mkDefault true;
     };
 
     # Security
-    security.lockKernelModules = true;
-    security.apparmor.enable = true;
-    services.openssh.enable = false;
-    services.fail2ban.enable = true;
+    security.lockKernelModules = lib.mkDefault true;
+    security.apparmor.enable = lib.mkDefault true;
+    services.openssh.enable = lib.mkDefault false;
+    services.fail2ban.enable = lib.mkDefault true;
   };
 }
