@@ -48,65 +48,13 @@
         "type": "github"
       }
     },
-    "nixos": {
-      "inputs": {
-        "nixos-images": "nixos-images",
-        "nixos-profiles": "nixos-profiles",
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "narHash": "sha256-BcWAUoV7jGEzEo0j0C9ASFIUvMCkBMUejbIGI6ZkKcQ=",
-        "path": "../nixos-flake",
-        "type": "path"
-      },
-      "original": {
-        "path": "../nixos-flake",
-        "type": "path"
-      }
-    },
-    "nixos-images": {
-      "inputs": {
-        "nixpkgs": [
-          "nixos",
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "narHash": "sha256-1R3CAYfvRH30gdSA5tz3Lwv8oTxCa1v06dIGsfaDy/g=",
-        "path": "../nixos-images",
-        "type": "path"
-      },
-      "original": {
-        "path": "../nixos-images",
-        "type": "path"
-      }
-    },
-    "nixos-profiles": {
-      "inputs": {
-        "nixpkgs": [
-          "nixos",
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "narHash": "sha256-Y4AF9gg4hqggPTqyA1Nx1VU8t84HVBYLtfWVvBfL0n4=",
-        "path": "../nixos-profiles",
-        "type": "path"
-      },
-      "original": {
-        "path": "../nixos-profiles",
-        "type": "path"
-      }
-    },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1646955661,
-        "narHash": "sha256-AYLta1PubJnrkv15+7G+6ErW5m9NcI9wSdJ+n7pKAe0=",
+        "lastModified": 1647350163,
+        "narHash": "sha256-OcMI+PFEHTONthXuEQNddt16Ml7qGvanL3x8QOl2Aao=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "e9545762b032559c27d8ec9141ed63ceca1aa1ac",
+        "rev": "3eb07eeafb52bcbf02ce800f032f18d666a9498d",
         "type": "github"
       },
       "original": {
@@ -114,13 +62,65 @@
         "type": "indirect"
       }
     },
-    "nixpkgs_2": {
+    "nixpkgs-shim": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs-stable"
+        ],
+        "nixpkgs-shim-images": "nixpkgs-shim-images",
+        "nixpkgs-shim-profiles": "nixpkgs-shim-profiles"
+      },
       "locked": {
-        "lastModified": 1646933238,
-        "narHash": "sha256-RZJnLN0o4B35eTnUc2tEAD12X5TNeeJhhvH3Fd6Pmdo=",
+        "narHash": "sha256-tRY/XNXY7HO69nJ4it+JoaBJKW66BZcpk6HIdb7wkYk=",
+        "path": "/home/me/projects/config/wip/nixpkgs-shim",
+        "type": "path"
+      },
+      "original": {
+        "path": "/home/me/projects/config/wip/nixpkgs-shim",
+        "type": "path"
+      }
+    },
+    "nixpkgs-shim-images": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs-shim",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "narHash": "sha256-fuOB3F7Sz9PX3QTLSIImnM3WEC57QCrXPW54MQdeOKs=",
+        "path": "/home/me/projects/config/wip/nixpkgs-shim-images",
+        "type": "path"
+      },
+      "original": {
+        "path": "/home/me/projects/config/wip/nixpkgs-shim-images",
+        "type": "path"
+      }
+    },
+    "nixpkgs-shim-profiles": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs-shim",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "narHash": "sha256-3LNeNhDktbe6/jfowMSKHVgEOxbQMpJjBcQN9+VmLFc=",
+        "path": "/home/me/projects/config/wip/nixpkgs-shim-profiles",
+        "type": "path"
+      },
+      "original": {
+        "path": "/home/me/projects/config/wip/nixpkgs-shim-profiles",
+        "type": "path"
+      }
+    },
+    "nixpkgs-stable": {
+      "locked": {
+        "lastModified": 1647282937,
+        "narHash": "sha256-K8Oo6QyFCfiEWTRpQVfzcwI3YNMKlz6Tu8rr+o3rzRQ=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "bacbfd713b4781a4a82c1f390f8fe21ae3b8b95b",
+        "rev": "64fc73bd74f04d3e10cb4e70e1c65b92337e76db",
         "type": "github"
       },
       "original": {
@@ -135,8 +135,8 @@
         "circuithub-nixos-profiles": "circuithub-nixos-profiles",
         "flake-help": "flake-help",
         "flake-utils": "flake-utils",
-        "nixos": "nixos",
-        "nixpkgs": "nixpkgs_2"
+        "nixpkgs-shim": "nixpkgs-shim",
+        "nixpkgs-stable": "nixpkgs-stable"
       }
     }
   },

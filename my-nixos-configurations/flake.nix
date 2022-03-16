@@ -3,9 +3,9 @@
     circuithub-nixos-profiles.url = "git+ssh://git@github.com/circuithub/nixos-profiles.git";
     flake-help.url = "github:rehno-lindeque/flake-help";
     flake-utils.url = "github:numtide/flake-utils";
-    nixos.url = "path:../nixos-flake";
-    nixos.inputs.nixpkgs.follows = "nixpkgs";
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-21.11";
+    nixpkgs-shim.url = "path:/home/me/projects/config/wip/nixpkgs-shim";
+    nixpkgs-shim.inputs.nixpkgs.follows = "nixpkgs-stable";
+    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-21.11";
   };
 
   outputs = {
@@ -13,8 +13,8 @@
     circuithub-nixos-profiles,
     flake-help,
     flake-utils,
-    nixos,
-    nixpkgs,
+    nixpkgs-shim,
+    nixpkgs-stable,
   }: let
     eachDefaultEnvironment = f:
       flake-utils.lib.eachDefaultSystem
@@ -22,7 +22,7 @@
         system:
           f {
             inherit system;
-            pkgs = import nixpkgs {
+            pkgs = import nixpkgs-shim {
               inherit system;
               config.allowUnfree = true;
             };
