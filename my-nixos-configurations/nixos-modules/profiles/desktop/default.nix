@@ -21,6 +21,18 @@ in {
     services.xserver = {
       enable = true;
 
+      # Enable XMonad Desktop Environment
+      # windowManager = {
+      #   xmonad = {
+      #     enable = true;
+      #     # Note that xmonad-extras seems to be broken frequently, so xmonad-contrib is easier
+      #     # enableContribAndExtras = true;
+      #     extraPackages = haskellPackages: [
+      #       haskellPackages.xmonad-contrib
+      #     ];
+      #   };
+      # };
+
       desktopManager.gnome = {
         enable = true;
       };

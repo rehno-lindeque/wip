@@ -14,6 +14,13 @@
     systemd-boot.enable = true;
   };
 
+  # TODO: kernel modules (add to nixos-hardware)
+  # boot = {
+  #   initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usbhid" "usb_storage" "sd_mod" "rtsx_pci_sdmmc" ];
+  #   kernelModules = [ "kvm-intel" ];
+  #   extraModulePackages = [];
+  # };
+
   fileSystems = {
     "/" = {
       device = "/dev/disk/by-label/nixos";
@@ -30,4 +37,7 @@
     {device = "/dev/disk/by-label/swap";}
   ];
 
+  # TODO
+  # nix.maxJobs = lib.mkDefault 4;
+  # powerManagement.cpuFreqGovernor = "powersave";
 }

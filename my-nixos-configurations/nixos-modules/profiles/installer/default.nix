@@ -42,6 +42,12 @@
         esac
       done
     '';
+
+    # TODO temp
+    supportedFilesystems = ["btrfs" "reiserfs" "vfat" "f2fs" "xfs" "zfs" "ntfs" "cifs" "ext4"];
+    initrd.supportedFilesystems = ["btrfs" "reiserfs" "vfat" "f2fs" "xfs" "zfs" "ntfs" "cifs" "ext4"];
+    initrd.availableKernelModules = ["ext2" "ext4"];
+    kernelModules = ["ext2" "ext4"];
   };
 
   console.packages = options.console.packages.default ++ [pkgs.terminus_font];

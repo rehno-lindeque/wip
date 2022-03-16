@@ -406,6 +406,15 @@ in {
 
     # My personal keyboard layouts
     environment.systemPackages = let
+      # normanKeymap = pkgs.runCommand "xkb-console-keymap" { preferLocalBuild = true; } ''
+      #   ${pkgs.buildPackages.ckbcomp}/bin/ckbcomp layout -variant norman >$out
+      # '';
+      # qwertyKeymap = pkgs.runCommand "xkb-console-keymap" { preferLocalBuild = true; } ''
+      #   ${pkgs.buildPackages.ckbcomp}/bin/ckbcomp -layout us >$out
+      # '';
+      # export KEYMAP=${normanKeymap}
+      # export KEYMAP=${qwertyKeymap}
+      # Utils to set the keymap both in X and on the console
       norman = pkgs.writeScriptBin "norman" ''
         ${pkgs.xorg.setxkbmap}/bin/setxkbmap us -variant norman
       '';
@@ -416,5 +425,15 @@ in {
       norman
       qwerty
     ];
+
+    # console.useXkbConfig = true; # TODO
+
+    # TODO
+    # # * Disable capslock (useful for switching caps to a mod key in xmonad/elsewhere)
+    # # xkbOptions = "ctrl:nocaps";
+    # # * Terminate current session using ctrl + alt + backspace (usefull on macs)
+    # # * Make capslock into an additional escape key
+    # xserver.xkbOptions = "terminate:ctrl_alt_bksp, caps:escape";
+    # xserver.layout = "us";
   };
 }
