@@ -105,6 +105,10 @@ in {
         '';
       };
 
+      git = {
+        enable = true;
+      };
+
       ssh = {
         startAgent = lib.mkDefault true;
         agentTimeout = "1h";

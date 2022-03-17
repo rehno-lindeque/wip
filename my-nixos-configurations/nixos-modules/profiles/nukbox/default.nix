@@ -32,4 +32,11 @@
     {device = "/dev/disk/by-label/swap";}
   ];
 
+  # Set the host name for this computer
+  networking = {
+    hostName = "nukbox2022";
+  };
+
+  # Don't kill the machine with too many jobs
+  nix.maxJobs = 1;
 }
