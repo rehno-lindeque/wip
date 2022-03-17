@@ -5,6 +5,8 @@
     circuithub.developerWorkstation.enable = true;
     personalized = {
       enable = true;
+      includeRegular = true;
+      includeProblematic = false;
     };
     desktop.enable = true;
   };

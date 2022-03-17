@@ -15,11 +15,18 @@ in {
           Whether to enable my personal configuration profile, generate my user, home directory etc.
         '';
       };
-      full = mkOption {
+      includeRegular = mkOption {
         type = types.bool;
         default = true;
         description = ''
-          Whether to include all packages or just minimal packages.
+          Whether to include regular packages that I use somewhat frequently
+        '';
+      };
+      includeProblematic = mkOption {
+        type = types.bool;
+        default = false;
+        description = ''
+          Whether to include non-essential binary packages or packages that occasionally have broken download links
         '';
       };
     };
@@ -79,15 +86,15 @@ in {
       isNormalUser = true;
       useDefaultShell = true;
       packages = with pkgs;
-      # Terminal emulators (choose one)
-        lib.optionals cfg.full [
+        # Terminal emulators (choose one)
+        lib.optionals cfg.includeRegular [
           # gnome3.gnome_terminal
           # sakura
           # termite
           # st
         ]
         # System tools
-        ++ lib.optionals cfg.full [
+        ++ lib.optionals cfg.includeRegular [
           # unrar
           # zip
           # btrfsProgs
@@ -117,13 +124,13 @@ in {
           # pciutils
         ]
         # Identity
-        ++ lib.optionals cfg.full [
+        ++ lib.optionals cfg.includeRegular [
           keybase
           # keybase-gui
           # gnupg
         ]
         # Crypto
-        ++ lib.optionals cfg.full [
+        ++ lib.optionals cfg.includeRegular [
           # daedalus
           # sss-cli
           # mnemonicode
@@ -133,18 +140,18 @@ in {
           ledger-live-desktop
         ]
         # Security
-        ++ lib.optionals cfg.full [
+        ++ lib.optionals cfg.includeRegular [
           pass
         ]
         # Networking
-        ++ lib.optionals cfg.full [
+        ++ lib.optionals cfg.includeRegular [
           # ipfs
           # ipfs-swarm-key-gen
           # ipfs-migrator
           # trickle
         ]
         # Web
-        ++ lib.optionals cfg.full [
+        ++ lib.optionals cfg.includeRegular [
           firefox
           google-chrome
           brave
@@ -153,16 +160,18 @@ in {
           # dropbox-cli
         ]
         # Communication
-        ++ lib.optionals cfg.full [
+        ++ lib.optionals cfg.includeProblematic [
+          zoom-us
+        ]
+        ++ lib.optionals cfg.includeRegular [
           # xchat
           # hipchat
           # slack
           # irssi
           # signal-desktop
-          zoom-us
         ]
         # Productivity
-        ++ lib.optionals cfg.full [
+        ++ lib.optionals cfg.includeRegular [
           # tmux
           jq
           # bind
@@ -192,13 +201,13 @@ in {
           # dmenu
         ]
         # Configuration
-        ++ lib.optionals cfg.full [
+        ++ lib.optionals cfg.includeRegular [
           # gnome3.dconf
           gnome.gnome-settings-daemon
           # nix-prefetch-github
         ]
         # Development dependencies
-        ++ lib.optionals cfg.full [
+        ++ lib.optionals cfg.includeRegular [
           # cabal2nix
 
           # Quick way to browse symbols (seems to collide with emacs ctags in tagbar at the moment though, I had to nix-env -i ctags)
@@ -208,7 +217,7 @@ in {
           elfutils
         ]
         # Editors
-        ++ lib.optionals cfg.full [
+        ++ lib.optionals cfg.includeRegular [
           # me-vim
           # me-neovim
           # sublime3
@@ -217,8 +226,7 @@ in {
           # kakoune
         ]
         # Software development
-        ++ lib.optionals cfg.full [
-          gitFull
+        ++ lib.optionals cfg.includeRegular [
           # git-crypt
           # heroku-beta
           # nixops
@@ -249,23 +257,23 @@ in {
           # sshuttle
         ]
         # Hardware development
-        ++ lib.optionals cfg.full [
+        ++ lib.optionals cfg.includeRegular [
           # teensyduino
         ]
         # Database tools
-        ++ lib.optionals cfg.full [
+        ++ lib.optionals cfg.includeRegular [
           # pgadmin
           # dbeaver
           # diwata
           # sqlcrush
         ]
         # File browsers
-        ++ lib.optionals cfg.full [
+        ++ lib.optionals cfg.includeRegular [
           gnome3.nautilus
           gnome3.eog
         ]
         # Screen / Media capture
-        ++ lib.optionals cfg.full [
+        ++ lib.optionals cfg.includeRegular [
           # gnome3.gnome-screenshot
           # peek
           # gifine
@@ -279,11 +287,11 @@ in {
           flameshot
         ]
         # Electronics design automation
-        ++ lib.optionals cfg.full [
+        ++ lib.optionals cfg.includeRegular [
           # kicad
         ]
         # Data science
-        ++ lib.optionals cfg.full [
+        ++ lib.optionals cfg.includeRegular [
           # gnuplot
           # maxima
           # octave
@@ -291,39 +299,40 @@ in {
           # analysisEnv
         ]
         # Emulators
-        ++ lib.optionals cfg.full [
+        ++ lib.optionals cfg.includeRegular [
           # wine
         ]
         # Media players
-        ++ lib.optionals cfg.full [
-          # mopidy
-          # vlc
-
+        ++ lib.optionals cfg.includeProblematic [
           # TODO: Replace with mopidy one day
           spotify
+        ]
+        ++ lib.optionals cfg.includeRegular [
+          # mopidy
+          # vlc
 
           # Pulse audio mixer ui
           pavucontrol
         ]
         # Artistic
-        ++ lib.optionals cfg.full [
+        ++ lib.optionals cfg.includeRegular [
           # gimp
           # blender
           # inkscape
         ]
         # Shell
-        ++ lib.optionals cfg.full [
+        ++ lib.optionals cfg.includeRegular [
           # fish
         ]
         # Input
-        ++ lib.optionals cfg.full [
+        ++ lib.optionals cfg.includeRegular [
           # Allow modifier keys (ctrl / shift / alt / etc) to be used like regular keys (e.g. escape)
           # In my configuration I'd been thinking of remapping capslock to mod1 (which is usually alt) and then allow it to be used as escape
           # (for easy vim mode switching)
           # xcape
         ]
         # Office
-        ++ lib.optionals cfg.full [
+        ++ lib.optionals cfg.includeRegular [
           # simple-scan
           # gnumeric
           # pdfarranger
@@ -332,12 +341,12 @@ in {
           # rotki
         ]
         # Aesthetics
-        ++ lib.optionals cfg.full [
+        ++ lib.optionals cfg.includeRegular [
           # Seems to be helpful for some gnome or gtk applications (syncthing-gtk)?
           # hicolor_icon_theme
         ]
         # Uncategorized
-        ++ lib.optionals cfg.full [
+        ++ lib.optionals cfg.includeRegular [
           # terminator
           # mpd
           # ncmpcpp

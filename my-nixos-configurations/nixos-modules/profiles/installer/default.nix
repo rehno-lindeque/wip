@@ -25,7 +25,8 @@
     workstation.enable = true;
     personalized = {
       enable = true;
-      full = false;
+      includeRegular = false;
+      includeProblematic = false;
     };
   };
 
