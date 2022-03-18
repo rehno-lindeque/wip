@@ -3,6 +3,7 @@
     circuithub-nixos-profiles.url = "git+ssh://git@github.com/circuithub/nixos-profiles.git";
     flake-help.url = "github:rehno-lindeque/flake-help";
     flake-utils.url = "github:numtide/flake-utils";
+    impermanence.url = "github:nix-community/impermanence";
     nixpkgs-shim.url = "github:rehno-lindeque/nixpkgs-shim";
     nixpkgs-shim.inputs.nixpkgs.follows = "nixpkgs-stable";
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-21.11";
@@ -13,6 +14,7 @@
     circuithub-nixos-profiles,
     flake-help,
     flake-utils,
+    impermanence,
     nixpkgs-shim,
     nixpkgs-stable,
   }: let
@@ -64,6 +66,7 @@
             self.nixosModules.workstation
             self.nixosModules.desktop
             circuithub-nixos-profiles.nixosModules.developerWorkstation
+            impermanence.nixosModules.impermanence
           ];
       in {
         nukbox = lib.nixosSystem {

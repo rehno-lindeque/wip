@@ -10,6 +10,9 @@
     };
     desktop.enable = true;
   };
+  
+  # WIP: https://nixos.wiki/wiki/Impermanence
+  #      and https://github.com/lovesegfault/nix-config
 
   boot.loader = {
     # Use the systemd-boot EFI boot loader as it appears to be very simple
