@@ -86,7 +86,7 @@ in {
       isNormalUser = true;
       useDefaultShell = true;
       packages = with pkgs;
-        # Terminal emulators (choose one)
+      # Terminal emulators (choose one)
         lib.optionals cfg.includeRegular [
           # gnome3.gnome_terminal
           # sakura
@@ -425,5 +425,10 @@ in {
       norman
       qwerty
     ];
+
+    services = {
+      # Security
+      gnome.gnome-keyring.enable = true; # gnome's default keyring
+    };
   };
 }

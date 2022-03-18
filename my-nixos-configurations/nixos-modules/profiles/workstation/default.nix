@@ -84,7 +84,16 @@ in {
       extraOptions = ''
         keep-outputs = true
         keep-derivations = true
+        experimental-features = nix-command flakes ca-references
       '';
+
+      binaryCaches = [
+        http://cache.nixos.org/
+      ];
+
+      binaryCachePublicKeys = [
+        "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+      ];
 
       # Helpful for supplying remote builder options, nix copy etc
       trustedUsers = ["root" "@wheel"];
@@ -117,6 +126,13 @@ in {
 
     sound = {
       enable = lib.mkDefault true;
+    };
+
+    services = {
+      # Networking
+      tailscale.enable = true;
+      tor.enable = true;
+      tor.client.enable = true;
     };
 
     # Security

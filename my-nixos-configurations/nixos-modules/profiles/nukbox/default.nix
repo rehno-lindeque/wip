@@ -37,6 +37,12 @@
     hostName = "nukbox2022";
   };
 
-  # Don't kill the machine with too many jobs
-  nix.maxJobs = 1;
+  nix = {
+    # Don't kill the machine with too many jobs
+    maxJobs = 1;
+    # Limit cpu use to 3 out of the 4 available
+    buildCores = 3;
+  };
+
+  sound.mediaKeys.enable = true;
 }

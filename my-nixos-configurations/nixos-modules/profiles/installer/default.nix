@@ -57,5 +57,4 @@
 
   # Extra Customization
   networking.wireless.enable = false; # Use network manager instead
-
 }
