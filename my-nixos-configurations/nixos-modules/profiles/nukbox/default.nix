@@ -8,6 +8,7 @@
       includeRegular = true;
       includeProblematic = false;
     };
+    preferences.enable = true;
     desktop.enable = true;
   };
 
@@ -35,6 +36,7 @@
   # Set the host name for this computer
   networking = {
     hostName = "nukbox2022";
+    networkmanager.wifi.powersave = false; # wifi is slow and unstable without this
   };
 
   nix = {

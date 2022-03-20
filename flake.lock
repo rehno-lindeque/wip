@@ -50,6 +50,26 @@
         "type": "github"
       }
     },
+    "home-manager": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs-stable"
+        ]
+      },
+      "locked": {
+        "lastModified": 1647755261,
+        "narHash": "sha256-qsrPnMlonGNIKskMqD5p1HG1HhBaZXUi3ta7l2Wtb4Q=",
+        "owner": "nix-community",
+        "repo": "home-manager",
+        "rev": "0fad959df8076766d4259c1f76750f892a0cafa1",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "home-manager",
+        "type": "github"
+      }
+    },
     "my-dev-shells": {
       "inputs": {
         "flake-utils": [
@@ -80,6 +100,9 @@
         "flake-utils": [
           "flake-utils"
         ],
+        "home-manager": [
+          "home-manager"
+        ],
         "nixpkgs-shim": [
           "nixpkgs-shim"
         ],
@@ -88,7 +111,7 @@
         ]
       },
       "locked": {
-        "narHash": "sha256-g88BM173td7Bxa9XaTD/KSsHk/vcKkM97uiY65eOIgE=",
+        "narHash": "sha256-PyESF2nQO1rmrb+Dr7uRLKWJi/6OV2zttKkxeDmqHiw=",
         "path": "./my-nixos-configurations",
         "type": "path"
       },
@@ -150,22 +173,26 @@
         ]
       },
       "locked": {
-        "narHash": "sha256-qtFkWnuqCF60wAATA/BxcfXo70CZjQouOOuTQJpbn2M=",
-        "path": "/home/me/projects/config/nixpkgs-shim-profiles",
-        "type": "path"
+        "lastModified": 1647458553,
+        "narHash": "sha256-dUFqgmNYqB8RlPMJX30U2TAehAhdB3QyLY7udba+9YA=",
+        "owner": "rehno-lindeque",
+        "repo": "nixpkgs-shim-profiles",
+        "rev": "43ed67b90a86a1be86da334ed9178b08fe1bceb0",
+        "type": "github"
       },
       "original": {
-        "path": "/home/me/projects/config/nixpkgs-shim-profiles",
-        "type": "path"
+        "owner": "rehno-lindeque",
+        "repo": "nixpkgs-shim-profiles",
+        "type": "github"
       }
     },
     "nixpkgs-stable": {
       "locked": {
-        "lastModified": 1647282937,
-        "narHash": "sha256-K8Oo6QyFCfiEWTRpQVfzcwI3YNMKlz6Tu8rr+o3rzRQ=",
+        "lastModified": 1647490331,
+        "narHash": "sha256-Jcc+vHNDN3KDWuzGNTl3A24ICGovPneJDejiN2t57QI=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "64fc73bd74f04d3e10cb4e70e1c65b92337e76db",
+        "rev": "2c66a7a6e036971c4847cca424125f55b9eb0b0b",
         "type": "github"
       },
       "original": {
@@ -196,6 +223,7 @@
         "circuithub-nixos-profiles": "circuithub-nixos-profiles",
         "flake-help": "flake-help",
         "flake-utils": "flake-utils",
+        "home-manager": "home-manager",
         "my-dev-shells": "my-dev-shells",
         "my-nixos-configurations": "my-nixos-configurations",
         "nixpkgs-shim": "nixpkgs-shim",

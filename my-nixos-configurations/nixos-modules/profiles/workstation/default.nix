@@ -122,6 +122,11 @@ in {
         startAgent = lib.mkDefault true;
         agentTimeout = "1h";
       };
+
+      neovim = {
+        enable = true;
+        defaultEditor = true;
+      };
     };
 
     sound = {

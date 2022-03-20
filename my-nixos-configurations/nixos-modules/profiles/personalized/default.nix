@@ -29,6 +29,13 @@ in {
           Whether to include non-essential binary packages or packages that occasionally have broken download links
         '';
       };
+      includeHome = mkOption {
+        type = types.bool;
+        default = false;
+        description = ''
+          Whether to include home manager configuration
+        '';
+      };
     };
   };
 
@@ -412,23 +419,18 @@ in {
           # xlibs.xmodmap
         ];
     };
-
-    # My personal keyboard layouts
-    environment.systemPackages = let
-      norman = pkgs.writeScriptBin "norman" ''
-        ${pkgs.xorg.setxkbmap}/bin/setxkbmap us -variant norman
-      '';
-      qwerty = pkgs.writeScriptBin "qwerty" ''
-        ${pkgs.xorg.setxkbmap}/bin/setxkbmap us
-      '';
-    in [
-      norman
-      qwerty
-    ];
-
-    services = {
-      # Security
-      gnome.gnome-keyring.enable = true; # gnome's default keyring
+    home-manager = {
+      useGlobalPkgs = true;
+      useUserPackages = true;
+      users.me = {
+	programs = {
+	  git = {
+	    enable = true;
+	    userEmail = "rehno.lindeque@gmail.com";
+	    userName = "Rehno Lindeque";
+	  };
+	};
+      };
     };
   };
 }
