@@ -35,7 +35,7 @@
 
   # Set the host name for this computer
   networking = {
-    hostName = "nukbox2022";
+    hostName = "nucbox2022";
     networkmanager.wifi.powersave = false; # wifi is slow and unstable without this
   };
 

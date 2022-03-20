@@ -55,7 +55,7 @@
         preferences = import ./nixos-modules/profiles/preferences;
         workstation = import ./nixos-modules/profiles/workstation;
         desktop = import ./nixos-modules/profiles/desktop;
-        nukbox = import ./nixos-modules/profiles/nukbox;
+        nucbox = import ./nixos-modules/profiles/nucbox;
         installer = import ./nixos-modules/profiles/installer;
       };
 
@@ -72,9 +72,9 @@
             home-manager.nixosModules.home-manager
           ];
       in {
-        nukbox = lib.nixosSystem {
+        nucbox = lib.nixosSystem {
           system = "x86_64-linux";
-          modules = extraModules ++ [self.nixosModules.nukbox];
+          modules = extraModules ++ [self.nixosModules.nucbox];
           specialArgs = {flake = self;};
         };
         installer = lib.nixosSystem {
