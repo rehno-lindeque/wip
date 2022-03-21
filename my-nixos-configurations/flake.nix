@@ -3,7 +3,7 @@
     circuithub-nixos-profiles.url = "git+ssh://git@github.com/circuithub/nixos-profiles.git";
     flake-help.url = "github:rehno-lindeque/flake-help";
     flake-utils.url = "github:numtide/flake-utils";
-    home-manager.url = "github:nix-community/home-manager";
+    home-manager.url = "github:nix-community/home-manager/release-21.11";
     home-manager.inputs.nixpkgs.follows = "nixpkgs-stable";
     nixpkgs-shim.url = "github:rehno-lindeque/nixpkgs-shim";
     nixpkgs-shim.inputs.nixpkgs.follows = "nixpkgs-stable";
@@ -28,6 +28,7 @@
             pkgs = import nixpkgs-shim {
               inherit system;
               config.allowUnfree = true;
+              overlays = [self.overlay];
             };
           }
       );
@@ -38,7 +39,6 @@
         pkgs,
       }: rec {
         apps = import ./apps {
-          inherit (flake-help.lib) mkHelp;
           inherit (pkgs) writeScript;
           inherit system;
           flake = self;
@@ -51,10 +51,10 @@
     )
     // {
       nixosModules = {
-        personalized = import ./nixos-modules/profiles/personalized;
+        common = import ./nixos-modules/profiles/common;
+        personalize = import ./nixos-modules/profiles/personalize;
         preferences = import ./nixos-modules/profiles/preferences;
         workstation = import ./nixos-modules/profiles/workstation;
-        desktop = import ./nixos-modules/profiles/desktop;
         nucbox = import ./nixos-modules/profiles/nucbox;
         installer = import ./nixos-modules/profiles/installer;
       };
@@ -64,10 +64,10 @@
         extraModules =
           builtins.attrValues nixpkgs-shim.nixosModules
           ++ [
-            self.nixosModules.personalized
+            self.nixosModules.common
+            self.nixosModules.personalize
             self.nixosModules.preferences
             self.nixosModules.workstation
-            self.nixosModules.desktop
             circuithub-nixos-profiles.nixosModules.developerWorkstation
             home-manager.nixosModules.home-manager
           ];

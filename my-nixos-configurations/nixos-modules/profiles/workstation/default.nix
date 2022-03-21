@@ -14,30 +14,13 @@ in {
         default = false;
         description = ''
           Whether to enable my basic workstation configuration profile.
+          The purpose of this is to enable a basic level of functionality necessary to work with a system.
         '';
       };
     };
   };
 
   config = lib.mkIf cfg.enable {
-    boot = {
-      # Don't hold onto /tmp
-      cleanTmpDir = lib.mkDefault true;
-    };
-
-    environment = {
-      systemPackages = with pkgs; [
-        gnome.gnome-keyring
-        pstree
-        ripgrep
-        wget
-      ];
-      variables = {
-        # See home-manager for the user specific version of this option programs.bash.historyControl
-        HISTCONTROL = "ignorespace";
-      };
-    };
-
     # A tmpfs file system comes in handy if you don't want files to touch
     # your hard drive at all.
     fileSystems."/tmp/ram" = {
@@ -46,104 +29,45 @@ in {
       options = ["size=5m"];
     };
 
-    fonts = {
-      enableDefaultFonts = lib.mkDefault true;
-      fonts = with pkgs; [source-code-pro];
-    };
+    # Any reasonable workstation probably at least needs some basic quality of life fonts
+    fonts.enableDefaultFonts = lib.mkDefault true;
 
-    hardware = {
-      opengl = {
-        enable = lib.mkDefault true;
-      };
+    # TODO: should this be a preference setting for e.g. some terminal?
+    # TODO: check where this font is used (vim?)
+    # TODO: Check against any home-manager font settings?
+    # fonts.fonts = with pkgs; [source-code-pro];
 
-      pulseaudio = {
-        enable = lib.mkDefault true;
-        daemon.logLevel = "error";
-        support32Bit = lib.mkDefault true;
-      };
+    # Currently I always use network manager for convenience
+    # (However, this is something I'm still evaluating)
+    # nmtui or nmcli can be used to control network manager
+    networking.networkmanager.enable = lib.mkDefault true;
 
-      # This is also provided by nixpkgs#nixosModules.notDetected
-      enableRedistributableFirmware = lib.mkDefault true;
-    };
-
-    networking = {
-      # nmtui or nmcli can be used to control network manager
-      networkmanager = {
-        enable = lib.mkDefault true;
-      };
-      firewall = {
-        enable = lib.mkDefault true;
-      };
-    };
-
-    nix = {
-      package = pkgs.nixUnstable;
-
-      # Don't eliminate build dependencies or derivations for live paths during garbage-collection
-      # https://nixos.wiki/wiki/FAQ#How_to_keep_build-time_dependencies_around_.2F_be_able_to_rebuild_while_being_offline.3F
-      extraOptions = ''
-        keep-outputs = true
-        keep-derivations = true
-        experimental-features = nix-command flakes ca-references
-      '';
-
-      binaryCaches = [
-        http://cache.nixos.org/
-      ];
-
-      binaryCachePublicKeys = [
-        "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
-      ];
-
-      # Helpful for supplying remote builder options, nix copy etc
-      trustedUsers = ["root" "@wheel"];
-    };
-
-    nixpkgs = {
-      config.allowUnfree = true;
-      overlays = [
-        flake.overlay
-      ];
-    };
+    # Don't eliminate build dependencies or derivations for live paths during garbage-collection
+    # https://nixos.wiki/wiki/FAQ#How_to_keep_build-time_dependencies_around_.2F_be_able_to_rebuild_while_being_offline.3F
+    nix.extraOptions = ''
+      keep-outputs = true
+      keep-derivations = true
+    '';
 
     programs = {
-      bash = {
-        enableCompletion = lib.mkDefault true; # auto-completion in bash
-        interactiveShellInit = ''
-          export HISTCONTROL=ignorespace;
-        '';
-      };
-
-      git = {
-        enable = true;
-      };
-
-      ssh = {
-        startAgent = lib.mkDefault true;
-        agentTimeout = "1h";
-      };
-
-      neovim = {
-        enable = true;
-        defaultEditor = true;
-      };
-    };
-
-    sound = {
-      enable = lib.mkDefault true;
+      # It's difficult to get much done without some flavour of vi available
+      neovim.enable = lib.mkDefault true;
     };
 
     services = {
-      # Networking
-      tailscale.enable = true;
-      tor.enable = true;
-      tor.client.enable = true;
+      tailscale.enable = lib.mkDefault true;
+      tor.enable = lib.mkDefault true;
+      tor.client.enable = lib.mkDefault true;
     };
 
     # Security
-    security.lockKernelModules = lib.mkDefault true;
     security.apparmor.enable = lib.mkDefault true;
     services.openssh.enable = lib.mkDefault false;
     services.fail2ban.enable = lib.mkDefault true;
+
+    # Note that locking the kernel modules can sometimes prevent you from doing useful things
+    # like mounting new filesystems.
+    # Override when needed.
+    security.lockKernelModules = lib.mkDefault true;
   };
 }

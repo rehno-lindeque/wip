@@ -22,12 +22,14 @@
     allHardware.enable = true;
     installationDevice.enable = true;
     base.enable = true;
-    workstation.enable = true;
+    common.enable = true;
     personalized = {
       enable = true;
-      includeRegular = false;
-      includeProblematic = false;
+      enableSoftware = false;
+      enableProblematicSoftware = false;
+      enableHome = false;
     };
+    preferences.enable = true;
   };
 
   boot = {

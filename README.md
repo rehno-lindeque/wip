@@ -20,9 +20,10 @@ My technological world as a nix flake (and sub-flakes).
     ├── dev-shell
     └── nixos-modules
         └── profiles
-            ├── desktop
+            ├── common
             ├── installer
-            ├── nukbox
+            ├── nucbox
             ├── personalized
+            ├── preferences
             └── workstation
 ```

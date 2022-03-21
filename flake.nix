@@ -4,7 +4,7 @@
   inputs = {
     flake-help.url = "github:rehno-lindeque/flake-help";
     flake-utils.url = "github:numtide/flake-utils";
-    home-manager.url = "github:nix-community/home-manager";
+    home-manager.url = "github:nix-community/home-manager/release-21.11";
     my-dev-shells.url = "path:./my-dev-shells";
     my-nixos-configurations.url = "path:./my-nixos-configurations";
     nixpkgs-shim-images.url = "github:rehno-lindeque/nixpkgs-shim-images";

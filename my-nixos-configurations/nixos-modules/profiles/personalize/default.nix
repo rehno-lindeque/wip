@@ -12,26 +12,26 @@ in {
         type = types.bool;
         default = false;
         description = ''
-          Whether to enable my personal configuration profile, generate my user, home directory etc.
+          Whether to enable my personal configuration profile, generate my user, home directory etc
         '';
       };
-      includeRegular = mkOption {
+      enableSoftware = mkOption {
         type = types.bool;
         default = true;
         description = ''
-          Whether to include regular packages that I use somewhat frequently
+          Whether to include software packages and services that I use somewhat frequently
         '';
       };
-      includeProblematic = mkOption {
+      enableProblematicSoftware = mkOption {
         type = types.bool;
         default = false;
         description = ''
-          Whether to include non-essential binary packages or packages that occasionally have broken download links
+          Whether to include non-essential binary packages or packages and services that occasionally have broken download links or other miscelaneous problems
         '';
       };
-      includeHome = mkOption {
+      enableHome = mkOption {
         type = types.bool;
-        default = false;
+        default = true;
         description = ''
           Whether to include home manager configuration
         '';
@@ -94,14 +94,14 @@ in {
       useDefaultShell = true;
       packages = with pkgs;
       # Terminal emulators (choose one)
-        lib.optionals cfg.includeRegular [
+        lib.optionals cfg.enableSoftware [
           # gnome3.gnome_terminal
           # sakura
           # termite
           # st
         ]
         # System tools
-        ++ lib.optionals cfg.includeRegular [
+        ++ lib.optionals cfg.enableSoftware [
           # unrar
           # zip
           # btrfsProgs
@@ -131,13 +131,13 @@ in {
           # pciutils
         ]
         # Identity
-        ++ lib.optionals cfg.includeRegular [
+        ++ lib.optionals cfg.enableSoftware [
           keybase
           # keybase-gui
           # gnupg
         ]
         # Crypto
-        ++ lib.optionals cfg.includeRegular [
+        ++ lib.optionals cfg.enableSoftware [
           # daedalus
           # sss-cli
           # mnemonicode
@@ -147,18 +147,18 @@ in {
           ledger-live-desktop
         ]
         # Security
-        ++ lib.optionals cfg.includeRegular [
+        ++ lib.optionals cfg.enableSoftware [
           pass
         ]
         # Networking
-        ++ lib.optionals cfg.includeRegular [
+        ++ lib.optionals cfg.enableSoftware [
           # ipfs
           # ipfs-swarm-key-gen
           # ipfs-migrator
           # trickle
         ]
         # Web
-        ++ lib.optionals cfg.includeRegular [
+        ++ lib.optionals cfg.enableSoftware [
           firefox
           google-chrome
           brave
@@ -167,10 +167,10 @@ in {
           # dropbox-cli
         ]
         # Communication
-        ++ lib.optionals cfg.includeProblematic [
+        ++ lib.optionals cfg.enableProblematicSoftware [
           zoom-us
         ]
-        ++ lib.optionals cfg.includeRegular [
+        ++ lib.optionals cfg.enableSoftware [
           # xchat
           # hipchat
           # slack
@@ -178,7 +178,7 @@ in {
           # signal-desktop
         ]
         # Productivity
-        ++ lib.optionals cfg.includeRegular [
+        ++ lib.optionals cfg.enableSoftware [
           # tmux
           jq
           # bind
@@ -208,13 +208,13 @@ in {
           # dmenu
         ]
         # Configuration
-        ++ lib.optionals cfg.includeRegular [
+        ++ lib.optionals cfg.enableSoftware [
           # gnome3.dconf
           gnome.gnome-settings-daemon
           # nix-prefetch-github
         ]
         # Development dependencies
-        ++ lib.optionals cfg.includeRegular [
+        ++ lib.optionals cfg.enableSoftware [
           # cabal2nix
 
           # Quick way to browse symbols (seems to collide with emacs ctags in tagbar at the moment though, I had to nix-env -i ctags)
@@ -224,7 +224,7 @@ in {
           elfutils
         ]
         # Editors
-        ++ lib.optionals cfg.includeRegular [
+        ++ lib.optionals cfg.enableSoftware [
           # me-vim
           # me-neovim
           # sublime3
@@ -233,7 +233,7 @@ in {
           # kakoune
         ]
         # Software development
-        ++ lib.optionals cfg.includeRegular [
+        ++ lib.optionals cfg.enableSoftware [
           # git-crypt
           # heroku-beta
           # nixops
@@ -264,23 +264,23 @@ in {
           # sshuttle
         ]
         # Hardware development
-        ++ lib.optionals cfg.includeRegular [
+        ++ lib.optionals cfg.enableSoftware [
           # teensyduino
         ]
         # Database tools
-        ++ lib.optionals cfg.includeRegular [
+        ++ lib.optionals cfg.enableSoftware [
           # pgadmin
           # dbeaver
           # diwata
           # sqlcrush
         ]
         # File browsers
-        ++ lib.optionals cfg.includeRegular [
+        ++ lib.optionals cfg.enableSoftware [
           gnome3.nautilus
           gnome3.eog
         ]
         # Screen / Media capture
-        ++ lib.optionals cfg.includeRegular [
+        ++ lib.optionals cfg.enableSoftware [
           # gnome3.gnome-screenshot
           # peek
           # gifine
@@ -294,11 +294,11 @@ in {
           flameshot
         ]
         # Electronics design automation
-        ++ lib.optionals cfg.includeRegular [
+        ++ lib.optionals cfg.enableSoftware [
           # kicad
         ]
         # Data science
-        ++ lib.optionals cfg.includeRegular [
+        ++ lib.optionals cfg.enableSoftware [
           # gnuplot
           # maxima
           # octave
@@ -306,15 +306,15 @@ in {
           # analysisEnv
         ]
         # Emulators
-        ++ lib.optionals cfg.includeRegular [
+        ++ lib.optionals cfg.enableSoftware [
           # wine
         ]
         # Media players
-        ++ lib.optionals cfg.includeProblematic [
+        ++ lib.optionals cfg.enableProblematicSoftware [
           # TODO: Replace with mopidy one day
           spotify
         ]
-        ++ lib.optionals cfg.includeRegular [
+        ++ lib.optionals cfg.enableSoftware [
           # mopidy
           # vlc
 
@@ -322,24 +322,24 @@ in {
           pavucontrol
         ]
         # Artistic
-        ++ lib.optionals cfg.includeRegular [
+        ++ lib.optionals cfg.enableSoftware [
           # gimp
           # blender
           # inkscape
         ]
         # Shell
-        ++ lib.optionals cfg.includeRegular [
+        ++ lib.optionals cfg.enableSoftware [
           # fish
         ]
         # Input
-        ++ lib.optionals cfg.includeRegular [
+        ++ lib.optionals cfg.enableSoftware [
           # Allow modifier keys (ctrl / shift / alt / etc) to be used like regular keys (e.g. escape)
           # In my configuration I'd been thinking of remapping capslock to mod1 (which is usually alt) and then allow it to be used as escape
           # (for easy vim mode switching)
           # xcape
         ]
         # Office
-        ++ lib.optionals cfg.includeRegular [
+        ++ lib.optionals cfg.enableSoftware [
           # simple-scan
           # gnumeric
           # pdfarranger
@@ -348,12 +348,12 @@ in {
           # rotki
         ]
         # Aesthetics
-        ++ lib.optionals cfg.includeRegular [
+        ++ lib.optionals cfg.enableSoftware [
           # Seems to be helpful for some gnome or gtk applications (syncthing-gtk)?
           # hicolor_icon_theme
         ]
         # Uncategorized
-        ++ lib.optionals cfg.includeRegular [
+        ++ lib.optionals cfg.enableSoftware [
           # terminator
           # mpd
           # ncmpcpp
@@ -419,18 +419,20 @@ in {
           # xlibs.xmodmap
         ];
     };
-    home-manager = {
-      useGlobalPkgs = true;
-      useUserPackages = true;
+
+    home-manager = lib.mkIf cfg.enableHome {
       users.me = {
-	programs = {
-	  git = {
-	    enable = true;
-	    userEmail = "rehno.lindeque@gmail.com";
-	    userName = "Rehno Lindeque";
-	  };
-	};
+        programs = {
+          git = {
+            enable = lib.mkDefault cfg.enableSoftware;
+            userEmail = "rehno.lindeque@gmail.com";
+            userName = "Rehno Lindeque";
+          };
+        };
       };
+    };
+
+    services = {
     };
   };
 }
