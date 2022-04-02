@@ -36,6 +36,54 @@ in {
     # TODO: check where this font is used (vim?)
     # TODO: Check against any home-manager font settings?
     # fonts.fonts = with pkgs; [source-code-pro];
+    home-manager.sharedModules = [
+      {
+        programs = {
+          # It's difficult to get much done without some flavour of vi available
+          neovim = {
+            enable = lib.mkDefault true;
+            plugins = with config.profiles.preferences.customizedVimPlugins; [
+              # Code editing: Comment and uncomment
+              vim-commentary
+
+              # Programming language integrations: Language servers
+              nvim-lspconfig
+
+              # Code editing: Auto-completion
+              nvim-cmp
+
+              # Code editing: Auto-completion with language servers
+              cmp-nvim-lsp
+
+              # Code editing: Auto-completion with current buffer contents
+              cmp-buffer
+
+              # Code editing: Auto-completion with nvim's lua api
+              cmp-nvim-lua
+
+              # Code editing: Auto-completion with current buffer contents
+              cmp-buffer
+
+              # Git support
+              vim-fugitive
+
+              # Git support: show changed lines in gutter
+              gitsigns-nvim
+
+              # Nix support
+              vim-nix
+
+              # Fuzzy finder
+              telescope-nvim
+              telescope-fzf-native-nvim
+
+              # Aesthetics: Color scheme
+              gruvbox-nvim
+            ];
+          };
+        };
+      }
+    ];
 
     # Currently I always use network manager for convenience
     # (However, this is something I'm still evaluating)
@@ -48,11 +96,6 @@ in {
       keep-outputs = true
       keep-derivations = true
     '';
-
-    programs = {
-      # It's difficult to get much done without some flavour of vi available
-      neovim.enable = lib.mkDefault true;
-    };
 
     services = {
       tailscale.enable = lib.mkDefault true;
