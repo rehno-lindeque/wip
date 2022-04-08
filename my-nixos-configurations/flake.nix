@@ -9,10 +9,15 @@
     nixpkgs-shim.url = "github:rehno-lindeque/nixpkgs-shim";
     nixpkgs-shim.inputs.nixpkgs.follows = "nixpkgs-stable";
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-21.11";
+    gitsigns-nvim = {
+      # See https://github.com/lewis6991/gitsigns.nvim/issues/506
+      url = "github:lewis6991/gitsigns.nvim/a65a255d77b9ea4292301c4eabc7e92d25f52fc1";
+      flake = false;
+    };
 
     # Redirect inputs
     neovim.inputs = {
-      nixpkgs.follows = "nixpkgs-unstable";
+      nixpkgs.follows = "nixpkgs-stable";
       flake-utils.follows = "flake-utils";
     };
   };
@@ -23,7 +28,6 @@
     flake-help,
     flake-utils,
     home-manager,
-    neovim,
     nixpkgs-shim,
     nixpkgs-stable,
   }: let
@@ -61,6 +65,7 @@
       nixosModules = {
         common = import ./nixos-modules/profiles/common;
         personalize = import ./nixos-modules/profiles/personalize;
+        playground = import ./nixos-modules/profiles/playground;
         preferences = import ./nixos-modules/profiles/preferences;
         workstation = import ./nixos-modules/profiles/workstation;
         nucbox = import ./nixos-modules/profiles/nucbox;

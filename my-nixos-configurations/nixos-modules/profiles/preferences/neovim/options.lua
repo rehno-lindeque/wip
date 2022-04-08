@@ -1,7 +1,7 @@
 -- See :help options for information
 
--- Copy & paste between vim and the system clipboard
--- vim.opt.clipboard = 'unnamedplus' -- TODO: this does not work well over ssh
+-- Always copy & paste between vim and the system clipboard
+vim.opt.clipboard = 'unnamedplus'
 
 -- More space in the command-line for displaying messages
 vim.opt.cmdheight = 2
@@ -71,7 +71,6 @@ vim.opt.scrolloff = 8
 -- vim.opt.numberwidth = 4
 -- vim.opt.relativenumber = false
 -- vim.opt.ruler = true
--- vim.opt.showtabline = 1
 -- vim.opt.sidescrolloff = 0
 -- vim.opt.smartindent = false
 -- vim.opt.timeoutlen = 1000
