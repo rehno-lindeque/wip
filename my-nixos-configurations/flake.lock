@@ -48,6 +48,23 @@
         "type": "github"
       }
     },
+    "gitsigns-nvim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1649323167,
+        "narHash": "sha256-q9QG6ZkuwnrpZKO2O/CqQYMAkeK4t9Pzgg6yqbUQ9rA=",
+        "owner": "lewis6991",
+        "repo": "gitsigns.nvim",
+        "rev": "a65a255d77b9ea4292301c4eabc7e92d25f52fc1",
+        "type": "github"
+      },
+      "original": {
+        "owner": "lewis6991",
+        "repo": "gitsigns.nvim",
+        "rev": "a65a255d77b9ea4292301c4eabc7e92d25f52fc1",
+        "type": "github"
+      }
+    },
     "home-manager": {
       "inputs": {
         "nixpkgs": [
@@ -69,18 +86,30 @@
         "type": "github"
       }
     },
-    "nixpkgs": {
+    "neovim": {
+      "inputs": {
+        "flake-utils": [
+          "flake-utils"
+        ],
+        "nixpkgs": [
+          "nixpkgs-stable"
+        ]
+      },
       "locked": {
-        "lastModified": 1647350163,
-        "narHash": "sha256-OcMI+PFEHTONthXuEQNddt16Ml7qGvanL3x8QOl2Aao=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "3eb07eeafb52bcbf02ce800f032f18d666a9498d",
+        "dir": "contrib",
+        "lastModified": 1648644371,
+        "narHash": "sha256-dtJToFhI1Fb0FVbPG9O1SIyWjjXMg2kBohF3tJr8aC8=",
+        "owner": "neovim",
+        "repo": "neovim",
+        "rev": "1217694f21cff2953e6c56be2157365daf7078eb",
         "type": "github"
       },
       "original": {
-        "id": "nixpkgs",
-        "type": "indirect"
+        "dir": "contrib",
+        "owner": "neovim",
+        "repo": "neovim",
+        "rev": "1217694f21cff2953e6c56be2157365daf7078eb",
+        "type": "github"
       }
     },
     "nixpkgs-shim": {
@@ -168,7 +197,9 @@
         "circuithub-nixos-profiles": "circuithub-nixos-profiles",
         "flake-help": "flake-help",
         "flake-utils": "flake-utils",
+        "gitsigns-nvim": "gitsigns-nvim",
         "home-manager": "home-manager",
+        "neovim": "neovim",
         "nixpkgs-shim": "nixpkgs-shim",
         "nixpkgs-stable": "nixpkgs-stable"
       }

@@ -1,6 +1,23 @@
 local lspconfig = require('lspconfig')
-local on_attach = function(client, bufnr)
+
+-- Diagnostics: show details about the error under the cursor
+-- vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float)
+
+-- Diagnostics: go to the next error
+vim.keymap.set('n', '[d', vim.diagnostic.goto_prev)
+
+-- Diagnostics: go to the previous error
+vim.keymap.set('n', ']d', vim.diagnostic.goto_next)
+
+-- Diagnostics: go to the previous error
+vim.keymap.set('n', '<leader>ll', vim.diagnostic.setloclist)
+
+local on_attach = function(client, buffer)
+  local options = { buffer = buffer }
+
+  vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, options)
 end
+
 -- local on_attach = function(client, bufnr)
 --   local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
 --   local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
@@ -34,35 +51,43 @@ end
 --   end
 -- end
 
--- Set up each language server: Haskell programming language
--- TODO
-lspconfig.hls.setup { on_attach = on_attach, autostart = false }
+local flags = {
+  -- Avoid excessive refresh
+  -- TODO: This will be the default in neovim 0.7+
+  debounce_text_changes = 150,
+}
 
--- Set up each language server: Elm programming language
--- TODO
-lspconfig.elm.setup { on_attach = on_attach, autostart = false }
+-- Set up each language server: Nix configuration language
+lspconfig.rnix.setup({
+  on_attach = on_attach,
+  autostart = true,
+  flags = flags,
+})
+
+-- Set up each language server: Haskell programming language
+lspconfig.hls.setup({
+  on_attach = on_attach,
+  autostart = false,
+  flags = flags,
+})
 
 -- Set up each language server: Lua programming language
--- TODO
+lspconfig.sumneko_lua.setup({
+  on_attach = on_attach,
+  autostart = false,
+  flags = flags,
+})
+
+-- Set up each language server: Elm programming language
+lspconfig.elmls.setup({
+  on_attach = on_attach,
+  autostart = false,
+  flags = flags,
+})
 
 -- Set up each language server: Python programming language
 -- TODO
 -- lspconfig.pyright.setup { on_attach = on_attach, autostart = false }
 -- lspconfig.python-lsp-server.setup { on_attach = on_attach, autostart = false }
 -- lspconfig.pylsp.setup { on_attach = on_attach, autostart = false }
-
-
--- metals_config = require("metals").bare_config
--- metals_config.init_options.statusBarProvider = "on"
--- metals_config.on_attach = on_attach
--- 
--- vim.g.metals_disabled_mode = true
--- vim.g.metals_use_global_executable = true
--- 
--- vim.cmd [[
--- augroup lsp
---   au!
---   au FileType scala,sbt lua require("metals").initialize_or_attach(metals_config)
--- augroup end
--- ]]
 

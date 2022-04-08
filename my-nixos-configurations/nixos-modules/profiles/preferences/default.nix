@@ -53,6 +53,7 @@ in {
         # Programming language integrations: Language servers
         nvim-lspconfig = {
           plugin = nvim-lspconfig;
+          type = "lua";
           # plugin = nvim-lspconfig.overrideAttrs (oldAttrs: {
           #   dependencies = (old.dependencies or [ ]) ++ [
           #     # lsp_extensions-nvim
@@ -61,9 +62,10 @@ in {
           #     # SchemaStore-nvim
           #   ];
           # });
-          # config = ''
-          #   require('${./neovim/plugins/lspconfig.lua}')
-          # '';
+          config =
+            ''
+              loadfile('${./neovim/plugins/lspconfig.lua}')
+            '';
         };
 
         # Code editing: Auto-completion
@@ -125,19 +127,22 @@ in {
 
         # Code editing: Auto-completion with language servers
         cmp-nvim-lsp = {
-          plugin = cmp-nvim-lsp;};
+          plugin = cmp-nvim-lsp;
+        };
 
         # Code editing: Auto-completion with nvim's lua api
         cmp-nvim-lua = {
-          plugin = cmp-nvim-lua;};
+          plugin = cmp-nvim-lua;
+        };
 
         # Git support
         vim-fugitive = {
-          plugin = vim-fugitive;};
+          plugin = vim-fugitive;
+        };
 
-        # Git support: show changed lines in gutter (replaces gitgutter)
+        # Git support: Show changed lines in gutter (replaces gitgutter)
         gitsigns-nvim = {
-          plugin = gitsigns-nvim;
+          plugin = gitsigns-nvim.overrideAttrs (oldAttrs: {src = flake.inputs.gitsigns-nvim;});
           type = "lua";
           config = ''
             require('gitsigns').setup({
@@ -173,9 +178,13 @@ in {
                 )
 
                 -- Git: stage hunk
-                vim.keymap.set({'n', 'v'}, '<leader>hs', '<cmd>Gitsigns stage_hunk<cr>', options)
+                vim.keymap.set({'n'}, '<leader>hs', '<cmd>Gitsigns stage_hunk<cr>', options)
 
-                -- Git: unstage hunk
+                -- Git: stage partial hunk
+                vim.keymap.set({'v'}, '<leader>hs', function() package.loaded.gitsigns.stage_hunk({ vim.fn.getpos('v')[2], vim.fn.getcurpos()[2] }) end)
+
+                -- Git: undo stage hunk
+                -- See https://github.com/lewis6991/gitsigns.nvim/issues/510
                 vim.keymap.set('n', '<leader>hu', package.loaded.gitsigns.undo_stage_hunk, options)
 
                 -- Git: preview hunk
@@ -185,6 +194,7 @@ in {
                 vim.keymap.set('n', '<leader>hb', function() package.loaded.gitsigns.blame_line{full=true} end, options)
 
                 -- Git: display deleted text
+                -- https://github.com/lewis6991/gitsigns.nvim/issues/506
                 vim.keymap.set(
                   'n',
                   '<leader>hd',
@@ -289,24 +299,27 @@ in {
         };
 
         # Aesthetics: status/tabline
+        lualine-lsp-progress = {
+          plugin = lualine-lsp-progress;
+        };
         lualine-nvim = {
           plugin = lualine-nvim;
           type = "lua";
           config = ''
-            require('lualine').setup {
+            require('lualine').setup({
              sections = {
                lualine_a = { { 'mode', upper = true } },
                lualine_b = { { 'branch', icon = '' } },
                lualine_c = {
                   { 'filename', file_status = true, path = 1 },
                   { 'diagnostics', sources = { 'nvim_lsp' } },
-                   -- { 'lsp_progress' }
+                  { 'lsp_progress' },
                },
                lualine_x = { 'encoding', 'filetype' },
                lualine_y = { 'progress' },
                lualine_z = { 'location' },
              },
-            }
+            })
 
             -- Suppress mode prefixes like "-- INSERT --" in the command-line
             vim.opt.showmode = false
@@ -338,14 +351,17 @@ in {
           home = {
             enableNixpkgsReleaseCheck = true;
           };
-          programs.neovim = {
+          programs = {
             viAlias = true;
-            vimAlias = true;
-            extraConfig = ''
-              luafile ${./neovim/options.lua}
-              luafile ${./neovim/keymap.lua}
-            '';
-            package = flake.inputs.neovim.packages."${pkgs.system}".neovim; # Remove when 0.6.2 or later is released
+            neovim = {
+              viAlias = true;
+              vimAlias = true;
+              extraConfig = ''
+                luafile ${./neovim/options.lua}
+                luafile ${./neovim/keymap.lua}
+              '';
+              package = flake.inputs.neovim.packages."${pkgs.system}".neovim; # Remove when 0.6.2 or later is released
+            };
           };
         })
       ];

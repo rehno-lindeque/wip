@@ -43,11 +43,11 @@ in {
           neovim = {
             enable = lib.mkDefault true;
             plugins = with config.profiles.preferences.customizedVimPlugins; [
-              # Code editing: Comment and uncomment
-              vim-commentary
-
               # Programming language integrations: Language servers
               nvim-lspconfig
+
+              # Code editing: Comment and uncomment
+              vim-commentary
 
               # Code editing: Auto-completion
               nvim-cmp
@@ -67,22 +67,49 @@ in {
               # Git support
               vim-fugitive
 
-              # Git support: show changed lines in gutter
+              # Git support: Show changed lines in gutter
               gitsigns-nvim
 
               # Nix support
               vim-nix
 
-              # Fuzzy finder
+              # Navigation: Fuzzy finder
               telescope-nvim
               telescope-fzf-native-nvim
 
+              # Navigation: File tree
+              nvim-tree-lua
+
+              # Navigation: Buffers
+              bufferline-nvim
+
               # Aesthetics: Color scheme
               gruvbox-nvim
+
+              # Aesthetics: icons
+              nvim-web-devicons
+
+              # Aesthetics: Status/tabline
+              lualine-lsp-progress
+              lualine-nvim
+
+              # Vim: key binding feedback
+              which-key-nvim
+
+              # Vim: benchmarking
+              vim-startuptime
             ];
           };
         };
       }
+    ];
+
+    users.users.me.packages = with pkgs; [
+      # Language servers
+      rnix-lsp
+      haskell-language-server
+      sumneko-lua-language-server
+      elmPackages.elm-language-server
     ];
 
     # Currently I always use network manager for convenience

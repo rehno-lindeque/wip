@@ -9,6 +9,11 @@
     nixpkgs-shim.url = "github:rehno-lindeque/nixpkgs-shim";
     nixpkgs-shim.inputs.nixpkgs.follows = "nixpkgs-stable";
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-21.11";
+    gitsigns-nvim = {
+      # See https://github.com/lewis6991/gitsigns.nvim/issues/506
+      url = "github:lewis6991/gitsigns.nvim/a65a255d77b9ea4292301c4eabc7e92d25f52fc1";
+      flake = false;
+    };
 
     # Redirect inputs
     neovim.inputs = {
