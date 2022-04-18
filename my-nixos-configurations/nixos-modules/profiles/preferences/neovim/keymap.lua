@@ -1,4 +1,4 @@
-options = {
+local options = {
   -- Avoid miscellaneous command-line noise
   silent = true
 }

@@ -9,9 +9,6 @@ vim.keymap.set('n', '[d', vim.diagnostic.goto_prev)
 -- Diagnostics: go to the previous error
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next)
 
--- Diagnostics: go to the previous error
-vim.keymap.set('n', '<leader>ll', vim.diagnostic.setloclist)
-
 local on_attach = function(client, buffer)
   local options = { buffer = buffer }
 
@@ -66,21 +63,107 @@ lspconfig.rnix.setup({
 -- Set up each language server: Haskell programming language
 lspconfig.hls.setup({
   on_attach = on_attach,
-  autostart = false,
+  autostart = true,
   flags = flags,
+  settings = {
+    haskell = {
+      -- Turn off everything because HLS appears prone to crashing at the moment
+      checkParents = "CheckOnSave",
+      checkProject = false,
+      formattingProvider = "ormolu",
+      maxCompletions =  40,
+      plugin = {
+        alternateNumberFormat = {
+          globalOn = false,
+        },
+        callHierarchy = {
+          globalOn = false,
+        },
+        class = {
+          globalOn = false,
+        },
+        eval = {
+          globalOn = false,
+        },
+        ['ghcide-code-actions-bindings'] = {
+          globalOn = false,
+        },
+        ['ghcide-code-actions-fill-holes'] = {
+          globalOn = false,
+        },
+        ['ghcide-code-actions-imports-exports'] = {
+          globalOn = false,
+        },
+        ['ghcide-code-actions-type-signatures'] = {
+          globalOn = false,
+        },
+        ['ghcide-completions'] = {
+          config = {
+            autoExtendOn = false,
+            snippetsOn = false,
+          },
+          globalOn = false,
+        },
+        ['ghcide-hover-and-symbols'] = {
+          hoverOn = false,
+          symbolsOn = false,
+        },
+        ['ghcide-type-lenses'] = {
+          config = {
+            mode = "always"
+          },
+          globalOn = false,
+        },
+        haddockComments = {
+          globalOn = false,
+        },
+        hlint = {
+          codeActionsOn = false,
+          config = {
+            flags = {},
+          },
+          diagnosticsOn = false,
+        },
+        importLens = {
+          codeActionsOn = false,
+          codeLensOn = false,
+        },
+        moduleName = {
+          globalOn = false,
+        },
+        pragmas = {
+          codeActionsOn = false,
+          completionOn = false,
+        },
+        qualifyImportedNames = {
+          globalOn = false,
+        },
+        refineImports = {
+          codeActionsOn = false,
+          codeLensOn = false,
+        },
+        retrie = {
+          globalOn = false,
+        },
+        splice = {
+          globalOn = false,
+        },
+      },
+    },
+  },
 })
 
 -- Set up each language server: Lua programming language
 lspconfig.sumneko_lua.setup({
   on_attach = on_attach,
-  autostart = false,
+  autostart = true,
   flags = flags,
 })
 
 -- Set up each language server: Elm programming language
 lspconfig.elmls.setup({
   on_attach = on_attach,
-  autostart = false,
+  autostart = true,
   flags = flags,
 })
 

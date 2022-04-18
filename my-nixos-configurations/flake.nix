@@ -11,7 +11,7 @@
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-21.11";
     gitsigns-nvim = {
       # See https://github.com/lewis6991/gitsigns.nvim/issues/506
-      url = "github:lewis6991/gitsigns.nvim/a65a255d77b9ea4292301c4eabc7e92d25f52fc1";
+      url = "github:lewis6991/gitsigns.nvim/4a68d2a3733f322201a624f682d1bad2228882aa";
       flake = false;
     };
 

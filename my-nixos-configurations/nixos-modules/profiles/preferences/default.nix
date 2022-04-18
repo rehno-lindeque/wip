@@ -28,11 +28,12 @@ in {
           <code>plugins = with config.profile.preferences.customizedVimPlugins; [ nvim-cmp ]</code>
 
           My philosophical take on vim configuration:
-          * 1 part discipline, 1 part pragmatism
+          * Less is more: focus on things I "need" for productivity when deviating from default configurations
+          * I like to "live in the future", which means using lua plugins, lua config etc
           * If I'm not actively using something, then it doesn't belong in my config
           * If I can't remember the key binding, reconsider it
-          * I like to "live in the future", which means using lua plugins, lua config etc
           * Simplicity and performance/robustness characteristics are features #1, and #2 when evaluating plugins
+          * Config should be explainable at a glance
         '';
       };
     };
@@ -239,11 +240,14 @@ in {
         };
 
         # Aesthetics: status/tabline
-        lualine-lsp-progress = {
-          plugin = lualine-lsp-progress;
-        };
         lualine-nvim = {
-          plugin = lualine-nvim;
+          plugin = lualine-nvim.overrideAttrs (oldAttrs: {
+            dependencies =
+              (oldAttrs.dependencies or [])
+              ++ [
+                lualine-lsp-progress
+              ];
+          });
           type = "lua";
           config = ''
             require('lualine').setup({
@@ -290,6 +294,10 @@ in {
         ({system, ...}: {
           home = {
             enableNixpkgsReleaseCheck = true;
+            sessionVariables = {
+              # Various terminal programs like git use EDITOR for automatically running a text editor
+              EDITOR = "vim";
+            };
           };
           programs = {
             viAlias = true;
