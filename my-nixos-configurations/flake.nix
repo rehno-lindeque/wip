@@ -1,13 +1,11 @@
 {
   inputs = {
-    circuithub-nixos-profiles.url = "git+ssh://git@github.com/circuithub/nixos-profiles.git";
+    circuithub-nixos-configurations.url = "git+ssh://git@github.com/circuithub/nixos-configurations.git";
     flake-help.url = "github:rehno-lindeque/flake-help";
     flake-utils.url = "github:numtide/flake-utils";
     home-manager.url = "github:nix-community/home-manager/release-21.11";
-    home-manager.inputs.nixpkgs.follows = "nixpkgs-stable";
     neovim.url = "github:neovim/neovim/1217694f21cff2953e6c56be2157365daf7078eb?dir=contrib"; # remove after neovim 0.6.2 release
     nixpkgs-shim.url = "github:rehno-lindeque/nixpkgs-shim";
-    nixpkgs-shim.inputs.nixpkgs.follows = "nixpkgs-stable";
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-21.11";
     gitsigns-nvim = {
       # See https://github.com/lewis6991/gitsigns.nvim/issues/506
@@ -16,20 +14,29 @@
     };
 
     # Redirect inputs
+    circuithub-nixos-configurations.inputs = {
+      nixpkgs.follows = "nixpkgs-stable";
+      flake-utils.follows = "flake-utils";
+      flake-help.follows = "flake-help";
+    };
+    home-manager.inputs.nixpkgs.follows = "nixpkgs-stable";
     neovim.inputs = {
       nixpkgs.follows = "nixpkgs-stable";
       flake-utils.follows = "flake-utils";
+    };
+    nixpkgs-shim.inputs = {
+      nixpkgs.follows = "nixpkgs-stable";
     };
   };
 
   outputs = {
     self,
-    circuithub-nixos-profiles,
+    circuithub-nixos-configurations,
     flake-help,
     flake-utils,
     home-manager,
     nixpkgs-shim,
-    nixpkgs-stable,
+    ...
   }: let
     eachDefaultEnvironment = f:
       flake-utils.lib.eachDefaultSystem

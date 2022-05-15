@@ -4,7 +4,7 @@
       "inputs": {
         "flakeCompat": "flakeCompat",
         "nixpkgs": [
-          "circuithub-nixos-profiles",
+          "circuithub-nixos-configurations",
           "nixpkgs"
         ]
       },
@@ -23,12 +23,18 @@
         "type": "github"
       }
     },
-    "circuithub-nixos-profiles": {
+    "circuithub-nixos-configurations": {
       "inputs": {
         "alejandra": "alejandra",
-        "flake-help": "flake-help",
-        "flake-utils": "flake-utils",
-        "nixpkgs": "nixpkgs"
+        "flake-help": [
+          "flake-help"
+        ],
+        "flake-utils": [
+          "flake-utils"
+        ],
+        "nixpkgs": [
+          "nixpkgs-stable"
+        ]
       },
       "locked": {
         "lastModified": 1649104672,
@@ -37,11 +43,11 @@
         "rev": "f3e16c287959f255bcba8d5d2de169c69b8a4205",
         "revCount": 8,
         "type": "git",
-        "url": "ssh://git@github.com/circuithub/nixos-profiles.git"
+        "url": "ssh://git@github.com/circuithub/nixos-configurations.git"
       },
       "original": {
         "type": "git",
-        "url": "ssh://git@github.com/circuithub/nixos-profiles.git"
+        "url": "ssh://git@github.com/circuithub/nixos-configurations.git"
       }
     },
     "flake-help": {
@@ -59,43 +65,13 @@
         "type": "github"
       }
     },
-    "flake-help_2": {
-      "locked": {
-        "lastModified": 1643222028,
-        "narHash": "sha256-HyNlXjN5D/fRw341r7mg0V1gixyKx1Eis5JPThLzI90=",
-        "owner": "rehno-lindeque",
-        "repo": "flake-help",
-        "rev": "dd85539a7c1a0530f9084869958c64cf914116c2",
-        "type": "github"
-      },
-      "original": {
-        "owner": "rehno-lindeque",
-        "repo": "flake-help",
-        "type": "github"
-      }
-    },
     "flake-utils": {
       "locked": {
-        "lastModified": 1644229661,
-        "narHash": "sha256-1YdnJAsNy69bpcjuoKdOYQX0YxZBiCYZo4Twxerqv7k=",
+        "lastModified": 1652557277,
+        "narHash": "sha256-jSes9DaIVMdmwBB78KkFUVrlDzawmD62vrUg0GS2500=",
         "owner": "numtide",
         "repo": "flake-utils",
-        "rev": "3cecb5b042f7f209c56ffd8371b2711a290ec797",
-        "type": "github"
-      },
-      "original": {
-        "owner": "numtide",
-        "repo": "flake-utils",
-        "type": "github"
-      }
-    },
-    "flake-utils_2": {
-      "locked": {
-        "lastModified": 1652372896,
-        "narHash": "sha256-lURGussfF3mGrFPQT3zgW7+RC0pBhbHzco0C7I+ilow=",
-        "owner": "numtide",
-        "repo": "flake-utils",
-        "rev": "0d347c56f6f41de822a4f4c7ff5072f3382db121",
+        "rev": "12806d31a381e7cd169a6bac35590e7b36dc5fe5",
         "type": "github"
       },
       "original": {
@@ -184,22 +160,6 @@
         "type": "github"
       }
     },
-    "nixpkgs": {
-      "locked": {
-        "lastModified": 1647902355,
-        "narHash": "sha256-SySJ8IRaogpc/BPOkysA+kzq9URvXthoeKIemaTKCiM=",
-        "owner": "nixos",
-        "repo": "nixpkgs",
-        "rev": "31aa631dbc496500efd2507baaed39626f6650f2",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nixos",
-        "ref": "nixos-21.11",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
     "nixpkgs-shim": {
       "inputs": {
         "nixpkgs": [
@@ -276,11 +236,11 @@
     },
     "nixpkgs-stable": {
       "locked": {
-        "lastModified": 1652182392,
-        "narHash": "sha256-H9Bmor+kfogrE0X7Fi5sh0gCUWDG4pnmYxedJyIT41A=",
+        "lastModified": 1652530570,
+        "narHash": "sha256-GWRrbUv9l1GSyBkj39s9AqNLX1l3rzVOwvnuG4WYM+E=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "aa2f845096f72dde4ad0c168eeec387cbd2eae04",
+        "rev": "4c560cc7ee57e1fb28e6fd7bdacdf01f948f8a91",
         "type": "github"
       },
       "original": {
@@ -292,9 +252,9 @@
     },
     "root": {
       "inputs": {
-        "circuithub-nixos-profiles": "circuithub-nixos-profiles",
-        "flake-help": "flake-help_2",
-        "flake-utils": "flake-utils_2",
+        "circuithub-nixos-configurations": "circuithub-nixos-configurations",
+        "flake-help": "flake-help",
+        "flake-utils": "flake-utils",
         "gitsigns-nvim": "gitsigns-nvim",
         "home-manager": "home-manager",
         "neovim": "neovim",
