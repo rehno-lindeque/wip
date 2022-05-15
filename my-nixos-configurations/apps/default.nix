@@ -1,5 +1,6 @@
 {
   flake,
+  mdr,
   mkHelp,
   system,
   writeScript,
@@ -26,6 +27,14 @@ in {
           ${white}sudo dd if=./result/iso/installer-${system}.iso of=/dev/sd${yellow}X${white} bs=1MB${nc}
         '';
       })
+      .outPath;
+  };
+
+  readme = {
+    type = "app";
+    description = "get more detailed help";
+    program =
+      (writeScript "readme" ''${mdr}/bin/mdr ${../README.md}'')
       .outPath;
   };
 
