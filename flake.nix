@@ -64,5 +64,7 @@
 
     # see note about devShells.<system>.default in dev-shells
     inherit (my-dev-shells) devShell;
+
+    formatter.x86_64-linux = nixpkgs-shim.legacyPackages.x86_64-linux.alejandra;
   };
 }
