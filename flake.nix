@@ -55,6 +55,7 @@
 
   outputs = {
     self,
+    nixpkgs-shim,
     my-dev-shells,
     my-nixos-configurations,
     ...
