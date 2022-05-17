@@ -8,13 +8,9 @@
 in {
   options = with lib; {
     profiles.personalized = {
-      enable = mkOption {
-        type = types.bool;
-        default = false;
-        description = ''
-          Whether to enable my personal configuration profile, generate my user, home directory etc
-        '';
-      };
+      enable = mkEnableOption ''
+        Whether to enable my personal configuration profile, generate my user, home directory etc
+      '';
       enableSoftware = mkOption {
         type = types.bool;
         default = true;
@@ -121,9 +117,6 @@ in {
           # Directory listings in tree format
           # tree
 
-          # Fuzzy find
-          fzf
-
           # Keybase filesystem
           # kbfs
 
@@ -162,7 +155,7 @@ in {
           firefox
           google-chrome
           brave
-          torbrowser
+          tor-browser-bundle-bin
           # dropbox
           # dropbox-cli
         ]
@@ -433,6 +426,12 @@ in {
     };
 
     services = {
+    };
+
+    # Approximate location used with redshift
+    location = {
+      latitude = 42.4072;
+      longitude = -71.3824;
     };
   };
 }
