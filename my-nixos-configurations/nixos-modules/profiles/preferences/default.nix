@@ -160,17 +160,29 @@ in {
           plugin = telescope-nvim;
           type = "lua";
           config = ''
+            -- Search file names that are tracked by git
+            vim.keymap.set('n', '<leader>o', function() return require('telescope.builtin').git_files() end, { desc = "Search tracked files" })
+
+            -- Search file names modified relative to HEAD
+            vim.keymap.set('n', '<leader>m', function() return require('telescope.builtin').git_status() end, { desc = "Search modified files" })
+
             -- Search file names
-            vim.keymap.set('n', '<leader>o', function() return require('telescope.builtin').find_files() end)
+            vim.keymap.set('n', '<leader>O', function() return require('telescope.builtin').find_files() end, { desc = "Search files" })
 
             -- Search file contents
-            vim.keymap.set('n', '<leader>g', function() return require('telescope.builtin').live_grep() end)
+            vim.keymap.set('n', '<leader>/', function() return require('telescope.builtin').live_grep() end, { desc = "Search files contents" })
 
             -- Search buffer names
-            vim.keymap.set('n', '<leader>b', function() return require('telescope.builtin').buffers() end)
+            vim.keymap.set('n', '<leader>b', function() return require('telescope.builtin').buffers() end, { desc = "Search open buffers" })
+
+            -- Search diagnostics in all open buffers
+            vim.keymap.set('n', '<leader>D', function() return require('telescope.builtin').diagnostics() end, { desc = "Search workspace diagnostics" })
+
+            -- Search diagnostics
+            vim.keymap.set('n', '<leader>d', function() return require('telescope.builtin').diagnostics({ bufnr = 0 }) end, { desc = "Search diagnostics" })
 
             -- Search vim help
-            vim.keymap.set('n', '<leader>hh', function() return require('telescope.builtin').help_tags() end)
+            vim.keymap.set('n', '<leader>hh', function() return require('telescope.builtin').help_tags() end, { desc = "Search vim help" })
 
             -- Pressing esc twice to cancel is annoying, so map <esc> to directly close the popup in insert mode
             local actions = require('telescope.actions')
