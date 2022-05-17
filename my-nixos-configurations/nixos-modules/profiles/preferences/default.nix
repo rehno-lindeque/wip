@@ -83,13 +83,13 @@ in {
                     require('luasnip').lsp_expand(args.body)
                   end,
                 },
-                mapping = {
+                mapping = cmp.mapping.preset.insert({
                   -- Accept the currently selected item
                   ['<CR>'] = cmp.mapping.confirm({ select = true }),
 
                   -- Force auto-completion in insert mode without first typing something
                   ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }),
-                },
+                }),
                 sources = cmp.config.sources({
                   -- Listed in order of preference
                   { name = 'nvim_lua' },
