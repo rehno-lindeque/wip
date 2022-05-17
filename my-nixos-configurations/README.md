@@ -3,6 +3,16 @@
 
 NixOS configurations for various systems I work with.
 
+## Pitfalls
+
+With nix unstable 2.9 use:
+
+```
+sudo nixos-rebuild switch --flake path:.#nucbox
+```
+
+to avoid git issues
+
 
 ## Notes
 
