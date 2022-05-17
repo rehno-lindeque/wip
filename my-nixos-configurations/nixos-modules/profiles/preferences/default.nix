@@ -333,10 +333,11 @@ in {
 
     programs = {
       bash = {
-        enableCompletion = true; # auto-completion in bash
-        interactiveShellInit = ''
-          export HISTCONTROL=ignorespace;
-        '';
+        # Auto-completion in bash
+        enableCompletion = true;
+
+        # Prefix bash commands with a space character to avoid adding them to recorded history
+        historyControl = ["ignorespace"];
       };
       git.config = {
         init.defaultBranch = "main";
