@@ -63,6 +63,7 @@
           inherit (flake-help.lib) mkHelp;
         };
         devShells.default = pkgs.callPackage ./dev-shell {};
+        packages.installerIso = self.nixosConfigurations.installer.config.system.build.isoImage;
       }
     )
     // {

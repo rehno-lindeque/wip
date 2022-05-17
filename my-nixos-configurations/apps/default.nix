@@ -22,9 +22,13 @@ in {
         supplementalNotes = ''
           INSTALLER INSTRUCTIONS:
 
-          Use dd to overwrite usb media with the iso image contents (${yellow}carefully!${nc}):
+          1. Build the installer iso
 
-          ${white}sudo dd if=./result/iso/installer-${system}.iso of=/dev/sd${yellow}X${white} bs=1MB${nc}
+          ${white}nix build .#installerIso${nc}
+
+          2. Use dd to overwrite usb media with the iso image contents (${yellow}carefully!${nc}):
+
+          ${white}sudo dd if=./result/iso/installer.iso of=/dev/sd${yellow}X${white} bs=1MB${nc}
         '';
       })
       .outPath;
@@ -35,16 +39,6 @@ in {
     description = "get more detailed help";
     program =
       (writeScript "readme" ''${mdr}/bin/mdr ${../README.md}'')
-      .outPath;
-  };
-
-  build-installer-iso = {
-    type = "app";
-    description = "build an iso image";
-    program =
-      (writeScript "build-installer-iso" ''
-        nix build .#nixosConfigurations.installer.config.system.build.isoImage
-      '')
       .outPath;
   };
 }
