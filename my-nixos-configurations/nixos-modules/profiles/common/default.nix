@@ -9,17 +9,13 @@
 in {
   options = with lib; {
     profiles.common = {
-      enable = mkOption {
-        type = types.bool;
-        default = false;
-        description = ''
-          Whether to enable my most basic configuration profile.
+      enable = mkEnableOption ''
+        Whether to enable my most basic configuration profile.
 
-          Common, as in "shared configuration", but also common as in "common sense".
-          That is, overly specific configuration is excluded even when shared between different systems.
-          (I generally ask myself if this is something I would want on any non-graphical live disk.)
-        '';
-      };
+        Common, as in "shared configuration", but also common as in "common sense".
+        That is, overly specific configuration is excluded even when shared between different systems.
+        (I generally ask myself if this is something I would want on any non-graphical live disk.)
+      '';
     };
   };
 
@@ -28,7 +24,6 @@ in {
       # Basic productivity
       wget
       ripgrep
-      fzf
       pstree
     ];
 
@@ -52,13 +47,16 @@ in {
       binaryCachePublicKeys = [
         "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
       ];
+
+      # setting the old <nixpkgs> path is necessary for some legacy nix files
+      nixPath = ["nixpkgs=${flake.inputs.nixpkgs-stable}"];
     };
 
     # Unfree software is a fact of life
     nixpkgs.config.allowUnfree = true;
 
     # Always apply the the default overlay supplied by the flake
-    nixpkgs.overlays = [flake.overlay];
+    nixpkgs.overlays = [flake.overlays.default];
 
     # Git is somewhat essential for working with nix flakes
     programs.git.enable = lib.mkDefault true;
