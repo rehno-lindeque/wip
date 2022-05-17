@@ -47,7 +47,7 @@
             pkgs = import nixpkgs-shim {
               inherit system;
               config.allowUnfree = true;
-              overlays = [self.overlay];
+              overlays = [self.overlays.default];
             };
           }
       );
@@ -57,15 +57,12 @@
         system,
         pkgs,
       }: rec {
-        apps = import ./apps {
-          inherit (pkgs) writeScript;
+        apps = pkgs.callPackages ./apps {
           inherit system;
           flake = self;
+          inherit (flake-help.lib) mkHelp;
         };
-        devShell = import ./dev-shell {
-          inherit (pkgs) mkShell;
-          inherit apps;
-        };
+        devShells.default = pkgs.callPackage ./dev-shell {};
       }
     )
     // {
@@ -104,6 +101,6 @@
         };
       };
 
-      overlay = final: prev: {};
+      overlays.default = final: prev: {};
     };
 }
