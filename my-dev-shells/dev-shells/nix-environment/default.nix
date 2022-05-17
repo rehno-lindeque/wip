@@ -1,12 +1,12 @@
 {
   mkShell,
   alejandra,
-  nix_2_6,
+  nix,
 }:
 mkShell {
   buildInputs = [
-    # Nix unstable
-    nix_2_6
+    # Nix
+    nix
     # Nix code formatting
     alejandra
   ];
