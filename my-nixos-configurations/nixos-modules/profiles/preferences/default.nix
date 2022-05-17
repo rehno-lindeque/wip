@@ -312,6 +312,10 @@ in {
             };
           };
           programs = {
+            bash = {
+              # Prefix bash commands with a space character to avoid adding them to recorded history
+              historyControl = ["ignorespace"];
+            };
             viAlias = true;
             neovim = {
               viAlias = true;
@@ -335,9 +339,6 @@ in {
       bash = {
         # Auto-completion in bash
         enableCompletion = true;
-
-        # Prefix bash commands with a space character to avoid adding them to recorded history
-        historyControl = ["ignorespace"];
       };
       git.config = {
         init.defaultBranch = "main";
