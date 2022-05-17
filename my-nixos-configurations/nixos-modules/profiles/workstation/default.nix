@@ -39,6 +39,8 @@ in {
     home-manager.sharedModules = [
       {
         programs = {
+          bash.enable = true;
+
           # Neovim, configured as an IDE
           neovim = {
             enable = lib.mkDefault true;
