@@ -212,7 +212,7 @@ in {
         };
       })
 
-      (lib.mkIf config.profiles.nucbox.enable {
+      (lib.mkIf config.profiles.nucbox2022.enable {
         # TODO: clean up / check sound (it doesn't work right now)
         # hardware.pulseaudio.daemon.logLevel = "error";
         # hardware.pulseaudio.support32Bit = lib.mkDefault true;
