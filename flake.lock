@@ -144,7 +144,7 @@
       },
       "locked": {
         "lastModified": 1,
-        "narHash": "sha256-svxZffBMTtZRukIB3/TbYgOZWeoDH6mk9AZdlhwZTwA=",
+        "narHash": "sha256-jDlgXqyv5luHn7f7ZyT0c1rRTdbFyJmgcTleSncQxHg=",
         "path": "./my-dev-shells",
         "type": "path"
       },
@@ -231,8 +231,8 @@
         ]
       },
       "locked": {
-        "lastModified": 1649454294,
-        "narHash": "sha256-Eoz5V9CyyHdT+LqO2Yz5SRgd+y2yq/G1ja2LaTUeDdA=",
+        "lastModified": 1652668734,
+        "narHash": "sha256-i/rU9dJ9RbBEHjPaZ402FDvv77oFkozj8oT9clBeiaA=",
         "path": "/home/me/projects/nixpkgs-shim",
         "type": "path"
       },
