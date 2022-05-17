@@ -60,7 +60,7 @@
       }
     )
     // {
-      nixosModules = {
+      nixosModules = rec {
         common = import ./nixos-modules/profiles/common;
         personalize = import ./nixos-modules/profiles/personalize;
         playground = import ./nixos-modules/profiles/playground;
@@ -68,29 +68,39 @@
         workstation = import ./nixos-modules/profiles/workstation;
         nucbox = import ./nixos-modules/profiles/nucbox;
         installer = import ./nixos-modules/profiles/installer;
+        default = {
+          imports = [
+            common
+            personalize
+            playground
+            preferences
+            workstation
+            nucbox
+            circuithub-nixos-configurations.nixosModules.default
+            home-manager.nixosModules.home-manager
+            nixpkgs-shim.inputs.nixpkgs-shim-profiles.nixosModules.default
+          ];
+        };
       };
 
       nixosConfigurations = let
-        inherit (nixpkgs-shim) lib;
-        extraModules =
-          builtins.attrValues nixpkgs-shim.nixosModules
-          ++ [
-            self.nixosModules.common
-            self.nixosModules.personalize
-            self.nixosModules.preferences
-            self.nixosModules.workstation
-            circuithub-nixos-profiles.nixosModules.developerWorkstation
-            home-manager.nixosModules.home-manager
-          ];
+        inherit (nixpkgs-shim.lib) nixosSystem;
       in {
-        nucbox = lib.nixosSystem {
+        nucbox = nixosSystem {
           system = "x86_64-linux";
-          modules = extraModules ++ [self.nixosModules.nucbox];
+          modules = [
+            self.nixosModules.default
+            {profiles.nucbox.enable = true;}
+          ];
           specialArgs = {flake = self;};
         };
-        installer = lib.nixosSystem {
+        installer = nixosSystem {
           system = "x86_64-linux";
-          modules = extraModules ++ [self.nixosModules.installer];
+          modules = [
+            self.nixosModules.default
+            self.nixosModules.installer
+            {profiles.installer.enable = true;}
+          ];
           specialArgs = {flake = self;};
         };
       };
