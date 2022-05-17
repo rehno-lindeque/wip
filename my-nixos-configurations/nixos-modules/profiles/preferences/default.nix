@@ -63,10 +63,9 @@ in {
           #     # SchemaStore-nvim
           #   ];
           # });
-          config =
-            ''
-              loadfile('${./neovim/plugins/lspconfig.lua}')()
-            '';
+          config = ''
+            loadfile('${./neovim/plugins/lspconfig.lua}')()
+          '';
         };
 
         # Code editing: Auto-completion
@@ -79,6 +78,7 @@ in {
               local cmp = require('cmp')
               cmp.setup({
                 snippet = {
+                  -- I don't use snippets but it appears to be required
                   expand = function(args)
                     require('luasnip').lsp_expand(args.body)
                   end,
@@ -319,7 +319,6 @@ in {
               # Prefix bash commands with a space character to avoid adding them to recorded history
               historyControl = ["ignorespace"];
             };
-            viAlias = true;
             neovim = {
               viAlias = true;
               vimAlias = true;
