@@ -66,7 +66,7 @@
         playground = import ./nixos-modules/profiles/playground;
         preferences = import ./nixos-modules/profiles/preferences;
         workstation = import ./nixos-modules/profiles/workstation;
-        nucbox = import ./nixos-modules/profiles/nucbox;
+        nucbox2022 = import ./nixos-modules/profiles/nucbox2022;
         installer = import ./nixos-modules/profiles/installer;
         default = {
           imports = [
@@ -75,7 +75,7 @@
             playground
             preferences
             workstation
-            nucbox
+            nucbox2022
             circuithub-nixos-configurations.nixosModules.default
             home-manager.nixosModules.home-manager
             nixpkgs-shim.inputs.nixpkgs-shim-profiles.nixosModules.default
@@ -86,11 +86,11 @@
       nixosConfigurations = let
         inherit (nixpkgs-shim.lib) nixosSystem;
       in {
-        nucbox = nixosSystem {
+        nucbox2022 = nixosSystem {
           system = "x86_64-linux";
           modules = [
             self.nixosModules.default
-            {profiles.nucbox.enable = true;}
+            {profiles.nucbox2022.enable = true;}
           ];
           specialArgs = {flake = self;};
         };
