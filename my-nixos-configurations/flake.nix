@@ -3,29 +3,22 @@
     circuithub-nixos-configurations.url = "git+ssh://git@github.com/circuithub/nixos-configurations.git";
     flake-help.url = "github:rehno-lindeque/flake-help";
     flake-utils.url = "github:numtide/flake-utils";
-    home-manager.url = "github:nix-community/home-manager/release-21.11";
-    neovim.url = "github:neovim/neovim/1217694f21cff2953e6c56be2157365daf7078eb?dir=contrib"; # remove after neovim 0.6.2 release
-    nixpkgs-shim.url = "github:rehno-lindeque/nixpkgs-shim";
+    home-manager.url = "github:nix-community/home-manager"; # /release-22.05 (once released)
+    # nixpkgs-shim.url = "github:rehno-lindeque/nixpkgs-shim";
+    nixpkgs-shim.url = "path:/home/me/projects/nixpkgs-shim";
+    nixpkgs-shim-images.url = "github:rehno-lindeque/nixpkgs-shim-images/fc365e485d98dcc1e8f278654618b8edf3424b03"; # master branch is broken
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-21.11";
-    gitsigns-nvim = {
-      # See https://github.com/lewis6991/gitsigns.nvim/issues/506
-      url = "github:lewis6991/gitsigns.nvim/4a68d2a3733f322201a624f682d1bad2228882aa";
-      flake = false;
-    };
+    nixpkgs-unstable.url = "github:nixos/nixpkgs";
 
     # Redirect inputs
     circuithub-nixos-configurations.inputs = {
-      nixpkgs.follows = "nixpkgs-stable";
+      nixpkgs.follows = "nixpkgs-unstable";
       flake-utils.follows = "flake-utils";
       flake-help.follows = "flake-help";
     };
-    home-manager.inputs.nixpkgs.follows = "nixpkgs-stable";
-    neovim.inputs = {
-      nixpkgs.follows = "nixpkgs-stable";
-      flake-utils.follows = "flake-utils";
-    };
+    home-manager.inputs.nixpkgs.follows = "nixpkgs-unstable";
     nixpkgs-shim.inputs = {
-      nixpkgs.follows = "nixpkgs-stable";
+      nixpkgs.follows = "nixpkgs-unstable";
     };
   };
 
@@ -44,7 +37,7 @@
         system:
           f {
             inherit system;
-            pkgs = import nixpkgs-shim {
+            pkgs = import nixpkgs-shim.inputs.nixpkgs {
               inherit system;
               config.allowUnfree = true;
               overlays = [self.overlays.default];

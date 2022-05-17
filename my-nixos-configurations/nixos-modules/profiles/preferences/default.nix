@@ -143,7 +143,7 @@ in {
 
         # Git support: Show changed lines in gutter (replaces gitgutter)
         gitsigns-nvim = {
-          plugin = gitsigns-nvim.overrideAttrs (oldAttrs: {src = flake.inputs.gitsigns-nvim;});
+          plugin = gitsigns-nvim;
           type = "lua";
           config = ''
             loadfile('${./neovim/plugins/gitsigns.lua}')()
@@ -308,7 +308,6 @@ in {
                 luafile ${./neovim/options.lua}
                 luafile ${./neovim/keymap.lua}
               '';
-              package = flake.inputs.neovim.packages."${pkgs.system}".neovim; # Remove when 0.6.2 or later is released
             };
           };
         })
