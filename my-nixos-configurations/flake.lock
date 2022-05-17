@@ -96,23 +96,6 @@
         "type": "github"
       }
     },
-    "gitsigns-nvim": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1649584323,
-        "narHash": "sha256-Oa9HlxrfgtS3FyDvhylzHBDJzA3XemN2TcUZZK3Dm6Y=",
-        "owner": "lewis6991",
-        "repo": "gitsigns.nvim",
-        "rev": "4a68d2a3733f322201a624f682d1bad2228882aa",
-        "type": "github"
-      },
-      "original": {
-        "owner": "lewis6991",
-        "repo": "gitsigns.nvim",
-        "rev": "4a68d2a3733f322201a624f682d1bad2228882aa",
-        "type": "github"
-      }
-    },
     "home-manager": {
       "inputs": {
         "nixpkgs": [
@@ -278,7 +261,6 @@
         "circuithub-nixos-configurations": "circuithub-nixos-configurations",
         "flake-help": "flake-help",
         "flake-utils": "flake-utils",
-        "gitsigns-nvim": "gitsigns-nvim",
         "home-manager": "home-manager",
         "nixpkgs-shim": "nixpkgs-shim",
         "nixpkgs-shim-images": "nixpkgs-shim-images_2",
