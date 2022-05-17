@@ -1,7 +1,11 @@
-local options = {
-  -- Avoid miscellaneous command-line noise
-  silent = true
-}
+local options = function(additional_options)
+  local final_options = {
+    -- Avoid miscellaneous command-line noise
+    silent = true,
+  }
+  for key,value in pairs(additional_options or {}) do final_options[key] = value end
+  return final_options
+end
 
 -- Remap spacebar as the leader key
 vim.keymap.set('', '<Space>', '<Nop>', options)
