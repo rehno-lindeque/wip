@@ -348,15 +348,5 @@ in {
         agentTimeout = "1h";
       };
     };
-
-    services = {
-      # Security
-      # TODO: dont start any services in preferences profile
-      # gnome.gnome-keyring.enable = true; # gnome's default keyring
-
-      # Set the desktop manager to none so that it doesn't default to xterm sometimes
-      # TODO: check if this is this still needed?
-      # xserver.displayManager.defaultSession = "none+xmonad";
-    };
   };
 }
