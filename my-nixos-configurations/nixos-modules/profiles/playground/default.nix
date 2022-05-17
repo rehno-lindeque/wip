@@ -233,9 +233,6 @@ in {
         # TODO: check if this is this still needed?
         # xserver.displayManager.defaultSession = "none+xmonad";
 
-        # Enable fzf bash integration
-        programs.fzf.enableBashIntegration = true;
-
         # Security
         services.gnome.gnome-keyring.enable = true; # gnome's default keyring
 
