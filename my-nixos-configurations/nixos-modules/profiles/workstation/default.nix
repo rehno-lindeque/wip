@@ -9,14 +9,10 @@
 in {
   options = with lib; {
     profiles.workstation = {
-      enable = mkOption {
-        type = types.bool;
-        default = false;
-        description = ''
-          Whether to enable my basic workstation configuration profile.
-          The purpose of this is to enable a basic level of functionality necessary to work with a system.
-        '';
-      };
+      enable = mkEnableOption ''
+        Whether to enable my functional workstation configuration profile.
+        The purpose of this is to enable a basic level of functionality necessary to work with a system.
+      '';
     };
   };
 
@@ -32,14 +28,13 @@ in {
     # Any reasonable workstation probably at least needs some basic quality of life fonts
     fonts.enableDefaultFonts = lib.mkDefault true;
 
-    # TODO: should this be a preference setting for e.g. some terminal?
-    # TODO: check where this font is used (vim?)
-    # TODO: Check against any home-manager font settings?
-    # fonts.fonts = with pkgs; [source-code-pro];
     home-manager.sharedModules = [
       {
         programs = {
           bash.enable = true;
+
+          # Fuzzy find file names
+          fzf.enable = lib.mkDefault true;
 
           # Neovim, configured as an IDE
           neovim = {
@@ -135,6 +130,8 @@ in {
     # Security
     security.apparmor.enable = lib.mkDefault true;
     services.openssh.enable = lib.mkDefault false;
+    services.openssh.permitRootLogin = lib.mkDefault "no";
+    services.openssh.passwordAuthentication = lib.mkDefault false;
     services.fail2ban.enable = lib.mkDefault true;
 
     # Note that locking the kernel modules can sometimes prevent you from doing useful things
