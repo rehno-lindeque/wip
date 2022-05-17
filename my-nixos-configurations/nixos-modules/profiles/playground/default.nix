@@ -58,6 +58,9 @@ in {
               viconflict = ''vi $(git status -s | grep \\\(UU\\\|AA\\\) | sed "s/^\(UU\|AA\) //")'';
             };
             programs = {
+              # Enable fzf bash integration
+              fzf.enableBashIntegration = true;
+
               starship = {
                 enable = true;
                 enableBashIntegration = true;
