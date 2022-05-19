@@ -142,14 +142,17 @@
         "nixpkgs-shim-profiles": "nixpkgs-shim-profiles"
       },
       "locked": {
-        "lastModified": 1652707323,
-        "narHash": "sha256-WyV11i41OH0YYp/GprX2YXHJJ/p3zgNozQPfDw2Ic64=",
-        "path": "/home/me/projects/nixpkgs-shim",
-        "type": "path"
+        "lastModified": 1652668977,
+        "narHash": "sha256-qmSTJWAHDpafKX3fN6INGwY7hRNxSjHa3QPYG7MKF0c=",
+        "owner": "rehno-lindeque",
+        "repo": "nixpkgs-shim",
+        "rev": "45728a61fad7a9f03409fc0e8e652a7f99bb3663",
+        "type": "github"
       },
       "original": {
-        "path": "/home/me/projects/nixpkgs-shim",
-        "type": "path"
+        "owner": "rehno-lindeque",
+        "repo": "nixpkgs-shim",
+        "type": "github"
       }
     },
     "nixpkgs-shim-images": {

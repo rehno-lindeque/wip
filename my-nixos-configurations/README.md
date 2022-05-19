@@ -5,7 +5,7 @@ NixOS configurations for various systems I work with.
 
 ## Pitfalls
 
-With nix unstable 2.9 use:
+* With nix unstable 2.9 use:
 
 ```
 sudo nixos-rebuild switch --flake path:.#nucbox
@@ -13,6 +13,17 @@ sudo nixos-rebuild switch --flake path:.#nucbox
 
 to avoid git issues
 
+* To install `desktop2022` configuration from github use:
+
+```
+nixos-install --root /mnt github:rehno-lindeque/wip?dir=my-nixos-configurations#desktop2022
+```
+
+This is a workaround for the present issue with using subflakes:
+
+```
+error: cannot fetch input 'path:./my-nixos-configurations?...' because it is a relative path
+```
 
 ## Notes
 
