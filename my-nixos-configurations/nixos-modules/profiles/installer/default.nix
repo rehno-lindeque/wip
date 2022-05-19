@@ -94,6 +94,7 @@ in {
         start the graphical user interface.
       ''
       + ''
+
         INSTALLATION INSTRUCTIONS:
 
         $ sudo su
@@ -103,7 +104,6 @@ in {
 
     # TODO move to its own package
     # Placing this in system.build enables you to build and inspect the script independently (similar to system.build.nixos-install)
-    # nix build .#nixosConfigurations.installer.config.system.build.install-nukbox
     system.build.install-helper = let
       targetNixosConfiguration = flake.outputs.nixosConfigurations.desktop2022.config.system.build.toplevel.out;
       # targetNixosConfiguration = null;
@@ -113,7 +113,10 @@ in {
       uefi = true;
       nvme = true;
       # nvme = false;
-      rootDevice = if nvme then "/dev/nvme0n1" else "/dev/sda";
+      rootDevice =
+        if nvme
+        then "/dev/nvme0n1"
+        else "/dev/sda";
       bootSize = 256;
       swapSize = 1024;
       partitionSeparator =
@@ -128,6 +131,11 @@ in {
       # Colors
       nc = "\\e[0m"; # No Color
       white = "\\e[1;37m";
+
+      # Overrides (local paths) for all direct flake inputs, in case there's a problem
+      overrideInputArgs = lib.concatStringsSep " "
+        (lib.mapAttrsToList (k: v: "--override-input ${k} path:${v}") flake.inputs);
+
     in
       pkgs.writeScriptBin "install-helper" ''
         #!${pkgs.stdenv.shell}
@@ -173,7 +181,13 @@ in {
         clear -x
         echo "INSTALL NIXOS"
         printf "${white}"
-        echo '${"\tnixos-install --root /mnt --system ${targetNixosConfiguration}"}'
+        # echo '${"\tnixos-install --root /mnt --system $ {targetNixosConfiguration}"}'
+        echo '${"\tnixos-install
+        \t--root /mnt
+        \t--flake github:rehno-lindeque/wip?dir=my-nixos-configurations#desktop2022 # path:${flake}#desktop2022
+        \t--override-input circuithub-nixos-configurations ${flake.inputs.circuithub-nixos-configurations}
+        \t--override-input nixpkgs-shim/nixpkgs-shim-profiles github:rehno-lindeque/nixpkgs-shim-profiles
+        \t# ${overrideInputArgs}"}'
         printf "${nc}"
         echo
         while true; do
@@ -187,7 +201,13 @@ in {
         echo "Continuing..."
         sleep 2
 
-        nixos-install --root /mnt --system ${targetNixosConfiguration}
+        # nixos-install --root /mnt --system $ {targetNixosConfiguration}
+        nixos-install \
+          --root /mnt \
+          --flake github:rehno-lindeque/wip?dir=my-nixos-configurations#desktop2022 \
+          --override-input circuithub-nixos-configurations ${flake.inputs.circuithub-nixos-configurations} \
+          --override-input nixpkgs-shim/nixpkgs-shim-profiles github:rehno-lindeque/nixpkgs-shim-profiles \
+          # ${overrideInputArgs}
       '';
 
     environment.systemPackages = [config.system.build.install-helper];
@@ -239,15 +259,23 @@ in {
     #     start the graphical user interface.
     #   '';
 
-    # We run sshd by default. Login via root is only possible after adding a
-    # password via "passwd" or by adding a ssh key to /home/nixos/.ssh/authorized_keys.
-    # The latter one is particular useful if keys are manually added to
-    # installation device for head-less systems i.e. arm boards by manually
-    # mounting the storage in a different system.
+    # Access to the live installer via ssh
     services.openssh = {
       enable = true;
       permitRootLogin = "yes";
     };
+    users.users.nixos.openssh.authorizedKeys.keys = [
+      "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDihi25C12vUNxZyxAFVo4lZ4R0bSFmTcNfPQl4mrwNf7116dSMcRilBmkG/x0/G5PRtfz8B+OajtZbK2ivjTwYoDL5+DX50X8jCI4sTjOWBXsw8KcAEu/8NcaIl38tq170YChjUomb3PNqzIvR7fFLAqYxlk01T/42m388WNA2IDTFv1Ex0fkuVOKXnW3ULSZdzLRe7Eh6sSA2qOucue8p+uHgKc9Q9CRhWEkik+iUPO2gTC39LDnMDDtkbeFz6P3R8652kwTSNxV//6FlU0zvvynmxiKjdYUUdWtbkkTZDrH4c5fs6WDem+VfKechS3pvbGQXxcWtYivcgWPDBs9NGyZy0118COhTHF+mgL1jxCu+0Dxfz3/XHS1Efg8rVICI9xjcn2X17ammqWBzsd9navGCXCIJZQQYJSDkU2qUy8anc0834ay88q6wbtcjhXHLmZm/EU+3/B5n54cbTv+zH5EB02dfX/1e7vM1isHvKraKq29HUrY9olmQqf43LjBtE1eoAFXo/tfWDg2aWMvUxXVVYWJ2Q3anyKRlaeN5Mo02uFsusCmRNs7r6lBC0OFbKnkLIG2s0i3BqqVGBV+UctktpmrUZRzhL7o6oiTAhAiKv4ns3B7Yk86JlEW9qkhoysgr4KjsFZD7phg5TDl8ECz+rKT8ZXIRLfXQMOzsOQ== me"
+    ];
+
+    networking.hostName = "installer";
+
+    systemd.services.sshd = {
+      # Make sure sshd starts after tailscale so that it can successfully bind to the ip address
+      after = ["tailscaled.service"];
+      wants = ["tailscaled.service"];
+    };
+
 
     # Enable wpa_supplicant, but don't start it by default.
     # networking.wireless.enable = lib.mkDefault true;

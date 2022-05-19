@@ -29,6 +29,7 @@ in {
 
     # Using the systemd-boot EFI boot loader as it seems to be very simple
     boot.loader.systemd-boot.enable = true;
+    boot.initrd.availableKernelModules = ["nvme"];
 
     fileSystems = {
       "/" = {
