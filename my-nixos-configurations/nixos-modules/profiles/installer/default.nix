@@ -75,7 +75,122 @@ in {
     system.stateVersion = lib.mkDefault "21.11";
 
     # Extra Customization
-    networking.wireless.enable = false; # Use network manager instead
+    # networking.wireless.enable = false; # Use network manager instead
+
+    services.getty.helpLine =
+      ''
+        NOTES:
+
+            The "nixos" and "root" accounts have empty passwords.
+            An ssh daemon is running. You then must set a password
+            for either "root" or "nixos" with `passwd` or add an ssh key
+            to /home/nixos/.ssh/authorized_keys be able to login.
+            If you need a wireless connection, type
+            `sudo systemctl start wpa_supplicant` and configure a
+            network using `wpa_cli`. See the NixOS manual for details.
+      ''
+      + lib.optionalString config.services.xserver.enable ''
+        Type `sudo systemctl start display-manager' to
+        start the graphical user interface.
+      ''
+      + ''
+        INSTALLATION INSTRUCTIONS:
+
+        $ sudo su
+        $ install-helper
+
+      '';
+
+    # TODO move to its own package
+    # Placing this in system.build enables you to build and inspect the script independently (similar to system.build.nixos-install)
+    # nix build .#nixosConfigurations.installer.config.system.build.install-nukbox
+    system.build.install-helper = let
+      targetNixosConfiguration = flake.outputs.nixosConfigurations.desktop2022.config.system.build.toplevel.out;
+      # targetNixosConfiguration = null;
+
+      # Settings
+      # rootDevice = "/dev/sda";
+      uefi = true;
+      nvme = true;
+      # nvme = false;
+      rootDevice = if nvme then "/dev/nvme0n1" else "/dev/sda";
+      bootSize = 256;
+      swapSize = 1024;
+      partitionSeparator =
+        if nvme
+        then "p"
+        else "";
+      bootPartition = "${rootDevice}${partitionSeparator}1";
+      swapPartition = "${rootDevice}${partitionSeparator}2";
+      nixosPartition = "${rootDevice}${partitionSeparator}3";
+      uefiPartition = "${rootDevice}${partitionSeparator}4";
+
+      # Colors
+      nc = "\\e[0m"; # No Color
+      white = "\\e[1;37m";
+    in
+      pkgs.writeScriptBin "install-helper" ''
+        #!${pkgs.stdenv.shell}
+        set -e
+
+        clear -x
+        printf "${white}"
+        echo "THIS WILL WIPE ALL DATA FROM THIS COMPUTER"
+        printf "${nc}"
+        echo
+        while true; do
+            read -p "Do you want to proceed? [yn] " yn
+            case $yn in
+                [Yy]* ) break;;
+                [Nn]* ) exit;;
+                * ) echo "Please answer with yes or no.";;
+            esac
+        done
+        echo "Continuing..."
+        sleep 10
+
+        wipefs -a ${rootDevice}
+        dd if=/dev/zero of=${rootDevice} bs=512 count=10000
+        sfdisk ${rootDevice} <<EOF
+        label: gpt
+        device: ${rootDevice}
+        unit: sectors
+        1 : size=${toString (2048 * bootSize)}, type=C12A7328-F81F-11D2-BA4B-00A0C93EC93B
+        ${lib.optionalString (!uefi) "4 : size=4096, type=21686148-6449-6E6F-744E-656564454649"}
+        2 : size=${toString (2048 * swapSize)}, type=0657FD6D-A4AB-43C4-84E5-0933C84B4F4F
+        3 : type=0FC63DAF-8483-4772-8E79-3D69D8477DE4
+        EOF
+
+        mkdir -p /mnt
+        mkfs.vfat -n boot ${bootPartition}
+        mkswap -L swap ${swapPartition}
+        mkfs.ext4 -L nixos ${nixosPartition}
+        swapon ${swapPartition}
+        mount ${nixosPartition} /mnt
+        mkdir /mnt/boot
+        mount ${bootPartition} /mnt/boot
+
+        clear -x
+        echo "INSTALL NIXOS"
+        printf "${white}"
+        echo '${"\tnixos-install --root /mnt --system ${targetNixosConfiguration}"}'
+        printf "${nc}"
+        echo
+        while true; do
+            read -p "Do you want to proceed? [yn] " yn
+            case $yn in
+                [Yy]* ) break;;
+                [Nn]* ) exit;;
+                * ) echo "Please answer with yes or no.";;
+            esac
+        done
+        echo "Continuing..."
+        sleep 2
+
+        nixos-install --root /mnt --system ${targetNixosConfiguration}
+      '';
+
+    environment.systemPackages = [config.system.build.install-helper];
 
     ###########################################################################
     # TEMPORARY
@@ -108,21 +223,21 @@ in {
     # Automatically log in at the virtual consoles.
     services.getty.autologinUser = "nixos";
 
-    # Some more help text.
-    services.getty.helpLine =
-      ''
-        The "nixos" and "root" accounts have empty passwords.
-        An ssh daemon is running. You then must set a password
-        for either "root" or "nixos" with `passwd` or add an ssh key
-        to /home/nixos/.ssh/authorized_keys be able to login.
-        If you need a wireless connection, type
-        `sudo systemctl start wpa_supplicant` and configure a
-        network using `wpa_cli`. See the NixOS manual for details.
-      ''
-      + lib.optionalString config.services.xserver.enable ''
-        Type `sudo systemctl start display-manager' to
-        start the graphical user interface.
-      '';
+    # # Some more help text.
+    # services.getty.helpLine =
+    #   ''
+    #     The "nixos" and "root" accounts have empty passwords.
+    #     An ssh daemon is running. You then must set a password
+    #     for either "root" or "nixos" with `passwd` or add an ssh key
+    #     to /home/nixos/.ssh/authorized_keys be able to login.
+    #     If you need a wireless connection, type
+    #     `sudo systemctl start wpa_supplicant` and configure a
+    #     network using `wpa_cli`. See the NixOS manual for details.
+    #   ''
+    #   + lib.optionalString config.services.xserver.enable ''
+    #     Type `sudo systemctl start display-manager' to
+    #     start the graphical user interface.
+    #   '';
 
     # We run sshd by default. Login via root is only possible after adding a
     # password via "passwd" or by adding a ssh key to /home/nixos/.ssh/authorized_keys.
