@@ -133,9 +133,9 @@ in {
       white = "\\e[1;37m";
 
       # Overrides (local paths) for all direct flake inputs, in case there's a problem
-      overrideInputArgs = lib.concatStringsSep " "
+      overrideInputArgs =
+        lib.concatStringsSep " "
         (lib.mapAttrsToList (k: v: "--override-input ${k} path:${v}") flake.inputs);
-
     in
       pkgs.writeScriptBin "install-helper" ''
         #!${pkgs.stdenv.shell}
@@ -275,7 +275,6 @@ in {
       after = ["tailscaled.service"];
       wants = ["tailscaled.service"];
     };
-
 
     # Enable wpa_supplicant, but don't start it by default.
     # networking.wireless.enable = lib.mkDefault true;

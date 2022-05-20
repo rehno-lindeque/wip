@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  pkgs,
   ...
 }: let
   cfg = config.profiles.desktop2022;
@@ -29,7 +30,14 @@ in {
 
     # Using the systemd-boot EFI boot loader as it seems to be very simple
     boot.loader.systemd-boot.enable = true;
-    boot.initrd.availableKernelModules = ["nvme"];
+
+    boot.initrd.availableKernelModules = [
+      # nvme is required in order to mount the root file system during boot
+      "nvme"
+    ];
+
+    # Kernel >= 5.17 is required for the wifi driver (MT7921K (RZ608))
+    boot.kernelPackages = pkgs.linuxKernel.packages.linux_5_17;
 
     fileSystems = {
       "/" = {
