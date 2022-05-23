@@ -116,6 +116,45 @@
         "type": "github"
       }
     },
+    "impermanence": {
+      "locked": {
+        "lastModified": 1646131459,
+        "narHash": "sha256-GPmgxvUFvQ1GmsGfWHy9+rcxWrczeDhS9XnAIPHi9XQ=",
+        "owner": "nix-community",
+        "repo": "impermanence",
+        "rev": "2f39baeb7d039fda5fc8225111bb79474138e6f4",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "impermanence",
+        "type": "github"
+      }
+    },
+    "nixos-impermanence": {
+      "inputs": {
+        "impermanence": [
+          "impermanence"
+        ],
+        "nixpkgs": [
+          "nixpkgs-unstable"
+        ]
+      },
+      "locked": {
+        "lastModified": 1653334449,
+        "narHash": "sha256-5enMsNRy98CXjf8cE1lCZnyNjUXTMwSQv7zLMPGkyY0=",
+        "owner": "rehno-lindeque",
+        "repo": "nixos-impermanence",
+        "rev": "141adc71b41b45f91f80d93dab3568076bc3da52",
+        "type": "github"
+      },
+      "original": {
+        "owner": "rehno-lindeque",
+        "ref": "experiment",
+        "repo": "nixos-impermanence",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1647282937,
@@ -265,6 +304,8 @@
         "flake-help": "flake-help",
         "flake-utils": "flake-utils",
         "home-manager": "home-manager",
+        "impermanence": "impermanence",
+        "nixos-impermanence": "nixos-impermanence",
         "nixpkgs-shim": "nixpkgs-shim",
         "nixpkgs-shim-images": "nixpkgs-shim-images_2",
         "nixpkgs-stable": "nixpkgs-stable",

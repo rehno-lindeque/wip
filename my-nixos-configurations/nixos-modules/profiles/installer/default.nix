@@ -172,11 +172,24 @@ in {
         mkdir -p /mnt
         mkfs.vfat -n boot ${bootPartition}
         mkswap -L swap ${swapPartition}
-        mkfs.ext4 -L nixos ${nixosPartition}
+        mkfs.ext4 -L nix ${nixosPartition}
         swapon ${swapPartition}
-        mount ${nixosPartition} /mnt
-        mkdir /mnt/boot
+
+        # Mount the root file system
+        mount -t tmpfs tmpfs none /mnt
+
+        # Required directories
+        mkdir -p /mnt/{boot,nix,etc/nixos,var/log}
+
         mount ${bootPartition} /mnt/boot
+        mount ${nixosPartition} /mnt/nix
+
+        # # Persistent directories
+        # mkdir -p /mnt/nix/persist/{etc/nixos,var/log}
+
+        # # Bind mount persistent directories
+        # mount -o bind /mnt/nix/persist/etc/nixos /mnt/etc/nixos
+        # mount -o bind /mnt/nix/persist/var/log /mnt/var/log
 
         clear -x
         echo "INSTALL NIXOS"

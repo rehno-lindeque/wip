@@ -4,6 +4,8 @@
     flake-help.url = "github:rehno-lindeque/flake-help";
     flake-utils.url = "github:numtide/flake-utils";
     home-manager.url = "github:nix-community/home-manager"; # /release-22.05 (once released)
+    impermanence.url = "github:nix-community/impermanence";
+    nixos-impermanence.url = "github:rehno-lindeque/nixos-impermanence/experiment";
     nixpkgs-shim.url = "github:rehno-lindeque/nixpkgs-shim";
     # nixpkgs-shim.url = "path:/home/me/projects/nixpkgs-shim";
     nixpkgs-shim-images.url = "github:rehno-lindeque/nixpkgs-shim-images/fc365e485d98dcc1e8f278654618b8edf3424b03"; # master branch is broken
@@ -17,6 +19,10 @@
       flake-help.follows = "flake-help";
     };
     home-manager.inputs.nixpkgs.follows = "nixpkgs-unstable";
+    nixos-impermanence.inputs = {
+      nixpkgs.follows = "nixpkgs-unstable";
+      impermanence.follows = "impermanence";
+    };
     nixpkgs-shim.inputs = {
       nixpkgs.follows = "nixpkgs-unstable";
     };
@@ -28,6 +34,8 @@
     flake-help,
     flake-utils,
     home-manager,
+    impermanence,
+    nixos-impermanence,
     nixpkgs-shim,
     ...
   }: let
@@ -82,8 +90,13 @@
             workstation
             desktop2022
             nucbox2022
+            # installer
+            impermanence.nixosModules.impermanence
+            nixos-impermanence.nixosModules.default
             circuithub-nixos-configurations.nixosModules.default
             home-manager.nixosModules.home-manager
+            # nixpkgs-shim.nixosModules.default
+            # nixpkgs-shim.inputs.nixpkgs-shim-images.nixosModules.isoImage
             nixpkgs-shim.inputs.nixpkgs-shim-profiles.nixosModules.default
           ];
         };

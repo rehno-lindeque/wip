@@ -40,11 +40,28 @@ in {
     boot.kernelPackages = pkgs.linuxKernel.packages.linux_5_17;
 
     fileSystems = {
+      # See https://nixos.wiki/wiki/Impermanence
+      # Impermanent root file system
       "/" = {
-        device = "/dev/disk/by-label/nixos";
+        device = "none";
+        fsType = "tmpfs";
+        options = [ "size=3G" "mode=755" ];
+      };
+
+      # Impermanent home directory
+      "/home/me" = {
+        device = "none";
+        fsType = "tmpfs";
+        options = [ "size=4G" "mode=777" ];
+      };
+
+      # Files managed by nix, including the nix store
+      "/nix" = {
+        device = "/dev/disk/by-label/nix";
         fsType = "ext4";
       };
 
+      # Boot partition
       "/boot" = {
         device = "/dev/disk/by-label/boot";
         fsType = "vfat";
@@ -97,6 +114,8 @@ in {
         }
       ];
     };
+    users.mutableUsers = false;
+
     users.users.me.openssh.authorizedKeys.keys = [
       "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDihi25C12vUNxZyxAFVo4lZ4R0bSFmTcNfPQl4mrwNf7116dSMcRilBmkG/x0/G5PRtfz8B+OajtZbK2ivjTwYoDL5+DX50X8jCI4sTjOWBXsw8KcAEu/8NcaIl38tq170YChjUomb3PNqzIvR7fFLAqYxlk01T/42m388WNA2IDTFv1Ex0fkuVOKXnW3ULSZdzLRe7Eh6sSA2qOucue8p+uHgKc9Q9CRhWEkik+iUPO2gTC39LDnMDDtkbeFz6P3R8652kwTSNxV//6FlU0zvvynmxiKjdYUUdWtbkkTZDrH4c5fs6WDem+VfKechS3pvbGQXxcWtYivcgWPDBs9NGyZy0118COhTHF+mgL1jxCu+0Dxfz3/XHS1Efg8rVICI9xjcn2X17ammqWBzsd9navGCXCIJZQQYJSDkU2qUy8anc0834ay88q6wbtcjhXHLmZm/EU+3/B5n54cbTv+zH5EB02dfX/1e7vM1isHvKraKq29HUrY9olmQqf43LjBtE1eoAFXo/tfWDg2aWMvUxXVVYWJ2Q3anyKRlaeN5Mo02uFsusCmRNs7r6lBC0OFbKnkLIG2s0i3BqqVGBV+UctktpmrUZRzhL7o6oiTAhAiKv4ns3B7Yk86JlEW9qkhoysgr4KjsFZD7phg5TDl8ECz+rKT8ZXIRLfXQMOzsOQ== me"
     ];
@@ -113,5 +132,20 @@ in {
     services.xserver.enable = true;
     services.xserver.desktopManager.gnome.enable = true;
     services.xserver.displayManager.lightdm.enable = true;
+
+    # Retain specific system state
+    environment.automaticPersistence = {
+      normal.path = "/nix/persistent";
+    };
+    environment.persistence."/nix/persistent" = {
+      directories = [
+        # Log files
+        "/var/log"
+      ];
+      files = [
+        # Ssh id for nix remote builder
+        "/etc/nix/id_rsa"
+      ];
+    };
   };
 }
