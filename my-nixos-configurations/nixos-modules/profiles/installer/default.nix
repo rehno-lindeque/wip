@@ -52,6 +52,9 @@ in {
     boot = {
       loader.grub.memtest86.enable = true;
 
+      # Use the latest linux kernel so that the most recent drivers are available
+      kernelPackages = pkgs.linuxPackages_latest;
+
       postBootCommands = ''
         for o in $(</proc/cmdline); do
           case "$o" in
