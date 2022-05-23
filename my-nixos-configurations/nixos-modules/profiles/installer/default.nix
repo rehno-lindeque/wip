@@ -179,20 +179,13 @@ in {
         swapon ${swapPartition}
 
         # Mount the root file system
-        mount -t tmpfs tmpfs none /mnt
+        mount -t tmpfs none /mnt
 
         # Required directories
-        mkdir -p /mnt/{boot,nix,etc/nixos,var/log}
+        mkdir -p /mnt/{boot,nix}
 
         mount ${bootPartition} /mnt/boot
         mount ${nixosPartition} /mnt/nix
-
-        # # Persistent directories
-        # mkdir -p /mnt/nix/persist/{etc/nixos,var/log}
-
-        # # Bind mount persistent directories
-        # mount -o bind /mnt/nix/persist/etc/nixos /mnt/etc/nixos
-        # mount -o bind /mnt/nix/persist/var/log /mnt/var/log
 
         clear -x
         echo "INSTALL NIXOS"
@@ -220,6 +213,7 @@ in {
         # nixos-install --root /mnt --system $ {targetNixosConfiguration}
         nixos-install \
           --root /mnt \
+          --no-root-passwd \
           --flake github:rehno-lindeque/wip?dir=my-nixos-configurations#desktop2022 \
           --override-input circuithub-nixos-configurations ${flake.inputs.circuithub-nixos-configurations} \
           --override-input nixpkgs-shim/nixpkgs-shim-profiles github:rehno-lindeque/nixpkgs-shim-profiles \
@@ -243,12 +237,7 @@ in {
     users.users.nixos = {
       isNormalUser = true;
       extraGroups = ["wheel" "networkmanager" "video"];
-      # Allow the graphical user to login without password
-      initialHashedPassword = "";
     };
-
-    # Allow the user to log in as root without a password.
-    users.users.root.initialHashedPassword = "";
 
     # Allow passwordless sudo from nixos user
     security.sudo = {
@@ -280,6 +269,9 @@ in {
       enable = true;
       permitRootLogin = "yes";
     };
+
+    # Initial password is generated with nix run nixpkgs#mkpasswd -- --method=SHA-512
+    users.users.root.initialHashedPassword = "$6$vLC4X1jGTMwqv835$qe3.gqt6tqlPW4SVsefbn9hiI6ynY8MWQFq4YymYdq7HI6tuHWYDWyX6NHp7OykQnyBoTG6VrgultN9iP4SCY/";
     users.users.nixos.openssh.authorizedKeys.keys = [
       "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDihi25C12vUNxZyxAFVo4lZ4R0bSFmTcNfPQl4mrwNf7116dSMcRilBmkG/x0/G5PRtfz8B+OajtZbK2ivjTwYoDL5+DX50X8jCI4sTjOWBXsw8KcAEu/8NcaIl38tq170YChjUomb3PNqzIvR7fFLAqYxlk01T/42m388WNA2IDTFv1Ex0fkuVOKXnW3ULSZdzLRe7Eh6sSA2qOucue8p+uHgKc9Q9CRhWEkik+iUPO2gTC39LDnMDDtkbeFz6P3R8652kwTSNxV//6FlU0zvvynmxiKjdYUUdWtbkkTZDrH4c5fs6WDem+VfKechS3pvbGQXxcWtYivcgWPDBs9NGyZy0118COhTHF+mgL1jxCu+0Dxfz3/XHS1Efg8rVICI9xjcn2X17ammqWBzsd9navGCXCIJZQQYJSDkU2qUy8anc0834ay88q6wbtcjhXHLmZm/EU+3/B5n54cbTv+zH5EB02dfX/1e7vM1isHvKraKq29HUrY9olmQqf43LjBtE1eoAFXo/tfWDg2aWMvUxXVVYWJ2Q3anyKRlaeN5Mo02uFsusCmRNs7r6lBC0OFbKnkLIG2s0i3BqqVGBV+UctktpmrUZRzhL7o6oiTAhAiKv4ns3B7Yk86JlEW9qkhoysgr4KjsFZD7phg5TDl8ECz+rKT8ZXIRLfXQMOzsOQ== me"
     ];
