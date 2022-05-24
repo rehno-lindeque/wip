@@ -110,7 +110,7 @@ in {
       # only accessible via the tailscale ip
       listenAddresses = [
         {
-          addr = "100.101.249.69";
+          addr = "100.89.210.26";
           port = 22;
         }
       ];
