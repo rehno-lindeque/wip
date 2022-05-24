@@ -182,7 +182,7 @@ in {
         mount -t tmpfs none /mnt
 
         # Required directories
-        mkdir -p /mnt/{boot,nix}
+        mkdir -p /mnt/{boot,nix/persistent}
 
         mount ${bootPartition} /mnt/boot
         mount ${nixosPartition} /mnt/nix
