@@ -84,6 +84,9 @@ in {
     };
 
     networking.hostName = "desktop2022";
+    networking.interfaces.eno1.wakeOnLan.enable = true;
+    networking.interfaces.wlp5s0.wakeOnLan.enable = true;
+    networking.interfaces.tailscale0.wakeOnLan.enable = true; # experimental (see https://github.com/tailscale/tailscale/issues/306)
 
     # # Limit cpu use to 14 out of the 16 available
     # nix.buildCores = 14;
