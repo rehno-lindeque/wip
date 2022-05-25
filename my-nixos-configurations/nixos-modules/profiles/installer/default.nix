@@ -331,5 +331,33 @@ in {
       [PStore]
       Unlink=no
     '';
+
+    # Add this flake to the local registry so that it's easy
+    # to reference on the command line
+    nix.registry = {
+      wip = {
+        from = {
+          id = "my-nixos-configurations";
+          type = "indirect";
+        };
+        to = {
+          owner = "rehno-lindeque";
+          repo = "wip";
+          type = "github";
+        };
+      };
+      my-nixos-configurations = {
+        from = {
+          id = "my-nixos-configurations";
+          type = "indirect";
+        };
+        to = {
+          dir = "my-nixos-configurations";
+          owner = "rehno-lindeque";
+          repo = "wip";
+          type = "github";
+        };
+      };
+    };
   };
 }
