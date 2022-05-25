@@ -88,18 +88,33 @@ in {
     # # Limit cpu use to 14 out of the 16 available
     # nix.buildCores = 14;
 
-    # # Add this flake to the local registry so that it's easy
-    # # to reference on the command line
-    # nix.registry.wip = {
-    #   from = {
-    #     id = "wip";
-    #     type = "indirect";
-    #   };
-    #   to = {
-    #     path = "${config.users.users.me.home}/projects/wip";
-    #     type = "path";
-    #   };
-    # };
+    # Add this flake to the local registry so that it's easy
+    # to reference on the command line
+    nix.registry = {
+      wip = {
+        from = {
+          id = "my-nixos-configurations";
+          type = "indirect";
+        };
+        to = {
+          owner = "rehno-lindeque";
+          repo = "wip";
+          type = "github";
+        };
+      };
+      my-nixos-configurations = {
+        from = {
+          id = "my-nixos-configurations";
+          type = "indirect";
+        };
+        to = {
+          dir = "my-nixos-configurations";
+          owner = "rehno-lindeque";
+          repo = "wip";
+          type = "github";
+        };
+      };
+    };
 
     sound.mediaKeys.enable = true;
 
