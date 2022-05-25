@@ -45,14 +45,14 @@ in {
       "/" = {
         device = "none";
         fsType = "tmpfs";
-        options = [ "size=3G" "mode=755" ];
+        options = ["size=3G" "mode=755"];
       };
 
       # Impermanent home directory
       "/home/me" = {
         device = "none";
         fsType = "tmpfs";
-        options = [ "size=4G" "mode=777" ];
+        options = ["size=4G" "mode=777"];
       };
 
       # Files managed by nix, including the nix store
