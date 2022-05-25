@@ -5,7 +5,7 @@
     flake-utils.url = "github:numtide/flake-utils";
     home-manager.url = "github:nix-community/home-manager"; # /release-22.05 (once released)
     impermanence.url = "github:nix-community/impermanence";
-    nixos-impermanence.url = "github:rehno-lindeque/nixos-impermanence/experiment";
+    nixos-impermanence.url = "github:rehno-lindeque/nixos-impermanence/wip";
     nixpkgs-shim.url = "github:rehno-lindeque/nixpkgs-shim";
     # nixpkgs-shim.url = "path:/home/me/projects/nixpkgs-shim";
     nixpkgs-shim-images.url = "github:rehno-lindeque/nixpkgs-shim-images/fc365e485d98dcc1e8f278654618b8edf3424b03"; # master branch is broken

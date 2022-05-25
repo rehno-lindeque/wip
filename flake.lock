@@ -103,16 +103,31 @@
         ]
       },
       "locked": {
-        "lastModified": 1652452047,
-        "narHash": "sha256-O6DI0dMH/5rNM+z9CQ/nqRMNBpNsU7TtLSsafKLZTHY=",
+        "lastModified": 1653497002,
+        "narHash": "sha256-L2kb16MAU59LIEWq7ODNsz5AHw5B5Dn9DNaKJF8pG/M=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "32a7da69dc53c9eb5ad0675eb7fdc58f7fe35272",
+        "rev": "2c8489e57a04c913ba9e029cc2849a4bbac9673b",
         "type": "github"
       },
       "original": {
         "owner": "nix-community",
         "repo": "home-manager",
+        "type": "github"
+      }
+    },
+    "impermanence": {
+      "locked": {
+        "lastModified": 1646131459,
+        "narHash": "sha256-GPmgxvUFvQ1GmsGfWHy9+rcxWrczeDhS9XnAIPHi9XQ=",
+        "owner": "nix-community",
+        "repo": "impermanence",
+        "rev": "2f39baeb7d039fda5fc8225111bb79474138e6f4",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "impermanence",
         "type": "github"
       }
     },
@@ -150,6 +165,8 @@
         "home-manager": [
           "home-manager"
         ],
+        "impermanence": "impermanence",
+        "nixos-impermanence": "nixos-impermanence",
         "nixpkgs-shim": [
           "nixpkgs-shim"
         ],
@@ -163,13 +180,39 @@
       },
       "locked": {
         "lastModified": 1,
-        "narHash": "sha256-zTqsD21JaanzceGH36QkjwACHNX97PWcQDJStDCQnL0=",
+        "narHash": "sha256-+a95ylZ567bBhzbXzM4ADtMO381uPBO2TQmSe2QjpIE=",
         "path": "./my-nixos-configurations",
         "type": "path"
       },
       "original": {
         "path": "./my-nixos-configurations",
         "type": "path"
+      }
+    },
+    "nixos-impermanence": {
+      "inputs": {
+        "impermanence": [
+          "my-nixos-configurations",
+          "impermanence"
+        ],
+        "nixpkgs": [
+          "my-nixos-configurations",
+          "nixpkgs-unstable"
+        ]
+      },
+      "locked": {
+        "lastModified": 1653500935,
+        "narHash": "sha256-W3RGW19S4Z7AUfqki+0u4C6K1+kdxIsWgQMwfkx3ivk=",
+        "owner": "rehno-lindeque",
+        "repo": "nixos-impermanence",
+        "rev": "8d4d76ef1382412a79a716737db714aabde86255",
+        "type": "github"
+      },
+      "original": {
+        "owner": "rehno-lindeque",
+        "ref": "wip",
+        "repo": "nixos-impermanence",
+        "type": "github"
       }
     },
     "nixpkgs": {
@@ -291,11 +334,11 @@
     },
     "nixpkgs-stable": {
       "locked": {
-        "lastModified": 1652559422,
-        "narHash": "sha256-jPVTNImBTUIFdtur+d4IVot6eXmsvtOcBm0TzxmhWPk=",
+        "lastModified": 1653229824,
+        "narHash": "sha256-klSCYMpR4TqWYoTD/xZ2qM9UIPRFC6pK+S/kJuVLbFw=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "8b3398bc7587ebb79f93dfeea1b8c574d3c6dba1",
+        "rev": "06db2e2197401b74fcf82d4e84be15b0b5851c7b",
         "type": "github"
       },
       "original": {
@@ -307,11 +350,11 @@
     },
     "nixpkgs-unstable": {
       "locked": {
-        "lastModified": 1652659998,
-        "narHash": "sha256-FqNrXC1EE6U2RACwXBlsAvg1lqQGLYpuYb6+W3DL9vA=",
+        "lastModified": 1653060744,
+        "narHash": "sha256-kfRusllRumpt33J1hPV+CeCCylCXEU7e0gn2/cIM7cY=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "1d7db1b9e4cf1ee075a9f52e5c36f7b9f4207502",
+        "rev": "dfd82985c273aac6eced03625f454b334daae2e8",
         "type": "github"
       },
       "original": {
