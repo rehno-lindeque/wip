@@ -42,6 +42,9 @@ in {
     # We don't want /tmp to be persisted, but it is on persistent storage due to lack of tmpfs storage space
     boot.cleanTmpDir = true;
 
+    # Don't store docs on this computer since I mostly use it headless for now
+    documentation.doc.enable = false;
+
     # Retain specific system state
     environment.automaticPersistence = {
       normal.path = "/nix/persistent";
@@ -100,6 +103,11 @@ in {
 
     hardware = {
       opengl.enable = true;
+      opengl.extraPackages = with pkgs; [
+        mpi
+        linuxPackages.nvidia_x11
+        cudatoolkit
+      ];
 
       # Sound output doesn't work right now, but we want it to
       pulseaudio.enable = true;
