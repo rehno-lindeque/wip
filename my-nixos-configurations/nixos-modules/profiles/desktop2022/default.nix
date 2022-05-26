@@ -149,6 +149,7 @@ in {
 
     # Initial password is generated with nix run nixpkgs#mkpasswd -- --method=SHA-512
     users.users.me.initialHashedPassword = "$6$vLC4X1jGTMwqv835$qe3.gqt6tqlPW4SVsefbn9hiI6ynY8MWQFq4YymYdq7HI6tuHWYDWyX6NHp7OykQnyBoTG6VrgultN9iP4SCY/";
+    users.users.me.extraGroups = [ "networkmanager" ];
     users.users.root.initialHashedPassword = "$6$vLC4X1jGTMwqv835$qe3.gqt6tqlPW4SVsefbn9hiI6ynY8MWQFq4YymYdq7HI6tuHWYDWyX6NHp7OykQnyBoTG6VrgultN9iP4SCY/";
 
     users.users.me.openssh.authorizedKeys.keys = [
