@@ -39,6 +39,9 @@ in {
     # Kernel >= 5.17 is required for the wifi driver (MT7921K (RZ608))
     boot.kernelPackages = pkgs.linuxKernel.packages.linux_5_17;
 
+    # We don't want /tmp to be persisted, but it is on persistent storage due to lack of tmpfs storage space
+    boot.cleanTmpDir = true;
+
     fileSystems = {
       # See https://nixos.wiki/wiki/Impermanence
       # Impermanent root file system
@@ -173,6 +176,9 @@ in {
       directories = [
         # Log files
         "/var/log"
+
+        # The /tmp directory requires a large amount of storage space for certain builds, so it can't be on tmpfs
+        "/tmp"
       ];
       files = [
         # Ssh id for nix remote builder
