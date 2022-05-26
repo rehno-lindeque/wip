@@ -84,9 +84,19 @@ in {
     };
 
     networking.hostName = "desktop2022";
-    networking.interfaces.eno1.wakeOnLan.enable = true;
-    networking.interfaces.wlp5s0.wakeOnLan.enable = true;
-    networking.interfaces.tailscale0.wakeOnLan.enable = true; # experimental (see https://github.com/tailscale/tailscale/issues/306)
+
+    # Wake up this computer from sleep by sending a magic packet
+    # Check that each interface has wake-on-lan using ethtool
+    networking.interfaces.eno1 = {
+      wakeOnLan.enable = true;
+      # macAddress = "d8:5e:d3:83:ca:27"; # ip link show eno1
+    };
+    networking.interfaces.wlp5s0 = {
+      # macAddress = "f8:89:d2:da:bd:49"; # ip link show wlp5s0
+    };
+    networking.interfaces.tailscale0 = {
+      # wakeOnLan.enable = true; # see https://github.com/tailscale/tailscale/issues/306
+    };
 
     # # Limit cpu use to 14 out of the 16 available
     # nix.buildCores = 14;
