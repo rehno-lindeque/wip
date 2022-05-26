@@ -42,6 +42,21 @@ in {
     # We don't want /tmp to be persisted, but it is on persistent storage due to lack of tmpfs storage space
     boot.cleanTmpDir = true;
 
+    # Retain specific system state
+    environment.automaticPersistence = {
+      normal.path = "/nix/persistent";
+    };
+
+    environment.persistence."/nix/persistent" = {
+      directories = [
+        # Log files
+        "/var/log"
+
+        # The /tmp directory requires a large amount of storage space for certain builds, so it can't be on tmpfs
+        "/tmp"
+      ];
+    };
+
     fileSystems = {
       # See https://nixos.wiki/wiki/Impermanence
       # Impermanent root file system
@@ -132,8 +147,6 @@ in {
       };
     };
 
-    sound.mediaKeys.enable = true;
-
     # Enable ssh so that I can work on the desktop remotely
     services.openssh = {
       enable = true;
@@ -169,22 +182,6 @@ in {
     services.xserver.desktopManager.gnome.enable = true;
     services.xserver.displayManager.lightdm.enable = true;
 
-    # Retain specific system state
-    environment.automaticPersistence = {
-      normal.path = "/nix/persistent";
-    };
-    environment.persistence."/nix/persistent" = {
-      directories = [
-        # Log files
-        "/var/log"
-
-        # The /tmp directory requires a large amount of storage space for certain builds, so it can't be on tmpfs
-        "/tmp"
-      ];
-      files = [
-        # Ssh id for nix remote builder
-        "/etc/nix/id_rsa"
-      ];
-    };
+    sound.mediaKeys.enable = true;
   };
 }
