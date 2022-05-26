@@ -55,6 +55,13 @@ in {
         # The /tmp directory requires a large amount of storage space for certain builds, so it can't be on tmpfs
         "/tmp"
       ];
+
+      users.me = {
+        directories = [
+          # Just retain all of my home config for the time being
+          ".config"
+        ];
+      };
     };
 
     fileSystems = {
