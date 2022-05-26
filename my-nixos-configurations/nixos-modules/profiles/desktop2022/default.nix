@@ -171,6 +171,10 @@ in {
       ];
     };
 
+    # Turn off sandbox because I'm doing machine-learning things with nix that requires sandboxing to be turned off
+    # TODO: In future it would be nice to limit this to a specific build user like nix-ssh
+    nix.useSandbox = false;
+
     # Enable ssh so that I can work on the desktop remotely
     services.openssh = {
       enable = true;
