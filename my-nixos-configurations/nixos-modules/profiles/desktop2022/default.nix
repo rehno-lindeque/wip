@@ -210,6 +210,8 @@ in {
     services.xserver.desktopManager.gnome.enable = true;
     services.xserver.displayManager.lightdm.enable = true;
 
+    services.xserver.videoDrivers = ["nvidia"];
+
     sound.mediaKeys.enable = true;
   };
 }
