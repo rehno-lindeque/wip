@@ -63,6 +63,8 @@ in {
         directories = [
           # Just retain all of my home config for the time being
           ".config"
+          # Retain ssh keys for this computer
+          { directory = ".ssh"; mode = "0700"; }
         ];
       };
     };
