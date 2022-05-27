@@ -233,5 +233,76 @@ in {
           brightness.night = "0.5";
         };
       })
+
+      (lib.mkIf config.profiles.desktop2022.enable {
+        # Use cuda graphics in headless mode
+        # hardware.nvidia = {
+        #   # headless??
+        #   nvidiaPersistenced = true;
+        #   nvidiaSettings = false;
+        # };
+
+        # Set the desktop manager to none so that it defaults to gnome with wayland
+        # xserver.displayManager.defaultSession = ""; # gnome+wayland perhaps?
+
+        # Security
+        services.gnome.gnome-keyring.enable = true; # gnome's default keyring (does this avoid the annoying dialog popup?)
+
+        # TODO: do we still need to open port 22 with tailscale? See https://fzakaria.com/2020/09/17/tailscale-is-magic-even-more-so-with-nixos.html
+        # services.openssh.openFirewall = false;
+
+        # TODO: automate tailscale authentication
+        # https://www.reddit.com/r/NixOS/comments/ou7hde/how_to_automate_tailscale_on_reboot/
+
+        # Wait 2 seconds for tailscale to settle
+        systemd.services.tailscaled-online = {
+          description = "Wait for tailscale to settle";
+          after = ["network-pre.target" "tailscaled.service"];
+          wants = ["network-pre.target" "tailscaled.service"];
+          wantedBy = ["multi-user.target"];
+
+          serviceConfig.Type = "oneshot"; # is there a native oneshot attr?
+
+          script = "sleep 2";
+        };
+        systemd.services.sshd = {
+          # Make sure sshd starts after tailscale so that it can successfully bind to the ip address
+          after = ["tailscaled-online.service"];
+          wants = ["tailscaled-online.service"];
+        };
+
+        # # Disable the GNOME3/GDM auto-suspend feature that cannot be disabled in GUI!
+        # # If no user is logged in, the machine will power down after 20 minutes.
+        # systemd.targets.sleep.enable = false;
+        # systemd.targets.suspend.enable = false;
+        # systemd.targets.hibernate.enable = false;
+        # systemd.targets.hybrid-sleep.enable = false;
+        services.xserver.desktopManager.gnome = {
+          # extraGSettingsOverridePackages = with pkgs; [ gnome3.gnome_settings_daemon ];
+          # extraGSettingsOverrides = ''
+          #   [org.gnome.desktop.screensaver]
+          #   lock-delay=3600
+          #   lock-enabled=true'
+
+          #   [org.gnome.desktop.session]
+          #   idle-delay=900
+
+          #   [org.gnome.settings-daemon.plugins.power]
+          #   power-button-action='nothing'
+          #   idle-dim=true
+          #   sleep-inactive-battery-type='nothing'
+          #   sleep-inactive-ac-timeout=3600
+          #   sleep-inactive-ac-type='nothing'
+          #   sleep-inactive-battery-timeout=1800
+          # '';
+
+          # Various gnome settings
+          # Use `gsettings list-recursive` for help
+          extraGSettingsOverrides = ''
+            [org.gnome.settings-daemon.plugins.power]
+            sleep-inactive-ac-timeout=3600
+          '';
+        };
+      })
     ]);
 }
