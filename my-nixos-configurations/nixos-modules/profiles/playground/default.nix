@@ -220,15 +220,6 @@ in {
         # hardware.pulseaudio.daemon.logLevel = "error";
         # hardware.pulseaudio.support32Bit = lib.mkDefault true;
 
-        # Since I normally use this computer in headless mode it's convenient to have it Wake-On-Lan
-        # TODO: test and also check the bios setting
-        # Tailscale could be used when https://github.com/tailscale/tailscale/issues/306 is resolved
-        # To wake it up:
-        # wol 00:e0:4c:68:0f:e8
-        # or
-        # wol 192.168.1.12
-        # networking.interfaces.enp0s21f0u2u1.wakeOnLan.enable = true;
-
         # Set the desktop manager to none so that it doesn't default to xterm sometimes
         # TODO: check if this is this still needed?
         # xserver.displayManager.defaultSession = "none+xmonad";
