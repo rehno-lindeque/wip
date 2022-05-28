@@ -61,10 +61,13 @@ in {
 
       users.me = {
         directories = [
-          # Just retain all of my home config for the time being
+          # Retain all of my home config for the time being
           ".config"
           # Retain ssh keys for this computer
-          { directory = ".ssh"; mode = "0700"; }
+          {
+            directory = ".ssh";
+            mode = "0700";
+          }
           # Retain my projects directory (for now)
           "projects"
         ];

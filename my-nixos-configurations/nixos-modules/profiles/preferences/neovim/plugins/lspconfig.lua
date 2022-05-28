@@ -71,7 +71,7 @@ lspconfig.hls.setup({
       checkParents = "CheckOnSave",
       checkProject = false,
       formattingProvider = "ormolu",
-      maxCompletions =  40,
+      maxCompletions = 40,
       plugin = {
         alternateNumberFormat = {
           globalOn = false,
