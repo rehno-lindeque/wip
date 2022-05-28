@@ -65,6 +65,8 @@ in {
           ".config"
           # Retain ssh keys for this computer
           { directory = ".ssh"; mode = "0700"; }
+          # Retain my projects directory (for now)
+          "projects"
         ];
       };
     };
