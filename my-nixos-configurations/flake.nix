@@ -64,7 +64,7 @@
           flake = self;
           inherit (flake-help.lib) mkHelp;
         };
-        devShells.default = pkgs.callPackage ./dev-shell {};
+        devShells.default = pkgs.callPackage ./dev-shells/default {};
         packages = {
           # TODO: Implement isoImage as a lib instead of a module. E.g. nipxkgs-shim.lib.isoImage { .... }
           installer-iso = self.nixosConfigurations.installer.config.system.build.isoImage;
