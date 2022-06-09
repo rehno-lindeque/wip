@@ -143,7 +143,7 @@
       },
       "locked": {
         "lastModified": 1,
-        "narHash": "sha256-jDlgXqyv5luHn7f7ZyT0c1rRTdbFyJmgcTleSncQxHg=",
+        "narHash": "sha256-EGVuMRpNbzcXVlL5WtE0kmX9zFkOMRk40BFsIQncmJE=",
         "path": "./my-dev-shells",
         "type": "path"
       },
@@ -181,7 +181,7 @@
       },
       "locked": {
         "lastModified": 1,
-        "narHash": "sha256-OArRkQTde0SZhldYf2y8Kn+MKRBw2uixXCX7oNK40LQ=",
+        "narHash": "sha256-JXdTz17SxEmCiYhi6xw1mEjTrMDRUapR8DWmFCWsI+o=",
         "path": "./my-nixos-configurations",
         "type": "path"
       },
