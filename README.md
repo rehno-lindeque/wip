@@ -17,13 +17,16 @@ My technological world as a nix flake (and sub-flakes).
 │       └── python-environment
 └── my-nixos-configurations
     ├── apps
-    ├── dev-shell
+    ├── dev-shells
+    │   └── default
     └── nixos-modules
         └── profiles
             ├── common
+            ├── desktop2022
             ├── installer
-            ├── nucbox
-            ├── personalized
+            ├── nucbox2022
+            ├── personalize
+            ├── playground
             ├── preferences
             └── workstation
 ```
