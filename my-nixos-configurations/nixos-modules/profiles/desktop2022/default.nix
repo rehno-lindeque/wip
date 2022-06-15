@@ -138,9 +138,6 @@ in {
       # wakeOnLan.enable = true; # see https://github.com/tailscale/tailscale/issues/306
     };
 
-    # # Limit cpu use to 14 out of the 16 available
-    # nix.buildCores = 14;
-
     # Add this flake to the local registry so that it's easy
     # to reference on the command line
     nix.registry = {

@@ -64,10 +64,10 @@ in {
     # networking.networkmanager.wifi.powersave = false;
 
     # Don't kill the machine with too many jobs
-    nix.maxJobs = 1;
+    nix.settings.max-jobs = 1;
 
     # Limit cpu use to 3 out of the 4 available
-    nix.buildCores = 3;
+    nix.settings.cores = 3;
 
     # Add this flake to the local registry so that it's easy
     # to reference on the command line
@@ -113,14 +113,5 @@ in {
     services.xserver.enable = true;
     services.xserver.desktopManager.gnome.enable = true;
     services.xserver.displayManager.lightdm.enable = true;
-
-    # TEMP
-    # nix.binaryCaches = [
-    #   s3://circuithub-nix-binary-cache?profile=circuithub-binary-cache&region=eu-central-1
-    # ];
-
-    # nix.binaryCachePublicKeys = [
-    #   "hydra.circuithub.com:tt5GsRxotmMj6nDFuiYGxKEWSZiDiywb0OEDdrfRXZk="
-    # ];
   };
 }
