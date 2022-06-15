@@ -39,15 +39,6 @@ in {
         experimental-features = nix-command flakes
       '';
 
-      # It seems common sense to use nixos official caches
-      binaryCaches = [
-        http://cache.nixos.org/
-      ];
-
-      binaryCachePublicKeys = [
-        "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
-      ];
-
       # setting the old <nixpkgs> path is necessary for some legacy nix files
       nixPath = ["nixpkgs=${flake.inputs.nixpkgs-stable}"];
     };
