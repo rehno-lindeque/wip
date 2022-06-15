@@ -146,7 +146,7 @@ in {
     nix.registry = {
       wip = {
         from = {
-          id = "my-nixos-configurations";
+          id = "wip";
           type = "indirect";
         };
         to = {
