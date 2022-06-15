@@ -9,7 +9,7 @@
   cfg = config.profiles.installer;
 in {
   imports = [
-    "${flake.inputs.nixpkgs-unstable}/nixos/modules/installer/cd-dvd/iso-image.nix"
+    "${flake.inputs.nixpkgs-stable}/nixos/modules/installer/cd-dvd/iso-image.nix"
   ];
 
   options = with lib; {

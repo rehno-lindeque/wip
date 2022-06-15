@@ -9,22 +9,22 @@
     nixpkgs-shim.url = "github:rehno-lindeque/nixpkgs-shim";
     # nixpkgs-shim.url = "path:/home/me/projects/nixpkgs-shim";
     nixpkgs-shim-images.url = "github:rehno-lindeque/nixpkgs-shim-images/fc365e485d98dcc1e8f278654618b8edf3424b03"; # master branch is broken
-    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-21.11";
-    nixpkgs-unstable.url = "github:nixos/nixpkgs/release-22.05";
+    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-22.05";
+    nixpkgs-unstable.url = "github:nixos/nixpkgs";
 
     # Redirect inputs
     circuithub-nixos-configurations.inputs = {
-      nixpkgs.follows = "nixpkgs-unstable";
+      nixpkgs.follows = "nixpkgs-stable";
       flake-utils.follows = "flake-utils";
       flake-help.follows = "flake-help";
     };
-    home-manager.inputs.nixpkgs.follows = "nixpkgs-unstable";
+    home-manager.inputs.nixpkgs.follows = "nixpkgs-stable";
     nixos-impermanence.inputs = {
-      nixpkgs.follows = "nixpkgs-unstable";
+      nixpkgs.follows = "nixpkgs-stable";
       impermanence.follows = "impermanence";
     };
     nixpkgs-shim.inputs = {
-      nixpkgs.follows = "nixpkgs-unstable";
+      nixpkgs.follows = "nixpkgs-stable";
     };
   };
 
@@ -37,7 +37,6 @@
     impermanence,
     nixos-impermanence,
     nixpkgs-shim,
-    nixpkgs-unstable,
     ...
   }: let
     eachDefaultEnvironment = f:

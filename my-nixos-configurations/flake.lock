@@ -33,7 +33,7 @@
           "flake-utils"
         ],
         "nixpkgs": [
-          "nixpkgs-unstable"
+          "nixpkgs-stable"
         ]
       },
       "locked": {
@@ -99,7 +99,7 @@
     "home-manager": {
       "inputs": {
         "nixpkgs": [
-          "nixpkgs-unstable"
+          "nixpkgs-stable"
         ]
       },
       "locked": {
@@ -138,7 +138,7 @@
           "impermanence"
         ],
         "nixpkgs": [
-          "nixpkgs-unstable"
+          "nixpkgs-stable"
         ]
       },
       "locked": {
@@ -175,7 +175,7 @@
     "nixpkgs-shim": {
       "inputs": {
         "nixpkgs": [
-          "nixpkgs-unstable"
+          "nixpkgs-stable"
         ],
         "nixpkgs-shim-images": "nixpkgs-shim-images",
         "nixpkgs-shim-modules": "nixpkgs-shim-modules",
@@ -270,32 +270,31 @@
     },
     "nixpkgs-stable": {
       "locked": {
-        "lastModified": 1653229824,
-        "narHash": "sha256-klSCYMpR4TqWYoTD/xZ2qM9UIPRFC6pK+S/kJuVLbFw=",
+        "lastModified": 1655200170,
+        "narHash": "sha256-/yzkX+10sJhYNIcTtZ5ObS+nh/HrJp01XLaubzbRDcU=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "06db2e2197401b74fcf82d4e84be15b0b5851c7b",
+        "rev": "9ff91ce2e4c5d70551d4c8fd8830931c6c6b26b8",
         "type": "github"
       },
       "original": {
         "owner": "nixos",
-        "ref": "nixos-21.11",
+        "ref": "nixos-22.05",
         "repo": "nixpkgs",
         "type": "github"
       }
     },
     "nixpkgs-unstable": {
       "locked": {
-        "lastModified": 1653589393,
-        "narHash": "sha256-vBaGGW+O6e1rJ6pQCZd9w/hp/sgJufHft7ZNRnZEPeE=",
+        "lastModified": 1655318088,
+        "narHash": "sha256-0dHJ8kCTlSuNI7qM8eXTti10X4jh9NUe4nczU4JV5PI=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "7212933299bc6831a507edccc00bd2ba9e16d4e6",
+        "rev": "7c0bac48e229fa21d0b6db286a0615c17842596a",
         "type": "github"
       },
       "original": {
         "owner": "nixos",
-        "ref": "release-22.05",
         "repo": "nixpkgs",
         "type": "github"
       }
