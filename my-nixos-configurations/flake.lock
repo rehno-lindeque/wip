@@ -1,47 +1,20 @@
 {
   "nodes": {
-    "alejandra": {
-      "inputs": {
-        "flakeCompat": "flakeCompat",
-        "nixpkgs": [
-          "circuithub-nixos-configurations",
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1647993668,
-        "narHash": "sha256-PBFmxE4lGktnrEEqEXJ05noQJ5+LtECJgrH9LdAx0xc=",
-        "owner": "rehno-lindeque",
-        "repo": "alejandra",
-        "rev": "461da9509f95216ea89bfec3f270fbcd507543fa",
-        "type": "github"
-      },
-      "original": {
-        "owner": "rehno-lindeque",
-        "repo": "alejandra",
-        "rev": "461da9509f95216ea89bfec3f270fbcd507543fa",
-        "type": "github"
-      }
-    },
     "circuithub-nixos-configurations": {
       "inputs": {
-        "alejandra": "alejandra",
         "flake-help": [
           "flake-help"
-        ],
-        "flake-utils": [
-          "flake-utils"
         ],
         "nixpkgs": [
           "nixpkgs-stable"
         ]
       },
       "locked": {
-        "lastModified": 1649104672,
-        "narHash": "sha256-NrAzSqZSb1QZ3JYSgQf94ceuC9blRhfupmwh3ADpHNc=",
+        "lastModified": 1655316140,
+        "narHash": "sha256-lgMVQhw99WeDOXd/Zs7B/+Ugi2fI3dDrPxZJBfzQIdU=",
         "ref": "refs/heads/master",
-        "rev": "f3e16c287959f255bcba8d5d2de169c69b8a4205",
-        "revCount": 8,
+        "rev": "060ce58602d28fa30037bc560a9d5087d96839e6",
+        "revCount": 16,
         "type": "git",
         "url": "ssh://git@github.com/circuithub/nixos-configurations.git"
       },
@@ -77,22 +50,6 @@
       "original": {
         "owner": "numtide",
         "repo": "flake-utils",
-        "type": "github"
-      }
-    },
-    "flakeCompat": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1641205782,
-        "narHash": "sha256-4jY7RCWUoZ9cKD8co0/4tFARpWB+57+r1bLLvXNJliY=",
-        "owner": "edolstra",
-        "repo": "flake-compat",
-        "rev": "b7547d3eed6f32d06102ead8991ec52ab0a4f1a7",
-        "type": "github"
-      },
-      "original": {
-        "owner": "edolstra",
-        "repo": "flake-compat",
         "type": "github"
       }
     },
