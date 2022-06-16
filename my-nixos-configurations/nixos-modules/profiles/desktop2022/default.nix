@@ -218,5 +218,8 @@ in {
     services.xserver.videoDrivers = ["nvidia"];
 
     sound.mediaKeys.enable = true;
+
+    # System first installed with release 21.11
+    system.stateVersion = "21.11";
   };
 }

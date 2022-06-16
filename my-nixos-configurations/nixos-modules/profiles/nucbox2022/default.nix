@@ -113,5 +113,8 @@ in {
     services.xserver.enable = true;
     services.xserver.desktopManager.gnome.enable = true;
     services.xserver.displayManager.lightdm.enable = true;
+
+    # System first installed with release 21.11
+    system.stateVersion = "21.11";
   };
 }
