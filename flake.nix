@@ -22,7 +22,6 @@
     home-manager.inputs.nixpkgs.follows = "nixpkgs-unstable";
     my-dev-shells.inputs = {
       nixpkgs-unstable.follows = "nixpkgs-unstable";
-      flake-utils.follows = "flake-utils";
     };
     my-nixos-configurations.inputs = {
       flake-help.follows = "flake-help";
