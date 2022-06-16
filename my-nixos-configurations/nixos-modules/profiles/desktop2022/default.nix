@@ -182,6 +182,11 @@ in {
       ];
     };
 
+    # Limit the machine to 4 jobs and 9 out 32 logical cores
+    # See https://nixos.org/manual/nix/stable/advanced-topics/cores-vs-jobs.html#tuning-cores-and-jobs for tuning advice
+    nix.settings.max-jobs = 4;
+    nix.settings.cores = 9;
+
     # Turn off sandbox because I'm doing machine-learning things with nix that requires sandboxing to be turned off
     # TODO: In future it would be nice to limit this to a specific build user like nix-ssh
     nix.useSandbox = false;
