@@ -26,7 +26,6 @@
     };
     my-nixos-configurations.inputs = {
       flake-help.follows = "flake-help";
-      flake-utils.follows = "flake-utils";
       home-manager.follows = "home-manager";
       nixpkgs-shim.follows = "nixpkgs-shim";
       nixpkgs-stable.follows = "nixpkgs-stable";

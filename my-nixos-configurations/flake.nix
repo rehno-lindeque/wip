@@ -2,7 +2,6 @@
   inputs = {
     circuithub-nixos-configurations.url = "git+ssh://git@github.com/circuithub/nixos-configurations.git";
     flake-help.url = "github:rehno-lindeque/flake-help";
-    flake-utils.url = "github:numtide/flake-utils";
     home-manager.url = "github:nix-community/home-manager/release-22.05";
     impermanence.url = "github:nix-community/impermanence";
     nixos-impermanence.url = "github:rehno-lindeque/nixos-impermanence/wip";
@@ -31,106 +30,100 @@
     self,
     circuithub-nixos-configurations,
     flake-help,
-    flake-utils,
     home-manager,
     impermanence,
     nixos-impermanence,
     nixpkgs-shim,
     ...
   }: let
-    eachDefaultEnvironment = f:
-      flake-utils.lib.eachDefaultSystem
-      (
-        system:
-          f {
-            inherit system;
-            pkgs = import nixpkgs-shim.inputs.nixpkgs {
-              inherit system;
-              config.allowUnfree = true;
-              overlays = [self.overlays.default];
-            };
-          }
-      );
-  in
-    eachDefaultEnvironment (
-      {
-        system,
-        pkgs,
-      }: rec {
-        apps = pkgs.callPackages ./apps {
-          inherit system;
-          flake = self;
-          inherit (flake-help.lib) mkHelp;
-        };
-        devShells.default = pkgs.callPackage ./dev-shells/default {};
-        packages = {
-          # TODO: Implement isoImage as a lib instead of a module. E.g. nipxkgs-shim.lib.isoImage { .... }
-          # installer-iso = self.nixosConfigurations.installer.config.system.build.isoImage; # broken in nixos-22.05
-          install-helper = self.nixosConfigurations.installer.config.system.build.install-helper;
-        };
-      }
-    )
-    // {
-      nixosModules = rec {
-        common = import ./nixos-modules/profiles/common;
-        personalize = import ./nixos-modules/profiles/personalize;
-        playground = import ./nixos-modules/profiles/playground;
-        preferences = import ./nixos-modules/profiles/preferences;
-        workstation = import ./nixos-modules/profiles/workstation;
-        desktop2022 = import ./nixos-modules/profiles/desktop2022;
-        nucbox2022 = import ./nixos-modules/profiles/nucbox2022;
-        installer = import ./nixos-modules/profiles/installer;
-        default = {
-          imports = [
-            common
-            personalize
-            playground
-            preferences
-            workstation
-            desktop2022
-            nucbox2022
-            # installer
-            impermanence.nixosModules.impermanence
-            nixos-impermanence.nixosModules.default
-            circuithub-nixos-configurations.nixosModules.default
-            home-manager.nixosModules.home-manager
-            # nixpkgs-shim.nixosModules.default
-            # nixpkgs-shim.inputs.nixpkgs-shim-images.nixosModules.isoImage
-            nixpkgs-shim.inputs.nixpkgs-shim-profiles.nixosModules.default
-          ];
-        };
-      };
+    inherit (nixpkgs-shim) lib;
 
-      nixosConfigurations = let
-        inherit (nixpkgs-shim.lib) nixosSystem;
-      in {
-        desktop2022 = nixosSystem {
-          system = "x86_64-linux";
-          modules = [
-            self.nixosModules.default
-            {profiles.desktop2022.enable = true;}
-          ];
-          specialArgs = {flake = self;};
-        };
-        nucbox2022 = nixosSystem {
-          system = "x86_64-linux";
-          modules = [
-            self.nixosModules.default
-            {profiles.nucbox2022.enable = true;}
-          ];
-          specialArgs = {flake = self;};
-        };
-        installer = nixosSystem {
-          system = "x86_64-linux";
-          modules = [
-            self.nixosModules.default
-            self.nixosModules.installer
-            {profiles.installer.enable = true;}
-          ];
-          specialArgs = {flake = self;};
-        };
-      };
+    system = lib.genAttrs lib.platforms.all (system: system);
 
-      overlays.default = final: prev: {};
+    mySystems = [system.x86_64-linux];
+
+    legacyPackages = lib.genAttrs mySystems (system:
+      import nixpkgs-shim.inputs.nixpkgs {
+        inherit system;
+        config.allowUnfree = true;
+        overlays = [self.overlays.default];
+      });
+  in {
+    apps = lib.genAttrs mySystems (system:
+      legacyPackages.${system}.callPackages ./apps {
+        inherit system;
+        flake = self;
+        inherit (flake-help.lib) mkHelp;
+      });
+
+    devShells = lib.genAttrs mySystems (system: {
+      default = legacyPackages.${system}.callPackage ./dev-shells/default {};
+    });
+
+    packages = {
+      # TODO: Implement isoImage as a lib instead of a module. E.g. nipxkgs-shim.lib.isoImage { .... }
+      # installer-iso = self.nixosConfigurations.installer.config.system.build.isoImage; # broken in nixos-22.05
+      install-helper = self.nixosConfigurations.installer.config.system.build.install-helper;
     };
+
+    nixosModules = rec {
+      common = import ./nixos-modules/profiles/common;
+      personalize = import ./nixos-modules/profiles/personalize;
+      playground = import ./nixos-modules/profiles/playground;
+      preferences = import ./nixos-modules/profiles/preferences;
+      workstation = import ./nixos-modules/profiles/workstation;
+      desktop2022 = import ./nixos-modules/profiles/desktop2022;
+      nucbox2022 = import ./nixos-modules/profiles/nucbox2022;
+      installer = import ./nixos-modules/profiles/installer;
+      default = {
+        imports = [
+          common
+          personalize
+          playground
+          preferences
+          workstation
+          desktop2022
+          nucbox2022
+          # installer
+          impermanence.nixosModules.impermanence
+          nixos-impermanence.nixosModules.default
+          circuithub-nixos-configurations.nixosModules.default
+          home-manager.nixosModules.home-manager
+          # nixpkgs-shim.nixosModules.default
+          # nixpkgs-shim.inputs.nixpkgs-shim-images.nixosModules.isoImage
+          nixpkgs-shim.inputs.nixpkgs-shim-profiles.nixosModules.default
+        ];
+      };
+    };
+
+    nixosConfigurations = {
+      desktop2022 = lib.nixosSystem {
+        system = "x86_64-linux";
+        modules = [
+          self.nixosModules.default
+          {profiles.desktop2022.enable = true;}
+        ];
+        specialArgs = {flake = self;};
+      };
+      nucbox2022 = lib.nixosSystem {
+        system = "x86_64-linux";
+        modules = [
+          self.nixosModules.default
+          {profiles.nucbox2022.enable = true;}
+        ];
+        specialArgs = {flake = self;};
+      };
+      installer = lib.nixosSystem {
+        system = "x86_64-linux";
+        modules = [
+          self.nixosModules.default
+          self.nixosModules.installer
+          {profiles.installer.enable = true;}
+        ];
+        specialArgs = {flake = self;};
+      };
+    };
+
+    overlays.default = final: prev: {};
+  };
 }
