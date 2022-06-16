@@ -27,6 +27,7 @@ in {
       preferences.enable = true;
       # playground.enable = true;
     };
+    circuithubConfigurations.developerWorkstation.enable = true;
 
     # Using the systemd-boot EFI boot loader as it seems to be very simple
     boot.loader.systemd-boot.enable = true;

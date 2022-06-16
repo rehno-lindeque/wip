@@ -18,7 +18,6 @@
     circuithub-nixos-configurations.inputs = {
       nixpkgs.follows = "nixpkgs-unstable";
       flake-help.follows = "flake-help";
-      flake-utils.follows = "flake-utils";
     };
     home-manager.inputs.nixpkgs.follows = "nixpkgs-unstable";
     my-dev-shells.inputs = {

@@ -15,7 +15,6 @@
     # Redirect inputs
     circuithub-nixos-configurations.inputs = {
       nixpkgs.follows = "nixpkgs-stable";
-      flake-utils.follows = "flake-utils";
       flake-help.follows = "flake-help";
     };
     home-manager.inputs.nixpkgs.follows = "nixpkgs-stable";
