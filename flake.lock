@@ -82,7 +82,7 @@
       },
       "locked": {
         "lastModified": 1,
-        "narHash": "sha256-EGVuMRpNbzcXVlL5WtE0kmX9zFkOMRk40BFsIQncmJE=",
+        "narHash": "sha256-xzVn3QbRANAmLlvw0t2KMIPp8pXCI/Nmf2elomYeuzU=",
         "path": "./my-dev-shells",
         "type": "path"
       },
@@ -117,7 +117,7 @@
       },
       "locked": {
         "lastModified": 1,
-        "narHash": "sha256-JXdTz17SxEmCiYhi6xw1mEjTrMDRUapR8DWmFCWsI+o=",
+        "narHash": "sha256-sL2I1xx7zosArdilORoUD/NUfAVvQfdvJzCm2MVnYLQ=",
         "path": "./my-nixos-configurations",
         "type": "path"
       },
@@ -134,7 +134,7 @@
         ],
         "nixpkgs": [
           "my-nixos-configurations",
-          "nixpkgs-unstable"
+          "nixpkgs-stable"
         ]
       },
       "locked": {
