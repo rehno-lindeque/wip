@@ -66,7 +66,7 @@
         devShells.default = pkgs.callPackage ./dev-shells/default {};
         packages = {
           # TODO: Implement isoImage as a lib instead of a module. E.g. nipxkgs-shim.lib.isoImage { .... }
-          installer-iso = self.nixosConfigurations.installer.config.system.build.isoImage;
+          # installer-iso = self.nixosConfigurations.installer.config.system.build.isoImage; # broken in nixos-22.05
           install-helper = self.nixosConfigurations.installer.config.system.build.install-helper;
         };
       }
