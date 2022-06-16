@@ -63,10 +63,9 @@ in {
     # Turn this on when not using a hardwired ethernet connection
     # networking.networkmanager.wifi.powersave = false;
 
-    # Don't kill the machine with too many jobs
+    # Limit the machine to 1 job and 3 out of 4 available cores since it will not primarily be used for building
+    # I.e. don't kill the machine while compiling
     nix.settings.max-jobs = 1;
-
-    # Limit cpu use to 3 out of the 4 available
     nix.settings.cores = 3;
 
     # Add this flake to the local registry so that it's easy
