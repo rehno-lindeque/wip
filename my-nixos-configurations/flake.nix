@@ -62,8 +62,8 @@
 
     packages = {
       # TODO: Implement isoImage as a lib instead of a module. E.g. nipxkgs-shim.lib.isoImage { .... }
-      # installer-iso = self.nixosConfigurations.installer.config.system.build.isoImage; # broken in nixos-22.05
-      install-helper = self.nixosConfigurations.installer.config.system.build.install-helper;
+      # x86_64-linux.installer-iso = self.nixosConfigurations.installer.config.system.build.isoImage; # broken in nixos-22.05
+      x86_64-linux.install-helper = self.nixosConfigurations.installer.config.system.build.install-helper;
     };
 
     nixosModules = rec {
