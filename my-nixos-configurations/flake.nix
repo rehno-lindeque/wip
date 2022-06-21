@@ -60,11 +60,16 @@
       default = legacyPackages.${system}.callPackage ./dev-shells/default {};
     });
 
-    packages = {
-      # TODO: Implement isoImage as a lib instead of a module. E.g. nipxkgs-shim.lib.isoImage { .... }
-      # x86_64-linux.installer-iso = self.nixosConfigurations.installer.config.system.build.isoImage; # broken in nixos-22.05
-      x86_64-linux.install-helper = self.nixosConfigurations.installer.config.system.build.install-helper;
-    };
+    packages =
+      lib.recursiveUpdate
+      (lib.genAttrs mySystems (system: {
+        wakeup-desktop2022 = legacyPackages.${system}.callPackage ./packages/wakeup-desktop2022 {};
+      }))
+      {
+        # TODO: Implement isoImage as a lib instead of a module. E.g. nipxkgs-shim.lib.isoImage { .... }
+        # x86_64-linux.installer-iso = self.nixosConfigurations.installer.config.system.build.isoImage; # broken in nixos-22.05
+        x86_64-linux.install-helper = self.nixosConfigurations.installer.config.system.build.install-helper;
+      };
 
     nixosModules = rec {
       common = import ./nixos-modules/profiles/common;
