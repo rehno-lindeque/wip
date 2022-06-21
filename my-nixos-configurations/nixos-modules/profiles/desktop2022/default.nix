@@ -142,6 +142,13 @@ in {
     };
     networking.interfaces.tailscale0 = {
       # wakeOnLan.enable = true; # see https://github.com/tailscale/tailscale/issues/306
+      # Assign a fixed address so that sshd can always bind to it
+      ipv4.addresses = [
+        {
+          address = "100.89.210.26";
+          prefixLength = 32;
+        }
+      ];
     };
 
     # Add this flake to the local registry so that it's easy
