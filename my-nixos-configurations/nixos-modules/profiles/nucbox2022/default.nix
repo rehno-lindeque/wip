@@ -59,6 +59,19 @@ in {
 
     networking.hostName = "nucbox2022";
 
+    # Wake up this computer from sleep by sending a magic packet
+    # Check that each interface has wake-on-lan using ethtool
+    networking.interfaces.enp0s21f0u2u1 = {
+      wakeOnLan.enable = true;
+      # macAddress = "00:e0:4c:68:0f:e8"; # ip link show enp0s21f0u2u1
+    };
+    networking.interfaces.wlo2 = {
+      # macAddress = "b4:0e:de:a6:78:e5"; # ip link show wlo2
+    };
+    networking.interfaces.tailscale0 = {
+      # wakeOnLan.enable = true; # see https://github.com/tailscale/tailscale/issues/306
+    };
+
     # Turning off powersave for the wifi appears to improve its performance
     # Turn this on when not using a hardwired ethernet connection
     # networking.networkmanager.wifi.powersave = false;
