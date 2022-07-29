@@ -155,7 +155,7 @@ in {
           firefox
           google-chrome
           brave
-          tor-browser-bundle-bin
+          # tor-browser-bundle-bin
           # dropbox
           # dropbox-cli
         ]
