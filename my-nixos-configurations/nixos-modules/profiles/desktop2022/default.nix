@@ -76,6 +76,11 @@ in {
 
           # Retain trusted nix settings and repl history
           ".local/share/nix" # repl-history trusted-settings.json
+
+          # Retain neovim undo files
+          ".local/share/nvim"
+
+          # ".cache/nix" (TODO)
         ];
       };
     };
