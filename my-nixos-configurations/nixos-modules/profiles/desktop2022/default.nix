@@ -82,6 +82,18 @@ in {
 
           # ".cache/nix" (TODO)
         ];
+
+        files = [
+          # Retain aws credentials
+          ".aws/credentials"
+        ];
+      };
+
+      users.root = {
+        files = [
+          # Retain root aws credentials
+          ".aws/credentials"
+        ];
       };
     };
 
@@ -98,7 +110,7 @@ in {
       "/home/me" = {
         device = "none";
         fsType = "tmpfs";
-        options = ["size=4G" "mode=777"];
+        options = ["size=4G" "mode=777" "uid=me" "gid=users"];
       };
 
       # Files managed by nix, including the nix store
