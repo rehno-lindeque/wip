@@ -90,6 +90,8 @@ in {
       };
 
       users.root = {
+        home = "/root";
+
         files = [
           # Retain root aws credentials
           ".aws/credentials"
