@@ -102,6 +102,7 @@ in {
           # zip
           # btrfsProgs
           # xorg.luit-2_x
+          nix-output-monitor
           nix-top
           # nix-du
           # appimage-run
