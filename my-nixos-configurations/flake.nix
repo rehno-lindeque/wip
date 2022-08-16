@@ -104,7 +104,7 @@
 
     nixosConfigurations = {
       desktop2022 = lib.nixosSystem {
-        system = "x86_64-linux";
+        system = system.x86_64-linux;
         modules = [
           self.nixosModules.default
           {profiles.desktop2022.enable = true;}
@@ -112,7 +112,7 @@
         specialArgs = {flake = self;};
       };
       nucbox2022 = lib.nixosSystem {
-        system = "x86_64-linux";
+        system = system.x86_64-linux;
         modules = [
           self.nixosModules.default
           {profiles.nucbox2022.enable = true;}
@@ -120,7 +120,7 @@
         specialArgs = {flake = self;};
       };
       installer = lib.nixosSystem {
-        system = "x86_64-linux";
+        system = system.x86_64-linux;
         modules = [
           self.nixosModules.default
           self.nixosModules.installer
