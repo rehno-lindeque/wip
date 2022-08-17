@@ -117,7 +117,7 @@
       },
       "locked": {
         "lastModified": 1,
-        "narHash": "sha256-8oguQh8ZCzFejMs8alx06DoX7dys/R8+/6i2ctSezX4=",
+        "narHash": "sha256-ZiVQEajqWFs5/VXyETegwt3cV+LVu1BQidNPGbUZYeU=",
         "path": "./my-nixos-configurations",
         "type": "path"
       },

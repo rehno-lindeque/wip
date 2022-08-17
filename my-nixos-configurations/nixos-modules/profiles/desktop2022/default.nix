@@ -218,6 +218,10 @@ in {
     # TODO: In future it would be nice to limit this to a specific build user like nix-ssh
     nix.useSandbox = false;
 
+    # Add "cuda" to the system features since our machine learning builder checks for this
+    # mkDefault is needed to ensure existing default values are kept (merged with the same priority)
+    nix.settings.system-features = lib.mkDefault ["cuda"];
+
     # Enable ssh so that I can work on the desktop remotely
     services.openssh = {
       enable = true;
