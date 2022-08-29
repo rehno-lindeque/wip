@@ -79,6 +79,7 @@
       preferences = import ./nixos-modules/profiles/preferences;
       workstation = import ./nixos-modules/profiles/workstation;
       desktop2022 = import ./nixos-modules/profiles/desktop2022;
+      macbookpro2017 = import ./nixos-modules/profiles/macbookpro2017;
       nucbox2022 = import ./nixos-modules/profiles/nucbox2022;
       installer = import ./nixos-modules/profiles/installer;
       default = {
@@ -89,6 +90,7 @@
           preferences
           workstation
           desktop2022
+          macbookpro2017
           nucbox2022
           # installer
           impermanence.nixosModules.impermanence
@@ -108,6 +110,14 @@
         modules = [
           self.nixosModules.default
           {profiles.desktop2022.enable = true;}
+        ];
+        specialArgs = {flake = self;};
+      };
+      macbookpro2017 = lib.nixosSystem {
+        system = system.x86_64-linux;
+        modules = [
+          self.nixosModules.default
+          {profiles.macbookpro2017.enable = true;}
         ];
         specialArgs = {flake = self;};
       };
