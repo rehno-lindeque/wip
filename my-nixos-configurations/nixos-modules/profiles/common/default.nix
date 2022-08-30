@@ -36,7 +36,7 @@ in {
       # There's no point to using any of these configs without flakes
       package = pkgs.nixUnstable;
       extraOptions = ''
-        experimental-features = nix-command flakes impure-derivations
+        experimental-features = nix-command flakes impure-derivations ca-derivations
       '';
 
       # setting the old <nixpkgs> path is necessary for some legacy nix files
