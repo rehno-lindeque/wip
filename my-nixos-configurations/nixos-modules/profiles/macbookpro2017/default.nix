@@ -20,7 +20,7 @@ in {
       personalized = {
         enable = true;
         enableSoftware = true;
-        enableProblematicSoftware = false;
+        enableProblematicSoftware = true;
         enableHome = true;
       };
       preferences.enable = true;
@@ -28,8 +28,17 @@ in {
     };
     circuithubConfigurations.developerWorkstation.enable = true;
 
-    # Using the systemd-boot EFI boot loader as it seems to be very simple
-    boot.loader.systemd-boot.enable = true;
+    # Unfortunately systemd-boot does not appear to work with LUKS when kernel version > 5.4
+    # Instead we use grub with LUKS support enabled
+    boot.loader.grub = {
+      enable = true;
+      device = "nodev";
+      efiInstallAsRemovable = true;
+      efiSupport = true;
+
+      # LUKS support
+      enableCryptodisk = true;
+    };
 
     # On this system / and /nix/store are on an encrypted LUKS device
     boot.initrd.luks.devices = {
@@ -62,8 +71,23 @@ in {
 
     networking.hostName = "macboopro2017";
     # Run gnome on this computer
+
+    # Fan control for the macbook pro
+    services.mbpfan.enable = true;
+    services.mbpfan.settings.general = {
+      # Run the fan a little bit more aggressively
+      # I do this because my cpu usage tends to be quite spiky
+      max_temp = 78; 
+      min_fan1_speed = 3000;
+    };
+    # Run lightdm + xmonad on this computer
     services.xserver.enable = true;
-    services.xserver.desktopManager.gnome.enable = true;
+    services.xserver.displayManager.defaultSession = "none+xmonad";
     services.xserver.displayManager.lightdm.enable = true;
+    services.xserver.windowManager.xmonad.enable = true;
+
+
+    # Preserve the old home directory
+    users.users.me.home = lib.mkForce "/home/new-me";
   };
 }
