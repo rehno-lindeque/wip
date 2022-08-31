@@ -48,6 +48,9 @@ in {
         #   terminus_font
         # ];
 
+        # https://www.reddit.com/r/NixOS/comments/8j3w16/what_are_your_recommendedfavorite_nixos_options/dyzce1q?utm_source=share&utm_medium=web2x&context=3
+        console.useXkbConfig = true;
+
         home-manager = {
           users.me = {pkgs, ...}: {
             home.shellAliases = {
@@ -303,6 +306,372 @@ in {
             sleep-inactive-ac-timeout=3600
           '';
         };
+      })
+
+      (lib.mkIf config.profiles.macbookpro2017.enable {
+        # Power management protocol for application (turned on automatically by some display managers)
+        services.upower.enable = true;
+
+        # Control the screen brightness with light
+        programs.light.enable = true;
+
+        # Handling for power events (keyboard power button, lid close, etc)
+        # TODO: investigate how this works in practice
+        # TODO: investigate backlight control https://wiki.archlinux.org/title/acpid#Enabling_backlight_control
+        # TODO may interfere with some desktop environments
+        services.acpid.enable = true;
+
+        # Advanced Power Management for Linux
+        services.tlp =
+          # Turns on power saving features usually used on battery for AC power as well.
+          # This can be useful for keeping you macbook pro running cool at the cost of some performance.
+          let
+            aggressivePowerSavingOnAC = true;
+          in {
+            enable = true;
+            settings = {
+              # Select a CPU frequency scaling governor.
+              # Intel Core i processor with intel_pstate driver:
+              #   powersave(*), performance
+              # Older hardware with acpi-cpufreq driver:
+              #   ondemand(*), powersave, performance, conservative
+              # (*) is recommended.
+              # Hint: use tlp-stat -p to show the active driver and available governors.
+              # Important:
+              #   You *must* disable your distribution's governor settings or conflicts will
+              #   occur. ondemand is sufficient for *almost all* workloads, you should know
+              #   what you're doing!
+              # ---
+              # See also
+              # * http://linrunner.de/en/tlp/docs/tlp-configuration.html#scaling
+
+              # TODO: do we have the intel_pstate driver?
+
+              CPU_SCALING_GOVERNOR_ON_AC = "powersave";
+              CPU_SCALING_GOVERNOR_ON_BAT = "powersave";
+
+              # Minimize number of used CPU cores/hyper-threads under light load conditions
+              # I've turned this to 1 because I prefer my macbook running cool
+
+              SCHED_POWERSAVE_ON_AC =
+                if aggressivePowerSavingOnAC
+                then 1
+                else 0;
+
+              # Include listed devices into USB autosuspend even if already excluded
+              # by the driver or WWAN blacklists above (separate with spaces).
+              # Use lsusb to get the ids.
+              # ---
+              # Note that apple trackpad does have explicit autosuspend support.
+              # * See http://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/commit/?id=88da765f4d5f59f67a7a51c8f5d608a836b32133
+
+              USB_WHITELIST = "05ac:0274";
+
+              # PCI Express Active State Power Management (PCIe ASPM):
+              #   default, performance, powersave
+
+              PCIE_ASPM_ON_AC =
+                if aggressivePowerSavingOnAC
+                then "powersave"
+                else "performance";
+
+              # Radeon graphics clock speed (profile method): low, mid, high, auto, default;
+              # auto = mid on BAT, high on AC; default = use hardware defaults.
+              # (Kernel >= 2.6.35 only, open-source radeon driver explicitly)
+              # ---
+              # I've turned this to low on AC because my graphics card tends to warm up more than I like on AC, but others may prefer mid or auto
+
+              RADEON_POWER_PROFILE_ON_AC =
+                if aggressivePowerSavingOnAC
+                then "low"
+                else "mid";
+
+              # Radeon dynamic power management method (DPM): battery, balanced, performance
+              # (Kernel >= 3.11 only, requires boot option radeon.dpm=1)
+              # ---
+              # I've turned this to battery because my graphics card tends to warm up more than I like on AC, but other may prefer to se this to balanced or performance.
+              # * Note that http://linrunner.de/en/tlp/docs/tlp-configuration.html#graphics only lists battery and performance as options,
+              #   however https://wiki.archlinux.org/index.php/ATI#Powersaving says that balanced should also be possible which appears to be correct.
+
+              RADEON_DPM_STATE_ON_AC =
+                if aggressivePowerSavingOnAC
+                then "battery"
+                else "balanced";
+
+              # TODO:
+
+              # Set Intel P-state performance: 0..100 (%)
+              # Limit the max/min P-state to control the power dissipation of the CPU.
+              # Values are stated as a percentage of the available performance.
+              # Requires an Intel Core i processor with intel_pstate driver.
+              #CPU_MIN_PERF_ON_AC=0
+              #CPU_MAX_PERF_ON_AC=100
+              #CPU_MIN_PERF_ON_BAT=0
+              #CPU_MAX_PERF_ON_BAT=30
+            };
+          };
+
+        # hardware.bluetooth.enable = true;
+
+        # Enable YubiKey support
+        # hardware.yubikey.enable = true;
+
+        # Grant group access to the keyboard backlight.
+        # hardware.macbook.leds.enable = true;
+
+        # disable sd card reader to save on battery (enabled by default)
+        # hardware.macbook.sdCardReader.enable = false;
+
+        # bluetooth manager service
+        # services.blueman.enable = true;
+
+        # Extra hardware configuration for macbooks
+        /*
+         extraModprobeConfig = ''
+         */
+        /*
+         # TODO: Not sure if noncq is needed for macbook SSD's, but https://github.com/mbbx6spp/mbp-nixos/blob/master/etc/nixos/configuration.nix has this
+         */
+        /*
+         # TODO: doesn't seem to work...
+         */
+        /*
+         # options libata.force=noncq
+         */
+
+        /*
+         # TODO: mpb-nixos has this resume option, but not sure if it's really helpful
+         */
+        /*
+         # TODO: doesn't seem to work...
+         */
+        /*
+         # options resume=/dev/sda5
+         */
+
+        /*
+         # Sound module for Apple Macs
+         */
+        /*
+         options snd_hda_intel index=0 model=intel-mac-auto id=PCH
+         */
+        /*
+         options snd_hda_intel index=1 model=intel-mac-auto id=HDMI
+         */
+        /*
+         options snd-hda-intel model=mbp101
+         */
+
+        /*
+         # Pressing 'F8' key will behave like a F8. Pressing 'fn'+'F8' will act as special key
+         */
+        /*
+         options hid_apple fnmode=2
+         */
+        /*
+         '';
+         */
+        boot.initrd.availableKernelModules = [
+          # # "xhci_pci"    # ?
+          # # "uhci_hcd"    # ?
+          # "ehci_pci" # ?
+          # # "ahci"        # ?
+          # "usbhid" # USB input devices
+          # "usb_storage" # USB storage devices
+          # # "brcmsmac"    # Broadcom wireless device
+          # # * Open source brcm80211 kernel driver
+          # # * Appears to be an alternative to b43 (reverse-engineered kernel driver), broadcom-wl (Broadcom driver restricted-license)
+          # #   We are using broadcom_sta, see extraModulePackages below
+          # # * This is the PCI version of the driver (built-in wireless, not SDIO/USB)
+          # # * https://wiki.archlinux.org/index.php/broadcom_wireless#Driver_selection
+          # # * https://github.com/Ericson2314/nixos-configuration/blob/nixos/mac-pro/wireless.nix#L9
+          # # "i915"          # ? https://github.com/fread2281/dotfiles/blob/master/nixos/laptop.nix#L17
+          # # "amdgpu"
+        ];
+        boot.initrd.kernelModules = [
+          # "fbcon"    # Make it pretty (support fonts in the terminal)
+          # modprobe: FATAL: Module fbcon not found in directory /nix/store/________________________________-kernel-modules/lib/modules/4.4.2
+        ];
+
+        boot.kernelModules = [
+          # TODO: see https://github.com/fooblahblah/nixos/blob/63457072af7b558f63cc5ccec5a75b90a14f35f7/hardware-configuration-mbp.nix
+          "kvm-intel" # Run kernel-based virtual machines (hypervisor functionality, useful for nix containers)
+          # "applesmc" # apple system managment controller, regulates fan and other hw goodies
+          # also sudden motion sensor? (enable disk protections etc)
+          # * needed for mbpfan
+          "coretemp" # * recommended by lm-sensors
+          # * needed for mbpfan
+          "msr" # * needed for powersaving, ENERGY_PERF_POLICY_ON_AC, ENERGY_PERF_POLICY_ON_BATTERY in tlp configuration
+          # "bcm5974" # Apple trackpad (this doesn't appear to be strictly necessary) (seems to be broken?)
+          # "hid_apple" # Apple keyboard (this doesn't appear to be strictly necessary)
+
+          #macbook ___? (TODO)
+          # "brcmsmac"      # wireless Needed?
+          # "brcmfmac"      # wireless Needed?
+
+          # "nvme" # do I need this perhaps? see https://linux-hardware.org/?probe=7b1766f4ef&log=lsmod and https://linux-hardware.org/?probe=5cd59453b1&log=lsmod
+        ];
+
+        boot.blacklistedKernelModules = [
+          # From https://github.com/javins/nixos/blob/master/hardware-configuration.nix#L18:
+          # Macbooks don't have PS2 capabilities, and the I8042 driver spams an err like
+          # the following on boot:
+          #
+          # Dec 26 09:43:17 nix kernel: i8042: No controller found
+          #
+          # This is harmless, but it is noise in the logs when I'm looking for real errors.
+          #
+          # Alas atkbd was built into nixpkgs here:
+          #
+          # https://github.com/NixOS/nixpkgs/commit/1c22734cd2e67842090f5d59a6c7b2fb39c1cf66
+          #
+          # so there isn't a good way to remove it from boot.kernelModules. Thus blacklisting.
+          # "atkbd"
+        ];
+
+        fonts.fonts = let
+          nerdfonts = pkgs.nerdfonts.override {
+            fonts = [
+              "SourceCodePro"
+            ];
+          };
+        in [nerdfonts];
+        fonts.enableDefaultFonts = true;
+
+        services.pipewire = {
+          enable = true;
+          alsa.enable = true;
+          # alsa.support32Bit = true; #?
+          pulse.enable = true;
+        };
+
+        # Interplanetary File System
+        # ipfs = {
+        #   # enable = true;
+        #   emptyRepo = true;
+        #   # defaultMode = "offline";
+        #   # defaultMode = "norouting";
+        #   autoMount = true; # Not supported in offline mode
+        #   user = "me";
+        #   autoMigrate = true;
+        #   extraFlags = [
+        #     # See https://github.com/ipfs/go-ipfs/issues/3320#issuecomment-511467441
+        #     "--routing=dhtclient"
+        #   ];
+        #   # extraConfig = {
+        #   # };
+        # };
+
+        # Identity/Key/Cloud storage management
+        # keybase.enable = true;
+        # kbfs = {
+        #   # enable = true;
+        #   mountPoint = "/keybase";
+        # };
+
+        # services.xserver.libinput.enable = true;
+
+        # Extra software packages exclusively used on this system
+        users.users.me.packages = with pkgs; [
+          # Program launcher that works with xmonad
+          # dmenu
+
+          # # Monitor system temperatures
+          # psensor
+
+          # Terminal emulator
+          # sakura
+
+          # Music player
+          spotify
+
+          # Gui based diff for source files
+          # diffuse
+        ];
+
+        # TODO EVALUATE:
+        # TODO: keyboard stuff to potentially move to personalize
+        services.xserver.layout = "us";
+        services.xserver.xkbVariant = "norman";
+        services.xserver.dpi = 144;
+        hardware.video.hidpi.enable = true;
+        services.xserver.xkbOptions = "terminate:ctrl_alt_bksp, caps:escape";
+
+        # see https://wiki.archlinux.org/index.php/AMDGPU
+        # see https://en.wikipedia.org/wiki/List_of_AMD_graphics_processing_units#Volcanic_Islands_.
+        # nix-shell -p pciutils --run 'lspci | grep -e VGA -e 3D'
+        # 01:00.0 VGA compatible controller: Advanced Micro Devices, Inc. [AMD/ATI] Venus XT [Radeon
+        # services.xserver.videoDrivers = [ amdgpu" ];
+
+        # * Terminate current session using ctrl + alt + backspace (usefull on macs)
+        # * Make capslock into an additional escape key
+        # xkbOptions = "terminate:ctrl_alt_bksp, caps:escape";
+
+        # Adjust screen brightness at night
+        # services.redshift.enable = true;
+
+        # Add this flake to the local registry so that it's easy
+        # # to reference on the command line
+        # nix.registry.wip = {
+        #   from = {
+        #     id = "wip";
+        #     type = "indirect";
+        #   };
+        #   to = {
+        #     path = "${config.users.users.me.home}/projects/wip";
+        #     type = "path";
+        #   };
+        # };
+
+        # enable bluetooth as needed, keep it disabled to use less battery (disabled by default)
+        # hardware.bluetooth.enable = true;
+
+        # Enable YubiKey support
+        # hardware.yubikey.enable = true;
+
+        # Grant group access to the keyboard backlight.
+        # hardware.macbook.leds.enable = true;
+
+        # disable sd card reader to save on battery (enabled by default)
+        # hardware.hardware.macbook.sdCardReader.enable = false;
+        # hardware.hardware.macbook.sdCardReader.enable = true;
+
+        # bluetooth manager service
+        # services.blueman.enable = true;
+
+        # # Limit cpu use to 4 out of the ? available
+        # nix.buildCores = 4;
+
+        sound.mediaKeys.enable = true;
+
+        # TODO: Looking at https://github.com/garbas/dotfiles/blob/e341ab68892566bd676696d7bc33fbccb
+        # and https://shen.hong.io/nixos-home-manager-wayland-sway/
+        # and https://nixos.wiki/wiki/Sway
+        # home-manager.users.me = {
+        #   wayland.windowManager.sway.enable = true;
+        #   wayland.windowManager.sway.wrapperFeatures.gtk = true;
+        #   wayland.windowManager.sway.systemdIntegration = true;
+        #   wayland.windowManager.sway.config.gaps.smartBorders = "on";
+        #   wayland.windowManager.sway.config.fonts.names = [ "Fira Code Light" ];
+        #   wayland.windowManager.sway.config.terminal = "sakura";
+        #   # wayland.windowManager.sway.config.fonts.size = 8.0;
+        #   # wayland.windowManager.sway.config.modifier = "Mod4";
+        #   # wayland.windowManager.sway.config.menu = "dmenu-wl_run -i";
+        #   # wayland.windowManager.sway.config.terminal = "kitty";
+        #   # wayland.windowManager.sway.config.floating.modifier = "Mod4";
+        #   # wayland.windowManager.sway.config.output = {
+        #   #   # "${output.laptop}" = {
+        #   #   #   scale = "2";
+        #   #   # };
+        #   # };
+        # };
+        networking.hosts = {
+          "100.89.210.26" = ["desktop2022"];
+          "100.123.235.67" = ["nucbox2022"];
+          "100.102.213.117" = ["macbookpro2017"];
+        };
+
+        system.nixos.tags = ["linux-${config.boot.kernelPackages.kernel.version}"];
       })
     ]);
 }
