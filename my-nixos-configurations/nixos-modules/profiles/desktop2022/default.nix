@@ -224,7 +224,7 @@ in {
 
     # This is not ideal, but is required for now in order to let me escape from nix sandbox
     # (For machine learning code that needs network access)
-    nix.settings.trusted-users = [ "me" "nix-ssh" ];
+    nix.settings.trusted-users = ["me" "nix-ssh"];
 
     # Enable ssh so that I can work on the desktop remotely
     services.openssh = {
