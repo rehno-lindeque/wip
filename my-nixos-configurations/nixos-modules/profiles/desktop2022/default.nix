@@ -38,7 +38,8 @@ in {
     ];
 
     # Kernel >= 5.17 is required for the wifi driver (MT7921K (RZ608))
-    boot.kernelPackages = pkgs.linuxKernel.packages.linux_5_18;
+    # Kernel >= 5.19 to fix keyctl new_session
+    boot.kernelPackages = pkgs.linuxKernel.packages.linux_5_19;
 
     # We don't want /tmp to be persisted, but it is on persistent storage due to lack of tmpfs storage space
     boot.cleanTmpDir = true;
