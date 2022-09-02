@@ -80,12 +80,19 @@ in {
           # Retain neovim undo files
           ".local/share/nvim"
 
-          # ".cache/nix" (TODO)
+          # Retain nix evaluation cache, registry cache etc
+          ".cache/nix"
         ];
 
         files = [
           # Retain aws credentials
           ".aws/credentials"
+
+          # Retain bash history
+          ".bash_history"
+
+          # Retain HashiCorp Vault token to avoid redundant logins
+          ".vault-login"
         ];
       };
 
