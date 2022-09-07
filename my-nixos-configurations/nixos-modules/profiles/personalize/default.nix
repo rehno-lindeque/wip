@@ -176,6 +176,9 @@ in {
           # tmux
           # bind
 
+          # A polished version of cat with color formatting
+          bat
+
           # JSON querying & pretty printing
           jq
 
