@@ -174,8 +174,10 @@ in {
         # Productivity
         ++ lib.optionals cfg.enableSoftware [
           # tmux
-          jq
           # bind
+
+          # JSON querying & pretty printing
+          jq
 
           # Copy to your clipboard from the terminal
           # xclip
