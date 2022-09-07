@@ -485,7 +485,6 @@ in {
           # # * This is the PCI version of the driver (built-in wireless, not SDIO/USB)
           # # * https://wiki.archlinux.org/index.php/broadcom_wireless#Driver_selection
           # # * https://github.com/Ericson2314/nixos-configuration/blob/nixos/mac-pro/wireless.nix#L9
-          # # "i915"          # ? https://github.com/fread2281/dotfiles/blob/master/nixos/laptop.nix#L17
           # # "amdgpu"
         ];
         boot.initrd.kernelModules = [

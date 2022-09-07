@@ -108,9 +108,6 @@ in {
     # Hardware acceleration
     hardware.opengl.enable = true;
 
-    # Update microcode
-    hardware.cpu.intel.updateMicrocode = config.hardware.enableRedistributableFirmware;
-
     # A redistributable flag normally provided by not-detected.nix
     hardware.enableRedistributableFirmware = true;
     hardware.enableAllFirmware = true;
@@ -118,7 +115,6 @@ in {
     networking.hostName = "macbookpro2017";
 
     # Fan control for the macbook pro
-    services.mbpfan.enable = true;
     services.mbpfan.settings.general = {
       # Run the fan a little bit more aggressively
       # I do this because my cpu usage tends to be quite spiky
