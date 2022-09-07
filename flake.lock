@@ -103,6 +103,7 @@
           "home-manager"
         ],
         "impermanence": "impermanence",
+        "nixos-hardware": "nixos-hardware",
         "nixos-impermanence": "nixos-impermanence",
         "nixpkgs-shim": [
           "nixpkgs-shim"
@@ -123,6 +124,18 @@
       },
       "original": {
         "path": "./my-nixos-configurations",
+        "type": "path"
+      }
+    },
+    "nixos-hardware": {
+      "locked": {
+        "lastModified": 1662478443,
+        "narHash": "sha256-ExjC7+3/Pyb+EFzsrpHDH4/wdeJFhT8wyvBiarC3+K4=",
+        "path": "/home/me/projects/dependencies/nixos-hardware",
+        "type": "path"
+      },
+      "original": {
+        "path": "/home/me/projects/dependencies/nixos-hardware",
         "type": "path"
       }
     },

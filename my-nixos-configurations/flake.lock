@@ -74,6 +74,18 @@
         "type": "github"
       }
     },
+    "nixos-hardware": {
+      "locked": {
+        "lastModified": 1662566764,
+        "narHash": "sha256-lZoReZNlL78XSVmLfeJALVuOw66UQVIuPX/6IL7fb/k=",
+        "path": "/home/me/projects/dependencies/nixos-hardware",
+        "type": "path"
+      },
+      "original": {
+        "path": "/home/me/projects/dependencies/nixos-hardware",
+        "type": "path"
+      }
+    },
     "nixos-impermanence": {
       "inputs": {
         "impermanence": [
@@ -247,6 +259,7 @@
         "flake-help": "flake-help",
         "home-manager": "home-manager",
         "impermanence": "impermanence",
+        "nixos-hardware": "nixos-hardware",
         "nixos-impermanence": "nixos-impermanence",
         "nixpkgs-shim": "nixpkgs-shim",
         "nixpkgs-shim-images": "nixpkgs-shim-images_2",
