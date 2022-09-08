@@ -92,7 +92,7 @@ in {
           ".bash_history"
 
           # Retain HashiCorp Vault token to avoid redundant logins
-          ".vault-login"
+          ".vault-token"
         ];
       };
 
