@@ -87,6 +87,9 @@ in {
 
           # Retain nix evaluation cache, registry cache etc
           ({directory = ".cache/nix";} // permissions)
+
+          # Retain neovim cache
+          ({directory = ".cache/nvim";} // permissions)
         ];
 
         files = [
