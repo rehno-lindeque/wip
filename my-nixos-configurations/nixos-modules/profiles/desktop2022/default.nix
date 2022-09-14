@@ -60,10 +60,15 @@ in {
         "/tmp"
       ];
 
-      users.me = {
+      users.me = let
+        permissions = {
+          user = "me";
+          group = "users";
+        };
+      in {
         directories = [
           # Retain all of my home config for the time being
-          ".config"
+          ({directory = ".config";} // permissions)
 
           # Retain ssh keys for this computer
           {
@@ -74,14 +79,14 @@ in {
           # Retain my projects directory (for now)
           "projects"
 
-          # Retain trusted nix settings and repl history
-          ".local/share/nix" # repl-history trusted-settings.json
+          # Retain trusted nix settings and repl history (repl-history, trusted-settings.json)
+          ({directory = ".local/share/nix";} // permissions)
 
           # Retain neovim undo files
-          ".local/share/nvim"
+          ({directory = ".local/share/nvim";} // permissions)
 
           # Retain nix evaluation cache, registry cache etc
-          ".cache/nix"
+          ({directory = ".cache/nix";} // permissions)
         ];
 
         files = [
