@@ -241,14 +241,6 @@ in {
     # (For machine learning code that needs network access)
     nix.settings.trusted-users = ["me" "nix-ssh"];
 
-    # Provide nvidia paths in order to build machine learning models inside nix's sandbox
-    nix.sandboxPaths = [
-      "/dev/nvidiactl"
-      "/dev/nvidia-uvm"
-      "/dev/nvidia0"
-      "/run/opengl-driver=${config.boot.kernelPackages.nvidia_x11}"
-    ];
-
     # Enable ssh so that I can work on the desktop remotely
     services.openssh = {
       enable = true;
