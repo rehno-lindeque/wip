@@ -114,6 +114,12 @@ in {
     # nmtui or nmcli can be used to control network manager
     networking.networkmanager.enable = lib.mkDefault true;
 
+    # Allow routing through tailscale subnets
+    # See https://github.com/tailscale/tailscale/issues/4432
+    networking.firewall = lib.mkIf config.services.tailscale.enable {
+      checkReversePath = "loose";
+    };
+
     # Don't eliminate build dependencies or derivations for live paths during garbage-collection
     # https://nixos.wiki/wiki/FAQ#How_to_keep_build-time_dependencies_around_.2F_be_able_to_rebuild_while_being_offline.3F
     nix.extraOptions = ''
