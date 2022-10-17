@@ -117,6 +117,9 @@ in {
 
     networking.hostName = "macbookpro2017";
 
+    # Automatically handle standalone screen when docked
+    services.autorandr.enable = true;
+
     # Fan control for the macbook pro
     services.mbpfan.settings.general = {
       # Run the fan a little bit more aggressively
