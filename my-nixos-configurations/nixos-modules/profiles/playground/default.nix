@@ -330,8 +330,6 @@ in {
             # Use cloudflare for regular top-level name resolution
             "1.1.1.1"
             "1.0.0.1"
-            "2606:4700:4700::1111"
-            "2606:4700:4700:1001"
 
             # Specific domains
             # "192.168.1.1"
@@ -341,7 +339,8 @@ in {
 
         extraConfig =
             ''
-            server=/picofactory/192.168.100.1
+            server=/picofactory-new/10.20.0.1
+            server=/petersfield/10.21.0.1
             server=/circuithub.com.beta.tailscale.net/100.100.100.100
             ''
             # Prevent packets with malformed domain names and private ip addresses
