@@ -24,6 +24,7 @@
     };
     nixpkgs-shim.inputs = {
       nixpkgs.follows = "nixpkgs-stable";
+      nixpkgs-shim-profiles.url = "github:rehno-lindeque/nixpkgs-shim-profiles"; # relative path is broken
     };
   };
 
