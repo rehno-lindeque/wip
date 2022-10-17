@@ -37,6 +37,9 @@ in {
       efiInstallAsRemovable = true;
       efiSupport = true;
 
+      # Limit the number of entries for now due to low disk space in /boot
+      configurationLimit = 3;
+
       # LUKS support
       enableCryptodisk = true;
     };
