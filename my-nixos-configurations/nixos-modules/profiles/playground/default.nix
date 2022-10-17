@@ -322,6 +322,53 @@ in {
         # TODO may interfere with some desktop environments
         services.acpid.enable = true;
 
+        # DNS setup for CircuitHub
+        # Currently MagicDNS for tailscale doesn't seem to work correctly
+       services.dnsmasq = {
+          enable = true;
+          servers = [
+            # Use cloudflare for regular top-level name resolution
+            "1.1.1.1"
+            "1.0.0.1"
+            "2606:4700:4700::1111"
+            "2606:4700:4700:1001"
+
+            # Specific domains
+            # "192.168.1.1"
+            # "192.168.100.1"
+            # "100.100.100.100"
+          ];
+
+        extraConfig =
+            ''
+            server=/picofactory/192.168.100.1
+            server=/circuithub.com.beta.tailscale.net/100.100.100.100
+            ''
+            # Prevent packets with malformed domain names and private ip addresses
+            # from leaving the network
+          + ''
+            domain-needed
+            bogus-priv
+            ''
+          +
+            # Limit name resolution to dnsmasq (ignore /etc/resolv.conf)
+            ''
+            no-resolv
+            ''
+          +
+            # Speed up queries for recent domains
+            ''
+            cache-size=300
+            ''
+          +
+            # Only listen on localhost, not on public facing addresses
+            ''
+            listen-address=::1,127.0.0.1
+            interface=lo
+            bind-interfaces
+            '';
+        };
+
         # Try out the latest version of tailscale
         services.tailscale.package = flake.inputs.nixpkgs-unstable.legacyPackages.${pkgs.system}.tailscale;
 
