@@ -55,8 +55,8 @@ in {
         # Used by (custom) actkbd user service
         # "keyboard"
 
-        # Needed to allow connecting to the network
-        # "networkmanager"
+        # Allow creation of new wifi connections
+        "networkmanager"
 
         # Allows you to use the running mysql service via your user (usefull for software development)
         # You will see that the /var/mysql/* files that are created belongs to the mysql user & group
