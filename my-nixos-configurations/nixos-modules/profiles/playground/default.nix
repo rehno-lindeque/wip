@@ -1,5 +1,6 @@
 {
   config,
+  flake,
   lib,
   pkgs,
   ...
@@ -320,6 +321,9 @@ in {
         # TODO: investigate backlight control https://wiki.archlinux.org/title/acpid#Enabling_backlight_control
         # TODO may interfere with some desktop environments
         services.acpid.enable = true;
+
+        # Try out the latest version of tailscale
+        services.tailscale.package = flake.inputs.nixpkgs-unstable.legacyPackages.${pkgs.system}.tailscale;
 
         # Advanced Power Management for Linux
         services.tlp =
