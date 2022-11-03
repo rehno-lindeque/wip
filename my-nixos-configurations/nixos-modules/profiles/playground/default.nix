@@ -330,11 +330,6 @@ in {
             # Use cloudflare for regular top-level name resolution
             "1.1.1.1"
             "1.0.0.1"
-
-            # Specific domains
-            # "192.168.1.1"
-            # "192.168.100.1"
-            # "100.100.100.100"
           ];
 
         extraConfig =
