@@ -90,6 +90,9 @@ in {
 
           # Retain neovim cache
           ({directory = ".cache/nvim";} // permissions)
+
+          # Retain cached huggingface models
+          ({directory = ".cache/huggingface";} // permissions)
         ];
 
         files = [
