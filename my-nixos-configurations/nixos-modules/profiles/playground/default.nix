@@ -324,7 +324,7 @@ in {
 
         # DNS setup for CircuitHub
         # Currently MagicDNS for tailscale doesn't seem to work correctly
-       services.dnsmasq = {
+        services.dnsmasq = {
           enable = true;
           servers = [
             # Use cloudflare for regular top-level name resolution
@@ -332,34 +332,34 @@ in {
             "1.0.0.1"
           ];
 
-        extraConfig =
+          extraConfig =
             ''
-            server=/picofactory-new/10.20.0.1
-            server=/petersfield/10.21.0.1
-            server=/circuithub.com.beta.tailscale.net/100.100.100.100
+              server=/picofactory-new/10.20.0.1
+              server=/petersfield/10.21.0.1
+              server=/circuithub.com.beta.tailscale.net/100.100.100.100
             ''
             # Prevent packets with malformed domain names and private ip addresses
             # from leaving the network
-          + ''
-            domain-needed
-            bogus-priv
+            + ''
+              domain-needed
+              bogus-priv
             ''
-          +
+            +
             # Limit name resolution to dnsmasq (ignore /etc/resolv.conf)
             ''
-            no-resolv
+              no-resolv
             ''
-          +
+            +
             # Speed up queries for recent domains
             ''
-            cache-size=300
+              cache-size=300
             ''
-          +
+            +
             # Only listen on localhost, not on public facing addresses
             ''
-            listen-address=::1,127.0.0.1
-            interface=lo
-            bind-interfaces
+              listen-address=::1,127.0.0.1
+              interface=lo
+              bind-interfaces
             '';
         };
 
