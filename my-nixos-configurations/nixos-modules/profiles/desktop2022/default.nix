@@ -248,13 +248,27 @@ in {
     services.openssh = {
       enable = true;
       passwordAuthentication = true; # TODO remove
-      # only accessible via the tailscale ip
       listenAddresses = [
+        # accessible via the tailscale ip
         {
           addr = "100.89.210.26";
           port = 22;
         }
+        # accessible via LAN ip
+        {
+          addr = "192.168.1.8";
+          port = 22;
+        }
       ];
+      extraConfig =
+        # Restrict access to me@nucbox2022 on the LAN
+        ''
+          AllowUsers me@192.168.1.11
+        ''
+        # Restrict access to me@nucbox2022 and me@macbookpro2017 on tailscale
+        + ''
+          AllowUsers me@100.102.213.117 me@100.123.235.67
+        '';
     };
 
     # Initial password is generated with nix run nixpkgs#mkpasswd -- --method=SHA-512
