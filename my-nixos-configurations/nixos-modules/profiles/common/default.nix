@@ -35,9 +35,11 @@ in {
     nix = {
       # There's no point to using any of these configs without flakes
       package = pkgs.nixUnstable;
-      extraOptions = ''
-        experimental-features = nix-command flakes impure-derivations ca-derivations
-      '';
+      extraOptions = builtins.concatStringsSep "\n" [
+        "experimental-features = nix-command flakes impure-derivations ca-derivations"
+        # Prevent offline binary caches from hanging for 300 seconds
+        "connect-timeout = 5"
+      ];
 
       # setting the old <nixpkgs> path is necessary for some legacy nix files
       nixPath = ["nixpkgs=${flake.inputs.nixpkgs-stable}"];
