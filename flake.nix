@@ -3,12 +3,12 @@
 
   inputs = {
     flake-help.url = "github:rehno-lindeque/flake-help";
-    home-manager.url = "github:nix-community/home-manager/release-22.05";
+    home-manager.url = "github:nix-community/home-manager/release-22.11";
     my-dev-shells.url = "path:./my-dev-shells";
     my-nixos-configurations.url = "path:./my-nixos-configurations";
     nixpkgs-shim-images.url = "github:rehno-lindeque/nixpkgs-shim-images/fc365e485d98dcc1e8f278654618b8edf3424b03"; # master branch is broken
     nixpkgs-shim.url = "github:rehno-lindeque/nixpkgs-shim";
-    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-22.05";
+    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-22.11";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     circuithub-nixos-configurations.url = "git+ssh://git@github.com/circuithub/nixos-configurations.git";
 
