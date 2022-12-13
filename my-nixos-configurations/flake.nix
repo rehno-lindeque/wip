@@ -8,9 +8,15 @@
     nixos-impermanence.url = "github:rehno-lindeque/nixos-impermanence/wip";
     nixpkgs-shim.url = "github:rehno-lindeque/nixpkgs-shim";
     # nixpkgs-shim.url = "path:/home/me/projects/nixpkgs-shim";
-    nixpkgs-shim-images.url = "github:rehno-lindeque/nixpkgs-shim-images/fc365e485d98dcc1e8f278654618b8edf3424b03"; # master branch is broken
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-22.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs";
+
+    # Transitive inputs that require special treatment
+    # (master branch is broken)
+    nixpkgs-shim-images.url = "github:rehno-lindeque/nixpkgs-shim-images/fc365e485d98dcc1e8f278654618b8edf3424b03";
+
+    # (relative path is broken)
+    nixpkgs-shim-profiles.url = "github:rehno-lindeque/nixpkgs-shim-profiles";
 
     # Redirect inputs
     circuithub-nixos-configurations.inputs = {
@@ -24,8 +30,11 @@
     };
     nixpkgs-shim.inputs = {
       nixpkgs.follows = "nixpkgs-stable";
-      nixpkgs-shim-profiles.url = "github:rehno-lindeque/nixpkgs-shim-profiles"; # relative path is broken
+      nixpkgs-shim-images.follows = "nixpkgs-shim-images";
+      nixpkgs-shim-profiles.follows = "nixpkgs-shim-profiles";
     };
+    nixpkgs-shim-images.inputs.nixpkgs.follows = "nixpkgs-stable";
+    nixpkgs-shim-profiles.inputs.nixpkgs.follows = "nixpkgs-stable";
   };
 
   outputs = {
@@ -36,6 +45,7 @@
     impermanence,
     nixos-impermanence,
     nixpkgs-shim,
+    nixpkgs-shim-profiles,
     ...
   }: let
     inherit (nixpkgs-shim) lib;
@@ -101,7 +111,7 @@
           home-manager.nixosModules.home-manager
           # nixpkgs-shim.nixosModules.default
           # nixpkgs-shim.inputs.nixpkgs-shim-images.nixosModules.isoImage
-          nixpkgs-shim.inputs.nixpkgs-shim-profiles.nixosModules.default
+          nixpkgs-shim-profiles.nixosModules.default
         ];
       };
     };
