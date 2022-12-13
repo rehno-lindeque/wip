@@ -306,5 +306,6 @@ in {
 
     # System first installed with release 21.11
     system.stateVersion = "21.11";
+    home-manager.users.me.home.stateVersion = "21.11";
   };
 }

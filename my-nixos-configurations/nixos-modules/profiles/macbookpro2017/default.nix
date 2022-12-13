@@ -141,6 +141,10 @@ in {
     # Enable the laptop trackpad
     services.xserver.libinput.enable = true;
 
+    # System first initialized at release 22.05
+    system.stateVersion = "22.05";
+    home-manager.users.me.home.stateVersion = "22.05";
+
     # Preserve the old home directory
     users.users.me.home = lib.mkForce "/home/new-me";
 
