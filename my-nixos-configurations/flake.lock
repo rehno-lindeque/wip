@@ -114,6 +114,22 @@
         "type": "github"
       }
     },
+    "nixpkgs-legacy": {
+      "locked": {
+        "lastModified": 1664985957,
+        "narHash": "sha256-M4ml2ECaO7UBKsMhtw3ZOMFE/4y51W84xoFlmsb2sHw=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "35955e360c6851e9a53fed945a9e98cfea5d67be",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "35955e360c6851e9a53fed945a9e98cfea5d67be",
+        "type": "github"
+      }
+    },
     "nixpkgs-shim": {
       "inputs": {
         "nixpkgs": [
@@ -239,6 +255,7 @@
         "impermanence": "impermanence",
         "nixos-hardware": "nixos-hardware",
         "nixos-impermanence": "nixos-impermanence",
+        "nixpkgs-legacy": "nixpkgs-legacy",
         "nixpkgs-shim": "nixpkgs-shim",
         "nixpkgs-shim-images": "nixpkgs-shim-images",
         "nixpkgs-shim-profiles": "nixpkgs-shim-profiles",

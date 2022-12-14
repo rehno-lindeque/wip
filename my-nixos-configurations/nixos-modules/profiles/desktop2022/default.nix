@@ -2,6 +2,7 @@
   config,
   lib,
   pkgs,
+  flake,
   ...
 }: let
   cfg = config.profiles.desktop2022;
@@ -37,8 +38,8 @@ in {
       "nvme"
     ];
 
-    # Latest stable kernel that works
-    boot.kernelPackages = pkgs.linuxKernel.packages.linux_5_15;
+    # Linux kernel 5.19 is that last known kernel that appears to work properly with the mediatek wireless networking card
+    boot.kernelPackages = flake.inputs.nixpkgs-legacy.legacyPackages.${pkgs.system}.linuxKernel.packages.linux_5_19;
 
     # We don't want /tmp to be persisted, but it is on persistent storage due to lack of tmpfs storage space
     boot.cleanTmpDir = true;
