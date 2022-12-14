@@ -100,11 +100,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1653586282,
-        "narHash": "sha256-sME7tBlOc/A83HBzdS5sGlO2Er9PfQzPjQsYocBiKEc=",
+        "lastModified": 1671121846,
+        "narHash": "sha256-dOIRPwQkR6hFs7k394Qk5cmzkWRj8BRyI67rcRSZY3Q=",
         "owner": "rehno-lindeque",
         "repo": "nixos-impermanence",
-        "rev": "51e3882b7185e291d5948f8b8750315dd4bf0b46",
+        "rev": "86a459eedc8d2fe8cdeacefb63fe760ff1a56396",
         "type": "github"
       },
       "original": {
