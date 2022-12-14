@@ -37,8 +37,8 @@ in {
       "nvme"
     ];
 
-    # Kernel >= 5.17 is required for the wifi driver (MT7921K (RZ608))
-    boot.kernelPackages = pkgs.linuxKernel.packages.linux_6_0;
+    # Latest stable kernel that works
+    boot.kernelPackages = pkgs.linuxKernel.packages.linux_5_15;
 
     # We don't want /tmp to be persisted, but it is on persistent storage due to lack of tmpfs storage space
     boot.cleanTmpDir = true;

@@ -150,6 +150,7 @@
         system = system.x86_64-linux;
         modules = [
           self.nixosModules.default
+          self.inputs.nixos-hardware.nixosModules.mediatek-mt7921k
           {profiles.desktop2022.enable = true;}
         ];
         specialArgs = {flake = self;};

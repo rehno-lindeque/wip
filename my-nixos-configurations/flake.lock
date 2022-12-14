@@ -230,11 +230,11 @@
     },
     "nixos-hardware": {
       "locked": {
-        "lastModified": 1662570658,
-        "narHash": "sha256-IOTq5tAGGmBFj7tQbkcyLE261JUeTUucEE3p0WLZ4qM=",
+        "lastModified": 1671031491,
+        "narHash": "sha256-7ovZ3iRVchESIV1dZ8GxxfBRqrp5fXJy43rU5+TOGh0=",
         "owner": "rehno-lindeque",
         "repo": "nixos-hardware",
-        "rev": "33642d338f6b3a047a128b5ba574d18e34994da9",
+        "rev": "a953ec5a497e2ec41fdcbafe47838b0d83d07b22",
         "type": "github"
       },
       "original": {
