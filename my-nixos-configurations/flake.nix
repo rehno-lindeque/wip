@@ -5,7 +5,7 @@
     home-manager.url = "github:nix-community/home-manager/release-22.11";
     impermanence.url = "github:nix-community/impermanence";
     nixos-hardware.url = "github:rehno-lindeque/nixos-hardware";
-    nixos-impermanence.url = "github:rehno-lindeque/nixos-impermanence/wip";
+    nixos-impermanence.url = "github:rehno-lindeque/nixos-impermanence";
     nixpkgs-shim.url = "github:rehno-lindeque/nixpkgs-shim";
     # nixpkgs-shim.url = "path:/home/me/projects/nixpkgs-shim";
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-22.11";
