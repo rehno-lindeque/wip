@@ -1,7 +1,6 @@
 {
   inputs = {
     circuithub-nixos-configurations.url = "git+ssh://git@github.com/circuithub/nixos-configurations.git";
-    devenv.url = "github:cachix/devenv";
     flake-help.url = "github:rehno-lindeque/flake-help";
     home-manager.url = "github:nix-community/home-manager/release-22.11";
     impermanence.url = "github:nix-community/impermanence";
@@ -19,40 +18,12 @@
     # (relative path is broken)
     nixpkgs-shim-profiles.url = "github:rehno-lindeque/nixpkgs-shim-profiles";
 
-    # (issues due to https://github.com/NixOS/nix/issues/5790)
-    cachix-pre-commit-hooks.url = "github:cachix/pre-commit-hooks.nix";
-    devenv-nix.url = "github:NixOS/nix";
-    flake-compat = {
-      url = "github:edolstra/flake-compat";
-      flake = false;
-    };
-    flake-utils.url = "github:numtide/flake-utils";
-
     # Redirect inputs
-    cachix-pre-commit-hooks.inputs = {
-      flake-compat.follows = "flake-compat";
-      flake-utils.follows = "flake-utils";
-      nixpkgs.follows = "nixpkgs-stable";
-      nixpkgs-stable.follows = "nixpkgs-stable";
-    };
     circuithub-nixos-configurations.inputs = {
       nixpkgs.follows = "nixpkgs-stable";
       flake-help.follows = "flake-help";
     };
-    devenv.inputs = {
-      flake-compat.follows = "flake-compat";
-      nixpkgs.follows = "nixpkgs-stable";
-      nix.follows = "devenv-nix";
-      pre-commit-hooks.follows = "cachix-pre-commit-hooks";
-    };
-    devenv-nix.inputs = {
-      nixpkgs.follows = "nixpkgs-stable";
-      nixpkgs-regression.follows = "nixpkgs-stable";
-    };
-    home-manager.inputs = {
-      nixpkgs.follows = "nixpkgs-stable";
-      utils.follows = "flake-utils";
-    };
+    home-manager.inputs.nixpkgs.follows = "nixpkgs-stable";
     nixos-impermanence.inputs = {
       nixpkgs.follows = "nixpkgs-stable";
       impermanence.follows = "impermanence";
@@ -184,8 +155,6 @@
       };
     };
 
-    overlays.default = final: prev: {
-      inherit (self.inputs.devenv.packages.${final.system}) devenv;
-    };
+    overlays.default = final: prev: {};
   };
 }

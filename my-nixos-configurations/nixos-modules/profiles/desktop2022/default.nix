@@ -302,9 +302,6 @@ in {
     users.users.me.packages = with pkgs; [
       # Monitor system temperatures
       psensor
-
-      # Declarative development environments
-      devenv
     ];
 
     # System first installed with release 21.11
