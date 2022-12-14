@@ -38,8 +38,14 @@ in {
       "nvme"
     ];
 
-    # Linux kernel 5.19 is that last known kernel that appears to work properly with the mediatek wireless networking card
-    boot.kernelPackages = flake.inputs.nixpkgs-legacy.legacyPackages.${pkgs.system}.linuxKernel.packages.linux_5_19;
+    # Linux kernel 5.19 is the last known kernel that appears to work properly with the mediatek wireless networking card
+    # See https://github.com/NixOS/nixpkgs/pull/204780
+    boot.kernelPackages = let
+      unfreeLegacyPackages = import flake.inputs.nixpkgs-legacy {
+        inherit (pkgs) system config;
+      };
+    in
+      unfreeLegacyPackages.linuxKernel.packages.linux_5_19;
 
     # We don't want /tmp to be persisted, but it is on persistent storage due to lack of tmpfs storage space
     boot.cleanTmpDir = true;
