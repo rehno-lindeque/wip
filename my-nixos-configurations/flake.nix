@@ -4,7 +4,7 @@
     flake-help.url = "github:rehno-lindeque/flake-help";
     home-manager.url = "github:nix-community/home-manager/release-22.11";
     impermanence.url = "github:nix-community/impermanence";
-    nixos-hardware.url = "github:rehno-lindeque/nixos-hardware";
+    nixos-hardware.url = "github:rehno-lindeque/nixos-hardware/mediatek/mt7921k";
     nixos-impermanence.url = "github:rehno-lindeque/nixos-impermanence/wip";
     nixpkgs-shim.url = "github:rehno-lindeque/nixpkgs-shim";
     # nixpkgs-shim.url = "path:/home/me/projects/nixpkgs-shim";
@@ -121,6 +121,7 @@
         system = system.x86_64-linux;
         modules = [
           self.nixosModules.default
+          self.inputs.nixos-hardware.nixosModules.mediatek-mt7921k
           {profiles.desktop2022.enable = true;}
         ];
         specialArgs = {flake = self;};

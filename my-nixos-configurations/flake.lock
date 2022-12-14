@@ -77,15 +77,16 @@
     },
     "nixos-hardware": {
       "locked": {
-        "lastModified": 1670959777,
-        "narHash": "sha256-9nQJWL7S77YZERxairPLFO6TUuF1RgQmdZO6dKRCHz4=",
+        "lastModified": 1671563016,
+        "narHash": "sha256-bbyIFc++DAoHiDEa5sNbtZNbpC7epAp7XNdhWKLm3JQ=",
         "owner": "rehno-lindeque",
         "repo": "nixos-hardware",
-        "rev": "0fbf27af51a7c9bc68a168fdcd63513c4f100b15",
+        "rev": "d3d1d53ce5bdc8dac03532d6775ae19ae98ac69c",
         "type": "github"
       },
       "original": {
         "owner": "rehno-lindeque",
+        "ref": "mediatek/mt7921k",
         "repo": "nixos-hardware",
         "type": "github"
       }
