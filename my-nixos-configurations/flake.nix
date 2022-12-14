@@ -10,7 +10,7 @@
     # nixpkgs-shim.url = "path:/home/me/projects/nixpkgs-shim";
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-22.11";
     nixpkgs-unstable.url = "github:nixos/nixpkgs";
-    nixpkgs-legacy.url = "github:nixos/nixpkgs/35955e360c6851e9a53fed945a9e98cfea5d67be"; # required for linux kernel 5.19
+    nixpkgs-legacy.url = "github:nixos/nixpkgs/8de8b98839d1f20089582cfe1a81207258fcc1f1"; # required for linux kernel 5.19
 
     # Transitive inputs that require special treatment
     # (master branch is broken)
