@@ -242,7 +242,7 @@ in {
             -- TODO: move to playground
             -- "Hide" the cursor line highlight past column 80 and 120 to hint at potential text wrap.
             vim.o.colorcolumn=vim.fn.join(vim.fn.range(81,121), ',') .. vim.fn.join(vim.fn.range(121,999), ',')
-            vim.highlight.link('ColorColumn', 'Normal', true)
+            vim.api.nvim_set_hl(0, 'ColorColumn', { link = 'Normal' })
           '';
         };
 
