@@ -234,7 +234,7 @@ in {
 
     # Turn off sandbox because I'm doing machine-learning things with nix that requires sandboxing to be turned off
     # TODO: In future it would be nice to limit this to a specific build user like nix-ssh
-    nix.useSandbox = false;
+    nix.settings.sandbox = false;
 
     # Add "cuda" to the system features since our machine learning builder checks for this
     # mkDefault is needed to ensure existing default values are kept (merged with the same priority)

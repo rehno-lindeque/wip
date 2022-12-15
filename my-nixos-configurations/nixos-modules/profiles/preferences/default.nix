@@ -334,7 +334,7 @@ in {
 
     nix = {
       # Helpful for supplying remote builder options, nix copy, etc
-      trustedUsers = ["root" "@wheel"];
+      settings.trusted-users = ["root" "@wheel"];
     };
 
     programs = {
