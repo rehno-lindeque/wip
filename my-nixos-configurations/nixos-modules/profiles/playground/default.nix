@@ -20,6 +20,13 @@ in {
   config =
     lib.mkIf cfg.enable
     (lib.mkMerge [
+      (lib.mkIf config.profiles.workstation.enable {
+        users.users.me.packages = with pkgs; [
+          # Clipboard operations from the command-line (also a clipboard provider for neovim)
+          # TODO: determine if this (does/could?) work over remote ssh
+          xsel
+        ];
+      })
       (lib.mkIf config.profiles.preferences.enable {
         # # Keyboard layouts that I use (TODO: there may be a better way to set this up)
         # environment.systemPackages = let
