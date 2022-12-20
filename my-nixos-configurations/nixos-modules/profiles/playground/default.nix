@@ -370,9 +370,6 @@ in {
             '';
         };
 
-        # Try out the latest version of tailscale
-        services.tailscale.package = flake.inputs.nixpkgs-unstable.legacyPackages.${pkgs.system}.tailscale;
-
         # Advanced Power Management for Linux
         services.tlp =
           # Turns on power saving features usually used on battery for AC power as well.
