@@ -50,7 +50,12 @@ in {
     };
 
     environment.persistence."/nix/persistent" = {
-      users.me = {
+      users.me = let
+        permissions = {
+          user = "me";
+          group = "users";
+        };
+      in {
         home = "/home/new-me";
         directories = [
           # Retain all of my home config for the time being
@@ -63,10 +68,13 @@ in {
           }
 
           # Retain trusted nix settings and repl history
-          ".local/share/nix" # repl-history trusted-settings.json
+          ({
+              directory = ".local/share/nix"; # repl-history trusted-settings.json
+            }
+            // permissions)
 
           # Retain neovim undo files
-          ".local/share/nvim"
+          ({directory = ".local/share/nvim";} // permissions)
 
           # ".cache/nix" (TODO)
 
