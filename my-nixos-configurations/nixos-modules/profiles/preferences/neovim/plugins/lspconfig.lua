@@ -1,5 +1,7 @@
 local lspconfig = require('lspconfig')
 
+-- TODO buffer attached keymaps don't register with WhichKey
+
 -- Diagnostics: show details about the error under the cursor
 -- vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float)
 

@@ -180,7 +180,8 @@ in {
                   };
                 in [
                   # Code editing: Delete surrounding brackets, quotes, etc
-                  # TODO: Does this load slowly
+                  # TODO: Does this load slowly?
+                  # TODO: key bindings seems awkward
                   vim-sandwich
 
                   # Aesthetics: context formatting
@@ -476,50 +477,50 @@ in {
 
         # Extra hardware configuration for macbooks
         /*
-         extraModprobeConfig = ''
-         */
+        extraModprobeConfig = ''
+        */
         /*
-         # TODO: Not sure if noncq is needed for macbook SSD's, but https://github.com/mbbx6spp/mbp-nixos/blob/master/etc/nixos/configuration.nix has this
-         */
+        # TODO: Not sure if noncq is needed for macbook SSD's, but https://github.com/mbbx6spp/mbp-nixos/blob/master/etc/nixos/configuration.nix has this
+        */
         /*
-         # TODO: doesn't seem to work...
-         */
+        # TODO: doesn't seem to work...
+        */
         /*
-         # options libata.force=noncq
-         */
+        # options libata.force=noncq
+        */
 
         /*
-         # TODO: mpb-nixos has this resume option, but not sure if it's really helpful
-         */
+        # TODO: mpb-nixos has this resume option, but not sure if it's really helpful
+        */
         /*
-         # TODO: doesn't seem to work...
-         */
+        # TODO: doesn't seem to work...
+        */
         /*
-         # options resume=/dev/sda5
-         */
+        # options resume=/dev/sda5
+        */
 
         /*
-         # Sound module for Apple Macs
-         */
+        # Sound module for Apple Macs
+        */
         /*
-         options snd_hda_intel index=0 model=intel-mac-auto id=PCH
-         */
+        options snd_hda_intel index=0 model=intel-mac-auto id=PCH
+        */
         /*
-         options snd_hda_intel index=1 model=intel-mac-auto id=HDMI
-         */
+        options snd_hda_intel index=1 model=intel-mac-auto id=HDMI
+        */
         /*
-         options snd-hda-intel model=mbp101
-         */
+        options snd-hda-intel model=mbp101
+        */
 
         /*
-         # Pressing 'F8' key will behave like a F8. Pressing 'fn'+'F8' will act as special key
-         */
+        # Pressing 'F8' key will behave like a F8. Pressing 'fn'+'F8' will act as special key
+        */
         /*
-         options hid_apple fnmode=2
-         */
+        options hid_apple fnmode=2
+        */
         /*
-         '';
-         */
+        '';
+        */
         boot.initrd.availableKernelModules = [
           # # "xhci_pci"    # ?
           # # "uhci_hcd"    # ?
