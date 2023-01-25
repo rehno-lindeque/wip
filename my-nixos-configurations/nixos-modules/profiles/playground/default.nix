@@ -344,11 +344,13 @@ in {
             ''
               server=/picofactory-new/10.20.0.1
               server=/petersfield/10.21.0.1
-              server=/circuithub.com.beta.tailscale.net/100.100.100.100
             ''
+            # (MagicDNS does not appear to work)
+            # server=/tiger-jazz.ts.net/100.100.100.100
+            +
             # Prevent packets with malformed domain names and private ip addresses
             # from leaving the network
-            + ''
+            ''
               domain-needed
               bogus-priv
             ''
@@ -718,6 +720,9 @@ in {
           "100.89.210.26" = ["desktop2022"];
           "100.123.235.67" = ["nucbox2022"];
           "100.102.213.117" = ["macbookpro2017"];
+
+          # Broken name resolution due to Tailscale MagicDNS not working
+          "100.79.57.124" = ["server.tiger-jazz.ts.net"];
         };
 
         system.nixos.tags = ["linux-${config.boot.kernelPackages.kernel.version}"];
