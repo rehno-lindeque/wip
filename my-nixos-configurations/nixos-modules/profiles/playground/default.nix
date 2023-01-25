@@ -331,22 +331,23 @@ in {
         services.acpid.enable = true;
 
         # DNS setup for CircuitHub
-        # Currently MagicDNS for tailscale doesn't seem to work correctly
-        services.dnsmasq = {
+        services.dnsmasq = let
+          inherit (lib.mapAttrs (_: interface: interface.name) config.networking.interfaces) tailscale0 wlp4s0;
+        in {
           enable = true;
           servers = [
             # Use cloudflare for regular top-level name resolution
-            "1.1.1.1"
-            "1.0.0.1"
+            "1.1.1.1@${wlp4s0}"
+            "1.0.0.1@${wlp4s0}"
           ];
 
           extraConfig =
             ''
-              server=/picofactory-new/10.20.0.1
-              server=/petersfield/10.21.0.1
+              server=/picofactory-new/10.20.0.1@${tailscale0}
+              server=/petersfield/10.21.0.1@${tailscale0}
             ''
             # (MagicDNS does not appear to work)
-            # server=/tiger-jazz.ts.net/100.100.100.100
+            # server=/tiger-jazz.ts.net/100.100.100.100@${tailscale0}
             +
             # Prevent packets with malformed domain names and private ip addresses
             # from leaving the network

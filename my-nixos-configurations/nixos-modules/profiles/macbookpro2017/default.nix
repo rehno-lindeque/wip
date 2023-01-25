@@ -125,6 +125,18 @@ in {
 
     networking.hostName = "macbookpro2017";
 
+    networking.interfaces.wlp4s0 = {
+      # macAddress = "a4:5e:60:e8:05:4f; # ip link show wlp4s0
+    };
+    networking.interfaces.tailscale0 = {
+      ipv4.addresses = [
+        {
+          address = "100.102.213.117";
+          prefixLength = 32;
+        }
+      ];
+    };
+
     # Automatically handle standalone screen when docked
     services.autorandr.enable = true;
 
