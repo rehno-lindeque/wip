@@ -268,15 +268,25 @@ in {
 
         # Wait 2 seconds for tailscale to settle
         systemd.services.tailscaled-online = {
-          description = "Wait for tailscale to settle";
+          description = "Wait for tailscale to settle and then automatically connect";
           after = ["network-pre.target" "tailscaled.service"];
           wants = ["network-pre.target" "tailscaled.service"];
           wantedBy = ["multi-user.target"];
 
           serviceConfig.Type = "oneshot"; # is there a native oneshot attr?
 
-          script = "sleep 2";
+          script = with pkgs; ''
+            sleep 2
+
+            status="$(${pkgs.tailscale}/bin/tailscale status -json | ${pkgs.jq}/bin/jq -r .BackendState)"
+            if test $status = "Running" ; then
+              exit 0
+            fi
+
+            ${tailscale}/bin/tailscale up --accept-routes
+          '';
         };
+
         systemd.services.sshd = {
           # Make sure sshd starts after tailscale so that it can successfully bind to the ip address
           after = ["tailscaled-online.service"];
