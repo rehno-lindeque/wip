@@ -90,6 +90,10 @@ in {
 
           # Retain cached huggingface models
           ({directory = ".cache/huggingface";} // permissions)
+
+          # Retain haskell caches (partly because they're too big for tmpfs)
+          ({directory = ".cache/ghcide";} // permissions)
+          ({directory = ".cache/hie-bios";} // permissions)
         ];
 
         files = [
