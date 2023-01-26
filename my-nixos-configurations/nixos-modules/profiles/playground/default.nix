@@ -264,7 +264,10 @@ in {
         # services.openssh.openFirewall = false;
 
         # TODO: automate tailscale authentication
+        # Note that auth keys (now) expire after 90 days, so there may not be a good solution anymore
         # https://www.reddit.com/r/NixOS/comments/ou7hde/how_to_automate_tailscale_on_reboot/
+        # https://discourse.nixos.org/t/solved-possible-to-automatically-authenticate-tailscale-after-every-rebuild-reboot/14296
+        # https://tailscale.com/blog/nixos-minecraft/
 
         # Wait 2 seconds for tailscale to settle
         systemd.services.tailscaled-online = {
