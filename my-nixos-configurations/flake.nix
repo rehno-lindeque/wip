@@ -9,7 +9,7 @@
     nixpkgs-shim.url = "github:rehno-lindeque/nixpkgs-shim";
     # nixpkgs-shim.url = "path:/home/me/projects/nixpkgs-shim";
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-22.11";
-    nixpkgs-unstable.url = "github:nixos/nixpkgs";
+    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
 
     # Transitive inputs that require special treatment
     # (master branch is broken)
