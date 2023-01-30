@@ -737,6 +737,7 @@ in {
 
           # Broken name resolution due to Tailscale MagicDNS not working
           "100.79.57.124" = ["server.tiger-jazz.ts.net"];
+          "100.89.205.66" = ["kitting"];
         };
 
         system.nixos.tags = ["linux-${config.boot.kernelPackages.kernel.version}"];
