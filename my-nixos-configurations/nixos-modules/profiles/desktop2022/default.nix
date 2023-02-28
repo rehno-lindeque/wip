@@ -245,6 +245,9 @@ in {
     # (For machine learning code that needs network access)
     nix.settings.trusted-users = ["me" "nix-ssh"];
 
+    # I use LFS for some machine learning model repositories on this machine
+    programs.git.lfs.enable = true;
+
     # Enable ssh so that I can work on the desktop remotely
     services.openssh = {
       enable = true;
