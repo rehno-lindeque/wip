@@ -98,7 +98,10 @@ in {
 
         files = [
           # Retain aws credentials
-          ".aws/credentials"
+          {
+            file = ".aws/credentials";
+            parentDirectory = {mode = "u=rwx,g=xr,o=";};
+          }
 
           # Retain bash history
           ".bash_history"
