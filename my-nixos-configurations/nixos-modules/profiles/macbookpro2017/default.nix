@@ -137,6 +137,9 @@ in {
       ];
     };
 
+    # Cloud password manager
+    programs._1password-gui.enable = true;
+
     # Automatically handle standalone screen when docked
     services.autorandr.enable = true;
 
