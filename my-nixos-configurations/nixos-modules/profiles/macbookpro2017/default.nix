@@ -108,7 +108,16 @@ in {
       "/home/new-me" = {
         device = "none";
         fsType = "tmpfs";
-        options = ["size=4G" "mode=764" "uid=me" "gid=users"];
+        options = [
+          "size=4G"
+          "mode=764"
+          # Unavailable due to neededForBoot
+          # "uid=me"
+          # "gid=users"
+        ];
+        # Needed due to undocumented race condition in impermanence
+        # See https://github.com/nix-community/impermanence/pull/109#issuecomment-1506538692
+        neededForBoot = true;
       };
 
       "/boot" = {

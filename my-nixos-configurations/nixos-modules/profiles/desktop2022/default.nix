@@ -137,7 +137,16 @@ in {
       "/home/me" = {
         device = "none";
         fsType = "tmpfs";
-        options = ["size=4G" "mode=777" "uid=me" "gid=users"];
+        options = [
+          "size=4G"
+          "mode=777"
+          # Unavailable due to neededForBoot
+          # "uid=me"
+          # "gid=users"
+        ];
+        # Needed due to undocumented race condition in impermanence
+        # See https://github.com/nix-community/impermanence/pull/109#issuecomment-1506538692
+        neededForBoot = true;
       };
 
       # Files managed by nix, including the nix store
