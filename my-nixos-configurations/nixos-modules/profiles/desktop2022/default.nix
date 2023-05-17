@@ -53,6 +53,9 @@ in {
         # Log files
         "/var/log"
 
+        # Contains uuid and gid map
+        "/var/lib/nixos"
+
         # The /tmp directory requires a large amount of storage space for certain builds, so it can't be on tmpfs
         "/tmp"
       ];

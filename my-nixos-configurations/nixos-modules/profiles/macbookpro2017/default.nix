@@ -50,6 +50,11 @@ in {
     };
 
     environment.persistence."/nix/persistent" = {
+      directories = [
+        # Contains uuid and gid map
+        "/var/lib/nixos"
+      ];
+
       users.me = let
         permissions = {
           user = "me";
