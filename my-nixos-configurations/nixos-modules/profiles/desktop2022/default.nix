@@ -108,9 +108,6 @@ in {
 
           # Retain bash history
           ".bash_history"
-
-          # Retain HashiCorp Vault token to avoid redundant logins
-          ".vault-token"
         ];
       };
 
