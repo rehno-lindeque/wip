@@ -201,6 +201,12 @@ in {
       ];
     };
 
+    # Open additional ports
+    networking.firewall.interfaces.tailscale0.allowedTCPPorts = [
+      # The default port tensorboard
+      6006
+    ];
+
     # Add this flake to the local registry so that it's easy
     # to reference on the command line
     nix.registry = {
