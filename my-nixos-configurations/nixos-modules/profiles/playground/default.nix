@@ -659,7 +659,6 @@ in {
         services.xserver.layout = "us";
         services.xserver.xkbVariant = "norman";
         services.xserver.dpi = 144;
-        hardware.video.hidpi.enable = true;
         services.xserver.xkbOptions = "terminate:ctrl_alt_bksp, caps:escape";
 
         # see https://wiki.archlinux.org/index.php/AMDGPU

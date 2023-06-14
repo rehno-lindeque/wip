@@ -42,20 +42,19 @@
       "inputs": {
         "nixpkgs": [
           "nixpkgs-stable"
-        ],
-        "utils": "utils"
+        ]
       },
       "locked": {
-        "lastModified": 1677533640,
-        "narHash": "sha256-FHbqVw5q0Xi0Lep30+FyoAKAkXVMK+G1NLMq5pGVbuY=",
+        "lastModified": 1686693375,
+        "narHash": "sha256-1Smjo0E8WI9PeVGmmCjpQWRX04aQvz5gAGXfdanIjgw=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "550809881b9792c20adbc0bbf6a090b4035ebaca",
+        "rev": "61e5d1c38ef04ba30a9119825b159bce9c6010be",
         "type": "github"
       },
       "original": {
         "owner": "nix-community",
-        "ref": "release-22.11",
+        "ref": "release-23.05",
         "repo": "home-manager",
         "type": "github"
       }
@@ -203,16 +202,16 @@
     },
     "nixpkgs-stable": {
       "locked": {
-        "lastModified": 1686476475,
-        "narHash": "sha256-W9yUePvCSDghn+YUXewuodyPxt+kJl/a7zdY4Q6r4MU=",
+        "lastModified": 1686513595,
+        "narHash": "sha256-H3JNqj7TEiMx5rd8lRiONvgFZvmf3kmwHI2umDdqgFY=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "eef86b8a942913a828b9ef13722835f359deef29",
+        "rev": "bb8b5735d6f7e06b9ddd27de115b0600c1ffbdb4",
         "type": "github"
       },
       "original": {
         "owner": "nixos",
-        "ref": "nixos-22.11",
+        "ref": "nixos-23.05",
         "repo": "nixpkgs",
         "type": "github"
       }
@@ -246,21 +245,6 @@
         "nixpkgs-shim-profiles": "nixpkgs-shim-profiles",
         "nixpkgs-stable": "nixpkgs-stable",
         "nixpkgs-unstable": "nixpkgs-unstable"
-      }
-    },
-    "utils": {
-      "locked": {
-        "lastModified": 1667395993,
-        "narHash": "sha256-nuEHfE/LcWyuSWnS8t12N1wc105Qtau+/OdUAjtQ0rA=",
-        "owner": "numtide",
-        "repo": "flake-utils",
-        "rev": "5aed5285a952e0b949eb3ba02c12fa4fcfef535f",
-        "type": "github"
-      },
-      "original": {
-        "owner": "numtide",
-        "repo": "flake-utils",
-        "type": "github"
       }
     }
   },
