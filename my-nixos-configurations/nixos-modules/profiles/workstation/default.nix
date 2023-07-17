@@ -101,7 +101,7 @@ in {
               # Language server packages (executables)
               rnix-lsp
               haskell-language-server
-              sumneko-lua-language-server
+              lua-language-server
               elmPackages.elm-language-server
             ];
           };

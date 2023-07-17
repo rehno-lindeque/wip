@@ -156,7 +156,7 @@ lspconfig.hls.setup({
 })
 
 -- Set up each language server: Lua programming language
-lspconfig.sumneko_lua.setup({
+lspconfig.lua_ls.setup({
   on_attach = on_attach,
   autostart = true,
   flags = flags,
