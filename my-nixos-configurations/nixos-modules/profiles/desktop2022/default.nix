@@ -329,5 +329,12 @@ in {
     # System first installed with release 21.11
     system.stateVersion = "21.11";
     home-manager.users.me.home.stateVersion = "21.11";
+
+    # Avoid going to sleep since this computer acts as a server
+    home-manager.sharedModules = [
+      {
+        dconf.settings."org/gnome/settings-daemon/power".sleep-inactive-ac-type = "nothing";
+      }
+    ];
   };
 }
