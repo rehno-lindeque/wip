@@ -49,6 +49,11 @@ in {
       nixosroot.device = "/dev/disk/by-uuid/95a903c1-2a2f-44b9-90c2-cd810ea18cd4";
     };
 
+    boot.kernelParams =
+      # Fixes a backlight issue when using amdgpu due to a patch merged in linux since 6.1.4
+      # (The patch in question is "drm/amdgpu: Don't register backlight when another backlight should be used")
+      lib.optional (config.boot.kernelPackages.kernelAtLeast "6.1.4") "acpi_backlight=native";
+
     environment.persistence."/nix/persistent" = {
       directories = [
         # Contains uuid and gid map
