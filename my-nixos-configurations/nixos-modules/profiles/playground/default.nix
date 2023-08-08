@@ -302,6 +302,12 @@ in {
         # systemd.targets.suspend.enable = false;
         # systemd.targets.hibernate.enable = false;
         # systemd.targets.hybrid-sleep.enable = false;
+
+        # Extra software packages exclusively used on this system
+        users.users.me.packages = with pkgs; [
+          # Use GPT4 in the terminal
+          shell_gpt
+        ];
       })
 
       (lib.mkIf config.profiles.macbookpro2017.enable {
