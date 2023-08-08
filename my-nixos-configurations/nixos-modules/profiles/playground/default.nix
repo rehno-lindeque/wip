@@ -263,9 +263,6 @@ in {
         # TODO: do we still need to open port 22 with tailscale? See https://fzakaria.com/2020/09/17/tailscale-is-magic-even-more-so-with-nixos.html
         # services.openssh.openFirewall = false;
 
-        # Quick fix for the automatic sleep/suspend in gnome
-        services.power-profiles-daemon.enable = false;
-
         # TODO: automate tailscale authentication
         # Note that auth keys (now) expire after 90 days, so there may not be a good solution anymore
         # https://www.reddit.com/r/NixOS/comments/ou7hde/how_to_automate_tailscale_on_reboot/
@@ -305,32 +302,6 @@ in {
         # systemd.targets.suspend.enable = false;
         # systemd.targets.hibernate.enable = false;
         # systemd.targets.hybrid-sleep.enable = false;
-        services.xserver.desktopManager.gnome = {
-          # extraGSettingsOverridePackages = with pkgs; [ gnome3.gnome_settings_daemon ];
-          # extraGSettingsOverrides = ''
-          #   [org.gnome.desktop.screensaver]
-          #   lock-delay=3600
-          #   lock-enabled=true'
-
-          #   [org.gnome.desktop.session]
-          #   idle-delay=900
-
-          #   [org.gnome.settings-daemon.plugins.power]
-          #   power-button-action='nothing'
-          #   idle-dim=true
-          #   sleep-inactive-battery-type='nothing'
-          #   sleep-inactive-ac-timeout=3600
-          #   sleep-inactive-ac-type='nothing'
-          #   sleep-inactive-battery-timeout=1800
-          # '';
-
-          # Various gnome settings
-          # Use `gsettings list-recursive` for help
-          # extraGSettingsOverrides = ''
-          #   [org.gnome.settings-daemon.plugins.power]
-          #   sleep-inactive-ac-timeout=3600
-          # '';
-        };
       })
 
       (lib.mkIf config.profiles.macbookpro2017.enable {
