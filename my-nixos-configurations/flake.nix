@@ -2,13 +2,13 @@
   inputs = {
     circuithub-nixos-configurations.url = "git+ssh://git@github.com/circuithub/nixos-configurations.git";
     flake-help.url = "github:rehno-lindeque/flake-help";
-    home-manager.url = "github:nix-community/home-manager/release-23.05";
+    home-manager.url = "github:nix-community/home-manager/release-23.11";
     impermanence.url = "github:nix-community/impermanence";
     nixos-hardware.url = "github:rehno-lindeque/nixos-hardware/mediatek/mt7921k";
     nixos-impermanence.url = "github:rehno-lindeque/nixos-impermanence/wip";
     nixpkgs-shim.url = "github:rehno-lindeque/nixpkgs-shim";
     # nixpkgs-shim.url = "path:/home/me/projects/nixpkgs-shim";
-    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-23.05";
+    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-23.11";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
 
     # Transitive inputs that require special treatment
