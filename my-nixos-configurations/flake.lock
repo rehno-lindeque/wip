@@ -114,92 +114,6 @@
         "type": "github"
       }
     },
-    "nixpkgs-shim": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs-stable"
-        ],
-        "nixpkgs-shim-images": [
-          "nixpkgs-shim-images"
-        ],
-        "nixpkgs-shim-modules": "nixpkgs-shim-modules",
-        "nixpkgs-shim-profiles": [
-          "nixpkgs-shim-profiles"
-        ]
-      },
-      "locked": {
-        "lastModified": 1652668977,
-        "narHash": "sha256-qmSTJWAHDpafKX3fN6INGwY7hRNxSjHa3QPYG7MKF0c=",
-        "owner": "rehno-lindeque",
-        "repo": "nixpkgs-shim",
-        "rev": "45728a61fad7a9f03409fc0e8e652a7f99bb3663",
-        "type": "github"
-      },
-      "original": {
-        "owner": "rehno-lindeque",
-        "repo": "nixpkgs-shim",
-        "type": "github"
-      }
-    },
-    "nixpkgs-shim-images": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs-stable"
-        ]
-      },
-      "locked": {
-        "lastModified": 1649271740,
-        "narHash": "sha256-2LTfKY3V7N07M4El13zp2PdmwdIv10kc7NgE8hEFTBQ=",
-        "owner": "rehno-lindeque",
-        "repo": "nixpkgs-shim-images",
-        "rev": "fc365e485d98dcc1e8f278654618b8edf3424b03",
-        "type": "github"
-      },
-      "original": {
-        "owner": "rehno-lindeque",
-        "repo": "nixpkgs-shim-images",
-        "rev": "fc365e485d98dcc1e8f278654618b8edf3424b03",
-        "type": "github"
-      }
-    },
-    "nixpkgs-shim-modules": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs-shim",
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1,
-        "narHash": "sha256-167sNL43ZhTAR9B4MsT5Vw3hiRivbs4TRVgzLEtKMGU=",
-        "path": "./nixpkgs-shim-modules",
-        "type": "path"
-      },
-      "original": {
-        "path": "./nixpkgs-shim-modules",
-        "type": "path"
-      }
-    },
-    "nixpkgs-shim-profiles": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs-stable"
-        ]
-      },
-      "locked": {
-        "lastModified": 1649272765,
-        "narHash": "sha256-tFZ2JgxEgyRXuWhMKXwRr9x9cyf6tcHeG0ioJaQqHzY=",
-        "owner": "rehno-lindeque",
-        "repo": "nixpkgs-shim-profiles",
-        "rev": "84796e6c31830dd482f082e9941a31c8d6725bb6",
-        "type": "github"
-      },
-      "original": {
-        "owner": "rehno-lindeque",
-        "repo": "nixpkgs-shim-profiles",
-        "type": "github"
-      }
-    },
     "nixpkgs-stable": {
       "locked": {
         "lastModified": 1701539137,
@@ -240,9 +154,6 @@
         "impermanence": "impermanence",
         "nixos-hardware": "nixos-hardware",
         "nixos-impermanence": "nixos-impermanence",
-        "nixpkgs-shim": "nixpkgs-shim",
-        "nixpkgs-shim-images": "nixpkgs-shim-images",
-        "nixpkgs-shim-profiles": "nixpkgs-shim-profiles",
         "nixpkgs-stable": "nixpkgs-stable",
         "nixpkgs-unstable": "nixpkgs-unstable"
       }

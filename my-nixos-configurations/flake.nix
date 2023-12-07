@@ -6,17 +6,9 @@
     impermanence.url = "github:nix-community/impermanence";
     nixos-hardware.url = "github:rehno-lindeque/nixos-hardware/mediatek/mt7921k";
     nixos-impermanence.url = "github:rehno-lindeque/nixos-impermanence/wip";
-    nixpkgs-shim.url = "github:rehno-lindeque/nixpkgs-shim";
     # nixpkgs-shim.url = "path:/home/me/projects/nixpkgs-shim";
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-23.11";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
-
-    # Transitive inputs that require special treatment
-    # (master branch is broken)
-    nixpkgs-shim-images.url = "github:rehno-lindeque/nixpkgs-shim-images/fc365e485d98dcc1e8f278654618b8edf3424b03";
-
-    # (relative path is broken)
-    nixpkgs-shim-profiles.url = "github:rehno-lindeque/nixpkgs-shim-profiles";
 
     # Redirect inputs
     circuithub-nixos-configurations.inputs = {
@@ -28,13 +20,6 @@
       nixpkgs.follows = "nixpkgs-stable";
       impermanence.follows = "impermanence";
     };
-    nixpkgs-shim.inputs = {
-      nixpkgs.follows = "nixpkgs-stable";
-      nixpkgs-shim-images.follows = "nixpkgs-shim-images";
-      nixpkgs-shim-profiles.follows = "nixpkgs-shim-profiles";
-    };
-    nixpkgs-shim-images.inputs.nixpkgs.follows = "nixpkgs-stable";
-    nixpkgs-shim-profiles.inputs.nixpkgs.follows = "nixpkgs-stable";
   };
 
   outputs = {
@@ -44,18 +29,17 @@
     home-manager,
     impermanence,
     nixos-impermanence,
-    nixpkgs-shim,
-    nixpkgs-shim-profiles,
+    nixpkgs-stable,
     ...
   }: let
-    inherit (nixpkgs-shim) lib;
+    inherit (nixpkgs-stable) lib;
 
     system = lib.genAttrs lib.platforms.all (system: system);
 
     mySystems = [system.x86_64-linux];
 
     legacyPackages = lib.genAttrs mySystems (system:
-      import nixpkgs-shim.inputs.nixpkgs {
+      import nixpkgs-stable {
         inherit system;
         config.allowUnfree = true;
         overlays = [self.overlays.default];
@@ -81,7 +65,7 @@
       {
         # TODO: Implement isoImage as a lib instead of a module. E.g. nipxkgs-shim.lib.isoImage { .... }
         # x86_64-linux.installer-iso = self.nixosConfigurations.installer.config.system.build.isoImage; # broken in nixos-22.05
-        x86_64-linux.install-helper = self.nixosConfigurations.installer.config.system.build.install-helper;
+        # x86_64-linux.install-helper = self.nixosConfigurations.installer.config.system.build.install-helper;
       };
 
     nixosModules = rec {
@@ -93,7 +77,7 @@
       desktop2022 = import ./nixos-modules/profiles/desktop2022;
       macbookpro2017 = import ./nixos-modules/profiles/macbookpro2017;
       nucbox2022 = import ./nixos-modules/profiles/nucbox2022;
-      installer = import ./nixos-modules/profiles/installer;
+      # installer = import ./nixos-modules/profiles/installer;
       default = {
         imports = [
           common
@@ -111,7 +95,7 @@
           home-manager.nixosModules.home-manager
           # nixpkgs-shim.nixosModules.default
           # nixpkgs-shim.inputs.nixpkgs-shim-images.nixosModules.isoImage
-          nixpkgs-shim-profiles.nixosModules.default
+          # nixpkgs-shim-profiles.nixosModules.default
         ];
       };
     };
@@ -144,15 +128,15 @@
         ];
         specialArgs = {flake = self;};
       };
-      installer = lib.nixosSystem {
-        system = system.x86_64-linux;
-        modules = [
-          self.nixosModules.default
-          self.nixosModules.installer
-          {profiles.installer.enable = true;}
-        ];
-        specialArgs = {flake = self;};
-      };
+      # installer = lib.nixosSystem {
+      #   system = system.x86_64-linux;
+      #   modules = [
+      #     self.nixosModules.default
+      #     self.nixosModules.installer
+      #     {profiles.installer.enable = true;}
+      #   ];
+      #   specialArgs = {flake = self;};
+      # };
     };
 
     overlays.default = final: prev: {};

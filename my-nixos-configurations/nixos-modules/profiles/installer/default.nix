@@ -195,7 +195,6 @@ in {
         \t--root /mnt
         \t--flake github:rehno-lindeque/wip?dir=my-nixos-configurations#desktop2022 # path:${flake}#desktop2022
         \t--override-input circuithub-nixos-configurations ${flake.inputs.circuithub-nixos-configurations}
-        \t--override-input nixpkgs-shim/nixpkgs-shim-profiles github:rehno-lindeque/nixpkgs-shim-profiles
         \t# ${overrideInputArgs}"}'
         printf "${nc}"
         echo
@@ -216,7 +215,6 @@ in {
           --no-root-passwd \
           --flake github:rehno-lindeque/wip?dir=my-nixos-configurations#desktop2022 \
           --override-input circuithub-nixos-configurations ${flake.inputs.circuithub-nixos-configurations} \
-          --override-input nixpkgs-shim/nixpkgs-shim-profiles github:rehno-lindeque/nixpkgs-shim-profiles \
           # ${overrideInputArgs}
       '';
 
