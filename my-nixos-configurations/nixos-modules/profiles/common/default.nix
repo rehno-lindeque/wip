@@ -37,8 +37,6 @@ in {
       package = pkgs.nixUnstable;
       extraOptions = builtins.concatStringsSep "\n" [
         "experimental-features = nix-command flakes impure-derivations ca-derivations"
-        # Prevent offline binary caches from hanging for 300 seconds
-        "connect-timeout = 5"
       ];
 
       # setting the old <nixpkgs> path is necessary for some legacy nix files
