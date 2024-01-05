@@ -165,6 +165,9 @@ in {
     ];
 
     hardware = {
+      # Required by many wayland compositors
+      nvidia.modesetting.enable = true;
+
       opengl.enable = true;
       opengl.extraPackages = with pkgs; [
         mpi
@@ -311,12 +314,11 @@ in {
     # Adjust screen brightness at night
     services.redshift.enable = true;
 
-    # Run gnome on this computer
-    services.xserver.enable = true;
-    services.xserver.desktopManager.gnome.enable = true;
-    services.xserver.displayManager.lightdm.enable = true;
-
+    # Proprietary Nvidia drivers for either X or Wayland
     services.xserver.videoDrivers = ["nvidia"];
+
+    # Display manager (GDM works without X)
+    services.xserver.displayManager.gdm.enable = true;
 
     sound.mediaKeys.enable = true;
 
@@ -336,5 +338,12 @@ in {
         dconf.settings."org/gnome/settings-daemon/power".sleep-inactive-ac-type = "nothing";
       }
     ];
+
+    # Desktop
+    programs.hyprland.enable = true;
+    programs.hyprland.enableNvidiaPatches = true; # will be removed by https://github.com/NixOS/nixpkgs/pull/272333
+    home-manager.users.me.programs.rofi.enable = true;
+    home-manager.users.me.programs.waybar.enable = true;
+    home-manager.users.me.services.dunst.enable = true;
   };
 }

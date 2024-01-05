@@ -347,5 +347,8 @@ in {
         agentTimeout = "1h";
       };
     };
+
+    # Support X applications when using hyprland
+    programs.hyprland.xwayland.enable = lib.mkDefault config.programs.hyprland.enable;
   };
 }
