@@ -17,6 +17,7 @@ in {
   config = lib.mkIf cfg.enable {
     profiles = {
       common.enable = true;
+      fixes.enable = true;
       workstation.enable = true;
       personalized = {
         enable = true;

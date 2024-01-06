@@ -70,6 +70,7 @@
 
     nixosModules = rec {
       common = import ./nixos-modules/profiles/common;
+      fixes = import ./nixos-modules/profiles/fixes;
       personalize = import ./nixos-modules/profiles/personalize;
       playground = import ./nixos-modules/profiles/playground;
       preferences = import ./nixos-modules/profiles/preferences;
@@ -81,6 +82,7 @@
       default = {
         imports = [
           common
+          fixes
           personalize
           playground
           preferences
