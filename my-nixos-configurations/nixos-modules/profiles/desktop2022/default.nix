@@ -343,7 +343,25 @@ in {
     programs.hyprland.enable = true;
     programs.hyprland.enableNvidiaPatches = true; # will be removed by https://github.com/NixOS/nixpkgs/pull/272333
     home-manager.users.me.programs.rofi.enable = true;
+    home-manager.users.me.programs.swaylock.enable = true;
     home-manager.users.me.programs.waybar.enable = true;
     home-manager.users.me.services.dunst.enable = true;
+
+    # Lock the screen after booting
+    home-manager.users.me.wayland.windowManager.hyprland.enable = true;
+    home-manager.users.me.wayland.windowManager.hyprland.settings.exec-once = [
+      "swaylock"
+    ];
+
+    # Login manager
+    services.greetd.enable = true;
+    services.greetd.settings = rec {
+      initial_session = {
+        command = "${lib.getExe config.programs.hyprland.package}";
+        user = "me";
+      };
+      default_session = initial_session;
+    };
   };
+
 }
