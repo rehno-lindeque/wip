@@ -89,15 +89,8 @@ in {
       isNormalUser = true;
       useDefaultShell = true;
       packages = with pkgs;
-      # Terminal emulators (choose one)
+      # System tools
         lib.optionals cfg.enableSoftware [
-          # gnome3.gnome_terminal
-          # sakura
-          # termite
-          # st
-        ]
-        # System tools
-        ++ lib.optionals cfg.enableSoftware [
           # unrar
           # zip
           # btrfsProgs
@@ -427,6 +420,10 @@ in {
             userEmail = "rehno.lindeque@gmail.com";
             userName = "Rehno Lindeque";
           };
+
+          # Terminal emulator
+          kitty.enable = lib.mkDefault cfg.enableSoftware;
+        };
         };
       };
     };
