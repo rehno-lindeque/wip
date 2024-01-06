@@ -304,6 +304,10 @@ in {
       useUserPackages = true;
       sharedModules = [
         ({system, ...}: {
+          colorScheme =
+            # See https://tinted-theming.github.io/base16-gallery
+            flake.inputs.nix-colors.colorSchemes.default-dark;
+
           home = {
             enableNixpkgsReleaseCheck = true;
             sessionVariables = {

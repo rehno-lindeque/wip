@@ -9,6 +9,7 @@
     # nixpkgs-shim.url = "path:/home/me/projects/nixpkgs-shim";
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-23.11";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
+    nix-colors.url = "github:misterio77/nix-colors";
 
     # Redirect inputs
     circuithub-nixos-configurations.inputs = {
@@ -20,6 +21,7 @@
       nixpkgs.follows = "nixpkgs-stable";
       impermanence.follows = "impermanence";
     };
+    nix-colors.inputs.nixpkgs-lib.follows = "nixpkgs-stable";
   };
 
   outputs = {

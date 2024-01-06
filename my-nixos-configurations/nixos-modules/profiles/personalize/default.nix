@@ -1,5 +1,6 @@
 {
   config,
+  flake,
   lib,
   pkgs,
   ...
@@ -414,6 +415,10 @@ in {
 
     home-manager = lib.mkIf cfg.enableHome {
       users.me = {
+        imports = [
+          flake.inputs.nix-colors.homeManagerModules.default
+        ];
+
         programs = {
           git = {
             enable = lib.mkDefault cfg.enableSoftware;
@@ -423,7 +428,6 @@ in {
 
           # Terminal emulator
           kitty.enable = lib.mkDefault cfg.enableSoftware;
-        };
         };
       };
     };
