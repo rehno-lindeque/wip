@@ -333,6 +333,7 @@ in {
             };
           };
         })
+        (import ./swaylock)
       ];
     };
 
