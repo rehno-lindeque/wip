@@ -332,6 +332,23 @@ in {
               '';
             };
           };
+          services = {
+            swayidle = {
+              timeouts = [
+                {
+                  # Lock the screen after 60 minutes
+                  timeout = 60;
+                  command = "swaylock --daemonize";
+                }
+                {
+                  # Turn off the screen after 90 minutes
+                  timeout = 90;
+                  command = "hyprctl dispatch dpms off";
+                  resumeCommand = "hyprctl dispatch dpms on";
+                }
+              ];
+            };
+          };
         })
         (import ./swaylock)
       ];

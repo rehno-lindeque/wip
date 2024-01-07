@@ -347,6 +347,7 @@ in {
     home-manager.users.me.programs.swaylock.enable = true;
     home-manager.users.me.programs.waybar.enable = true;
     home-manager.users.me.services.dunst.enable = true;
+    home-manager.users.me.services.swayidle.enable = true;
 
     # Lock the screen after booting
     home-manager.users.me.wayland.windowManager.hyprland.enable = true;
