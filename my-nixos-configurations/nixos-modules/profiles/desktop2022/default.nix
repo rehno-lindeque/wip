@@ -33,10 +33,6 @@ in {
     # Using the systemd-boot EFI boot loader as it seems to be very simple
     boot.loader.systemd-boot.enable = true;
 
-    # Standard UEFI 80x25 console mode in order to support tiny screens
-    # (E.g. Longruner 7 inch LCD display)
-    boot.loader.systemd-boot.consoleMode = "0";
-
     boot.initrd.availableKernelModules = [
       # nvme is required in order to mount the root file system during boot
       "nvme"
