@@ -180,8 +180,9 @@ in {
       haskellPackages.xmonad-contrib
     ];
 
-    # Enable the laptop trackpad
+    # Enable the laptop trackpad and disable annoyingly sensitive trackpad tap during typing
     services.xserver.libinput.enable = true;
+    services.xserver.libinput.touchpad.disableWhileTyping = true;
 
     # System first initialized at release 22.05
     system.stateVersion = "22.05";
