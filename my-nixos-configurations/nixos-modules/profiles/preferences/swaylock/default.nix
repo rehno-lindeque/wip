@@ -1,5 +1,5 @@
 {config, ...}: {
-  programs.swaylock.settings = with config.colorScheme.colors; {
+  programs.swaylock.settings = with config.colorScheme.palette; {
     # Color reference:`
     # https://github.com/tinted-theming/home?tab=readme-ov-file#unofficial-templates
     # https://git.michaelball.name/gid/base16-swaylock-template/tree/templates/default.mustache
