@@ -99,7 +99,7 @@ in {
 
             extraPackages = with pkgs; [
               # Language server packages (executables)
-              rnix-lsp
+              nixd
               haskell-language-server
               lua-language-server
               elmPackages.elm-language-server

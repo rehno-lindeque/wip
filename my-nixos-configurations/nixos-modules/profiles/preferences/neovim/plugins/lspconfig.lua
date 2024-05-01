@@ -56,7 +56,7 @@ local flags = {
 }
 
 -- Set up each language server: Nix configuration language
-lspconfig.rnix.setup({
+lspconfig.nixd.setup({
   on_attach = on_attach,
   autostart = true,
   flags = flags,
