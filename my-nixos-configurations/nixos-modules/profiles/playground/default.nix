@@ -719,6 +719,7 @@ in {
           "100.93.41.109" = ["internal.tiger-jazz.ts.net"];
           "100.77.224.145" = ["gpu-server.tiger-jazz.ts.net" "programming.circuithub"];
           "100.89.205.66" = ["kitting" "kitting.circuithub"];
+          "100.103.247.1" = ["label-studio.tiger-jazz.ts.net"];
         };
 
         system.nixos.tags = ["linux-${config.boot.kernelPackages.kernel.version}"];
