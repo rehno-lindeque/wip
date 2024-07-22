@@ -109,7 +109,7 @@ in {
     # Enable ssh so that I can work on the nucbox remotely
     services.openssh = {
       enable = true;
-      passwordAuthentication = true; # TODO remove
+      settings.PasswordAuthentication = true; # TODO remove
       # only accessible via the tailscale ip
       listenAddresses = [
         {

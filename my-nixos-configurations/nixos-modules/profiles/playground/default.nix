@@ -45,7 +45,7 @@ in {
         # TODO: check where fonts are used (vim?)
         # TODO: Check against any home-manager font settings?
         # TODO: Check against i18n.consoleFont ?
-        # fonts.fonts = with pkgs; [
+        # fonts.packages = with pkgs; [
         #   source-code-pro
         #   terminus-nerdfont
         #   inconsolata-nerdfont
@@ -234,7 +234,7 @@ in {
 
         # Set the desktop manager to none so that it doesn't default to xterm sometimes
         # TODO: check if this is this still needed?
-        # xserver.displayManager.defaultSession = "none+xmonad";
+        # services.displayManager.defaultSession = "none+xmonad";
 
         # Security
         services.gnome.gnome-keyring.enable = true; # gnome's default keyring
@@ -255,7 +255,7 @@ in {
         # };
 
         # Set the desktop manager to none so that it defaults to gnome with wayland
-        # xserver.displayManager.defaultSession = ""; # gnome+wayland perhaps?
+        # services.displayManager.defaultSession = ""; # gnome+wayland perhaps?
 
         # Security
         services.gnome.gnome-keyring.enable = true; # gnome's default keyring (does this avoid the annoying dialog popup?)
@@ -328,43 +328,33 @@ in {
           inherit (lib.mapAttrs (_: interface: interface.name) config.networking.interfaces) tailscale0 wlp4s0;
         in {
           enable = true;
-          servers = [
+          settings = {
+            server = [
             # Use cloudflare for regular top-level name resolution
-            "1.1.1.1@${wlp4s0}"
-            "1.0.0.1@${wlp4s0}"
-          ];
+              "1.1.1.1@${wlp4s0}"
+              "1.0.0.1@${wlp4s0}"
+              "/picofactory-new/10.20.0.1@${tailscale0}"
+              "/petersfield/10.21.0.1@${tailscale0}"
+              # (MagicDNS does not appear to work)
+              # /tiger-jazz.ts.net/100.100.100.100@${tailscale0}
+            ];
 
-          extraConfig =
-            ''
-              server=/picofactory-new/10.20.0.1@${tailscale0}
-              server=/petersfield/10.21.0.1@${tailscale0}
-            ''
-            # (MagicDNS does not appear to work)
-            # server=/tiger-jazz.ts.net/100.100.100.100@${tailscale0}
-            +
             # Prevent packets with malformed domain names and private ip addresses
             # from leaving the network
-            ''
-              domain-needed
-              bogus-priv
-            ''
-            +
+            domain-needed = true;
+            bogus-priv = true;
+
             # Limit name resolution to dnsmasq (ignore /etc/resolv.conf)
-            ''
-              no-resolv
-            ''
-            +
+            no-resolv = true;
+
             # Speed up queries for recent domains
-            ''
-              cache-size=300
-            ''
-            +
+            cache-size=300;
+
             # Only listen on localhost, not on public facing addresses
-            ''
-              listen-address=::1,127.0.0.1
-              interface=lo
-              bind-interfaces
-            '';
+            listen-address="::1,127.0.0.1";
+            interface="lo";
+            bind-interfaces = true;
+          };
         };
 
         # Advanced Power Management for Linux
@@ -574,14 +564,14 @@ in {
           # "atkbd"
         ];
 
-        fonts.fonts = let
+        fonts.packages = let
           nerdfonts = pkgs.nerdfonts.override {
             fonts = [
               "SourceCodePro"
             ];
           };
         in [nerdfonts];
-        fonts.enableDefaultFonts = true;
+        fonts.enableDefaultPackages = true;
 
         services.pipewire = {
           enable = true;
@@ -614,7 +604,7 @@ in {
         #   mountPoint = "/keybase";
         # };
 
-        # services.xserver.libinput.enable = true;
+        # services.libinput.enable = true;
 
         # Extra software packages exclusively used on this system
         users.users.me.packages = with pkgs; [
@@ -636,10 +626,10 @@ in {
 
         # TODO EVALUATE:
         # TODO: keyboard stuff to potentially move to personalize
-        services.xserver.layout = "us";
-        services.xserver.xkbVariant = "norman";
         services.xserver.dpi = 144;
-        services.xserver.xkbOptions = "terminate:ctrl_alt_bksp, caps:escape";
+        services.xserver.xkb.layout = "us";
+        services.xserver.xkb.variant = "norman";
+        services.xserver.xkb.options = "terminate:ctrl_alt_bksp, caps:escape";
 
         # see https://wiki.archlinux.org/index.php/AMDGPU
         # see https://en.wikipedia.org/wiki/List_of_AMD_graphics_processing_units#Volcanic_Islands_.
@@ -649,7 +639,7 @@ in {
 
         # * Terminate current session using ctrl + alt + backspace (usefull on macs)
         # * Make capslock into an additional escape key
-        # xkbOptions = "terminate:ctrl_alt_bksp, caps:escape";
+        # services.xserver.xkb.options = "terminate:ctrl_alt_bksp, caps:escape";
 
         # Adjust screen brightness at night
         # services.redshift.enable = true;

@@ -273,7 +273,7 @@ in {
     # Access to the live installer via ssh
     services.openssh = {
       enable = true;
-      permitRootLogin = "yes";
+      settings.PermitRootLogin = "yes";
     };
 
     # Initial password is generated with nix run nixpkgs#mkpasswd -- --method=SHA-512

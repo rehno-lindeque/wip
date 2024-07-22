@@ -162,6 +162,13 @@ in {
     # Automatically handle standalone screen when docked
     services.autorandr.enable = true;
 
+    # Run xmonad on this computer
+    services.displayManager.defaultSession = "none+xmonad";
+
+    # Enable the laptop trackpad and disable annoyingly sensitive trackpad tap during typing
+    services.libinput.enable = true;
+    services.libinput.touchpad.disableWhileTyping = true;
+
     # Fan control for the macbook pro
     services.mbpfan.settings.general = {
       # Run the fan a little bit more aggressively
@@ -170,19 +177,14 @@ in {
       min_fan1_speed = 3000;
     };
 
-    # Run lightdm + xmonad on this computer
+    # Run lightdm on this computer
     services.xserver.enable = true;
-    services.xserver.displayManager.defaultSession = "none+xmonad";
     services.xserver.displayManager.lightdm.enable = true;
     services.xserver.windowManager.xmonad.enable = true;
     services.xserver.windowManager.xmonad.extraPackages = haskellPackages: [
       # Note that xmonad-extras is frequently broken, but xmonad-contrib is more stable
       haskellPackages.xmonad-contrib
     ];
-
-    # Enable the laptop trackpad and disable annoyingly sensitive trackpad tap during typing
-    services.xserver.libinput.enable = true;
-    services.xserver.libinput.touchpad.disableWhileTyping = true;
 
     # System first initialized at release 22.05
     system.stateVersion = "22.05";

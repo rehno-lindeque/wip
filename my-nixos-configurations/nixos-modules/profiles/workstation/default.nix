@@ -26,7 +26,7 @@ in {
     };
 
     # Any reasonable workstation probably at least needs some basic quality of life fonts
-    fonts.enableDefaultFonts = lib.mkDefault true;
+    fonts.enableDefaultPackages = lib.mkDefault true;
 
     home-manager.sharedModules = [
       {
@@ -136,8 +136,8 @@ in {
     # Security
     security.apparmor.enable = lib.mkDefault true;
     services.openssh.enable = lib.mkDefault false;
-    services.openssh.permitRootLogin = lib.mkDefault "no";
-    services.openssh.passwordAuthentication = lib.mkDefault false;
+    services.openssh.settings.PermitRootLogin = lib.mkDefault "no";
+    services.openssh.settings.PasswordAuthentication = lib.mkDefault false;
     services.fail2ban.enable = lib.mkDefault true;
 
     # Note that locking the kernel modules can sometimes prevent you from doing useful things

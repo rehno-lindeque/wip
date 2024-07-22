@@ -41,7 +41,7 @@ in {
 
   config = lib.mkIf cfg.enable {
     # Clear the /tmp directory when the system is rebooted
-    boot.cleanTmpDir = lib.mkDefault true;
+    boot.tmp.cleanOnBoot = lib.mkDefault true;
 
     profiles.preferences.customizedVimPlugins =
       pkgs.vimPlugins

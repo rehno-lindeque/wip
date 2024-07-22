@@ -39,7 +39,7 @@ in {
     ];
 
     # We don't want /tmp to be persisted, but it is on persistent storage due to lack of tmpfs storage space
-    boot.cleanTmpDir = true;
+    boot.tmp.cleanOnBoot = true;
 
     # Don't store docs on this computer since I mostly use it headless for now
     documentation.doc.enable = false;
@@ -273,7 +273,7 @@ in {
     # Enable ssh so that I can work on the desktop remotely
     services.openssh = {
       enable = true;
-      passwordAuthentication = true; # TODO remove
+      settings.PasswordAuthentication = true; # TODO remove
       listenAddresses = [
         # accessible via the tailscale ip
         {
