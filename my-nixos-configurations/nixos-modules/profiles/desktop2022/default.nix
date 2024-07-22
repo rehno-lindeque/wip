@@ -342,7 +342,6 @@ in {
 
     # Desktop
     programs.hyprland.enable = true;
-    programs.hyprland.enableNvidiaPatches = true; # will be removed by https://github.com/NixOS/nixpkgs/pull/272333
     home-manager.users.me.programs.rofi.enable = true;
     home-manager.users.me.programs.swaylock.enable = true;
     home-manager.users.me.programs.waybar.enable = true;
