@@ -33,8 +33,6 @@ in {
     networking.networkmanager.enable = lib.mkDefault true;
 
     nix = {
-      # There's no point to using any of these configs without flakes
-      package = pkgs.nixUnstable;
       extraOptions = builtins.concatStringsSep "\n" [
         "experimental-features = nix-command flakes impure-derivations ca-derivations"
       ];
