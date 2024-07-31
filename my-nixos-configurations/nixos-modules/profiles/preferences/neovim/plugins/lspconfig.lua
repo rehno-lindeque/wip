@@ -74,6 +74,7 @@ lspconfig.hls.setup({
       checkProject = false,
       formattingProvider = "ormolu",
       maxCompletions = 40,
+      sessionLoading = "multipleComponents",
     },
   },
 })
