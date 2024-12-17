@@ -705,11 +705,14 @@ in {
           "100.102.213.117" = ["macbookpro2017"];
 
           # Broken name resolution due to Tailscale MagicDNS not working
-          "100.79.57.124" = ["server.tiger-jazz.ts.net" "pnp.circuithub"];
+          "100.79.57.124" = ["server.tiger-jazz.ts.net" "pnp.circuithub" "nomad.tiger-jazz.ts.net"];
           "100.93.41.109" = ["internal.tiger-jazz.ts.net"];
           "100.77.224.145" = ["gpu-server.tiger-jazz.ts.net" "programming.circuithub"];
           "100.89.205.66" = ["kitting" "kitting.circuithub"];
-          "100.103.247.1" = ["label-studio.tiger-jazz.ts.net"];
+          "100.116.83.12" = ["label-studio.tiger-jazz.ts.net"];
+          "100.122.216.16" = ["docker-registry.tiger-jazz.ts.net"];
+          "100.124.61.62" = ["pico-server-02.tiger-jazz.ts.net"];
+          "100.123.219.7" = ["mlflow.tiger-jazz.ts.net"];
         };
 
         system.nixos.tags = ["linux-${config.boot.kernelPackages.kernel.version}"];
