@@ -169,6 +169,9 @@ in {
     services.libinput.enable = true;
     services.libinput.touchpad.disableWhileTyping = true;
 
+    # Don't power off when the power button is hit
+    services.logind.powerKey = "lock";
+
     # Fan control for the macbook pro
     services.mbpfan.settings.general = {
       # Run the fan a little bit more aggressively
