@@ -207,8 +207,11 @@ in {
 
     # Open additional ports
     networking.firewall.interfaces.tailscale0.allowedTCPPorts = [
-      # The default port tensorboard
+      # The default port for tensorboard
       6006
+      # Ports used for software development
+      8080
+      8081
     ];
 
     # Add this flake to the local registry so that it's easy
