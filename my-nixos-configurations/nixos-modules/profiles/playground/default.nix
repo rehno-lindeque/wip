@@ -706,6 +706,7 @@ in {
 
           # Broken name resolution due to Tailscale MagicDNS not working
           "100.79.57.124" = ["server.tiger-jazz.ts.net" "pnp.circuithub" "nomad.tiger-jazz.ts.net"];
+          "100.65.218.115" = ["grid" "grid.tiger-jazz.ts.net"];
           "100.93.41.109" = ["internal.tiger-jazz.ts.net"];
           "100.77.224.145" = ["gpu-server.tiger-jazz.ts.net" "programming.circuithub"];
           "100.89.205.66" = ["kitting" "kitting.circuithub"];
