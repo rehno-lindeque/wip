@@ -104,8 +104,6 @@ in {
       };
     };
 
-    sound.mediaKeys.enable = true;
-
     # Enable ssh so that I can work on the nucbox remotely
     services.openssh = {
       enable = true;

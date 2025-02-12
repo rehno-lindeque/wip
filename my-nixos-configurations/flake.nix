@@ -2,12 +2,13 @@
   inputs = {
     circuithub-nixos-configurations.url = "git+ssh://git@github.com/circuithub/nixos-configurations.git";
     flake-help.url = "github:rehno-lindeque/flake-help";
-    home-manager.url = "github:nix-community/home-manager/release-24.05";
+    home-manager.url = "github:nix-community/home-manager/release-24.11";
     impermanence.url = "github:nix-community/impermanence";
-    nixos-hardware.url = "github:rehno-lindeque/nixos-hardware/mediatek/mt7921k";
-    nixos-impermanence.url = "github:rehno-lindeque/nixos-impermanence/wip";
+    # nixos-hardware.url = "github:rehno-lindeque/nixos-hardware/mediatek/mt7921k";
+    nixos-hardware.url = "github:nixos/nixos-hardware";
+    nixos-impermanence.url = "github:rehno-lindeque/nixos-impermanence";
     # nixpkgs-shim.url = "path:/home/me/projects/nixpkgs-shim";
-    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-24.05";
+    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-24.11";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     nix-colors.url = "github:misterio77/nix-colors";
 

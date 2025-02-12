@@ -202,8 +202,8 @@ in {
         ]
         # Configuration
         ++ lib.optionals cfg.enableSoftware [
-          # gnome3.dconf
-          gnome.gnome-settings-daemon
+          # dconf
+          gnome-settings-daemon
           # nix-prefetch-github
         ]
         # Development dependencies
@@ -269,12 +269,12 @@ in {
         ]
         # File browsers
         ++ lib.optionals cfg.enableSoftware [
-          gnome3.nautilus
-          gnome3.eog
+          nautilus
+          eog
         ]
         # Screen / Media capture
         ++ lib.optionals cfg.enableSoftware [
-          # gnome3.gnome-screenshot
+          # gnome-screenshot
           # peek
           # gifine
           # youtube-dl

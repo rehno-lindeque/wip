@@ -324,8 +324,6 @@ in {
     # Display manager (GDM works without X)
     services.xserver.displayManager.gdm.enable = true;
 
-    sound.mediaKeys.enable = true;
-
     # Extra software packages only used on this system
     users.users.me.packages = with pkgs; [
       # Monitor system temperatures

@@ -676,8 +676,6 @@ in {
         # # Limit cpu use to 4 out of the ? available
         # nix.buildCores = 4;
 
-        sound.mediaKeys.enable = true;
-
         # TODO: Looking at https://github.com/garbas/dotfiles/blob/e341ab68892566bd676696d7bc33fbccb
         # and https://shen.hong.io/nixos-home-manager-wayland-sway/
         # and https://nixos.wiki/wiki/Sway
