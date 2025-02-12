@@ -273,6 +273,11 @@ in {
     # I use LFS for some machine learning model repositories on this machine
     programs.git.lfs.enable = true;
 
+    # Enable vscode server for use with cursor IDE
+    services.openvscode-server.enable = true;
+    services.openvscode-server.host = "100.89.210.26";
+    services.openvscode-server.user = "me";
+
     # Enable ssh so that I can work on the desktop remotely
     services.openssh = {
       enable = true;
