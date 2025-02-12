@@ -203,6 +203,9 @@ in {
 
       # Terminal
       pkgs.sakura
+
+      # IDE
+      pkgs.code-cursor
     ];
   };
 }
