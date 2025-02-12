@@ -212,6 +212,8 @@ in {
       # Ports used for software development
       8080
       8081
+      # openvscode-server
+      3000
     ];
 
     # Add this flake to the local registry so that it's easy
@@ -277,6 +279,7 @@ in {
     services.openvscode-server.enable = true;
     services.openvscode-server.host = "100.89.210.26";
     services.openvscode-server.user = "me";
+    services.openvscode-server.withoutConnectionToken = true; # secured by tailscale
 
     # Enable ssh so that I can work on the desktop remotely
     services.openssh = {
