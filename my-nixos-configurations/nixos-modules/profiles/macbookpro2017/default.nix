@@ -136,7 +136,7 @@ in {
     ];
 
     # Hardware acceleration
-    hardware.opengl.enable = true;
+    hardware.graphics.enable = true;
 
     # A redistributable flag normally provided by not-detected.nix
     hardware.enableRedistributableFirmware = true;
