@@ -169,6 +169,9 @@ in {
       # Required by many wayland compositors
       nvidia.modesetting.enable = true;
 
+      # Nvidia recommends open source on latest drivers
+      nvidia.open = true;
+
       opengl.enable = true;
       opengl.extraPackages = with pkgs; [
         mpi
