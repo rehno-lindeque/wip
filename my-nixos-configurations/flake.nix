@@ -23,6 +23,10 @@
       impermanence.follows = "impermanence";
     };
     nix-colors.inputs.nixpkgs-lib.follows = "nixpkgs-stable";
+    vscode-server.url = "github:nix-community/nixos-vscode-server";
+    vscode-server.inputs = {
+      nixpkgs.follows = "nixpkgs-stable";
+    };
   };
 
   outputs = {

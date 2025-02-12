@@ -1,5 +1,6 @@
 {
   config,
+  flake,
   lib,
   pkgs,
   ...
@@ -276,10 +277,11 @@ in {
     programs.git.lfs.enable = true;
 
     # Enable vscode server for use with cursor IDE
-    services.openvscode-server.enable = true;
-    services.openvscode-server.host = "100.89.210.26";
-    services.openvscode-server.user = "me";
-    services.openvscode-server.withoutConnectionToken = true; # secured by tailscale
+    home-manager.users.me.imports = [
+      flake.inputs.vscode-server.homeModules.default
+    ];
+    home-manager.users.me.services.vscode-server.enable = true;
+    home-manager.users.me.services.vscode-server.installPath = "$HOME/.cursor-server";
 
     # Enable ssh so that I can work on the desktop remotely
     services.openssh = {
