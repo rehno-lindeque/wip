@@ -1,8 +1,4 @@
 require('gitsigns').setup({
-  signs = {
-    -- Left justified character to distinguish changed lines
-    change = { hl = "GitSignsChange", text = "▎" , numhl = "GitSignsChangeNr", linehl = "GitSignsChangeLn" },
-  },
   on_attach = function(buffer)
     local options = function(additional_options)
       local final_options = {
