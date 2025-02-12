@@ -159,6 +159,9 @@ in {
     # Cloud password manager
     programs._1password-gui.enable = true;
 
+    # GUI for asking for ssh password (for code-cursor / vscode)
+    programs.ssh.enableAskPassword = true;
+
     # Automatically handle standalone screen when docked
     services.autorandr.enable = true;
 
