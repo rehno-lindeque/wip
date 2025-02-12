@@ -331,8 +331,6 @@ in {
 
     # Extra software packages only used on this system
     users.users.me.packages = with pkgs; [
-      # Monitor system temperatures
-      psensor
     ];
 
     # System first installed with release 21.11
