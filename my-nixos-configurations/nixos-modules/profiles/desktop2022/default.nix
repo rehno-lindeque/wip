@@ -176,9 +176,6 @@ in {
         cudatoolkit
       ];
 
-      # Sound output doesn't work right now, but we want it to
-      pulseaudio.enable = true;
-
       # Normally provided by not-detected.nix
       enableRedistributableFirmware = true;
     };
