@@ -177,8 +177,8 @@ in {
       # Nvidia recommends open source on latest drivers
       nvidia.open = true;
 
-      opengl.enable = true;
-      opengl.extraPackages = with pkgs; [
+      graphics.enable = true;
+      graphics.extraPackages = with pkgs; [
         mpi
         linuxPackages.nvidia_x11
         cudatoolkit

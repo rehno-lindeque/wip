@@ -48,7 +48,7 @@ in {
     ];
 
     hardware = {
-      opengl.enable = true;
+      graphics.enable = true;
 
       # Sound output doesn't work right now, but we want it to
       pulseaudio.enable = true;
