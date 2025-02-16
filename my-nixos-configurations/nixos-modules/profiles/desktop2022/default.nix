@@ -38,6 +38,10 @@ in {
       # nvme is required in order to mount the root file system during boot
       "nvme"
     ];
+    boot.kernelModules = [
+      # Fails to lazy load with the opensource driver (see https://github.com/NixOS/nixpkgs/issues/334180)
+      "nvidia-uvm"
+    ];
 
     # We don't want /tmp to be persisted, but it is on persistent storage due to lack of tmpfs storage space
     boot.tmp.cleanOnBoot = true;
