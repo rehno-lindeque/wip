@@ -72,6 +72,15 @@ in {
               # Enable fzf bash integration
               fzf.enableBashIntegration = true;
 
+              # A more readable font in the terminal
+              kitty.settings = {
+                font_size = 14;
+                font_family = "family='SauceCodePro Nerd Font Mono' style=Medium";
+                editor = "nvim";
+                enabled_layouts = "tall:bias=70;full_size=1,tall:bias=70;full_size=2";
+              };
+              kitty.themeFile = "Bright_Lights";
+
               starship = {
                 enable = true;
                 enableBashIntegration = true;
