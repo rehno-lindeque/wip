@@ -78,6 +78,10 @@ in {
                 font_family = "family='SauceCodePro Nerd Font Mono' style=Medium";
                 editor = "nvim";
                 enabled_layouts = "tall:bias=70;full_size=1,tall:bias=70;full_size=2";
+                window_margin_width = 1;
+                window_margin_padding = 1;
+                draw_minimal_borders = false;
+                inactive_border_color = "#000000";
               };
               kitty.themeFile = "Bright_Lights";
 
