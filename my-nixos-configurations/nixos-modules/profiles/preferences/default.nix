@@ -319,9 +319,6 @@ in {
             bash = {
               # Auto-completion in bash (See https://github.com/nix-community/home-manager/issues/1464)
               # enableCompletion = true;
-
-              # Prefix bash commands with a space character to avoid adding them to recorded history
-              historyControl = ["ignorespace"];
             };
             neovim = {
               viAlias = true;
