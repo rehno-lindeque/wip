@@ -642,7 +642,7 @@ in {
         services.xserver.dpi = 144;
         services.xserver.xkb.layout = "us";
         services.xserver.xkb.variant = "norman";
-        services.xserver.xkb.options = "terminate:ctrl_alt_bksp, caps:escape";
+        services.xserver.xkb.options = "terminate:ctrl_alt_bksp, caps:hyper";
 
         # see https://wiki.archlinux.org/index.php/AMDGPU
         # see https://en.wikipedia.org/wiki/List_of_AMD_graphics_processing_units#Volcanic_Islands_.
