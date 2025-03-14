@@ -72,16 +72,35 @@ in {
               # Enable fzf bash integration
               fzf.enableBashIntegration = true;
 
-              # A more readable font in the terminal
               kitty.settings = {
+                # A more readable font in the terminal
                 font_size = 14;
                 font_family = "family='SauceCodePro Nerd Font Mono' style=Medium";
                 editor = "nvim";
+
+                # I only use two tall layout variations
                 enabled_layouts = "tall:bias=70;full_size=1,tall:bias=70;full_size=2";
+
+                # Make it easier to distiguish which window is active
                 window_margin_width = 1;
                 window_margin_padding = 1;
                 draw_minimal_borders = false;
                 inactive_border_color = "#000000";
+                active_border_color = "#ffddaa";
+
+                # Mod key that works with the caps:hyper xkb option
+                kitty_mod = "hyper";
+              };
+              kitty.keybindings = {
+                # Mappings that work well with my norman keyboard layout
+                "kitty_mod+n" = "next_window";
+                "kitty_mod+i" = "previous_window";
+                "kitty_mod+shift+n" = "move_window_forward";
+                "kitty_mod+shift+i" = "move_window_backward";
+
+                # Common in other terminals, muscle memory is strong
+                "ctrl+shift+c" = "copy_to_clipboard";
+                "ctrl+shift+v" = "paste_from_clipboard";
               };
               kitty.themeFile = "Bright_Lights";
 
