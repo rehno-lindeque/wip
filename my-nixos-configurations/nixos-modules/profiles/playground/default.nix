@@ -738,15 +738,15 @@ in {
           "100.102.213.117" = ["macbookpro2017"];
 
           # Broken name resolution due to Tailscale MagicDNS not working
-          "100.79.57.124" = ["server.tiger-jazz.ts.net" "pnp.circuithub" "nomad.tiger-jazz.ts.net"];
-          "100.65.218.115" = ["grid" "grid.tiger-jazz.ts.net"];
-          "100.93.41.109" = ["internal.tiger-jazz.ts.net"];
+          "100.79.57.124" = ["server.tiger-jazz.ts.net" "pnp.circuithub" "nomad.circuithub"];
+          "100.65.218.115" = ["grid" "grid.tiger-jazz.ts.net" "grid.circuithub"];
+          "100.93.41.109" = ["internal.tiger-jazz.ts.net" "internal.circuithub"];
           "100.77.224.145" = ["gpu-server.tiger-jazz.ts.net" "programming.circuithub"];
           "100.89.205.66" = ["kitting" "kitting.circuithub"];
-          "100.116.83.12" = ["label-studio.tiger-jazz.ts.net"];
-          "100.122.216.16" = ["docker-registry.tiger-jazz.ts.net"];
-          "100.124.61.62" = ["pico-server-02.tiger-jazz.ts.net"];
-          "100.123.219.7" = ["mlflow.tiger-jazz.ts.net"];
+          "100.116.83.12" = ["label-studio.tiger-jazz.ts.net" "label-studio.circuithub"];
+          "100.122.216.16" = ["docker-registry.tiger-jazz.ts.net" "docker-registry.circuithub"];
+          "100.124.61.62" = ["pico-server-02.tiger-jazz.ts.net" "rabbitmq.circuithub"];
+          "100.123.219.7" = ["mlflow.tiger-jazz.ts.net" "mlflow.circuithub"];
         };
 
         system.nixos.tags = ["linux-${config.boot.kernelPackages.kernel.version}"];
