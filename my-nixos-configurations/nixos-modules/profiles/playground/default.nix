@@ -698,6 +698,9 @@ in {
         # Grant group access to the keyboard backlight.
         # hardware.macbook.leds.enable = true;
 
+        # Brightness control via xbacklight (with video user group)
+        hardware.acpilight.enable = true;
+
         # disable sd card reader to save on battery (enabled by default)
         # hardware.hardware.macbook.sdCardReader.enable = false;
         # hardware.hardware.macbook.sdCardReader.enable = true;

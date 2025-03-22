@@ -86,6 +86,9 @@ in {
 
         # Access ipfs data dir (seemingly needed for pinning files)
         # "ipfs"
+
+        # Allow backlight control (see /etc/udev/rules.d/90-backlight.rules)
+        "video"
       ];
       isNormalUser = true;
       useDefaultShell = true;
