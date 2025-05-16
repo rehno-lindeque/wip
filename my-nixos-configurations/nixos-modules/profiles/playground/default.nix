@@ -318,7 +318,7 @@ in {
               exit 0
             fi
 
-            ${tailscale}/bin/tailscale up --accept-routes
+            ${tailscale}/bin/tailscale up --accept-routes --accept-dns
           '';
         };
 

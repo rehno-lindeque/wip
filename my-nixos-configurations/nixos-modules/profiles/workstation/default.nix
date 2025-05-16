@@ -129,6 +129,11 @@ in {
 
     services = {
       tailscale.enable = lib.mkDefault true;
+      tailscale.useRoutingFeatures = "client";
+      tailscale.extraUpFlags = [
+        "--accept-routes"
+        "--accept-dns"
+      ];
       tor.enable = lib.mkDefault true;
       tor.client.enable = lib.mkDefault true;
     };
