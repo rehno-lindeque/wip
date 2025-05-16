@@ -210,6 +210,7 @@
         "nixos-impermanence": "nixos-impermanence",
         "nixpkgs-stable": "nixpkgs-stable",
         "nixpkgs-unstable": "nixpkgs-unstable",
+        "voxinput": "voxinput",
         "vscode-server": "vscode-server"
       }
     },
@@ -225,6 +226,26 @@
       "original": {
         "owner": "nix-systems",
         "repo": "default",
+        "type": "github"
+      }
+    },
+    "voxinput": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs-stable"
+        ]
+      },
+      "locked": {
+        "lastModified": 1747079447,
+        "narHash": "sha256-d6WPE/UwIRUIDg97MbMjFKHAGQh6ldd1kmGjP6s1cgM=",
+        "owner": "richiejp",
+        "repo": "VoxInput",
+        "rev": "20c0bc70aab93334b8a4cf23fd2c60b3bbdd9f13",
+        "type": "github"
+      },
+      "original": {
+        "owner": "richiejp",
+        "repo": "VoxInput",
         "type": "github"
       }
     },

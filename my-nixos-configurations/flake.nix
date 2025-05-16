@@ -11,6 +11,7 @@
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-24.11";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     nix-colors.url = "github:misterio77/nix-colors";
+    voxinput.url = "github:richiejp/VoxInput";
 
     # Redirect inputs
     circuithub-nixos-configurations.inputs = {
@@ -27,6 +28,7 @@
     vscode-server.inputs = {
       nixpkgs.follows = "nixpkgs-stable";
     };
+    voxinput.inputs.nixpkgs.follows = "nixpkgs-stable";
   };
 
   outputs = {
