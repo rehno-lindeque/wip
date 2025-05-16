@@ -11,6 +11,7 @@
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-24.11";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     nix-colors.url = "github:misterio77/nix-colors";
+    vscode-server.url = "github:nix-community/nixos-vscode-server";
     voxinput.url = "github:richiejp/VoxInput";
 
     # Redirect inputs
@@ -24,7 +25,6 @@
       impermanence.follows = "impermanence";
     };
     nix-colors.inputs.nixpkgs-lib.follows = "nixpkgs-stable";
-    vscode-server.url = "github:nix-community/nixos-vscode-server";
     vscode-server.inputs = {
       nixpkgs.follows = "nixpkgs-stable";
     };
