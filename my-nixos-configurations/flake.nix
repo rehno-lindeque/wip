@@ -132,6 +132,7 @@
           self.nixosModules.default
           self.inputs.nixos-hardware.nixosModules.apple-macbook-pro-11-5
           self.inputs.nixos-hardware.nixosModules.common-gpu-amd-southern-islands
+          self.nixosModules.whisper
           {profiles.macbookpro2017.enable = true;}
         ];
         specialArgs = {flake = self;};

@@ -2,6 +2,7 @@
   config,
   lib,
   pkgs,
+  flake,
   ...
 }: let
   cfg = config.profiles.macbookpro2017;
@@ -182,6 +183,11 @@ in {
       max_temp = 78;
       min_fan1_speed = 3000;
     };
+
+    # Local speech recognition for use with voxinput
+    services.whisper.enable = true;
+    services.whisper.port = 8082;
+    services.whisper.inferencePath = "/v1/audio/transcriptions";
 
     # Run lightdm on this computer
     services.xserver.enable = true;
