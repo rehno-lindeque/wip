@@ -233,19 +233,20 @@
     "voxinput": {
       "inputs": {
         "nixpkgs": [
-          "nixpkgs-stable"
+          "nixpkgs-unstable"
         ]
       },
       "locked": {
-        "lastModified": 1747079447,
-        "narHash": "sha256-d6WPE/UwIRUIDg97MbMjFKHAGQh6ldd1kmGjP6s1cgM=",
-        "owner": "richiejp",
+        "lastModified": 1747950669,
+        "narHash": "sha256-RLOJlYqbyzM3zjDKJKRmQqHqaZIp8zZw8KflWlmg7Uk=",
+        "owner": "rehno-lindeque",
         "repo": "VoxInput",
-        "rev": "20c0bc70aab93334b8a4cf23fd2c60b3bbdd9f13",
+        "rev": "79102ce81258493c85e9a7ed4b28327fb9813318",
         "type": "github"
       },
       "original": {
-        "owner": "richiejp",
+        "owner": "rehno-lindeque",
+        "ref": "patch-1",
         "repo": "VoxInput",
         "type": "github"
       }

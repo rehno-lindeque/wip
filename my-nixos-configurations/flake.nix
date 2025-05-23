@@ -12,7 +12,10 @@
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     nix-colors.url = "github:misterio77/nix-colors";
     vscode-server.url = "github:nix-community/nixos-vscode-server";
-    voxinput.url = "github:richiejp/VoxInput";
+    voxinput.url =
+      # "github:richiejp/VoxInput";
+      # Temporarily increase the timeout to 300 seconds
+      "github:rehno-lindeque/VoxInput/patch-1";
     whisper-model = {
       url = "https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-base.en.bin";
       flake = false;
@@ -32,7 +35,7 @@
     vscode-server.inputs = {
       nixpkgs.follows = "nixpkgs-stable";
     };
-    voxinput.inputs.nixpkgs.follows = "nixpkgs-stable";
+    voxinput.inputs.nixpkgs.follows = "nixpkgs-unstable";
   };
 
   outputs = {

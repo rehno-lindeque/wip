@@ -654,6 +654,11 @@ in {
 
           # Gui based diff for source files
           # diffuse
+
+          # Voice input
+          # TODO: compare https://github.com/Quoteme/whisper-input
+          # TODO: compare https://github.com/kylecarbs/whispertype
+          flake.inputs.voxinput.packages.x86_64-linux.default
         ];
 
         # TODO EVALUATE:
