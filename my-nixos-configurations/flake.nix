@@ -13,6 +13,10 @@
     nix-colors.url = "github:misterio77/nix-colors";
     vscode-server.url = "github:nix-community/nixos-vscode-server";
     voxinput.url = "github:richiejp/VoxInput";
+    whisper-model = {
+      url = "https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-base.en.bin";
+      flake = false;
+    };
 
     # Redirect inputs
     circuithub-nixos-configurations.inputs = {
@@ -88,6 +92,7 @@
       macbookpro2017 = import ./nixos-modules/profiles/macbookpro2017;
       nucbox2022 = import ./nixos-modules/profiles/nucbox2022;
       # installer = import ./nixos-modules/profiles/installer;
+      whisper = import ./nixos-modules/whisper;
       default = {
         imports = [
           common

@@ -211,7 +211,8 @@
         "nixpkgs-stable": "nixpkgs-stable",
         "nixpkgs-unstable": "nixpkgs-unstable",
         "voxinput": "voxinput",
-        "vscode-server": "vscode-server"
+        "vscode-server": "vscode-server",
+        "whisper-model": "whisper-model"
       }
     },
     "systems": {
@@ -268,6 +269,18 @@
         "owner": "nix-community",
         "repo": "nixos-vscode-server",
         "type": "github"
+      }
+    },
+    "whisper-model": {
+      "flake": false,
+      "locked": {
+        "narHash": "sha256-GAB264l2IAVelq2iA4yhEEaAZvWI7gfxA8zVU9Wcatw=",
+        "type": "file",
+        "url": "https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-base.en.bin"
+      },
+      "original": {
+        "type": "file",
+        "url": "https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-base.en.bin"
       }
     }
   },
