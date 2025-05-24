@@ -95,6 +95,7 @@
       macbookpro2017 = import ./nixos-modules/profiles/macbookpro2017;
       nucbox2022 = import ./nixos-modules/profiles/nucbox2022;
       # installer = import ./nixos-modules/profiles/installer;
+      dotool = import ./nixos-modules/dotool;
       whisper = import ./nixos-modules/whisper;
       default = {
         imports = [
