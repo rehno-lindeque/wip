@@ -57,6 +57,12 @@ in {
         description = "Transcription prompt, see https://cookbook.openai.com/examples/whisper_prompting_guide";
         default = "";
       };
+
+      convert = mkOption {
+        type = types.bool;
+        description = "Use ffmpeg to convert file formats automatically";
+        default = false;
+      };
     };
   };
 
@@ -66,20 +72,20 @@ in {
         description = "Whisper Server";
         wantedBy = [ "multi-user.target" ];
         after = [ "network.target" ];
-        path = [ pkgs.ffmpeg ];
+        path = lib.optional cfg.convert pkgs.ffmpeg;
 
         serviceConfig = {
           User = cfg.user;
           Group = cfg.group;
-          ExecStart = ''
-            ${cfg.package}/bin/whisper-cpp-server \
-              --model ${cfg.model} \
-              --prompt '${cfg.prompt}' \
-              --host ${cfg.host} \
-              --port ${toString cfg.port} \
-              --inference-path ${toString cfg.inferencePath} \
-              --convert
-          '';
+          ExecStart =
+            lib.concatStringsSep "\\\n  " ([
+              "${cfg.package}/bin/whisper-cpp-server"
+              "--model ${cfg.model}"
+              "--prompt '${cfg.prompt}'"
+              "--host ${cfg.host}"
+              "--port ${toString cfg.port}"
+              "--inference-path ${toString cfg.inferencePath}"
+            ] ++ lib.optional cfg.convert "--convert");
           Restart = "always";
           RestartSec = "10";
           Type = "simple";
