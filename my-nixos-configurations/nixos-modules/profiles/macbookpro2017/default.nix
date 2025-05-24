@@ -189,6 +189,9 @@ in {
     services.whisper.port = 8082;
     services.whisper.inferencePath = "/v1/audio/transcriptions";
 
+    # Input emulation and automation
+    services.dotool.enable = true;
+
     # Run lightdm on this computer
     services.xserver.enable = true;
     services.xserver.displayManager.lightdm.enable = true;
@@ -215,6 +218,11 @@ in {
 
       # IDE
       pkgs.code-cursor
+    ];
+
+    users.users.me.extraGroups = [
+      # Allow communications with dotoold
+      "dotool"
     ];
   };
 }
