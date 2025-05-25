@@ -596,13 +596,10 @@ in {
           # "atkbd"
         ];
 
-        fonts.packages = let
-          nerdfonts = pkgs.nerdfonts.override {
-            fonts = [
-              "SourceCodePro"
-            ];
-          };
-        in [nerdfonts];
+        fonts.packages = [
+          pkgs.nerd-fonts.sauce-code-pro
+        ];
+
         fonts.enableDefaultPackages = true;
 
         services.pipewire = {

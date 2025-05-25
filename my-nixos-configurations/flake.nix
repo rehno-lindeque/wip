@@ -2,13 +2,13 @@
   inputs = {
     circuithub-nixos-configurations.url = "git+ssh://git@github.com/circuithub/nixos-configurations.git";
     flake-help.url = "github:rehno-lindeque/flake-help";
-    home-manager.url = "github:nix-community/home-manager/release-24.11";
+    home-manager.url = "github:nix-community/home-manager/release-25.05";
     impermanence.url = "github:nix-community/impermanence";
     # nixos-hardware.url = "github:rehno-lindeque/nixos-hardware/mediatek/mt7921k";
     nixos-hardware.url = "github:nixos/nixos-hardware";
     nixos-impermanence.url = "github:rehno-lindeque/nixos-impermanence";
     # nixpkgs-shim.url = "path:/home/me/projects/nixpkgs-shim";
-    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-24.11";
+    nixpkgs-stable.url = "github:nixos/nixpkgs/6aaa3618ae99d72a2bfa8de218669ad5a42ed182?branch=nixos-25.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     nix-colors.url = "github:misterio77/nix-colors";
     vscode-server.url = "github:nix-community/nixos-vscode-server";
@@ -35,7 +35,7 @@
     vscode-server.inputs = {
       nixpkgs.follows = "nixpkgs-stable";
     };
-    voxinput.inputs.nixpkgs.follows = "nixpkgs-unstable";
+    voxinput.inputs.nixpkgs.follows = "nixpkgs-stable";
   };
 
   outputs = {

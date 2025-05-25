@@ -24,13 +24,13 @@ in {
 
       port = mkOption {
         type = types.int;
-        description = "Port to bind whisper-cpp-server";
+        description = "Port to bind whisper-server";
         default = 8080;
       };
 
       host = mkOption {
         type = types.str;
-        description = "Host to bind whisper-cpp-server";
+        description = "Host to bind whisper-server";
         default = "localhost";
       };
 
@@ -68,7 +68,7 @@ in {
 
   config = lib.mkMerge [
     (lib.mkIf cfg.enable {
-      systemd.services.whisper-cpp-server = {
+      systemd.services.whisper-server = {
         description = "Whisper Server";
         wantedBy = [ "multi-user.target" ];
         after = [ "network.target" ];
@@ -79,6 +79,7 @@ in {
           Group = cfg.group;
           ExecStart =
             lib.concatStringsSep "\\\n  " ([
+              # "${cfg.package}/bin/whisper-server"
               "${cfg.package}/bin/whisper-cpp-server"
               "--model ${cfg.model}"
               "--prompt '${cfg.prompt}'"
