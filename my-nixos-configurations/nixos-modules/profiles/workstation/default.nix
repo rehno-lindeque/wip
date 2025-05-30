@@ -129,8 +129,6 @@ in {
 
     services = {
       tailscale.enable = lib.mkDefault true;
-      tor.enable = lib.mkDefault true;
-      tor.client.enable = lib.mkDefault true;
     };
 
     # Security
