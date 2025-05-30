@@ -221,6 +221,9 @@ in {
 
       # IDE
       pkgs.code-cursor
+
+      # LLM
+      pkgs.llm
     ];
 
     users.users.me.extraGroups = [
