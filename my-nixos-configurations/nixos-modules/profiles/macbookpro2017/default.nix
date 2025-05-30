@@ -184,6 +184,9 @@ in {
       min_fan1_speed = 3000;
     };
 
+    # Multiplex IDE, voice transcription, LLM, etc communication
+    services.mymux.enable = true;
+
     # Local speech recognition for use with voxinput
     services.whisper.enable = true;
     services.whisper.port = 8082;

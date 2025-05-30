@@ -138,6 +138,7 @@
           self.inputs.nixos-hardware.nixosModules.apple-macbook-pro-11-5
           self.inputs.nixos-hardware.nixosModules.common-gpu-amd-southern-islands
           self.nixosModules.dotool
+          self.nixosModules.mymux
           self.nixosModules.whisper
           {profiles.macbookpro2017.enable = true;}
         ];
