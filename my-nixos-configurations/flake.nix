@@ -2,6 +2,7 @@
   inputs = {
     circuithub-nixos-configurations.url = "git+ssh://git@github.com/circuithub/nixos-configurations.git";
     flake-help.url = "github:rehno-lindeque/flake-help";
+    flake-utils.url = "github:numtide/flake-utils";
     home-manager.url = "github:nix-community/home-manager/release-25.05";
     impermanence.url = "github:nix-community/impermanence";
     # nixos-hardware.url = "github:rehno-lindeque/nixos-hardware/mediatek/mt7921k";
@@ -30,6 +31,7 @@
     nix-colors.inputs.nixpkgs-lib.follows = "nixpkgs-stable";
     vscode-server.inputs = {
       nixpkgs.follows = "nixpkgs-stable";
+      flake-utils.follows = "flake-utils";
     };
     voxinput.inputs.nixpkgs.follows = "nixpkgs-stable";
   };
