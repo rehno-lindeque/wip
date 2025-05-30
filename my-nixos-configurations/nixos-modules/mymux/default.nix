@@ -14,7 +14,7 @@ in
       addresses = {
         output = mkOption {
           type = types.str;
-          default = "UNIX-LISTEN:/run/mymux/out.sock,fork,mode=0666";
+          default = "UNIX-LISTEN:/run/mymux/llm-advisor.sock,fork,mode=0666";
           description = "socat address specification for output";
         };
         code = mkOption {
@@ -36,9 +36,9 @@ in
       description = "My personal multiplex conversation router";
 
       # To test this service run these in different terminals
-      # socat - UNIX-CONNECT:/run/mymux/code.sock
-      # socat - UNIX-CONNECT:/run/mymux/transcript.sock
-      # socat - UNIX-CONNECT:/run/mymux/out.sock
+      # socat -u - UNIX-CONNECT:/run/mymux/code.sock
+      # socat -u - UNIX-CONNECT:/run/mymux/transcript.sock
+      # socat -u UNIX-CONNECT:/run/mymux/llm-advisor.sock -
 
       path = [
         pkgs.socat

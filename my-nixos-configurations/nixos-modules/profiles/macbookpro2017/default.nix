@@ -161,6 +161,14 @@ in {
     programs._1password-gui.enable = true;
 
     programs.llm.enable = true;
+    programs.llm.agents.advisor = {
+      instructions = ''
+        Your role is super-intelligent code editor. Expect code snippets
+        accompanied by transcribed speech. Respond briefly via bite-sized
+        extremely concise answers.
+      '';
+      relay = "UNIX-CONNECT:/run/mymux/llm-advisor.sock";
+    };
 
     # GUI for asking for ssh password (for code-cursor / vscode)
     programs.ssh.enableAskPassword = true;
