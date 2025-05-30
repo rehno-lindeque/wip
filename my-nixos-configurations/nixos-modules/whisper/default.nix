@@ -49,7 +49,10 @@ in {
       model = mkOption {
         type = types.path;
         description = "The whisper.cpp model to use";
-        default = flake.inputs.whisper-model;
+        default = pkgs.fetchurl {
+          url = "https://huggingface.co/ggerganov/whisper.cpp/resolve/5359861c739e955e79d9a303bcbc70fb988958b1/ggml-base.en.bin";
+          sha256 = "sha256-oDd5yG3zMjB19eeWyyzlAp8A7Ihp7uP9+4l6/jbG0AI=";
+        };
       };
 
       prompt = mkOption {

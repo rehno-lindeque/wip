@@ -271,18 +271,6 @@
         "repo": "nixos-vscode-server",
         "type": "github"
       }
-    },
-    "whisper-model": {
-      "flake": false,
-      "locked": {
-        "narHash": "sha256-GAB264l2IAVelq2iA4yhEEaAZvWI7gfxA8zVU9Wcatw=",
-        "type": "file",
-        "url": "https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-base.en.bin"
-      },
-      "original": {
-        "type": "file",
-        "url": "https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-base.en.bin"
-      }
     }
   },
   "root": "root",

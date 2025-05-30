@@ -16,10 +16,6 @@
       # "github:richiejp/VoxInput";
       # Temporarily increase the timeout to 300 seconds
       "github:rehno-lindeque/VoxInput/patch-1";
-    whisper-model = {
-      url = "https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-base.en.bin";
-      flake = false;
-    };
 
     # Redirect inputs
     circuithub-nixos-configurations.inputs = {
