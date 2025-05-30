@@ -94,6 +94,7 @@
       nucbox2022 = import ./nixos-modules/profiles/nucbox2022;
       # installer = import ./nixos-modules/profiles/installer;
       dotool = import ./nixos-modules/dotool;
+      llm = import ./nixos-modules/llm;
       mymux = import ./nixos-modules/mymux;
       whisper = import ./nixos-modules/whisper;
       default = {
