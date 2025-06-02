@@ -201,6 +201,10 @@ in {
     services.whisper.enable = true;
     services.whisper.port = 8082;
     services.whisper.inferencePath = "/v1/audio/transcriptions";
+    services.whisper.model = pkgs.fetchurl {
+      url = "https://huggingface.co/ggerganov/whisper.cpp/resolve/5359861c739e955e79d9a303bcbc70fb988958b1/ggml-tiny.en-q8_0.bin";
+      sha256 = "sha256-W8KzhgqhUaTG57sJXh/M588Sx7Agygjc7AxtAYu33ZQ=";
+    };
 
     # Input emulation and automation
     services.dotool.enable = true;
