@@ -1,6 +1,7 @@
 {
   inputs = {
     circuithub-nixos-configurations.url = "git+ssh://git@github.com/circuithub/nixos-configurations.git";
+    clump.url = "github:rehno-lindeque/clump";
     flake-help.url = "github:rehno-lindeque/flake-help";
     flake-utils.url = "github:numtide/flake-utils";
     home-manager.url = "github:nix-community/home-manager/release-25.05";
@@ -19,6 +20,7 @@
       "github:rehno-lindeque/VoxInput/patch-1";
 
     # Redirect inputs
+    clump.inputs.nixpkgs.follows = "nixpkgs-stable";
     circuithub-nixos-configurations.inputs = {
       nixpkgs.follows = "nixpkgs-stable";
       flake-help.follows = "flake-help";

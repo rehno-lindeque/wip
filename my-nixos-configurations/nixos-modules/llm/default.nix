@@ -1,10 +1,14 @@
 {
+  flake,
   config,
   lib,
   pkgs,
   ...
 }: let
   cfg = config.programs.llm;
+
+  # inherit (pkgs.localSystem) system;
+  inherit (pkgs) system;
 
   agent = with lib;
     types.submodule {
@@ -46,10 +50,22 @@ in {
   config = lib.mkIf cfg.enable {
     environment.systemPackages = let
       mkLauncher = name: spec:
-        pkgs.writeShellScriptBin "llm-${name}" (
-          lib.optionalString (spec.relay != null) ''exec ${pkgs.socat}/bin/socat -u ${spec.relay} - |''
-          + ''${cfg.package}/bin/llm chat --system ${lib.escapeShellArg spec.instructions} "$@"''
-        );
+        pkgs.writeShellApplication {
+          name = "llm-${name}";
+          runtimeInputs = [
+            cfg.package
+            pkgs.socat
+            flake.inputs.clump.packages.${system}.clump
+          ];
+          text = ''
+            ${lib.optionalString
+              (spec.relay != null)
+              "exec socat -u ${spec.relay} - |"}
+            tee /dev/stderr |
+            clump --interval 3s --prefix '!multiline\n' --suffix '\n!end\n' |
+            llm chat --system ${lib.escapeShellArg spec.instructions} "$@"
+          '';
+        };
     in
       [
         cfg.package

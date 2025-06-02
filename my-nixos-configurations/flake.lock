@@ -39,6 +39,26 @@
         "url": "ssh://git@github.com/circuithub/nixos-configurations.git"
       }
     },
+    "clump": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs-stable"
+        ]
+      },
+      "locked": {
+        "lastModified": 1748834568,
+        "narHash": "sha256-tR6ynO1Ig/vjjXhJSfUyhppMR0rXFHWUuydrtcPX7FY=",
+        "owner": "rehno-lindeque",
+        "repo": "clump",
+        "rev": "824fd84fd7d67e0fc0d45ac6e44b455fec74470c",
+        "type": "github"
+      },
+      "original": {
+        "owner": "rehno-lindeque",
+        "repo": "clump",
+        "type": "github"
+      }
+    },
     "flake-help": {
       "locked": {
         "lastModified": 1643222028,
@@ -202,6 +222,7 @@
     "root": {
       "inputs": {
         "circuithub-nixos-configurations": "circuithub-nixos-configurations",
+        "clump": "clump",
         "flake-help": "flake-help",
         "flake-utils": "flake-utils",
         "home-manager": "home-manager",
