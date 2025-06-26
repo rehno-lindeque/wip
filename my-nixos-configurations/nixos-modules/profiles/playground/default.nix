@@ -749,6 +749,7 @@ in {
           "100.122.216.16" = ["docker-registry.tiger-jazz.ts.net" "docker-registry.circuithub"];
           "100.124.61.62" = ["pico-server-02.tiger-jazz.ts.net" "rabbitmq.circuithub"];
           "100.123.219.7" = ["mlflow.tiger-jazz.ts.net" "mlflow.circuithub"];
+          "100.74.164.43" = [ "grafana.tiger-jazz.ts.net" ];
         };
 
         system.nixos.tags = ["linux-${config.boot.kernelPackages.kernel.version}"];
