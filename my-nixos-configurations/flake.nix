@@ -1,5 +1,6 @@
 {
   inputs = {
+    apple-silicon-support.url = "github:nix-community/nixos-apple-silicon";
     circuithub-nixos-configurations.url = "git+ssh://git@github.com/circuithub/nixos-configurations.git";
     clump.url = "github:rehno-lindeque/clump";
     flake-help.url = "github:rehno-lindeque/flake-help";
@@ -20,6 +21,7 @@
       "github:rehno-lindeque/VoxInput/patch-1";
 
     # Redirect inputs
+    apple-silicon-support.inputs.nixpkgs.follows = "nixpkgs-stable";
     clump.inputs.nixpkgs.follows = "nixpkgs-stable";
     circuithub-nixos-configurations.inputs = {
       nixpkgs.follows = "nixpkgs-stable";
@@ -129,6 +131,15 @@
           self.nixosModules.default
           # self.inputs.nixos-hardware.nixosModules.mediatek-mt7921k
           {profiles.desktop2022.enable = true;}
+        ];
+        specialArgs = {flake = self;};
+      };
+      macbookpro2025 = lib.nixosSystem {
+        system = system.aarch64-linux;
+        modules = [
+          self.nixosModules.default
+          self.inputs.apple-silicon-support.nixosModules.apple-silicon-support
+          {profiles.macbookpro2025.enable = true;}
         ];
         specialArgs = {flake = self;};
       };
