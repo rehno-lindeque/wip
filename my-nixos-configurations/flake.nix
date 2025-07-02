@@ -42,7 +42,6 @@
 
   outputs = {
     self,
-    circuithub-nixos-configurations,
     flake-help,
     home-manager,
     impermanence,
@@ -115,7 +114,6 @@
           # installer
           impermanence.nixosModules.impermanence
           nixos-impermanence.nixosModules.default
-          circuithub-nixos-configurations.nixosModules.default
           home-manager.nixosModules.home-manager
           # nixpkgs-shim.nixosModules.default
           # nixpkgs-shim.inputs.nixpkgs-shim-images.nixosModules.isoImage
@@ -129,6 +127,7 @@
         system = system.x86_64-linux;
         modules = [
           self.nixosModules.default
+          self.inputs.circuithub-nixos-configurations.nixosModules.default
           # self.inputs.nixos-hardware.nixosModules.mediatek-mt7921k
           {profiles.desktop2022.enable = true;}
         ];
@@ -147,6 +146,7 @@
         system = system.x86_64-linux;
         modules = [
           self.nixosModules.default
+          self.inputs.circuithub-nixos-configurations.nixosModules.default
           self.inputs.nixos-hardware.nixosModules.apple-macbook-pro-11-5
           self.inputs.nixos-hardware.nixosModules.common-gpu-amd-southern-islands
           self.nixosModules.dotool
@@ -161,6 +161,7 @@
         system = system.x86_64-linux;
         modules = [
           self.nixosModules.default
+          self.inputs.circuithub-nixos-configurations.nixosModules.default
           {profiles.nucbox2022.enable = true;}
         ];
         specialArgs = {flake = self;};
