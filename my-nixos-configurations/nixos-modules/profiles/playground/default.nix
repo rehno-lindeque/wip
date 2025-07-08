@@ -750,6 +750,7 @@ in {
           "100.124.61.62" = ["pico-server-02.tiger-jazz.ts.net" "rabbitmq.circuithub"];
           "100.123.219.7" = ["mlflow.tiger-jazz.ts.net" "mlflow.circuithub"];
           "100.74.164.43" = [ "grafana.tiger-jazz.ts.net" ];
+          "100.68.25.95" = ["aoi-viewer.tiger-jazz.ts.net" "aoi-viewer.circuithub"];
         };
 
         system.nixos.tags = ["linux-${config.boot.kernelPackages.kernel.version}"];
