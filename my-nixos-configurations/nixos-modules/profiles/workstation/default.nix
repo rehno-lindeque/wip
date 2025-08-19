@@ -33,6 +33,9 @@ in {
         programs = {
           bash.enable = true;
 
+          # Coding assistant
+          claude-code.enable = true;
+
           # Fuzzy find file names
           fzf.enable = lib.mkDefault true;
 
