@@ -128,6 +128,10 @@
         modules = [
           self.nixosModules.default
           self.inputs.circuithub-nixos-configurations.nixosModules.default
+          self.nixosModules.dotool
+          self.nixosModules.llm
+          self.nixosModules.mymux
+          self.nixosModules.whisper
           # self.inputs.nixos-hardware.nixosModules.mediatek-mt7921k
           {profiles.desktop2022.enable = true;}
         ];
