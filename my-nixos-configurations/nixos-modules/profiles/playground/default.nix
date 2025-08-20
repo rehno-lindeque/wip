@@ -745,7 +745,7 @@ in {
           "100.93.41.109" = ["internal.tiger-jazz.ts.net" "internal.circuithub"];
           "100.116.162.39" = ["pnp-programming.tiger-jazz.ts.net" "pnp-programming.circuithub" "programming.circuithub"];
           "100.89.205.66" = ["kitting" "kitting.circuithub"];
-          "100.116.83.12" = ["label-studio.tiger-jazz.ts.net" "label-studio.circuithub"];
+          "100.118.198.38" = ["label-studio.tiger-jazz.ts.net" "label-studio.circuithub"];
           "100.122.216.16" = ["docker-registry.tiger-jazz.ts.net" "docker-registry.circuithub"];
           "100.124.61.62" = ["pico-server-02.tiger-jazz.ts.net" "rabbitmq.circuithub"];
           "100.123.219.7" = ["mlflow.tiger-jazz.ts.net" "mlflow.circuithub"];
