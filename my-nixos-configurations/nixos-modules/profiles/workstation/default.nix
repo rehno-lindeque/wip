@@ -33,8 +33,58 @@ in {
         programs = {
           bash.enable = true;
 
-          # Coding assistant
+          # Coding assistants
           claude-code.enable = true;
+          claude-code.commands = {
+            todo = ''
+              ---
+              description: Add TODO's to the code
+              ---
+              Reflect on this rough list of things that need doing: $ARGUMENTS
+
+              Work out what we are trying to achieve and what code paths are relevant. Then carefully place TODO comments in the most relevant spots where those changes are likely to be implemented.
+            '';
+            reflect = ''
+              ---
+              description: Reflect on the best way to implement something.
+              ---
+              Reflect on this next task:
+
+              $ARGUMENTS
+
+              Can you please give me a few different options that covers the entire design space well? Order them from most likely to least likely.
+            '';
+            refactor = ''
+              ---
+              description: Reflect on the best refactor for achieving the next tasks.
+              ---
+              Reflect on the next tasks that need to be done. What problems will we run into if we try to implement them with the current state of our implementation?
+
+              Instead of tackling the next task directly, let's refactor the code at an architectural level in order to support the next change(s) we'll need to make.
+
+              Can you please propose a few different options that covers the entire design space well? Order them from most likely to least likely.
+            '';
+            deep-reflect = ''
+              ---
+              description: Reflect on the best way to implement something.
+              ---
+              Reflect on this next task:
+
+              $ARGUMENTS
+
+              Can you please give me a few different options that covers the entire design space well? Order them from most likely to least likely.
+
+              Finally, once you are done, take a step back and consider if this is even the right thing to be working on? Is there an unexpectedly simple approach to solving the high level problem that we're not considering?
+            '';
+          };
+          claude-code.mcpServers.github = {
+            type = "http";
+            url = "https://api.githubcopilot.com/mcp/";
+          };
+          claude-code.settings = {
+            includeCoAuthoredBy = false;
+          };
+          codex.enable = true;
 
           # Fuzzy find file names
           fzf.enable = lib.mkDefault true;
