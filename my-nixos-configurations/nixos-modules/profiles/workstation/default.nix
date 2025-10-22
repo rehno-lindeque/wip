@@ -76,6 +76,12 @@ in {
 
               Finally, once you are done, take a step back and consider if this is even the right thing to be working on? Is there an unexpectedly simple approach to solving the high level problem that we're not considering?
             '';
+            provenance = ''
+              ---
+              description: Show a trace of the control flow as pseudo-code
+              ---
+              Please trace the flow of $ARGUMENTS through the code and show it to me as pseudo-code.
+            '';
           };
           claude-code.mcpServers.github = {
             type = "http";
