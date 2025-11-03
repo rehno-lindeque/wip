@@ -214,6 +214,8 @@ in {
     networking.firewall.interfaces.tailscale0.allowedTCPPorts = [
       # The default port for tensorboard
       6006
+      # The default port for aim-ui
+      43800
       # Ports used for software development
       8080
       8081
