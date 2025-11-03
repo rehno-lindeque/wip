@@ -301,7 +301,7 @@ in {
         }
         # accessible via LAN ip
         {
-          addr = "192.168.1.8";
+          addr = "192.168.8.0/24";
           port = 22;
         }
       ];
