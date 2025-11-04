@@ -1,4 +1,3 @@
-local lspconfig = require('lspconfig')
 
 -- TODO buffer attached keymaps don't register with WhichKey
 
@@ -56,14 +55,14 @@ local flags = {
 }
 
 -- Set up each language server: Nix configuration language
-lspconfig.nixd.setup({
+vim.lsp.configs('nixd', {
   on_attach = on_attach,
   autostart = true,
   flags = flags,
 })
 
 -- Set up each language server: Haskell programming language
-lspconfig.hls.setup({
+vim.lsp.config('hls', {
   on_attach = on_attach,
   autostart = true,
   flags = flags,
@@ -80,14 +79,14 @@ lspconfig.hls.setup({
 })
 
 -- Set up each language server: Lua programming language
-lspconfig.lua_ls.setup({
+vim.lsp.config('lua_ls', {
   on_attach = on_attach,
   autostart = true,
   flags = flags,
 })
 
 -- Set up each language server: Elm programming language
-lspconfig.elmls.setup({
+vim.lsp.config('elmls', {
   on_attach = on_attach,
   autostart = true,
   flags = flags,
@@ -95,7 +94,7 @@ lspconfig.elmls.setup({
 
 -- Set up each language server: Python programming language
 -- TODO
--- lspconfig.pyright.setup { on_attach = on_attach, autostart = false }
--- lspconfig.python-lsp-server.setup { on_attach = on_attach, autostart = false }
--- lspconfig.pylsp.setup { on_attach = on_attach, autostart = false }
+-- vim.lsp.config('pyright', { on_attach = on_attach, autostart = false }
+-- vim.lsp.config('python-lsp-server', { on_attach = on_attach, autostart = false }
+-- vim.lsp.config('pylsp', { on_attach = on_attach, autostart = false }
 
