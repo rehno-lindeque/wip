@@ -223,6 +223,20 @@ in {
       3000
     ];
 
+    # Use Cloudflare DNS resolver because it's fairly fast and robust
+    # networking.networkmanager.insertNameservers = ["1.1.1.1" "1.0.0.1"];
+    networking.nameservers = ["1.1.1.1" "1.0.0.1"];
+    networking.networkmanager.dns = "systemd-resolved";
+
+    # Replace resolveconf.service with systemd-resolved.service for per-domain DNS routing so that everything doesn't go through tailscale MagicDNS
+    networking.resolvconf.enable = false;
+    services.resolved.enable = true;
+    services.resolved.fallbackDns = [
+      # Google Public DNS (8.8.8.8, 8.8.4.4)
+      "2001:4860:4860::8888"
+      "2001:4860:4860::8844"
+    ];
+
     # Add this flake to the local registry so that it's easy
     # to reference on the command line
     nix.registry = {
@@ -379,5 +393,4 @@ in {
       default_session = initial_session;
     };
   };
-
 }
