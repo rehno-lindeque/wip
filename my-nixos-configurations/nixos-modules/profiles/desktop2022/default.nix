@@ -190,6 +190,9 @@ in {
 
     networking.hostName = "desktop2022";
 
+    # Workaround for glibc/router issue
+    networking.resolvconf.dnsSingleRequest = true;
+
     # Wake up this computer from sleep by sending a magic packet
     # Check that each interface has wake-on-lan using ethtool
     networking.interfaces.eno1 = {
