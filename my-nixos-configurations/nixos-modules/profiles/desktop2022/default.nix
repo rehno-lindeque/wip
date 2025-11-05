@@ -190,25 +190,80 @@ in {
 
     networking.hostName = "desktop2022";
 
-    # Wake up this computer from sleep by sending a magic packet
-    # Check that each interface has wake-on-lan using ethtool
-    networking.interfaces.eno1 = {
-      wakeOnLan.enable = true;
-      # macAddress = "d8:5e:d3:83:ca:27"; # ip link show eno1
+    # Use networkd and turn off dhcpcd, networkmanager explicitly
+    networking.useDHCP = false;
+    networking.networkmanager.enable = false;
+    systemd.network = {
+      enable = true;
+
+      # Wait for ethernet
+      wait-online.enable = true;
+      wait-online.anyInterface = true;
+
+      # Ethernet
+      links."10-eno1" = {
+        matchConfig.Name = "eno1";
+
+        # linkConfig.MACAddress = "d8:5e:d3:83:ca:27"; # ip link show eno1
+
+        # Wake up this computer from sleep by sending a magic packet from another machine on the LAN
+        # Check that this interface has wake-on-lan using ethtool
+        linkConfig.WakeOnLan = "magic";
+      };
+      networks."10-eno1" = {
+        name = "eno1";
+        networkConfig = {
+          DHCP = "ipv4";
+
+          # Address family not supported by protocol (LLDP)
+          LLDP = "no";
+
+          DNS = [
+            # Use Cloudflare DNS resolver because it's fairly fast and robust
+            "1.1.1.1"
+            "1.0.0.1"
+          ];
+        };
+      };
+
+      # Tailscale
+      networks."60-tailscale0" = {
+        name = "tailscale0";
+
+        # Never wait for tailscale
+        linkConfig.RequiredForOnline = "no";
+
+        # Static address you want to bind against (must match Tailscale's assigned IP)
+        address = ["100.89.210.26/32"];
+
+        networkConfig = {
+          # Split DNS for work tailnet (MagicDNS)
+          DNS = ["100.100.100.100"];
+          Domains = ["~ts.net" "~tiger-jazz.ts.net" "~petersfield" "~picofactory-new"];
+        };
+      };
     };
-    networking.interfaces.wlp5s0 = {
-      # macAddress = "f8:89:d2:da:bd:49"; # ip link show wlp5s0
-    };
-    networking.interfaces.tailscale0 = {
-      # wakeOnLan.enable = true; # see https://github.com/tailscale/tailscale/issues/306
-      # Assign a fixed address so that sshd can always bind to it
-      ipv4.addresses = [
-        {
-          address = "100.89.210.26";
-          prefixLength = 32;
-        }
-      ];
-    };
+
+    # DNS resolution via systemd-resolved and turn off resolvconf explicitly
+    services.resolved.enable = true;
+    networking.resolvconf.enable = false;
+
+    # Only used if no per-link/global DNS is available
+    services.resolved.fallbackDns = [
+      # Google Public DNS (8.8.8.8, 8.8.4.4)
+      "2001:4860:4860::8888"
+      "2001:4860:4860::8844"
+    ];
+
+    # Encrypt DNS lookups if possible
+    # services.resolved.dnsovertls = "opportunistic";
+
+    services.tailscale.extraSetFlags = [
+      # Prevent tailscale from touching DNS
+      "--accept-dns=false"
+      # Accept routes advertised by other nodes
+      "--accept-routes=true"
+    ];
 
     # Open additional ports
     networking.firewall.interfaces.tailscale0.allowedTCPPorts = [
@@ -221,20 +276,6 @@ in {
       8081
       # openvscode-server
       3000
-    ];
-
-    # Use Cloudflare DNS resolver because it's fairly fast and robust
-    # networking.networkmanager.insertNameservers = ["1.1.1.1" "1.0.0.1"];
-    networking.nameservers = ["1.1.1.1" "1.0.0.1"];
-    networking.networkmanager.dns = "systemd-resolved";
-
-    # Replace resolveconf.service with systemd-resolved.service for per-domain DNS routing so that everything doesn't go through tailscale MagicDNS
-    networking.resolvconf.enable = false;
-    services.resolved.enable = true;
-    services.resolved.fallbackDns = [
-      # Google Public DNS (8.8.8.8, 8.8.4.4)
-      "2001:4860:4860::8888"
-      "2001:4860:4860::8844"
     ];
 
     # Add this flake to the local registry so that it's easy
