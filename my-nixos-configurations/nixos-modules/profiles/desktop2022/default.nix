@@ -193,6 +193,11 @@ in {
     # Workaround for glibc/router issue
     networking.resolvconf.dnsSingleRequest = true;
 
+    # Use systemd-resolved for more reliable tailscale
+    networking.resolvconf.useLocalResolver = true;
+    services.resolved.enable = true;
+    networking.networkmanager.dns = "systemd-resolved";
+
     # Wake up this computer from sleep by sending a magic packet
     # Check that each interface has wake-on-lan using ethtool
     networking.interfaces.eno1 = {
