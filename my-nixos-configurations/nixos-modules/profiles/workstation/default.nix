@@ -58,7 +58,7 @@ in {
               ---
               description: Reflect on the best refactor for achieving the next tasks.
               ---
-              Reflect on the next tasks that need to be done. What problems will we run into if we try to implement them with the current state of our implementation?
+              Deeply reflect (ultrathink) on the next tasks that need to be done . What problems will we run into if we try to implement them with the current state of our implementation?
 
               Instead of tackling the next task directly, let's refactor the code at an architectural level in order to support the next change(s) we'll need to make.
 
@@ -68,7 +68,7 @@ in {
               ---
               description: Reflect on the best way to implement something.
               ---
-              Reflect on this next task:
+              Deeply reflect (ultrathink) on this next task:
 
               $ARGUMENTS
 
