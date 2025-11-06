@@ -55,7 +55,7 @@ local flags = {
 }
 
 -- Set up each language server: Nix configuration language
-vim.lsp.configs('nixd', {
+vim.lsp.config('nixd', {
   on_attach = on_attach,
   autostart = true,
   flags = flags,
