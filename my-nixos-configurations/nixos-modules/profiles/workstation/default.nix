@@ -164,6 +164,8 @@ in {
               elmPackages.elm-language-server
             ];
           };
+
+          nix-index.enable = true;
         };
       }
     ];
