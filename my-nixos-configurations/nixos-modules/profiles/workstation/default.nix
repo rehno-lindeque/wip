@@ -166,6 +166,8 @@ in {
           };
 
           nix-index.enable = true;
+
+          nix-init.enable = true;
         };
       }
     ];
