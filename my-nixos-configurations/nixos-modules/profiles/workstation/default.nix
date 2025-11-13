@@ -95,6 +95,9 @@ in {
           # Fuzzy find file names
           fzf.enable = lib.mkDefault true;
 
+          # GitHub CLI
+          gh.enable = lib.mkDefault true;
+
           # Neovim, configured as an IDE
           neovim = {
             enable = lib.mkDefault true;
