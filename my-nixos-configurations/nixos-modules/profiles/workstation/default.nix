@@ -78,7 +78,7 @@ in {
             '';
             provenance = ''
               ---
-              description: Show a trace of the control flow as pseudo-code
+              description: Show a trace of a variable or set of variables, demonstrating the control flow as pseudo-code
               ---
               Please trace the flow of $ARGUMENTS through the code and show it to me as pseudo-code.
             '';
