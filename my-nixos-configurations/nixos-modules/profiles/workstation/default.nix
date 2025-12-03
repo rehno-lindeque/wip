@@ -82,6 +82,16 @@ in {
               ---
               Please trace the flow of $ARGUMENTS through the code and show it to me as pseudo-code.
             '';
+            unravel = ''
+              ---
+              description: Unravel the given implementation
+              ---
+              Please unravel the implementation related to this next task:
+
+              $ARGUMENTS
+
+              The related functions should be inlined in such a way that it's easy to add debug logging / print statements in order to introspect all relevant values.
+            '';
           };
           claude-code.mcpServers.github = {
             type = "http";
