@@ -37,7 +37,7 @@ in {
       package = mkOption {
         type = types.package;
         description = "The whisper.cpp package to use";
-        default = pkgs.openai-whisper-cpp;
+        default = pkgs.whisper-cpp;
       };
 
       inferencePath = mkOption {
