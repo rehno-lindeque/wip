@@ -82,6 +82,14 @@ in {
               ---
               Please trace the flow of $ARGUMENTS through the code and show it to me as pseudo-code.
             '';
+            surgical = ''
+              ---
+              description: Make small surgical changes to the code
+              ---
+              Accomplish this next task using small surgical step-by-step improvements, so that we can verify each change carefully:
+
+              $ARGUMENTS
+            '';
             taste = ''
               ---
               description: Refactor a block of code to follow my taste
