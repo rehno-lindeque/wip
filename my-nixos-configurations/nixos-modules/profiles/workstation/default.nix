@@ -82,6 +82,16 @@ in {
               ---
               Please trace the flow of $ARGUMENTS through the code and show it to me as pseudo-code.
             '';
+            taste = ''
+              ---
+              description: Refactor a block of code to follow my taste
+              ---
+              The following is not to my taste:
+
+              $ARGUMENTS
+
+              Take a look at how I've done similar implementations in the past. You may look at nearby code or recent git commits under my name.
+            '';
             unravel = ''
               ---
               description: Unravel the given implementation
