@@ -5,13 +5,13 @@
     clump.url = "github:rehno-lindeque/clump";
     flake-help.url = "github:rehno-lindeque/flake-help";
     flake-utils.url = "github:numtide/flake-utils";
-    home-manager.url = "github:nix-community/home-manager/pull/7826/head";
+    home-manager.url = "github:nix-community/home-manager/release-25.11";
     impermanence.url = "github:nix-community/impermanence";
     # nixos-hardware.url = "github:rehno-lindeque/nixos-hardware/mediatek/mt7921k";
     nixos-hardware.url = "github:nixos/nixos-hardware";
     nixos-impermanence.url = "github:rehno-lindeque/nixos-impermanence";
     # nixpkgs-shim.url = "path:/home/me/projects/nixpkgs-shim";
-    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-25.05";
+    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-25.11";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     nix-colors.url = "github:misterio77/nix-colors";
     vscode-server.url = "github:nix-community/nixos-vscode-server";
