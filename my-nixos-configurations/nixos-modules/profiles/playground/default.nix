@@ -418,13 +418,10 @@ in {
               CPU_SCALING_GOVERNOR_ON_AC = "powersave";
               CPU_SCALING_GOVERNOR_ON_BAT = "powersave";
 
-              # Minimize number of used CPU cores/hyper-threads under light load conditions
-              # I've turned this to 1 because I prefer my macbook running cool
+              # Let devices sleep on AC too (huge for heat)
+              RUNTIME_PM_ON_AC="auto";
+              AHCI_RUNTIME_PM_ON_AC="auto";
 
-              SCHED_POWERSAVE_ON_AC =
-                if aggressivePowerSavingOnAC
-                then 1
-                else 0;
 
               # Include listed devices into USB autosuspend even if already excluded
               # by the driver or WWAN blacklists above (separate with spaces).
@@ -432,8 +429,7 @@ in {
               # ---
               # Note that apple trackpad does have explicit autosuspend support.
               # * See http://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/commit/?id=88da765f4d5f59f67a7a51c8f5d608a836b32133
-
-              USB_WHITELIST = "05ac:0274";
+              USB_ALLOWLIST = "05ac:0274";
 
               # PCI Express Active State Power Management (PCIe ASPM):
               #   default, performance, powersave
