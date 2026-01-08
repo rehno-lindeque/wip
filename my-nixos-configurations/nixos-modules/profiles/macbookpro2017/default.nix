@@ -136,6 +136,10 @@ in {
       {device = "/dev/disk/by-label/nixosswap";}
     ];
 
+    environment.systemPackages = [
+      flake.packages.${pkgs.system}.vgaswitcheroo-toggle
+    ];
+
     # Hardware acceleration
     hardware.graphics.enable = true;
 

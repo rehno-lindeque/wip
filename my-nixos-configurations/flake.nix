@@ -78,6 +78,7 @@
       (lib.genAttrs mySystems (system: {
         wakeup-desktop2022 = legacyPackages.${system}.callPackage ./packages/wakeup-desktop2022 {};
         wakeup-nucbox2022 = legacyPackages.${system}.callPackage ./packages/wakeup-nucbox2022 {};
+        vgaswitcheroo-toggle = legacyPackages.${system}.callPackage ./packages/vgaswitcheroo-toggle {};
       }))
       {
         # TODO: Implement isoImage as a lib instead of a module. E.g. nipxkgs-shim.lib.isoImage { .... }
