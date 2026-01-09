@@ -111,10 +111,6 @@ in {
               The related functions should be inlined in such a way that it's easy to add debug logging / print statements in order to introspect all relevant values.
             '';
           };
-          claude-code.mcpServers.github = {
-            type = "http";
-            url = "https://api.githubcopilot.com/mcp/";
-          };
           claude-code.settings = {
             includeCoAuthoredBy = false;
           };
