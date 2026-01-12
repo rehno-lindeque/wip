@@ -425,8 +425,10 @@ in {
         programs = {
           git = {
             enable = lib.mkDefault cfg.enableSoftware;
-            userEmail = "rehno.lindeque@gmail.com";
-            userName = "Rehno Lindeque";
+            settings.user = {
+              email = "rehno.lindeque@gmail.com";
+              name = "Rehno Lindeque";
+            };
           };
 
           # Terminal emulator
