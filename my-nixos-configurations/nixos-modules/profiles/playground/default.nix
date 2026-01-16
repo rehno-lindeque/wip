@@ -259,7 +259,7 @@ in {
         };
       })
 
-      (lib.mkIf config.profiles.nucbox2022.enable {
+      (lib.mkIf (config.profiles ? nucbox2022 && config.profiles.nucbox2022.enable) {
         # TODO: clean up / check sound (it doesn't work right now)
         # hardware.pulseaudio.daemon.logLevel = "error";
         # hardware.pulseaudio.support32Bit = lib.mkDefault true;
@@ -278,7 +278,7 @@ in {
         };
       })
 
-      (lib.mkIf config.profiles.desktop2022.enable {
+      (lib.mkIf (config.profiles ? desktop2022 && config.profiles.desktop2022.enable) {
         # Use cuda graphics in headless mode
         # hardware.nvidia = {
         #   # headless??
@@ -342,7 +342,7 @@ in {
         ];
       })
 
-      (lib.mkIf config.profiles.macbookpro2017.enable {
+      (lib.mkIf (config.profiles ? macbookpro2017 && config.profiles.macbookpro2017.enable) {
         # Power management protocol for application (turned on automatically by some display managers)
         services.upower.enable = true;
 
