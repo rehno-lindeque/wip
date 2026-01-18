@@ -3,10 +3,10 @@
 
   inputs = {
     flake-help.url = "github:rehno-lindeque/flake-help";
-    home-manager.url = "github:nix-community/home-manager/release-24.11";
+    home-manager.url = "github:nix-community/home-manager/release-25.11";
     my-dev-shells.url = "path:./my-dev-shells";
     my-nixos-configurations.url = "path:./my-nixos-configurations";
-    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-24.11";
+    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-25.11";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     circuithub-nixos-configurations.url = "git+ssh://git@github.com/circuithub/nixos-configurations.git";
 
