@@ -1,7 +1,6 @@
 {
   inputs = {
     apple-silicon-support.url = "github:nix-community/nixos-apple-silicon";
-    circuithub-nixos-configurations.url = "git+ssh://git@github.com/circuithub/nixos-configurations.git";
     clump.url = "github:rehno-lindeque/clump";
     flake-help.url = "github:rehno-lindeque/flake-help";
     flake-utils.url = "github:numtide/flake-utils";
@@ -23,10 +22,6 @@
     # Redirect inputs
     apple-silicon-support.inputs.nixpkgs.follows = "nixpkgs-stable";
     clump.inputs.nixpkgs.follows = "nixpkgs-stable";
-    circuithub-nixos-configurations.inputs = {
-      nixpkgs.follows = "nixpkgs-stable";
-      flake-help.follows = "flake-help";
-    };
     home-manager.inputs.nixpkgs.follows = "nixpkgs-stable";
     nixos-impermanence.inputs = {
       nixpkgs.follows = "nixpkgs-stable";
@@ -109,10 +104,6 @@
           playground
           preferences
           workstation
-          desktop2022
-          macbookpro2017
-          nucbox2022
-          # installer
           impermanence.nixosModules.impermanence
           nixos-impermanence.nixosModules.default
           home-manager.nixosModules.home-manager
@@ -126,9 +117,17 @@
     nixosConfigurations = {
       desktop2022 = lib.nixosSystem {
         system = system.x86_64-linux;
-        modules = [
+        specialArgs = {flake = self;};
+        modules = let
+          circuithubSrc = builtins.fetchGit {
+            url = "git@github.com:circuithub/nixos-configurations.git";
+            rev = "f2a4361105ec2d857a72ee8ce21f01cdfa77d08e";
+          };
+          circuithubModule = import (circuithubSrc + "/nixos-modules/profiles/developer-workstation/default.nix");
+        in [
           self.nixosModules.default
-          self.inputs.circuithub-nixos-configurations.nixosModules.default
+          self.nixosModules.desktop2022
+          circuithubModule
           self.nixosModules.dotool
           self.nixosModules.llm
           self.nixosModules.mymux
@@ -136,22 +135,20 @@
           # self.inputs.nixos-hardware.nixosModules.mediatek-mt7921k
           {profiles.desktop2022.enable = true;}
         ];
-        specialArgs = {flake = self;};
-      };
-      macbookpro2025 = lib.nixosSystem {
-        system = system.aarch64-linux;
-        modules = [
-          self.nixosModules.default
-          self.inputs.apple-silicon-support.nixosModules.apple-silicon-support
-          {profiles.macbookpro2025.enable = true;}
-        ];
-        specialArgs = {flake = self;};
       };
       macbookpro2017 = lib.nixosSystem {
         system = system.x86_64-linux;
-        modules = [
+        specialArgs = {flake = self;};
+        modules = let
+          circuithubSrc = builtins.fetchGit {
+            url = "git@github.com:circuithub/nixos-configurations.git";
+            rev = "f2a4361105ec2d857a72ee8ce21f01cdfa77d08e";
+          };
+          circuithubModule = import (circuithubSrc + "/nixos-modules/profiles/developer-workstation/default.nix");
+        in [
           self.nixosModules.default
-          self.inputs.circuithub-nixos-configurations.nixosModules.default
+          self.nixosModules.macbookpro2017
+          circuithubModule
           self.inputs.nixos-hardware.nixosModules.apple-macbook-pro-11-5
           self.inputs.nixos-hardware.nixosModules.common-gpu-amd-southern-islands
           self.nixosModules.dotool
@@ -164,12 +161,19 @@
       };
       nucbox2022 = lib.nixosSystem {
         system = system.x86_64-linux;
-        modules = [
+        specialArgs = {flake = self;};
+        modules = let
+          circuithubSrc = builtins.fetchGit {
+            url = "git@github.com:circuithub/nixos-configurations.git";
+            rev = "f2a4361105ec2d857a72ee8ce21f01cdfa77d08e";
+          };
+          circuithubModule = import (circuithubSrc + "/nixos-modules/profiles/developer-workstation/default.nix");
+        in [
           self.nixosModules.default
-          self.inputs.circuithub-nixos-configurations.nixosModules.default
+          self.nixosModules.nucbox2022
+          circuithubModule
           {profiles.nucbox2022.enable = true;}
         ];
-        specialArgs = {flake = self;};
       };
       # installer = lib.nixosSystem {
       #   system = system.x86_64-linux;
