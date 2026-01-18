@@ -90,6 +90,8 @@
       workstation = import ./nixos-modules/profiles/workstation;
       desktop2022 = import ./nixos-modules/profiles/desktop2022;
       macbookpro2017 = import ./nixos-modules/profiles/macbookpro2017;
+      macbookpro2025-install = import ./nixos-modules/profiles/macbookpro2025-install.nix;
+      macbookpro2025 = import ./nixos-modules/profiles/macbookpro2025;
       nucbox2022 = import ./nixos-modules/profiles/nucbox2022;
       # installer = import ./nixos-modules/profiles/installer;
       dotool = import ./nixos-modules/dotool;
@@ -136,6 +138,20 @@
           {profiles.desktop2022.enable = true;}
         ];
       };
+      macbookpro2025 = lib.nixosSystem {
+        system = system.aarch64-linux;
+        modules = [
+          self.nixosModules.default
+          self.nixosModules.macbookpro2025
+          self.nixosModules.llm
+          self.nixosModules.dotool
+          self.nixosModules.mymux
+          self.nixosModules.whisper
+          self.inputs.apple-silicon-support.nixosModules.apple-silicon-support
+          {profiles.macbookpro2025.enable = true;}
+        ];
+        specialArgs = {flake = self;};
+      };
       macbookpro2017 = lib.nixosSystem {
         system = system.x86_64-linux;
         specialArgs = {flake = self;};
@@ -156,6 +172,16 @@
           self.nixosModules.mymux
           self.nixosModules.whisper
           {profiles.macbookpro2017.enable = true;}
+        ];
+      };
+      macbookpro2025-install = lib.nixosSystem {
+        system = system.aarch64-linux;
+        modules = [
+          self.nixosModules.default
+          self.nixosModules.macbookpro2025
+          self.nixosModules.macbookpro2025-install
+          self.inputs.apple-silicon-support.nixosModules.apple-silicon-support
+          {profiles.macbookpro2025Install.enable = true;}
         ];
         specialArgs = {flake = self;};
       };
