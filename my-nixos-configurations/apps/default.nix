@@ -107,7 +107,7 @@ in {
           fi
           local dev
           dev="$(resolve_by_uuid "$uuid")"
-          [[ -n "$dev" ]] || fail "Could not find $label device with UUID $uuid. Override with ${label^^}_DEV env var."
+          [[ -n "$dev" ]] || fail "Could not find $label device with UUID $uuid. Override with ''${label^^}_DEV env var."
           echo "$dev"
         }
 
