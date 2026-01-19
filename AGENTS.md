@@ -15,7 +15,8 @@ Keep AGENTS.md short and concise.
 - Incremental skill editing: record only steps we've actually verified; add hardware-specific sub-skills (e.g., `apple-silicon`) as we confirm them.
 - When corrected by the user, capture the meta-lesson here and update the relevant skill so it won’t repeat.
 - Keep references as links (no inline copies); open them only when blocked.
-- Commits: if it’s a sensible checkpoint, commit without asking (use clear messages).
+- Commits: if it’s a sensible checkpoint, commit without asking
+- Commit messages: follow the repo pattern visible in `git log` (e.g., `AGENTS.md: ...`, `.codex/skills: ...`, `wip: ...`).
 
 ## Project Structure & Module Organization
 - Root flake: `flake.nix` defines inputs, common modules, and per-host systems (e.g., `macbookpro2025`, `macbookpro2025-install`, `macbookpro2017`, `desktop2022`, `nucbox2022`).
