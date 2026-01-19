@@ -10,7 +10,7 @@ in {
   options = with lib; {
     profiles.macbookpro2025Install = {
       enable = mkEnableOption ''
-        Installer variant for macbookpro2025: use the base profile, but strip extras and auto-format /nix.
+        Installer variant for macbookpro2025: use the base profile, but strip extras.
       '';
     };
   };
@@ -24,9 +24,6 @@ in {
     profiles.preferences.enable = lib.mkForce false;
     profiles.personalized.enable = lib.mkForce false;
     profiles.playground.enable = lib.mkForce false;
-
-    # Auto-format the /nix partition on first boot of the installer
-    fileSystems."/nix".autoFormat = lib.mkForce true;
 
     # Installer-friendly access; tighten later
     users.mutableUsers = false;
