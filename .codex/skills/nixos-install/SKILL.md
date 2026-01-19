@@ -10,7 +10,7 @@ Start here; branch into sub-skills (e.g., `apple-silicon`) when the hardware req
 Meta: only record steps we have actually performed; after each new verified step, update this skill or the appropriate sub-skill.
 
 ## Steps we have confirmed
-- Prefer repo installer scripts when available (e.g., `nix run .#install-macbookpro2025` on that hardware).
+- Hardware-specific install commands live in sub-skills (e.g., see `apple-silicon` for macbookpro2025).
 
 ## To-do (fill in after we perform them)
 - Partitioning/LUKS/mount recipe, impermanence layout, firmware copy steps (delegate Apple Silicon details to sub-skill).
