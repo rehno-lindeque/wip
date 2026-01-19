@@ -48,7 +48,10 @@
 
     system = lib.genAttrs lib.platforms.all (system: system);
 
-    mySystems = [system.x86_64-linux];
+    mySystems = [
+      system.x86_64-linux
+      system.aarch64-linux
+    ];
 
     legacyPackages = lib.genAttrs mySystems (system:
       import nixpkgs-stable {
