@@ -72,6 +72,9 @@ in {
           # Retain all of my home config for the time being
           ".config"
 
+          # Retain Codex state
+          ".codex"
+
           # Retain ssh keys for this computer
           {
             directory = ".ssh";
