@@ -17,6 +17,7 @@ Keep AGENTS.md short and concise.
 - Keep references as links (no inline copies); open them only when blocked.
 - Commits: if it’s a sensible checkpoint, commit without asking (use clear messages).
 - Commit messages: follow the repo pattern visible in `git log` (e.g., `AGENTS.md: ...`, `.codex/skills: ...`, `wip: ...`).
+- After a methodology correction, restate the next concrete instruction for the user.
 
 ## Project Structure & Module Organization
 - Root flake: `flake.nix` defines inputs, common modules, and per-host systems (e.g., `macbookpro2025`, `macbookpro2025-install`, `macbookpro2017`, `desktop2022`, `nucbox2022`).
