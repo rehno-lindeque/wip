@@ -1,5 +1,7 @@
 # Repository Guidelines
 
+For most day-to-day work, we enter ./my-nixos-configurations and use the nix flake that is in there.
+
 ## Project Structure & Module Organization
 - Root flake: `flake.nix` defines inputs, common modules, and per-host systems (e.g., `macbookpro2025`, `macbookpro2025-install`, `macbookpro2017`, `desktop2022`, `nucbox2022`).
 - NixOS modules: `nixos-modules/` with profiles under `nixos-modules/profiles/` (hardware-specific and shared), plus service modules (`llm`, `dotool`, `mymux`, `whisper`).
