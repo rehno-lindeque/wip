@@ -86,7 +86,8 @@ in
             fail "Run as root"
           fi
 
-          FLAKE_ROOT="''${FLAKE:-.}"
+          # Default to the upstream flake URL so running from nix run works without a local checkout.
+          FLAKE_ROOT="''${FLAKE:-github:rehno-lindeque/wip?dir=my-nixos-configurations}"
           INSTALL_SYSTEM="''${INSTALL_SYSTEM:-macbookpro2025-install}"
           BOOT_UUID="''${BOOT_UUID:-7414-141F}"
           NIX_UUID="''${NIX_UUID:-388b76d7-cb0d-4aef-80ee-13898a2ea81a}"
