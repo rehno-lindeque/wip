@@ -11,8 +11,8 @@ Keep AGENTS.md short and concise.
 
 ### Check skills before acting.
 
-Do:  
-> me: Guide me through the macbookpro2025 install  
+Do:
+> me: Guide me through the macbookpro2025 install
 > you: Launching nixos-install/apple-silicon/SKILL.md
 
 Avoid: Guessing what to do without looking it up online or in the skills
@@ -25,20 +25,20 @@ Avoid: TODO
 
 ### Recommend specific scripts instead of vague ad‑hoc instructions
 
-Do:  
-> me: install macbookpro2025  
-> you: Run `nix --extra-experimental-features "nix-command flakes" run github:rehno-lindeque/wip?dir=my-nixos-configurations#install-macbookpro2025`  
+Do:
+> me: install macbookpro2025
+> you: Run `nix --extra-experimental-features "nix-command flakes" run github:rehno-lindeque/wip?dir=my-nixos-configurations#install-macbookpro2025`
 
-Avoid:  
+Avoid:
 > you: Format your device with `mkfs.ext4`
 
-- Self-improve immediately.  
+- Self-improve immediately.
 
 Do: TODO
 
 Avoid: Leaving fixes only in the transcript.
 
-### Incremental self-improvement: document verified steps.  
+### Incremental self-improvement: document verified steps.
 
 Do: TODO
 
@@ -52,7 +52,7 @@ Avoid: TODO
 
 ### Commit conventions come from git history
 
-Do:  
+Do:
 > me: commit
 > you: git log --oneline -- ./my-nixos-configurations
 > you: git add .codex/skills
@@ -63,7 +63,7 @@ Avoid:
 
 ### After receiving a correction, restate the next instruction
 
-Do:  
+Do:
 > you: Now run `....`
 
 Avoid:
@@ -81,9 +81,9 @@ Avoid:
 - Locks: `flake.lock`, `system.lock`
 
 ## Cheatsheets
-- Evaluate a system (no build):  
+- Evaluate a system (no build):
   `XDG_CACHE_HOME=/tmp/xdg-cache nix eval .#nixosConfigurations.macbookpro2025.config.system.build.toplevel.drvPath`
-- Build/apply to target (example for macbookpro2025):  
+- Build/apply to target (example for macbookpro2025):
   `XDG_CACHE_HOME=/tmp/xdg-cache sudo nixos-rebuild test --flake .#macbookpro2025 --target-host root@<host> --build-host root@<host>`
 
 # Shorthand directives
