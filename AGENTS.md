@@ -1,6 +1,7 @@
 # Repository Guidelines
 
 For most day-to-day work, we enter ./my-nixos-configurations and use the nix flake that is in there.
+Keep AGENTS.md short and concise.
 
 ## Project Structure & Module Organization
 - Root flake: `flake.nix` defines inputs, common modules, and per-host systems (e.g., `macbookpro2025`, `macbookpro2025-install`, `macbookpro2017`, `desktop2022`, `nucbox2022`).
@@ -12,3 +13,7 @@ For most day-to-day work, we enter ./my-nixos-configurations and use the nix fla
   `XDG_CACHE_HOME=/tmp/xdg-cache nix eval .#nixosConfigurations.macbookpro2025.config.system.build.toplevel.drvPath`
 - Build/apply to target (example for macbookpro2025):  
   `XDG_CACHE_HOME=/tmp/xdg-cache sudo nixos-rebuild test --flake .#macbookpro2025 --target-host root@<host> --build-host root@<host>`
+
+# Transcript shorthands
+
+/methodology Reflect on the back-and-forth in this transcript and update AGENTS.md so that we can reduce trial-and-error overhead in future.
