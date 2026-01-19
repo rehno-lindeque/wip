@@ -16,7 +16,7 @@ Keep AGENTS.md short and concise.
 - When corrected by the user, capture the meta-lesson here and update the relevant skill so it won’t repeat.
 - Keep references as links (no inline copies); open them only when blocked.
 - Commits: if it’s a sensible checkpoint, commit without asking (use clear messages).
-- Commit messages: follow the repo pattern visible in `git log` (e.g., `AGENTS.md: ...`, `.codex/skills: ...`, `wip: ...`).
+- Commit messages: follow the repo pattern visible in `git log --oneline -- ./my-nixos-configurations` (e.g., `AGENTS.md: ...`, `.codex/skills: ...`, `wip: ...`).
 - After a methodology correction, restate the next concrete instruction for the user.
 
 ## Project Structure & Module Organization
