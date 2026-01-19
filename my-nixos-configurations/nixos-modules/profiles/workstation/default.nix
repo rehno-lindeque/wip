@@ -115,6 +115,7 @@ in {
             includeCoAuthoredBy = false;
           };
           codex.enable = true;
+          codex.package = flake.inputs.nixpkgs-unstable.legacyPackages.${pkgs.system}.codex;
 
           # Fuzzy find file names
           fzf.enable = lib.mkDefault true;
