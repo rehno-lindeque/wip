@@ -34,3 +34,4 @@ Keep AGENTS.md short and concise.
 
 methodology: Reflect on the back-and-forth in this transcript and update AGENTS.md so that we can reduce trial-and-error overhead in future. When the user issues a “methodology:” directive, immediately add the meta-lesson here, then perform the requested correction without re-asking.
 amend: Amend the most recent commit to incorporate the correction, then continue.
+skill: Update the named skill with the new instruction.
