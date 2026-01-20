@@ -39,8 +39,6 @@ in {
       };
     };
 
-    # During install, firmware blobs are on the target ESP mounted at /mnt/boot/asahi
     hardware.asahi.peripheralFirmwareDirectory = lib.mkForce "/mnt/boot/asahi";
-
   };
 }

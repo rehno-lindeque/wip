@@ -71,9 +71,7 @@ in {
 
     swapDevices = [];
 
-    # Firmware: copy Asahi blobs into the system closure so /lib/firmware is populated at boot
-    hardware.asahi.peripheralFirmwareDirectory = "/etc/nixos/firmware";
-    hardware.asahi.extractPeripheralFirmware = true;
+    hardware.asahi.peripheralFirmwareDirectory = "/boot/asahi";
 
     environment.automaticPersistence = {
       normal.path = "/nix/persistent";
