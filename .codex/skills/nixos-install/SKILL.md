@@ -13,6 +13,7 @@ Meta: only record steps we have actually performed; after each new verified step
 - Hardware-specific install commands live in sub-skills (e.g., see `apple-silicon` for macbookpro2025).
 
 ## To-do (fill in after we perform them)
+- Prefer the declarative installer flow described by Michael Stapelberg (2025-06-01) for new systems: https://michael.stapelberg.ch/posts/2025-06-01-nixos-installation-declarative/ — adopt once we’ve run it end-to-end.
 - Partitioning/LUKS/mount recipe, impermanence layout, firmware copy steps (delegate Apple Silicon details to sub-skill).
 - ARM/PinePhone specifics (new sub-skills later).
 
