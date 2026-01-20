@@ -71,8 +71,6 @@ in {
 
     swapDevices = [];
 
-    hardware.asahi.peripheralFirmwareDirectory = "/boot/asahi";
-
     environment.automaticPersistence = {
       normal.path = "/nix/persistent";
     };
