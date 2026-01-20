@@ -3,21 +3,30 @@ name: apple-silicon
 description: "Apple Silicon (Asahi) specifics for the nixos-install skill. Trigger when installing NixOS on Apple Silicon hardware."
 ---
 
-# Apple Silicon (Asahi) — incremental
+# Apple Silicon (Asahi)
 
 Use together with parent `nixos-install`. Keep concise; extend only after steps are verified.
 
 Meta: log only confirmed steps; append new ones right after you perform them.
 
-## Steps we have confirmed
-- Networking on live ISO: `iwctl` → `station wlan0 get-networks` → `station wlan0 connect <ssid>` (NetworkManager absent).
-- Install macbookpro2025 via remote flake app:  
-  `nix --extra-experimental-features "nix-command flakes" run github:rehno-lindeque/wip?dir=my-nixos-configurations#install-macbookpro2025`
+## 1. Setup wifi
 
-## Next details to capture after execution
-- ESP + LUKS partitioning, firmware copy (`all_firmware.tar.gz`, `kernelcache.release.*`) into persistent `/etc/nixos/firmware`.
-- Asahi kernel selection in flake.
-- Any quirks observed during install.
+```
+iwctl
+[iwd]# station wlan0 scan
+[iwd]# station wlan0 get-networks
+[iwd]# station wlan0 connect <ssid>
+```
+
+## 2. Get root
+```
+sudo su
+```
+
+# 3. Install macbookpro2025
+```
+nix --extra-experimental-features "nix-command flakes" run github:rehno-lindeque/wip?dir=my-nixos-configurations#install-macbookpro2025 --refresh
+```
 
 ## References
 - See `links.md` for the Apple Silicon UEFI install guide; open only when needed.
