@@ -35,12 +35,6 @@
     voxinput.inputs.nixpkgs.follows = "nixpkgs-stable";
   };
 
-  nixConfig.extra-sandbox-paths = [
-    # Expose ESP firmware for extraction on apple silicon systems
-    "/mnt/boot/asahi"
-    "/boot/asahi"
-  ];
-
   outputs = {
     self,
     flake-help,
