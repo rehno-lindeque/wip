@@ -20,7 +20,6 @@
       "github:rehno-lindeque/VoxInput/patch-1";
 
     # Redirect inputs
-    apple-silicon-support.inputs.nixpkgs.follows = "nixpkgs-stable";
     clump.inputs.nixpkgs.follows = "nixpkgs-stable";
     home-manager.inputs.nixpkgs.follows = "nixpkgs-stable";
     nixos-impermanence.inputs = {
