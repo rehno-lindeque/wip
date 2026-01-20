@@ -116,6 +116,12 @@ in {
     # Start out with some basic graphical user interface that is known to work
     services.xserver.enable = true;
     services.xserver.desktopManager.xfce.enable = true;
+    services.xserver.xkb.layout = "us";
+    services.xserver.xkb.variant = "norman";
+
+    # Trackpad/keyboard settings (mirror macbookpro2017 style)
+    services.libinput.enable = true;
+    services.libinput.touchpad.disableWhileTyping = true;
 
     # Pin state version explicitly
     system.stateVersion = "25.11";
