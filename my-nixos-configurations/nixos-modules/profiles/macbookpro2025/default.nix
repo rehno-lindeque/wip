@@ -71,13 +71,10 @@ in {
 
     swapDevices = [];
 
-    # Firmware managed by nix (TODO)
+    # Firmware: copy Asahi blobs into the system closure so /lib/firmware is populated at boot
     hardware.asahi.peripheralFirmwareDirectory = "/etc/nixos/firmware";
+    hardware.asahi.extractPeripheralFirmware = true;
 
-    # Ignore firmware for now (TODO: replace)
-    hardware.asahi.extractPeripheralFirmware = false;
-
-    # Keep the Asahi firmware around even when using impermanence
     environment.automaticPersistence = {
       normal.path = "/nix/persistent";
     };
@@ -93,6 +90,7 @@ in {
         # Large temp that can't fit on tmpfs
         "/tmp"
 
+        # Keep the Asahi firmware around even when using impermanence
         {
           directory = "/etc/nixos/firmware";
           mode = "0755";
