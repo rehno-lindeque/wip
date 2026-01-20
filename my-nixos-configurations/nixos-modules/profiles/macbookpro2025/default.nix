@@ -112,6 +112,7 @@ in {
     # Use iwd instead of wpa_supplicant
     # See [nixos-apple-silicon recommendation](https://github.com/nix-community/nixos-apple-silicon/blob/main/docs/uefi-standalone.md#nixos-installation)
     networking.networkmanager.wifi.backend = "iwd";
+    networking.wireless.iwd.settings.General.EnableNetworkConfiguration = true;
 
     # Start out with some basic graphical user interface that is known to work
     services.xserver.enable = true;
