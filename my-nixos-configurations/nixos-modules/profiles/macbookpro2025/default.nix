@@ -103,6 +103,12 @@ in {
 
     };
 
+    # Use the same nixpkgs/overlay as upstream apple-silicon-support so cache hits match
+    hardware.asahi.pkgs = lib.mkForce (import flake.inputs.apple-silicon-support.inputs.nixpkgs {
+      inherit (pkgs) system;
+      overlays = [flake.inputs.apple-silicon-support.overlays.apple-silicon-overlay];
+    });
+
     # Use iwd instead of wpa_supplicant
     # See [nixos-apple-silicon recommendation](https://github.com/nix-community/nixos-apple-silicon/blob/main/docs/uefi-standalone.md#nixos-installation)
     networking.networkmanager.wifi.backend = "iwd";
