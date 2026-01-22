@@ -40,7 +40,9 @@ in {
               ---
               description: Ask for feedback on work completed
               ---
-              Is there anything else that we haven't gone over that you'd like me to clarify? Anything that could be questionable or choices that could have gone in a different direction?
+              Let's assess:
+              $ARGUMENTS
+              Is there anything that we haven't gone over that you'd like me to clarify? Anything that could be questionable or choices that could have gone in a different direction?
             '';
             todo = ''
               ---
@@ -55,9 +57,7 @@ in {
               description: Reflect on the best way to implement something.
               ---
               Reflect on this next task:
-
               $ARGUMENTS
-
               Can you please give me a few different options that covers the entire design space well? Order them from most likely to least likely.
             '';
             refactor = ''
@@ -75,9 +75,7 @@ in {
               description: Reflect on the best way to implement something.
               ---
               Deeply reflect (ultrathink) on this next task:
-
               $ARGUMENTS
-
               Can you please give me a few different options that covers the entire design space well? Order them from most likely to least likely.
 
               Finally, once you are done, take a step back and consider if this is even the right thing to be working on? Is there an unexpectedly simple approach to solving the high level problem that we're not considering?
@@ -93,7 +91,6 @@ in {
               description: Make small surgical changes to the code
               ---
               Accomplish this next task using small surgical step-by-step improvements, so that we can verify each change carefully:
-
               $ARGUMENTS
             '';
             taste = ''
@@ -101,7 +98,6 @@ in {
               description: Refactor a block of code to follow my taste
               ---
               The following is not to my taste:
-
               $ARGUMENTS
 
               Take a look at how I've done similar implementations in the past. You may look at nearby code or recent git commits under my name.
@@ -111,7 +107,6 @@ in {
               description: Unravel the given implementation
               ---
               Please unravel the implementation related to this next task:
-
               $ARGUMENTS
 
               The related functions should be inlined in such a way that it's easy to add debug logging / print statements in order to introspect all relevant values.
