@@ -36,6 +36,12 @@ in {
           # Coding assistants
           claude-code.enable = true;
           claude-code.commands = {
+            assess = ''
+              ---
+              description: Ask for feedback on work completed
+              ---
+              Is there anything else that we haven't gone over that you'd like me to clarify? Anything that could be questionable or choices that could have gone in a different direction?
+            '';
             todo = ''
               ---
               description: Add TODO's to the code
