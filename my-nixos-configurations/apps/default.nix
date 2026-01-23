@@ -41,6 +41,13 @@
           export NIX_CONFIG
         fi
 
+        echo nixos-rebuild \
+          --flake "''${FLAKE_REF}#${name}" \
+          --build-host "$BUILD_HOST" \
+          --target-host "$TARGET_HOST" \
+          --sudo \
+          --ask-sudo-password \
+          "$@"
         exec nixos-rebuild \
           --flake "''${FLAKE_REF}#${name}" \
           --build-host "$BUILD_HOST" \
