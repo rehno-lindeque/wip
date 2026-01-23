@@ -28,6 +28,13 @@ in {
     # Any reasonable workstation probably at least needs some basic quality of life fonts
     fonts.enableDefaultPackages = lib.mkDefault true;
 
+    environment.systemPackages = [
+      flake.packages.${pkgs.system}.desktop2022-rebuild
+      flake.packages.${pkgs.system}.macbookpro2017-rebuild
+      flake.packages.${pkgs.system}.macbookpro2025-rebuild
+      flake.packages.${pkgs.system}.nucbox2022-rebuild
+    ];
+
     home-manager.sharedModules = [
       {
         programs = {

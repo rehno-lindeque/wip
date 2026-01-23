@@ -9,6 +9,37 @@
   nc = "\\e[0m"; # No Color
   white = "\\e[1;37m";
   yellow = "\\e[1;33m";
+  flakeRefDefault = "path:${flake.outPath}";
+  mkRebuildApp = {name, host}: let
+    script = pkgs.writeShellApplication {
+      name = "${name}-rebuild";
+      runtimeInputs = with pkgs; [
+        nix
+        nixos-rebuild
+        openssh
+      ];
+      text = ''
+        #!/usr/bin/env bash
+        set -euo pipefail
+
+        FLAKE_REF="\${FLAKE_REF:-${flakeRefDefault}}"
+        BUILD_HOST="\${BUILD_HOST:-root@${host}}"
+        TARGET_HOST="\${TARGET_HOST:-root@${host}}"
+
+        exec nixos-rebuild \
+          --flake "\${FLAKE_REF}#${name}" \
+          --build-host "$BUILD_HOST" \
+          --target-host "$TARGET_HOST" \
+          --sudo \
+          --ask-sudo-password \
+          "$@"
+      '';
+    };
+  in {
+    type = "app";
+    description = "nixos-rebuild ${name} via ${host}";
+    program = "${script}/bin/${name}-rebuild";
+  };
 in
   {
     help = {
@@ -43,6 +74,10 @@ in
         (writeScript "readme" ''${mdr}/bin/mdr ${../README.md}'')
       .outPath;
     };
+    desktop2022-rebuild = mkRebuildApp {name = "desktop2022"; host = "desktop2022";};
+    macbookpro2017-rebuild = mkRebuildApp {name = "macbookpro2017"; host = "macbookpro2017";};
+    macbookpro2025-rebuild = mkRebuildApp {name = "macbookpro2025"; host = "macbookpro2025";};
+    nucbox2022-rebuild = mkRebuildApp {name = "nucbox2022"; host = "nucbox2022";};
   }
   // pkgs.lib.optionalAttrs (system == "aarch64-linux") {
     install-macbookpro2025 = let
