@@ -41,6 +41,32 @@ in {
       nixPath = ["nixpkgs=${flake.inputs.nixpkgs-stable}"];
     };
 
+    nix.registry.my-nixos-configurations = {
+      from = {
+        id = "my-nixos-configurations";
+        type = "indirect";
+      };
+      to = {
+        dir = "my-nixos-configurations";
+        owner = "rehno-lindeque";
+        repo = "wip";
+        type = "github";
+      };
+    };
+
+    nix.registry.wip = {
+      from = {
+        id = "wip";
+        type = "indirect";
+      };
+      to = {
+        owner = "rehno-lindeque";
+        repo = "wip";
+        type = "github";
+      };
+    };
+
+
     # Unfree software is a fact of life
     nixpkgs.config.allowUnfree = true;
 

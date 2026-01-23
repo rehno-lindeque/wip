@@ -91,18 +91,7 @@ in {
       ];
     };
 
-    # Add this flake to the local registry so that it's easy
-    # to reference on the command line
-    nix.registry.wip = {
-      from = {
-        id = "wip";
-        type = "indirect";
-      };
-      to = {
-        path = "${config.users.users.me.home}/projects/wip";
-        type = "path";
-      };
-    };
+
 
     # Enable ssh so that I can work on the nucbox remotely
     services.openssh = {

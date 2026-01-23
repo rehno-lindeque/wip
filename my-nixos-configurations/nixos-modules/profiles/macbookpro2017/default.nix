@@ -152,6 +152,30 @@ in {
 
     networking.hostName = "macbookpro2017";
 
+    # Add this flake to the local registry so that it's easy
+    # to reference on the command line
+    nix.registry.wip = {
+      from = {
+        id = "wip";
+        type = "indirect";
+      };
+      to = {
+        path = "/home/me/projects/wip";
+        type = "path";
+      };
+    };
+
+    nix.registry.my-nixos-configurations = {
+      from = {
+        id = "my-nixos-configurations";
+        type = "indirect";
+      };
+      to = {
+        path = "/home/me/projects/wip/my-nixos-configurations";
+        type = "path";
+      };
+    };
+
     networking.interfaces.wlp4s0 = {
       # macAddress = "a4:5e:60:e8:05:4f; # ip link show wlp4s0
     };
