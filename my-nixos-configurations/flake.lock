@@ -35,6 +35,29 @@
         "type": "github"
       }
     },
+    "circuithub-nixos-configurations": {
+      "inputs": {
+        "flake-help": [
+          "flake-help"
+        ],
+        "nixpkgs": [
+          "nixpkgs-stable"
+        ]
+      },
+      "locked": {
+        "lastModified": 1677768783,
+        "narHash": "sha256-ySuTn1BLCP74S1CFQc5JAIMED0CsuTHkE7mC7M+JKWI=",
+        "owner": "circuithub",
+        "repo": "nixos-configurations",
+        "rev": "f2a4361105ec2d857a72ee8ce21f01cdfa77d08e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "circuithub",
+        "repo": "nixos-configurations",
+        "type": "github"
+      }
+    },
     "clump": {
       "inputs": {
         "nixpkgs": [
@@ -249,6 +272,7 @@
     "root": {
       "inputs": {
         "apple-silicon-support": "apple-silicon-support",
+        "circuithub-nixos-configurations": "circuithub-nixos-configurations",
         "clump": "clump",
         "flake-help": "flake-help",
         "flake-utils": "flake-utils",

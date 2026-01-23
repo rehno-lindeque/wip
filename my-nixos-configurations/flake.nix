@@ -13,6 +13,7 @@
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-25.11";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     nix-colors.url = "github:misterio77/nix-colors";
+    circuithub-nixos-configurations.url = "github:circuithub/nixos-configurations";
     vscode-server.url = "github:nix-community/nixos-vscode-server";
     voxinput.url =
       # "github:richiejp/VoxInput";
@@ -32,6 +33,10 @@
       flake-utils.follows = "flake-utils";
     };
     voxinput.inputs.nixpkgs.follows = "nixpkgs-stable";
+    circuithub-nixos-configurations.inputs = {
+      flake-help.follows = "flake-help";
+      nixpkgs.follows = "nixpkgs-stable";
+    };
   };
 
   nixConfig = {
@@ -135,16 +140,10 @@
       desktop2022 = lib.nixosSystem {
         system = system.x86_64-linux;
         specialArgs = {flake = self;};
-        modules = let
-          circuithubSrc = builtins.fetchGit {
-            url = "git@github.com:circuithub/nixos-configurations.git";
-            rev = "f2a4361105ec2d857a72ee8ce21f01cdfa77d08e";
-          };
-          circuithubModule = import (circuithubSrc + "/nixos-modules/profiles/developer-workstation/default.nix");
-        in [
+        modules = [
           self.nixosModules.default
           self.nixosModules.desktop2022
-          circuithubModule
+          self.inputs.circuithub-nixos-configurations.nixosModules.developerWorkstation
           self.nixosModules.dotool
           self.nixosModules.llm
           self.nixosModules.mymux
@@ -170,16 +169,10 @@
       macbookpro2017 = lib.nixosSystem {
         system = system.x86_64-linux;
         specialArgs = {flake = self;};
-        modules = let
-          circuithubSrc = builtins.fetchGit {
-            url = "git@github.com:circuithub/nixos-configurations.git";
-            rev = "f2a4361105ec2d857a72ee8ce21f01cdfa77d08e";
-          };
-          circuithubModule = import (circuithubSrc + "/nixos-modules/profiles/developer-workstation/default.nix");
-        in [
+        modules = [
           self.nixosModules.default
           self.nixosModules.macbookpro2017
-          circuithubModule
+          self.inputs.circuithub-nixos-configurations.nixosModules.developerWorkstation
           self.inputs.nixos-hardware.nixosModules.apple-macbook-pro-11-5
           self.inputs.nixos-hardware.nixosModules.common-gpu-amd-southern-islands
           self.nixosModules.dotool
@@ -203,16 +196,10 @@
       nucbox2022 = lib.nixosSystem {
         system = system.x86_64-linux;
         specialArgs = {flake = self;};
-        modules = let
-          circuithubSrc = builtins.fetchGit {
-            url = "git@github.com:circuithub/nixos-configurations.git";
-            rev = "f2a4361105ec2d857a72ee8ce21f01cdfa77d08e";
-          };
-          circuithubModule = import (circuithubSrc + "/nixos-modules/profiles/developer-workstation/default.nix");
-        in [
+        modules = [
           self.nixosModules.default
           self.nixosModules.nucbox2022
-          circuithubModule
+          self.inputs.circuithub-nixos-configurations.nixosModules.developerWorkstation
           {profiles.nucbox2022.enable = true;}
         ];
       };
