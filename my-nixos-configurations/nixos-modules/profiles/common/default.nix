@@ -41,7 +41,7 @@ in {
       nixPath = ["nixpkgs=${flake.inputs.nixpkgs-stable}"];
     };
 
-    nix.registry.my-nixos-configurations = {
+    nix.registry.my-nixos-configurations = lib.mkDefault {
       from = {
         id = "my-nixos-configurations";
         type = "indirect";
@@ -54,7 +54,7 @@ in {
       };
     };
 
-    nix.registry.wip = {
+    nix.registry.wip = lib.mkDefault {
       from = {
         id = "wip";
         type = "indirect";
