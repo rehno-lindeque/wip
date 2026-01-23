@@ -240,6 +240,17 @@ in {
 
     # Security
     security.apparmor.enable = lib.mkDefault true;
+    security.sudo.extraRules = [
+      {
+        users = ["me"];
+        commands = [
+          {
+            command = "/run/current-system/sw/bin/nixos-rebuild";
+            options = ["NOPASSWD"];
+          }
+        ];
+      }
+    ];
     services.openssh.enable = lib.mkDefault false;
     services.openssh.settings.PermitRootLogin = lib.mkDefault "no";
     services.openssh.settings.PasswordAuthentication = lib.mkDefault false;
