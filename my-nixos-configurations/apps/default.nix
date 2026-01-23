@@ -110,6 +110,7 @@ in
           nixos-install-tools
           rsync
           util-linux
+          gh
         ];
         text = ''
           #!/usr/bin/env bash
@@ -131,6 +132,23 @@ in
           for c in nixos-install lsblk blkid mount findmnt umount rsync awk mkfs.ext4; do
             require_cmd "$c"
           done
+
+          gh_token="''${GH_TOKEN:-''${GITHUB_TOKEN:-}}"
+          if [[ -z "$gh_token" ]] && command -v gh >/dev/null 2>&1; then
+            if ! gh auth status -h github.com >/dev/null 2>&1; then
+              log "gh is not logged in; run 'gh auth login' or set GH_TOKEN to avoid SSH prompts."
+            fi
+            gh_token="$(gh auth token 2>/dev/null || true)"
+          fi
+          if [[ -n "$gh_token" ]]; then
+            if [[ -n "''${NIX_CONFIG:-}" ]]; then
+              NIX_CONFIG="access-tokens = github.com=$gh_token
+''${NIX_CONFIG}"
+            else
+              NIX_CONFIG="access-tokens = github.com=$gh_token"
+            fi
+            export NIX_CONFIG
+          fi
 
           if [[ $EUID -ne 0 ]]; then
             fail "Run as root"
