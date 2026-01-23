@@ -102,6 +102,14 @@ in {
 
               Take a look at how I've done similar implementations in the past. You may look at nearby code or recent git commits under my name.
             '';
+            uniformity = ''
+              ---
+              description: Check for inconsistent patterns
+              ---
+              Is everything uniform?
+              $ARGUMENTS
+              Let's check if there are any inconsistent patterns in this work.
+            '';
             unravel = ''
               ---
               description: Unravel the given implementation
