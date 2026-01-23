@@ -14,6 +14,7 @@
     script = pkgs.writeShellApplication {
       name = "${name}-rebuild";
       runtimeInputs = with pkgs; [
+        gh
         nix
         nixos-rebuild
         openssh
@@ -22,12 +23,26 @@
         #!/usr/bin/env bash
         set -euo pipefail
 
-        FLAKE_REF="\${FLAKE_REF:-${flakeRefDefault}}"
-        BUILD_HOST="\${BUILD_HOST:-root@${host}}"
-        TARGET_HOST="\${TARGET_HOST:-root@${host}}"
+        FLAKE_REF="''${FLAKE_REF:-${flakeRefDefault}}"
+        BUILD_HOST="''${BUILD_HOST:-root@${host}}"
+        TARGET_HOST="''${TARGET_HOST:-root@${host}}"
+
+        gh_token="''${GH_TOKEN:-''${GITHUB_TOKEN:-}}"
+        if [[ -z "$gh_token" ]] && command -v gh >/dev/null 2>&1; then
+          gh_token="$(gh auth token 2>/dev/null || true)"
+        fi
+        if [[ -n "$gh_token" ]]; then
+          if [[ -n "''${NIX_CONFIG:-}" ]]; then
+            NIX_CONFIG="access-tokens = github.com=$gh_token
+''${NIX_CONFIG}"
+          else
+            NIX_CONFIG="access-tokens = github.com=$gh_token"
+          fi
+          export NIX_CONFIG
+        fi
 
         exec nixos-rebuild \
-          --flake "\${FLAKE_REF}#${name}" \
+          --flake "''${FLAKE_REF}#${name}" \
           --build-host "$BUILD_HOST" \
           --target-host "$TARGET_HOST" \
           --sudo \
