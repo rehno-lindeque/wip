@@ -24,8 +24,8 @@
         set -euo pipefail
 
         FLAKE_REF="''${FLAKE_REF:-${flakeRefDefault}}"
-        BUILD_HOST="''${BUILD_HOST:-$USER@${host}}"
-        TARGET_HOST="''${TARGET_HOST:-$USER@${host}}"
+        BUILD_HOST="''${BUILD_HOST:-${host}}"
+        TARGET_HOST="''${TARGET_HOST:-${host}}"
 
         gh_token="''${GH_TOKEN:-''${GITHUB_TOKEN:-}}"
         if [[ -z "$gh_token" ]] && command -v gh >/dev/null 2>&1; then
