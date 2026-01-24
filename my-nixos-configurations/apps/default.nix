@@ -24,8 +24,14 @@
         set -euo pipefail
 
         FLAKE_REF="''${FLAKE_REF:-${flakeRefDefault}}"
-        BUILD_HOST="''${BUILD_HOST:-${host}}"
-        TARGET_HOST="''${TARGET_HOST:-${host}}"
+        local_host="$(hostname)"
+        local_short="$(hostname -s 2>/dev/null || true)"
+        if [[ -z "''${BUILD_HOST:-}" ]] && [[ "${host}" != "$local_host" ]] && [[ "${host}" != "$local_short" ]]; then
+          BUILD_HOST="''${USER}@${host}"
+        fi
+        if [[ -z "''${TARGET_HOST:-}" ]] && [[ "${host}" != "$local_host" ]] && [[ "${host}" != "$local_short" ]]; then
+          TARGET_HOST="''${USER}@${host}"
+        fi
 
         gh_token="''${GH_TOKEN:-''${GITHUB_TOKEN:-}}"
         if [[ -z "$gh_token" ]] && command -v gh >/dev/null 2>&1; then
@@ -41,20 +47,20 @@
           export NIX_CONFIG
         fi
 
-        echo nixos-rebuild \
-          --flake "''${FLAKE_REF}#${name}" \
-          --build-host "$BUILD_HOST" \
-          --target-host "$TARGET_HOST" \
-          --sudo \
-          --ask-sudo-password \
-          "$@"
-        exec nixos-rebuild \
-          --flake "''${FLAKE_REF}#${name}" \
-          --build-host "$BUILD_HOST" \
-          --target-host "$TARGET_HOST" \
-          --sudo \
-          --ask-sudo-password \
-          "$@"
+        args=(
+          --flake "''${FLAKE_REF}#${name}"
+          --sudo
+          --ask-sudo-password
+        )
+        if [[ -n "''${BUILD_HOST:-}" ]]; then
+          args+=(--build-host "$BUILD_HOST")
+        fi
+        if [[ -n "''${TARGET_HOST:-}" ]]; then
+          args+=(--target-host "$TARGET_HOST")
+        fi
+
+        echo nixos-rebuild "''${args[@]}" "$@"
+        exec nixos-rebuild "''${args[@]}" "$@"
       '';
     };
   in {
