@@ -27,10 +27,10 @@
         local_host="$(hostname)"
         local_short="$(hostname -s 2>/dev/null || true)"
         if [[ -z "''${BUILD_HOST:-}" ]] && [[ "${host}" != "$local_host" ]] && [[ "${host}" != "$local_short" ]]; then
-          BUILD_HOST="''${USER}@${host}"
+          BUILD_HOST="${host}"
         fi
         if [[ -z "''${TARGET_HOST:-}" ]] && [[ "${host}" != "$local_host" ]] && [[ "${host}" != "$local_short" ]]; then
-          TARGET_HOST="''${USER}@${host}"
+          TARGET_HOST="${host}"
         fi
 
         gh_token="''${GH_TOKEN:-''${GITHUB_TOKEN:-}}"
