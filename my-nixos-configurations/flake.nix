@@ -90,6 +90,7 @@
         wakeup-desktop2022 = legacyPackages.${system}.callPackage ./packages/wakeup-desktop2022 {};
         wakeup-nucbox2022 = legacyPackages.${system}.callPackage ./packages/wakeup-nucbox2022 {};
         vgaswitcheroo-toggle = legacyPackages.${system}.callPackage ./packages/vgaswitcheroo-toggle {};
+        nix-run = legacyPackages.${system}.callPackage ./packages/nix-run {};
         desktop2022-rebuild = legacyPackages.${system}.callPackage ./packages/nixos-rebuild-system {name = "desktop2022-rebuild";};
         macbookpro2017-rebuild = legacyPackages.${system}.callPackage ./packages/nixos-rebuild-system {name = "macbookpro2017-rebuild";};
         macbookpro2025-rebuild = legacyPackages.${system}.callPackage ./packages/nixos-rebuild-system {name = "macbookpro2025-rebuild";};
