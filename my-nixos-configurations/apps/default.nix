@@ -16,7 +16,7 @@
       runtimeInputs = with pkgs; [
         gh
         nix
-        nixos-rebuild
+        nixos-rebuild-ng
         openssh
       ];
       text = ''
