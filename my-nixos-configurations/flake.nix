@@ -86,21 +86,33 @@
 
     packages =
       lib.recursiveUpdate
-      (lib.genAttrs mySystems (system: {
-        wakeup-desktop2022 = legacyPackages.${system}.callPackage ./packages/wakeup-desktop2022 {};
-        wakeup-nucbox2022 = legacyPackages.${system}.callPackage ./packages/wakeup-nucbox2022 {};
-        vgaswitcheroo-toggle = legacyPackages.${system}.callPackage ./packages/vgaswitcheroo-toggle {};
-        nix-run = legacyPackages.${system}.callPackage ./packages/nix-run {};
-        desktop2022-rebuild = legacyPackages.${system}.callPackage ./packages/nixos-rebuild-system {name = "desktop2022-rebuild";};
-        macbookpro2017-rebuild = legacyPackages.${system}.callPackage ./packages/nixos-rebuild-system {name = "macbookpro2017-rebuild";};
-        macbookpro2025-rebuild = legacyPackages.${system}.callPackage ./packages/nixos-rebuild-system {name = "macbookpro2025-rebuild";};
-        nucbox2022-rebuild = legacyPackages.${system}.callPackage ./packages/nixos-rebuild-system {name = "nucbox2022-rebuild";};
-      }))
-      {
-        # TODO: Implement isoImage as a lib instead of a module. E.g. nipxkgs-shim.lib.isoImage { .... }
-        # x86_64-linux.installer-iso = self.nixosConfigurations.installer.config.system.build.isoImage; # broken in nixos-22.05
-        # x86_64-linux.install-helper = self.nixosConfigurations.installer.config.system.build.install-helper;
-      };
+        (lib.genAttrs mySystems (system: {
+          wakeup-desktop2022 = legacyPackages.${system}.callPackage ./packages/wakeup-desktop2022 {};
+          wakeup-nucbox2022 = legacyPackages.${system}.callPackage ./packages/wakeup-nucbox2022 {};
+          vgaswitcheroo-toggle = legacyPackages.${system}.callPackage ./packages/vgaswitcheroo-toggle {};
+          nix-run = legacyPackages.${system}.callPackage ./packages/nix-run {};
+          desktop2022-rebuild = legacyPackages.${system}.callPackage ./packages/nixos-rebuild-system {
+            name = "desktop2022-rebuild";
+            inherit (self.packages.${system}) nix-run;
+          };
+          macbookpro2017-rebuild = legacyPackages.${system}.callPackage ./packages/nixos-rebuild-system {
+            name = "macbookpro2017-rebuild";
+            inherit (self.packages.${system}) nix-run;
+          };
+          macbookpro2025-rebuild = legacyPackages.${system}.callPackage ./packages/nixos-rebuild-system {
+            name = "macbookpro2025-rebuild";
+            inherit (self.packages.${system}) nix-run;
+          };
+          nucbox2022-rebuild = legacyPackages.${system}.callPackage ./packages/nixos-rebuild-system {
+            name = "nucbox2022-rebuild";
+            inherit (self.packages.${system}) nix-run;
+          };
+        }))
+        {
+          # TODO: Implement isoImage as a lib instead of a module. E.g. nipxkgs-shim.lib.isoImage { .... }
+          # x86_64-linux.installer-iso = self.nixosConfigurations.installer.config.system.build.isoImage; # broken in nixos-22.05
+          # x86_64-linux.install-helper = self.nixosConfigurations.installer.config.system.build.install-helper;
+        };
 
     nixosModules = rec {
       common = import ./nixos-modules/profiles/common;

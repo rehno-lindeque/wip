@@ -1,7 +1,13 @@
-{pkgs, name}:
-  pkgs.writeShellApplication {
+{
+  name,
+  writeShellApplication,
+  gh,
+  nix,
+  nix-run,
+}:
+  writeShellApplication {
     inherit name;
-    runtimeInputs = [pkgs.gh pkgs.nix];
+    runtimeInputs = [gh nix nix-run];
     text = ''
       #!/usr/bin/env bash
       set -euo pipefail
@@ -20,6 +26,6 @@
         fi
         export NIX_CONFIG
       fi
-      exec nix run "''${FLAKE_REF}#${name}" -- "$@"
+      exec nix-run "''${FLAKE_REF}#${name}" "$@"
     '';
   }
