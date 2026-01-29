@@ -274,6 +274,7 @@ in {
     services.openssh = {
       enable = true;
       settings.PasswordAuthentication = true; # TODO remove
+      settings.MaxSessions = 20;
       listenAddresses = [
         # accessible via the tailscale ip
         {
