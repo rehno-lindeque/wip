@@ -110,6 +110,9 @@ in {
         directories = [
           # Retain Claude state
           ({directory = ".claude";} // permissions)
+
+          # Retain Codex state
+          ({directory = ".codex";} // permissions)
         ];
       };
     };

@@ -79,6 +79,9 @@ in {
           # Retain Claude state
           ({directory = ".claude";} // permissions)
 
+          # Retain Codex state
+          ({directory = ".codex";} // permissions)
+
           # Retain ssh keys for this computer
           {
             directory = ".ssh";
