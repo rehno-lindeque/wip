@@ -101,6 +101,17 @@ in {
         "/etc/subgid"
       ];
 
+      users.me = let
+        permissions = {
+          user = "me";
+          group = "users";
+        };
+      in {
+        directories = [
+          # Retain Claude state
+          ({directory = ".claude";} // permissions)
+        ];
+      };
     };
 
     # Use the same nixpkgs/overlay as upstream apple-silicon-support so cache hits match

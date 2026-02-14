@@ -75,6 +75,9 @@ in {
           # Retain Codex state
           ".codex"
 
+          # Retain Claude state
+          ".claude"
+
           # Retain ssh keys for this computer
           {
             directory = ".ssh";
