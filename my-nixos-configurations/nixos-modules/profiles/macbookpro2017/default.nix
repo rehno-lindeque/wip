@@ -67,7 +67,6 @@ in {
           group = "users";
         };
       in {
-        home = "/home/new-me";
         directories = [
           # Retain all of my home config for the time being
           ".config"
