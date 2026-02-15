@@ -269,6 +269,22 @@
         "type": "github"
       }
     },
+    "nixpkgs_2": {
+      "locked": {
+        "lastModified": 1762547768,
+        "narHash": "sha256-0k7EyaH0dyJKJij4T4NPYp8dToH/iBVV+xqObBtB40g=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "05d30f8e43e09b65d84707fc94e1a3708b68a236",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "pull/459579/head",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "apple-silicon-support": "apple-silicon-support",
@@ -283,6 +299,7 @@
         "nixos-impermanence": "nixos-impermanence",
         "nixpkgs-stable": "nixpkgs-stable",
         "nixpkgs-unstable": "nixpkgs-unstable",
+        "via": "via",
         "voxinput": "voxinput",
         "vscode-server": "vscode-server"
       }
@@ -299,6 +316,40 @@
       "original": {
         "owner": "nix-systems",
         "repo": "default",
+        "type": "github"
+      }
+    },
+    "systems_2": {
+      "locked": {
+        "lastModified": 1681028828,
+        "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
+        "owner": "nix-systems",
+        "repo": "default",
+        "rev": "da67096a3b9bf56a91d16901293e51ba5b49a27e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-systems",
+        "repo": "default",
+        "type": "github"
+      }
+    },
+    "via": {
+      "inputs": {
+        "nixpkgs": "nixpkgs_2",
+        "systems": "systems_2"
+      },
+      "locked": {
+        "lastModified": 1762788933,
+        "narHash": "sha256-aBO/nspVZ/cFAFbZ6hbescrVvI6pg6ANxvOUle/0GsQ=",
+        "owner": "rehno-lindeque",
+        "repo": "via",
+        "rev": "4dd97b42b83be3c881a4f96c94dbf913f639891b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "rehno-lindeque",
+        "repo": "via",
         "type": "github"
       }
     },

@@ -6,6 +6,7 @@
     flake-utils.url = "github:numtide/flake-utils";
     home-manager.url = "github:nix-community/home-manager/release-25.11";
     impermanence.url = "github:nix-community/impermanence";
+    via.url = "github:rehno-lindeque/via";
     # nixos-hardware.url = "github:rehno-lindeque/nixos-hardware/mediatek/mt7921k";
     nixos-hardware.url = "github:nixos/nixos-hardware";
     nixos-impermanence.url = "github:rehno-lindeque/nixos-impermanence";
