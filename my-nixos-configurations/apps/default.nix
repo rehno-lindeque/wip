@@ -336,6 +336,14 @@ EOF
             mkdir -p "$dir"
           done
 
+          log "Persisted /etc files found may block impermanence setup."
+          rm -i \
+            "$persist_root/etc/passwd" \
+            "$persist_root/etc/group" \
+            "$persist_root/etc/shadow" \
+            "$persist_root/etc/subuid" \
+            "$persist_root/etc/subgid"
+
           log "Diagnostics (trimmed):"
           log "  BOOT_DEV=$BOOT_DEV -> $ESP_MNT"
           log "  NIX_DEV=$NIX_DEV -> $NIX_MNT"
