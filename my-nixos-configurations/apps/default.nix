@@ -336,6 +336,19 @@ EOF
             mkdir -p "$dir"
           done
 
+          log "Diagnostics:"
+          log "  BOOT_DEV=$BOOT_DEV -> $ESP_MNT"
+          log "  NIX_DEV=$NIX_DEV -> $NIX_MNT"
+          ls -la "$ESP_MNT" || true
+          ls -la "$ESP_MNT/asahi" || true
+          ls -la "$firmware_dest" || true
+
+          read -r -p "Continue after diagnostics? [y/N] " reply
+          if [[ ! "$reply" =~ ^[Yy]$ ]]; then
+            echo "Aborted."
+            exit 1
+          fi
+
           copy_firmware_file() {
             local filename="$1"
             local src=""
