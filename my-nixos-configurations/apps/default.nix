@@ -128,6 +128,33 @@ in
     macbookpro2017-rebuild = mkRebuildApp {name = "macbookpro2017"; host = "macbookpro2017";};
     macbookpro2025-rebuild = mkRebuildApp {name = "macbookpro2025"; host = "macbookpro2025";};
     nucbox2022-rebuild = mkRebuildApp {name = "nucbox2022"; host = "nucbox2022";};
+    install-macbookpro2025-remote = let
+      installer = pkgs.writeShellApplication {
+        name = "install-macbookpro2025-remote";
+        runtimeInputs = with pkgs; [
+          openssh
+        ];
+        text = ''
+          #!/usr/bin/env bash
+          set -euo pipefail
+
+          host="''${INSTALL_HOST:-''${1:-}}"
+          if [[ -z "$host" ]]; then
+            echo "Usage: install-macbookpro2025-remote <host>" >&2
+            echo "Set INSTALL_HOST to skip the argument." >&2
+            exit 1
+          fi
+
+          ssh-keygen -R "$host" >/dev/null 2>&1 || true
+          exec ssh -o StrictHostKeyChecking=accept-new "root@$host" \
+            'export NIX_CONFIG="experimental-features = nix-command flakes"; nix run github:rehno-lindeque/wip?dir=my-nixos-configurations#install-macbookpro2025 --refresh'
+        '';
+      };
+    in {
+      type = "app";
+      description = "Run install-macbookpro2025 on a remote installer over SSH";
+      program = "${installer}/bin/install-macbookpro2025-remote";
+    };
   }
   // pkgs.lib.optionalAttrs (system == "aarch64-linux") {
     install-macbookpro2025 = let
