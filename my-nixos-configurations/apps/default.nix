@@ -384,6 +384,12 @@ EOF
           copy_firmware_file "kernelcache.release.mac14j"
 
           log "Running nixos-install for $INSTALL_SYSTEM"
+          echo nixos-install \
+            --root "$MNT" \
+            --flake "$FLAKE_ROOT#$INSTALL_SYSTEM" \
+            --no-channel-copy \
+            --option accept-flake-config true \
+            --option extra-sandbox-paths "$firmware_dest"
           nixos-install \
             --root "$MNT" \
             --flake "$FLAKE_ROOT#$INSTALL_SYSTEM" \
