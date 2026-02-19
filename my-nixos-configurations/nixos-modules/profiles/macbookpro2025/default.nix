@@ -101,7 +101,7 @@ in {
         "/etc/subgid"
       ];
 
-      users.me = let
+      users.me = lib.mkIf (config.users.users ? me) (let
         permissions = {
           user = "me";
           group = "users";
@@ -114,7 +114,7 @@ in {
           # Retain Codex state
           ({directory = ".codex";} // permissions)
         ];
-      };
+      });
     };
 
     # Use the same nixpkgs/overlay as upstream apple-silicon-support so cache hits match
