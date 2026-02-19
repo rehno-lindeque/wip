@@ -168,7 +168,7 @@ EOF
 
           ssh-keygen -R "$host" >/dev/null 2>&1 || true
           exec ssh -o StrictHostKeyChecking=accept-new "root@$host" \
-            'export NIX_CONFIG="experimental-features = nix-command flakes"; nix run github:rehno-lindeque/wip?dir=my-nixos-configurations#install-macbookpro2025 --refresh'
+            'export NIX_CONFIG="experimental-features = nix-command flakes"; nix run github:rehno-lindeque/wip?dir=my-nixos-configurations#install-macbookpro2025 --refresh --accept-flake-config'
         '';
       };
     in {
