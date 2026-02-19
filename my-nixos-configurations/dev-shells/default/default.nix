@@ -14,6 +14,8 @@ mkShell {
     echo "-----------------------"
     printf "${nc}"
     echo
+    repo_root="$(git rev-parse --show-toplevel 2>/dev/null || true)"
+    export FLAKE_REF="path:$repo_root/my-nixos-configurations"
     nix run .#help 2>/dev/null
   '';
 }
