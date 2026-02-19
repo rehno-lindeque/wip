@@ -145,6 +145,27 @@ in
             exit 1
           fi
 
+          cat <<'EOF'
+Before running the remote install, prepare the stock NixOS installer:
+
+  iwctl
+  [iwd]# station wlan0 scan
+  [iwd]# station wlan0 get-networks
+  [iwd]# station wlan0 connect <ssid>
+
+  sudo su
+  passwd
+  systemctl start sshd
+  ip a
+
+Then make sure you can SSH in as root.
+EOF
+          read -r -p "Continue with remote install? [y/N] " reply
+          if [[ ! "$reply" =~ ^[Yy]$ ]]; then
+            echo "Aborted."
+            exit 1
+          fi
+
           ssh-keygen -R "$host" >/dev/null 2>&1 || true
           exec ssh -o StrictHostKeyChecking=accept-new "root@$host" \
             'export NIX_CONFIG="experimental-features = nix-command flakes"; nix run github:rehno-lindeque/wip?dir=my-nixos-configurations#install-macbookpro2025 --refresh'
