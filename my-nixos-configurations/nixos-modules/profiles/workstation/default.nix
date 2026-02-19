@@ -118,6 +118,12 @@ in {
               $ARGUMENTS
               Let's check if there are any inconsistent patterns in this work.
             '';
+            systematize = ''
+              ---
+              description: Systematize the current plan and approach
+              ---
+              Take the current plan and approach that we have and systematize it.
+            '';
             unravel = ''
               ---
               description: Unravel the given implementation
