@@ -59,8 +59,30 @@
           args+=(--target-host "$TARGET_HOST")
         fi
 
-        echo nixos-rebuild "''${args[@]}" "$@"
-        exec nixos-rebuild "''${args[@]}" "$@"
+        user_args=("$@")
+        action=""
+        if [[ ''${#user_args[@]} -gt 0 ]]; then
+          case "''${user_args[0]}" in
+            switch|boot|test|build|edit|repl|dry-build|dry-run|dry-activate|build-image|build-vm|build-vm-with-bootloader|list-generations)
+              action="''${user_args[0]}"
+              ;;
+          esac
+        fi
+        if [[ -n "$action" ]]; then
+          has_option_after=0
+          for i in "''${!user_args[@]}"; do
+            if [[ $i -gt 0 && "''${user_args[$i]}" == -* ]]; then
+              has_option_after=1
+              break
+            fi
+          done
+          if [[ $has_option_after -eq 1 ]]; then
+            user_args=("''${user_args[@]:1}" "$action")
+          fi
+        fi
+
+        echo nixos-rebuild "''${args[@]}" "''${user_args[@]}"
+        exec nixos-rebuild "''${args[@]}" "''${user_args[@]}"
       '';
     };
   in {
@@ -173,6 +195,7 @@ in
           BOOT_UUID="''${BOOT_UUID:-7414-141F}"
           NIX_UUID="''${NIX_UUID:-388b76d7-cb0d-4aef-80ee-13898a2ea81a}"
           MNT="''${MNT:-/mnt}"
+          ESP_MNT="''${ESP_MNT:-$MNT/boot}"
           NIX_MNT="''${NIX_MNT:-$MNT/nix}"
 
           resolve_by_uuid() {
@@ -242,17 +265,22 @@ in
           }
 
           ensure_mountpoint "$MNT"
+          ensure_mountpoint "$ESP_MNT"
           ensure_mountpoint "$NIX_MNT"
 
+          ensure_not_conflicting_mount "$BOOT_DEV" "$ESP_MNT"
           ensure_not_conflicting_mount "$NIX_DEV" "$NIX_MNT"
 
           maybe_format_nix "$NIX_DEV"
           mount_if_needed "$NIX_DEV" "$NIX_MNT"
+          mount_if_needed "$BOOT_DEV" "$ESP_MNT"
 
           persist_root="$NIX_MNT/persistent"
+          firmware_dest="$persist_root/etc/nixos/firmware"
 
           for dir in \
             "$persist_root" \
+            "$persist_root/etc/nixos/firmware" \
             "$persist_root/tmp" \
             "$persist_root/var/lib/nixos" \
             "$persist_root/var/log"
@@ -260,21 +288,47 @@ in
             mkdir -p "$dir"
           done
 
-        log "Running nixos-install for $INSTALL_SYSTEM"
-        nixos-install \
-          --root "$MNT" \
-          --flake "$FLAKE_ROOT#$INSTALL_SYSTEM" \
-          --no-channel-copy \
-          --option extra-sandbox-paths "/mnt/boot/asahi"
+          copy_firmware_file() {
+            local filename="$1"
+            local src=""
+            for candidate in \
+              "$ESP_MNT/asahi/$filename" \
+              "/boot/asahi/$filename"
+            do
+              if [[ -f "$candidate" ]]; then
+                src="$candidate"
+                break
+              fi
+            done
+
+            local dest="$firmware_dest/$filename"
+            if [[ -f "$dest" ]]; then
+              log "Firmware already present: $dest"
+              return
+            fi
+
+            if [[ -n "$src" ]]; then
+              log "Copying firmware $filename from $src to $dest"
+              rsync -av "$src" "$dest"
+            else
+              fail "Missing firmware file $filename (looked under $ESP_MNT/asahi and /boot/asahi)."
+            fi
+          }
+
+          copy_firmware_file "all_firmware.tar.gz"
+          copy_firmware_file "kernelcache.release.mac14j"
+
+          log "Running nixos-install for $INSTALL_SYSTEM"
+          nixos-install --root "$MNT" --flake "$FLAKE_ROOT#$INSTALL_SYSTEM" --no-channel-copy
 
           log "Installation complete. Mounted:"
-          findmnt -rno TARGET,SOURCE "$NIX_MNT" || true
+          findmnt -rno TARGET,SOURCE "$ESP_MNT" "$NIX_MNT" || true
           log "You can now reboot into the new system."
         '';
       };
     in {
       type = "app";
-      description = "Preflight + install macbookpro2025 (checks partitions, runs nixos-install)";
+      description = "Preflight + install macbookpro2025 (checks partitions, copies firmware, runs nixos-install)";
       program = "${installer}/bin/install-macbookpro2025";
     };
   }
