@@ -39,6 +39,7 @@ in {
       };
     };
 
-    hardware.asahi.peripheralFirmwareDirectory = lib.mkForce "/mnt/boot/asahi";
+    hardware.asahi.peripheralFirmwareDirectory =
+      lib.mkForce "/mnt/nix/persistent/etc/nixos/firmware";
   };
 }

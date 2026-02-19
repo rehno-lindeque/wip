@@ -129,8 +129,8 @@ in {
     networking.wireless.iwd.settings.General.EnableNetworkConfiguration = true;
 
     # Firmware extraction: expose ESP to sandboxed builds on the running system
-    hardware.asahi.peripheralFirmwareDirectory = "/boot/asahi";
-    nix.settings.extra-sandbox-paths = ["/boot/asahi"];
+    hardware.asahi.peripheralFirmwareDirectory = "/etc/nixos/firmware";
+    nix.settings.extra-sandbox-paths = ["/etc/nixos/firmware"];
 
     # Start out with some basic graphical user interface that is known to work
     services.xserver.enable = true;
