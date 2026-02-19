@@ -65,7 +65,7 @@ in {
       "/boot" = {
         device = "/dev/disk/by-uuid/7414-141F";
         fsType = "vfat";
-        options = ["fmask=0022" "dmask=0022" "X-mount.mkdir"];
+        options = ["fmask=0077" "dmask=0077" "X-mount.mkdir"];
       };
     };
 
