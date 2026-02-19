@@ -388,6 +388,7 @@ EOF
             --root "$MNT" \
             --flake "$FLAKE_ROOT#$INSTALL_SYSTEM" \
             --no-channel-copy \
+            --option accept-flake-config true \
             --option extra-sandbox-paths "$firmware_dest"
 
           log "Installation complete. Mounted:"
