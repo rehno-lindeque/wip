@@ -336,14 +336,18 @@ EOF
             mkdir -p "$dir"
           done
 
-          log "Diagnostics:"
+          log "Diagnostics (trimmed):"
           log "  BOOT_DEV=$BOOT_DEV -> $ESP_MNT"
           log "  NIX_DEV=$NIX_DEV -> $NIX_MNT"
-          ls -la "$ESP_MNT" || true
-          ls -la "$ESP_MNT/asahi" || true
-          ls -la "$firmware_dest" || true
-
-          read -r -p "Continue after diagnostics? [y/N] " reply
+          echo
+          echo "== $ESP_MNT/asahi =="
+          ls -1 "$ESP_MNT/asahi" 2>/dev/null || echo "(missing)"
+          echo
+          echo "== $firmware_dest =="
+          ls -1 "$firmware_dest" 2>/dev/null || echo "(missing)"
+          echo
+          printf "Continue after diagnostics? [y/N] "
+          read -r reply
           if [[ ! "$reply" =~ ^[Yy]$ ]]; then
             echo "Aborted."
             exit 1
