@@ -89,6 +89,12 @@ in {
 
         # Allow backlight control (see /etc/udev/rules.d/90-backlight.rules)
         "video"
+
+        # Serial access for CCOS Device Manager (Chromium WebSerial).
+        "dialout"
+
+        # HID access for CCOS Device Manager (Chromium WebHID).
+        "charachorder"
       ];
       isNormalUser = true;
       useDefaultShell = true;
@@ -445,5 +451,14 @@ in {
       latitude = 42.4072;
       longitude = -71.3824;
     };
+
+    # Ensure serial access groups exist for extraGroups above.
+    users.groups.dialout = {};
+    users.groups.charachorder = {};
+
+    services.udev.extraRules = ''
+      # CharaChorder Two S3 (CCOS) - allow WebHID access.
+      KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{idVendor}=="303a", ATTRS{idProduct}=="8253", MODE="0660", GROUP="charachorder"
+    '';
   };
 }
