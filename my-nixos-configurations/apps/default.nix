@@ -384,7 +384,11 @@ EOF
           copy_firmware_file "kernelcache.release.mac14j"
 
           log "Running nixos-install for $INSTALL_SYSTEM"
-          nixos-install --root "$MNT" --flake "$FLAKE_ROOT#$INSTALL_SYSTEM" --no-channel-copy
+          nixos-install \
+            --root "$MNT" \
+            --flake "$FLAKE_ROOT#$INSTALL_SYSTEM" \
+            --no-channel-copy \
+            --option extra-sandbox-paths "$firmware_dest"
 
           log "Installation complete. Mounted:"
           findmnt -rno TARGET,SOURCE "$ESP_MNT" "$NIX_MNT" || true
