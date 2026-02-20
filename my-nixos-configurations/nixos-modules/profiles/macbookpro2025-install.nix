@@ -25,6 +25,9 @@ in {
     profiles.personalized.enable = lib.mkForce false;
     profiles.playground.enable = lib.mkForce false;
 
+    # Skip /etc persistence during install to avoid activation failures; full system re-enables it.
+    environment.persistence."/nix/persistent".files = lib.mkForce [];
+
     # Installer-friendly access; tighten later
     users.mutableUsers = false;
     users.users.root.hashedPassword =
@@ -41,5 +44,8 @@ in {
 
     hardware.asahi.peripheralFirmwareDirectory =
       lib.mkForce "/mnt/nix/persistent/etc/nixos/firmware";
+
+    # Avoid persist-files conflicts during installer activation.
+    environment.persistence."/nix/persistent".files = lib.mkForce [];
   };
 }

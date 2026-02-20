@@ -388,14 +388,6 @@ EOF
           copy_firmware_file "all_firmware.tar.gz"
           copy_firmware_file "kernelcache.release.mac14j"
 
-          log "Persisted /etc files can conflict with impermanence activation."
-          rm -i \
-            "$MNT/etc/passwd" \
-            "$MNT/etc/group" \
-            "$MNT/etc/shadow" \
-            "$MNT/etc/subuid" \
-            "$MNT/etc/subgid"
-
           log "Running nixos-install for $INSTALL_SYSTEM"
           echo nixos-install \
             --root "$MNT" \
