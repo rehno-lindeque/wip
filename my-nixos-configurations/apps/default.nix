@@ -337,12 +337,17 @@ EOF
           done
 
           log "Persisted /etc files found may block impermanence setup."
-          rm -i \
+          for persisted_file in \
             "$persist_root/etc/passwd" \
             "$persist_root/etc/group" \
             "$persist_root/etc/shadow" \
             "$persist_root/etc/subuid" \
             "$persist_root/etc/subgid"
+          do
+            if [[ -e "$persisted_file" ]]; then
+              rm -i "$persisted_file"
+            fi
+          done
 
           log "Diagnostics (trimmed):"
           log "  BOOT_DEV=$BOOT_DEV -> $ESP_MNT"
