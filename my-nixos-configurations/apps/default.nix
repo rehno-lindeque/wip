@@ -305,11 +305,16 @@ EOF
           mount_if_needed() {
             local dev="$1"
             local path="$2"
+            local opts="''${3:-}"
             if findmnt -rno SOURCE "$path" >/dev/null 2>&1; then
               return
             fi
             log "Mounting $dev -> $path"
-            mount "$dev" "$path"
+            if [[ -n "$opts" ]]; then
+              mount -o "$opts" "$dev" "$path"
+            else
+              mount "$dev" "$path"
+            fi
           }
 
           ensure_mountpoint "$MNT"
@@ -321,7 +326,7 @@ EOF
 
           maybe_format_nix "$NIX_DEV"
           mount_if_needed "$NIX_DEV" "$NIX_MNT"
-          mount_if_needed "$BOOT_DEV" "$ESP_MNT"
+          mount_if_needed "$BOOT_DEV" "$ESP_MNT" "fmask=0077,dmask=0077"
 
           persist_root="$NIX_MNT/persistent"
           firmware_dest="$persist_root/etc/nixos/firmware"
@@ -334,19 +339,6 @@ EOF
             "$persist_root/var/log"
           do
             mkdir -p "$dir"
-          done
-
-          log "Persisted /etc files found may block impermanence setup."
-          for persisted_file in \
-            "$persist_root/etc/passwd" \
-            "$persist_root/etc/group" \
-            "$persist_root/etc/shadow" \
-            "$persist_root/etc/subuid" \
-            "$persist_root/etc/subgid"
-          do
-            if [[ -e "$persisted_file" ]]; then
-              rm -i "$persisted_file"
-            fi
           done
 
           log "Diagnostics (trimmed):"
@@ -395,6 +387,14 @@ EOF
 
           copy_firmware_file "all_firmware.tar.gz"
           copy_firmware_file "kernelcache.release.mac14j"
+
+          log "Persisted /etc files can conflict with impermanence activation."
+          rm -i \
+            "$MNT/etc/passwd" \
+            "$MNT/etc/group" \
+            "$MNT/etc/shadow" \
+            "$MNT/etc/subuid" \
+            "$MNT/etc/subgid"
 
           log "Running nixos-install for $INSTALL_SYSTEM"
           echo nixos-install \
