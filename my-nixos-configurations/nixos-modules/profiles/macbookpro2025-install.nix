@@ -45,7 +45,5 @@ in {
     hardware.asahi.peripheralFirmwareDirectory =
       lib.mkForce "/mnt/nix/persistent/etc/nixos/firmware";
 
-    # Avoid persist-files conflicts during installer activation.
-    environment.persistence."/nix/persistent".files = lib.mkForce [];
   };
 }
