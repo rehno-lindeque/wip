@@ -137,6 +137,11 @@ in {
     services.xserver.desktopManager.xfce.enable = true;
     services.xserver.xkb.layout = "us";
     services.xserver.xkb.variant = "norman";
+    hardware.graphics.enable = true;
+    services.xserver.videoDrivers = ["modesetting"];
+    services.xserver.deviceSection = ''
+      Option "kmsdev" "/dev/dri/by-path/platform-soc:display-subsystem-card"
+    '';
 
     # Trackpad/keyboard settings (mirror macbookpro2017 style)
     services.libinput.enable = true;
