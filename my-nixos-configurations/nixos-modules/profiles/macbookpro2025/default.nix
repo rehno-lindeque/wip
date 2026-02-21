@@ -83,6 +83,8 @@ in {
         # Log files
         "/var/log"
 
+        "/etc"
+
         # Large temp that can't fit on tmpfs
         "/tmp"
 
@@ -91,14 +93,6 @@ in {
           directory = "/etc/nixos/firmware";
           mode = "0755";
         }
-      ];
-
-      files = [
-        "/etc/passwd"
-        "/etc/group"
-        "/etc/shadow"
-        "/etc/subuid"
-        "/etc/subgid"
       ];
 
       users.me = lib.mkIf (config.users.users ? me) (let
