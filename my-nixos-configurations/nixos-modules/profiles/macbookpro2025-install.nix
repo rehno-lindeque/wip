@@ -25,8 +25,10 @@ in {
     profiles.personalized.enable = lib.mkForce false;
     profiles.playground.enable = lib.mkForce false;
 
-    # Skip /etc persistence during install to avoid activation failures; full system re-enables it.
-    environment.persistence."/nix/persistent".files = lib.mkForce [];
+    # Persist only machine-id during install to keep systemd-boot happy.
+    environment.persistence."/nix/persistent".files = lib.mkForce [
+      "/etc/machine-id"
+    ];
 
     # Installer-friendly access; tighten later
     users.mutableUsers = false;
