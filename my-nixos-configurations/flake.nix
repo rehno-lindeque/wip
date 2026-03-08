@@ -6,6 +6,7 @@
     flake-utils.url = "github:numtide/flake-utils";
     home-manager.url = "github:nix-community/home-manager/release-25.11";
     impermanence.url = "github:nix-community/impermanence";
+    llm-agents.url = "github:numtide/llm-agents.nix";
     via.url = "github:rehno-lindeque/via";
     # nixos-hardware.url = "github:rehno-lindeque/nixos-hardware/mediatek/mt7921k";
     nixos-hardware.url = "github:nixos/nixos-hardware";
@@ -24,6 +25,7 @@
     # Redirect inputs
     clump.inputs.nixpkgs.follows = "nixpkgs-stable";
     home-manager.inputs.nixpkgs.follows = "nixpkgs-stable";
+    llm-agents.inputs.nixpkgs.follows = "nixpkgs-unstable";
     nixos-impermanence.inputs = {
       nixpkgs.follows = "nixpkgs-stable";
       impermanence.follows = "impermanence";
@@ -42,9 +44,11 @@
 
   nixConfig = {
     extra-substituters = [
+      "https://cache.numtide.com"
       "https://nixos-apple-silicon.cachix.org"
     ];
     extra-trusted-public-keys = [
+      "niks3.numtide.com-1:DTx8wZduET09hRmMtKdQDxNNthLQETkc/yaX7M4qK0g="
       "nixos-apple-silicon.cachix.org-1:8psDu5SA5dAD7qA0zMy5UT292TxeEPzIz8VVEr2Js20="
     ];
   };
