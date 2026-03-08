@@ -141,6 +141,9 @@ in {
     services.libinput.enable = true;
     services.libinput.touchpad.disableWhileTyping = true;
 
+    # GUI for asking for ssh password on non-headless laptop sessions
+    programs.ssh.enableAskPassword = true;
+
     # Pin state version explicitly
     system.stateVersion = "25.11";
   };
