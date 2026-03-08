@@ -205,6 +205,7 @@ in {
 
     # GUI for asking for ssh password (for code-cursor / vscode)
     programs.ssh.enableAskPassword = true;
+    environment.variables.SUDO_ASKPASS = config.programs.ssh.askPassword;
 
     # Automatically handle standalone screen when docked
     services.autorandr.enable = true;

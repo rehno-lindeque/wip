@@ -143,6 +143,7 @@ in {
 
     # GUI for asking for ssh password on non-headless laptop sessions
     programs.ssh.enableAskPassword = true;
+    environment.variables.SUDO_ASKPASS = config.programs.ssh.askPassword;
 
     # Pin state version explicitly
     system.stateVersion = "25.11";
