@@ -514,11 +514,11 @@
         "systems": "systems_3"
       },
       "locked": {
-        "lastModified": 1773082499,
-        "narHash": "sha256-+mWNaFgSExiFxTTFt5IqTTQTIgn39dHsXGG0OczEqTc=",
+        "lastModified": 1773085459,
+        "narHash": "sha256-jBQuLEahraSf6+wzNZfdfJgwv2vdIK78czqUMIwyHjA=",
         "owner": "rehno-lindeque",
         "repo": "via",
-        "rev": "b7f0ea40283bd5e98132d63abdb9e33d2cc4c239",
+        "rev": "ad0d170edd45497ef3e62b418748c573888d1499",
         "type": "github"
       },
       "original": {
