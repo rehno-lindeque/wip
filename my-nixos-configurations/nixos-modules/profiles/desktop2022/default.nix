@@ -82,6 +82,9 @@ in {
           # Retain Codex state
           ({directory = ".codex";} // permissions)
 
+          # Retain OpenCode state
+          ({directory = ".local/state/opencode";} // permissions)
+
           # Retain ssh keys for this computer
           {
             directory = ".ssh";
