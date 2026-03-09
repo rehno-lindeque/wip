@@ -194,7 +194,6 @@ in {
         echo '${"\tnixos-install
         \t--root /mnt
         \t--flake github:rehno-lindeque/wip?dir=my-nixos-configurations#desktop2022 # path:${flake}#desktop2022
-        \t--override-input circuithub-nixos-configurations ${flake.inputs.circuithub-nixos-configurations}
         \t# ${overrideInputArgs}"}'
         printf "${nc}"
         echo
@@ -214,7 +213,6 @@ in {
           --root /mnt \
           --no-root-passwd \
           --flake github:rehno-lindeque/wip?dir=my-nixos-configurations#desktop2022 \
-          --override-input circuithub-nixos-configurations ${flake.inputs.circuithub-nixos-configurations} \
           # ${overrideInputArgs}
       '';
 

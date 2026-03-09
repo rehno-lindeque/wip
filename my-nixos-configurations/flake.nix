@@ -15,7 +15,6 @@
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-25.11";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     nix-colors.url = "github:misterio77/nix-colors";
-    circuithub-nixos-configurations.url = "github:circuithub/nixos-configurations";
     vscode-server.url = "github:nix-community/nixos-vscode-server";
     voxinput.url =
       # "github:richiejp/VoxInput";
@@ -36,10 +35,6 @@
       flake-utils.follows = "flake-utils";
     };
     voxinput.inputs.nixpkgs.follows = "nixpkgs-stable";
-    circuithub-nixos-configurations.inputs = {
-      flake-help.follows = "flake-help";
-      nixpkgs.follows = "nixpkgs-stable";
-    };
   };
 
   nixConfig = {
@@ -131,6 +126,7 @@
       macbookpro2025-install = import ./nixos-modules/profiles/macbookpro2025-install.nix;
       macbookpro2025 = import ./nixos-modules/profiles/macbookpro2025;
       nucbox2022 = import ./nixos-modules/profiles/nucbox2022;
+      circuithubDeveloperWorkstation = import ./nixos-modules/profiles/circuithub-developer-workstation.nix;
       # installer = import ./nixos-modules/profiles/installer;
       dotool = import ./nixos-modules/dotool;
       llm = import ./nixos-modules/llm;
@@ -161,7 +157,7 @@
         modules = [
           self.nixosModules.default
           self.nixosModules.desktop2022
-          self.inputs.circuithub-nixos-configurations.nixosModules.developerWorkstation
+          self.nixosModules.circuithubDeveloperWorkstation
           self.nixosModules.dotool
           self.nixosModules.llm
           self.nixosModules.mymux
@@ -190,7 +186,7 @@
         modules = [
           self.nixosModules.default
           self.nixosModules.macbookpro2017
-          self.inputs.circuithub-nixos-configurations.nixosModules.developerWorkstation
+          self.nixosModules.circuithubDeveloperWorkstation
           self.inputs.nixos-hardware.nixosModules.apple-macbook-pro-11-5
           self.inputs.nixos-hardware.nixosModules.common-gpu-amd-southern-islands
           self.nixosModules.dotool
@@ -217,7 +213,7 @@
         modules = [
           self.nixosModules.default
           self.nixosModules.nucbox2022
-          self.inputs.circuithub-nixos-configurations.nixosModules.developerWorkstation
+          self.nixosModules.circuithubDeveloperWorkstation
           {profiles.nucbox2022.enable = true;}
         ];
       };
