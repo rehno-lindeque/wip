@@ -42,7 +42,7 @@ in {
           bash.enable = true;
 
           # Coding assistants
-          claude-code.enable = true;
+          claude-code.enable = lib.mkDefault true;
           claude-code.package = flake.inputs.llm-agents.packages.${pkgs.system}.claude-code;
           claude-code.commands = {
             assess = ''
@@ -138,8 +138,9 @@ in {
           claude-code.settings = {
             includeCoAuthoredBy = false;
           };
-          codex.enable = true;
+          codex.enable = lib.mkDefault true;
           codex.package = flake.inputs.llm-agents.packages.${pkgs.system}.codex;
+          opencode.enable = lib.mkDefault true;
           opencode.package = flake.inputs.llm-agents.packages.${pkgs.system}.opencode;
 
           # Fuzzy find file names
