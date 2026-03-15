@@ -93,6 +93,9 @@ in {
         # Serial access for CCOS Device Manager (Chromium WebSerial).
         "dialout"
 
+        # Serial access (alternative group for USB serial devices)
+        "tty"
+
         # HID access for CCOS Device Manager (Chromium WebHID).
         "charachorder"
       ];
@@ -439,6 +442,7 @@ in {
 
           # Terminal emulator
           kitty.enable = lib.mkDefault cfg.enableSoftware;
+          ghostty.enable = lib.mkDefault cfg.enableSoftware;
         };
       };
     };
@@ -454,11 +458,15 @@ in {
 
     # Ensure serial access groups exist for extraGroups above.
     users.groups.dialout = {};
+    users.groups.tty = {};
     users.groups.charachorder = {};
 
     services.udev.extraRules = ''
       # CharaChorder Two S3 (CCOS) - allow WebHID access.
       KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{idVendor}=="303a", ATTRS{idProduct}=="8253", MODE="0660", GROUP="charachorder"
+
+      # CharaChorder Two S3 (CCOS) - allow serial access.
+      KERNEL=="ttyACM*", SUBSYSTEM=="tty", ATTRS{idVendor}=="303a", ATTRS{idProduct}=="8253", MODE="0660", GROUP="dialout"
     '';
   };
 }

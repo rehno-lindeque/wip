@@ -80,6 +80,9 @@ in {
           # Retain OpenCode state
           ({directory = ".local/state/opencode";} // permissions)
 
+          # Retain OpenCode session data
+          ({directory = ".local/share/opencode";} // permissions)
+
           # Retain ssh keys for this computer
           {
             directory = ".ssh";
