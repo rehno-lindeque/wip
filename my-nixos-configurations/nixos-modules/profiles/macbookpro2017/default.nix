@@ -77,6 +77,9 @@ in {
           # Retain Claude state
           ".claude"
 
+          # Retain OpenCode state
+          ({directory = ".local/state/opencode";} // permissions)
+
           # Retain ssh keys for this computer
           {
             directory = ".ssh";
