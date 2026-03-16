@@ -432,16 +432,6 @@ in {
         ];
 
         programs = {
-          google-chrome = lib.mkIf cfg.enableSoftware {
-            enable = true;
-            commandLineArgs = [
-              # Enable WebSerial API
-              "--enable-features=WebSerial"
-              # Enable Experimental Web Platform features (for WebHID, etc.)
-              "--enable-experimental-web-platform-features"
-            ];
-          };
-
           git = {
             enable = lib.mkDefault cfg.enableSoftware;
             settings.user = {
