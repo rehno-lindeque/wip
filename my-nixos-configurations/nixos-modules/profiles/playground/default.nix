@@ -657,9 +657,36 @@ in {
         # TODO EVALUATE:
         # TODO: keyboard stuff to potentially move to personalize
         services.xserver.dpi = 144;
+
+        # Console (TTY) keyboard - use XKB config so it gets norman layout
+        console.useXkbConfig = true;
+
+        # X11 keyboard settings - needed for console.useXkbConfig to work
+        # (but InputClass overrides these per-device)
         services.xserver.xkb.layout = "us";
         services.xserver.xkb.variant = "norman";
-        services.xserver.xkb.options = "terminate:ctrl_alt_bksp, caps:hyper";
+        services.xserver.xkb.options = "terminate:ctrl_alt_bksp,caps:hyper";
+
+        # Use explicit InputClass instead of global XKB to avoid applying to all keyboards
+        # This ensures devices like CharaChorder (which has its own layout in CCOS) aren't affected
+        services.xserver.inputClassSections = [
+          # Apple internal keyboard gets norman layout
+          ''
+            Identifier "apple-keyboard-norman"
+            MatchProduct "Apple Internal Keyboard"
+            Option "XkbRules" "evdev"
+            Option "XkbLayout" "us"
+            Option "XkbVariant" "norman"
+            Option "XkbOptions" "terminate:ctrl_alt_bksp,caps:hyper"
+          ''
+          # CharaChorder uses its own CCOS layout - use plain US
+          ''
+            Identifier "charachorder-us"
+            MatchProduct "CharaChorder"
+            Option "XkbRules" "evdev"
+            Option "XkbLayout" "us"
+          ''
+        ];
 
         # see https://wiki.archlinux.org/index.php/AMDGPU
         # see https://en.wikipedia.org/wiki/List_of_AMD_graphics_processing_units#Volcanic_Islands_.

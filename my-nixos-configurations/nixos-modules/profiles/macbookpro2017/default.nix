@@ -258,20 +258,6 @@ in {
       haskellPackages.xmonad-contrib
     ];
 
-    # Ignore CharaChorder for XKB mapping - it has its own layout in CCOS
-    # Create a file that loads AFTER 00-keyboard.conf to override the norman layout
-    environment.etc = {
-      "X11/xorg.conf.d/99-charachorder.conf".text = ''
-        Section "InputClass"
-          Identifier "charachorder-no-xkb"
-          MatchUSBID "303a:8253"
-          Option "XkbRules" "evdev"
-          Option "XkbLayout" "us"
-          Option "XkbVariant" ""
-        EndSection
-      '';
-    };
-
     # System first initialized at release 22.05
     system.stateVersion = "22.05";
     home-manager.users.me.home.stateVersion = "22.05";
