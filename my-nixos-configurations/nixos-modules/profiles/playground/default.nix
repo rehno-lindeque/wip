@@ -671,6 +671,9 @@ in {
             -option terminate:ctrl_alt_bksp \
             -option caps:hyper > "$out"
         '');
+        
+        # Don't load keymap in early boot (initrd) - avoids triggering initrd rebuilds
+        console.earlySetup = false;
 
         # X11 keyboard settings - fallback for devices not matched by InputClass
         # InputClass configs override per-device (Apple gets norman, CharaChorder gets plain US)
