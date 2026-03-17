@@ -95,6 +95,9 @@ in {
             }
             // permissions)
 
+          # Retain bash history
+          ".bash_history"
+
           # Retain neovim undo files
           ({directory = ".local/share/nvim";} // permissions)
 
