@@ -658,11 +658,22 @@ in {
         # TODO: keyboard stuff to potentially move to personalize
         services.xserver.dpi = 144;
 
-        # Console (TTY) keyboard - use XKB config so it gets norman layout
-        console.useXkbConfig = true;
+        # Console (TTY) keyboard - manually generate norman keymap using ckbcomp
+        # This is what console.useXkbConfig does internally, but we do it manually
+        # to have control and avoid the issue where it uses global XKB config
+        console.keyMap = lib.mkForce (pkgs.runCommand "norman-keymap" {
+          nativeBuildInputs = [ pkgs.buildPackages.ckbcomp ];
+        } ''
+          ${pkgs.buildPackages.ckbcomp}/bin/ckbcomp \
+            -model pc104 \
+            -layout us \
+            -variant norman \
+            -option terminate:ctrl_alt_bksp \
+            -option caps:hyper > "$out"
+        '');
 
         # X11 keyboard settings - fallback for devices not matched by InputClass
-        # CharaChorder gets plain US (this fallback), Apple keyboard gets norman via InputClass
+        # InputClass configs override per-device (Apple gets norman, CharaChorder gets plain US)
         services.xserver.xkb.layout = "us";
         services.xserver.xkb.options = "terminate:ctrl_alt_bksp,caps:hyper";
 
