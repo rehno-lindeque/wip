@@ -661,32 +661,35 @@ in {
         # Console (TTY) keyboard - use XKB config so it gets norman layout
         console.useXkbConfig = true;
 
-        # X11 keyboard settings - needed for console.useXkbConfig to work
-        # (but InputClass overrides these per-device)
+        # X11 keyboard settings - fallback for devices not matched by InputClass
+        # CharaChorder gets plain US (this fallback), Apple keyboard gets norman via InputClass
         services.xserver.xkb.layout = "us";
-        services.xserver.xkb.variant = "norman";
         services.xserver.xkb.options = "terminate:ctrl_alt_bksp,caps:hyper";
 
-        # Use explicit InputClass instead of global XKB to avoid applying to all keyboards
-        # This ensures devices like CharaChorder (which has its own layout in CCOS) aren't affected
-        services.xserver.inputClassSections = [
-          # Apple internal keyboard gets norman layout
-          ''
+        # Write InputClass config for CharaChorder - multiple matching strategies
+        environment.etc."X11/xorg.conf.d/99-charachorder.conf".text = ''
+          Section "InputClass"
+            Identifier "charachorder-us"
+            MatchProduct "CharaChorder"
+            MatchUSBID "303a:8253"
+            Option "XkbRules" "evdev"
+            Option "XkbLayout" "us"
+            Option "XkbVariant" ""
+          EndSection
+        '';
+
+        # Apple internal keyboard gets norman layout
+        environment.etc."X11/xorg.conf.d/98-apple-norman.conf".text = ''
+          Section "InputClass"
             Identifier "apple-keyboard-norman"
             MatchProduct "Apple Internal Keyboard"
+            MatchIsKeyboard "on"
             Option "XkbRules" "evdev"
             Option "XkbLayout" "us"
             Option "XkbVariant" "norman"
             Option "XkbOptions" "terminate:ctrl_alt_bksp,caps:hyper"
-          ''
-          # CharaChorder uses its own CCOS layout - use plain US
-          ''
-            Identifier "charachorder-us"
-            MatchProduct "CharaChorder"
-            Option "XkbRules" "evdev"
-            Option "XkbLayout" "us"
-          ''
-        ];
+          EndSection
+        '';
 
         # see https://wiki.archlinux.org/index.php/AMDGPU
         # see https://en.wikipedia.org/wiki/List_of_AMD_graphics_processing_units#Volcanic_Islands_.
