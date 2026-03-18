@@ -75,15 +75,17 @@ in {
         description = "Whisper Server";
         wantedBy = [ "multi-user.target" ];
         after = [ "network.target" ];
-        path = lib.optional cfg.convert pkgs.ffmpeg;
+        path = lib.optionals cfg.convert [ pkgs.ffmpeg ];
+
+        startLimitIntervalSec = 300;
+        startLimitBurst = 10;
 
         serviceConfig = {
           User = cfg.user;
           Group = cfg.group;
           ExecStart =
             lib.concatStringsSep "\\\n  " ([
-              # "${cfg.package}/bin/whisper-server"
-              "${cfg.package}/bin/whisper-cpp-server"
+              "${cfg.package}/bin/whisper-server"
               "--model ${cfg.model}"
               "--prompt '${cfg.prompt}'"
               "--host ${cfg.host}"
