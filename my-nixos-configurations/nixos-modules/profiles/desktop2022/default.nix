@@ -92,6 +92,9 @@ in {
           # Retain OpenCode share data
           ({directory = ".local/share/opencode";} // permissions)
 
+          # Retain OpenCode cache
+          ({directory = ".cache/opencode";} // permissions)
+
           # Retain ssh keys for this computer
           {
             directory = ".ssh";
@@ -104,8 +107,14 @@ in {
           # Retain trusted nix settings and repl history (repl-history, trusted-settings.json)
           ({directory = ".local/share/nix";} // permissions)
 
+          # Retain virtualenv wheel cache
+          ({directory = ".local/share/virtualenv";} // permissions)
+
           # Retain neovim undo files
           ({directory = ".local/share/nvim";} // permissions)
+
+          # Retain neovim state such as undo history
+          ({directory = ".local/state/nvim";} // permissions)
 
           # Retain nix evaluation cache, registry cache etc
           ({directory = ".cache/nix";} // permissions)
@@ -119,6 +128,16 @@ in {
           # Retain haskell caches (partly because they're too big for tmpfs)
           ({directory = ".cache/ghcide";} // permissions)
           ({directory = ".cache/hie-bios";} // permissions)
+
+          # Retain large language/package caches to avoid filling tmpfs
+          ({directory = ".cache/pip";} // permissions)
+          ({directory = ".cache/cabal";} // permissions)
+
+          # Retain bun install cache
+          ({directory = ".bun";} // permissions)
+
+          # Retain local Python virtual environments
+          ({directory = ".venvs";} // permissions)
         ];
 
         files = [
