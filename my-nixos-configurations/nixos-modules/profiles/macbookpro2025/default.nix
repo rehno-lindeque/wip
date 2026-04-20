@@ -170,5 +170,6 @@ in {
 
     # Pin state version explicitly
     system.stateVersion = "25.11";
+    home-manager.users.me.home.stateVersion = "25.11";
   };
 }
