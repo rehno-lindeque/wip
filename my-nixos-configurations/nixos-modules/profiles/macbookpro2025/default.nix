@@ -150,6 +150,9 @@ in {
     services.xserver.xkb.layout = "us";
     services.xserver.xkb.variant = "norman";
     hardware.graphics.enable = true;
+    services.xserver.serverFlagsSection = ''
+      Option "AutoAddGPU" "off"
+    '';
     services.xserver.videoDrivers = ["modesetting"];
     services.xserver.deviceSection = ''
       Option "kmsdev" "/dev/dri/by-path/platform-soc:display-subsystem-card"
