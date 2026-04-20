@@ -150,6 +150,8 @@ in {
     services.xserver.xkb.layout = "us";
     services.xserver.xkb.variant = "norman";
     hardware.graphics.enable = true;
+    # On Asahi, keep Xorg pinned to the display-subsystem DRM node instead of
+    # auto-adding the separate GPU DRM device, which can break LightDM startup.
     services.xserver.serverFlagsSection = ''
       Option "AutoAddGPU" "off"
     '';
