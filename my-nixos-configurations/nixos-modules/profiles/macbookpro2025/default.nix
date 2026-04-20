@@ -111,6 +111,9 @@ in {
         };
       in {
         directories = [
+          # Retain all of my home config for the time being
+          ({directory = ".config";} // permissions)
+
           # Retain Claude state
           ({directory = ".claude";} // permissions)
 
