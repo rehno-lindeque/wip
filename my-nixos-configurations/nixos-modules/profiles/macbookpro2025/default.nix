@@ -21,6 +21,15 @@ in {
     # - /dev/disk/by-label nixos (p7)            -> /nix (ext4, persistent store/persistence root)
     profiles = {
       common.enable = true;
+      workstation.enable = true;
+      personalized = {
+        enable = true;
+        enableSoftware = true;
+        # enableProblematicSoftware = true;
+        enableHome = true;
+      };
+      preferences.enable = true;
+      playground.enable = true;
     };
 
     # Using the systemd-boot EFI boot loader as it seems to be very simple
