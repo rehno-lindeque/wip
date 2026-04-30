@@ -6,6 +6,8 @@
   ...
 }: let
   cfg = config.profiles.personalized;
+  chromeSupported = !pkgs.stdenv.hostPlatform.isAarch64;
+  ledgerLiveSupported = pkgs.stdenv.hostPlatform.system == "x86_64-linux";
 in {
   options = with lib; {
     profiles.personalized = {
@@ -146,7 +148,9 @@ in {
           # mnemonic
           # ssss
           # paperkey
-          # ledger-live-desktop
+        ]
+        ++ lib.optionals (cfg.enableSoftware && ledgerLiveSupported) [
+          ledger-live-desktop
         ]
         # Security
         ++ lib.optionals cfg.enableSoftware [
@@ -162,11 +166,13 @@ in {
         # Web
         ++ lib.optionals cfg.enableSoftware [
           firefox
-          # google-chrome
           brave
           # tor-browser-bundle-bin
           # dropbox
           # dropbox-cli
+        ]
+        ++ lib.optionals (cfg.enableSoftware && chromeSupported) [
+          google-chrome
         ]
         # Communication
         ++ lib.optionals cfg.enableProblematicSoftware [
@@ -434,15 +440,15 @@ in {
         ];
 
         programs = {
-          # google-chrome = lib.mkIf cfg.enableSoftware {
-          #   enable = true;
-          #   commandLineArgs = [
-          #     # Enable WebSerial API
-          #     "--enable-features=WebSerial"
-          #     # Enable Experimental Web Platform features (for WebHID, etc.)
-          #     "--enable-experimental-web-platform-features"
-          #   ];
-          # };
+          google-chrome = lib.mkIf (cfg.enableSoftware && chromeSupported) {
+            enable = true;
+            commandLineArgs = [
+              # Enable WebSerial API
+              "--enable-features=WebSerial"
+              # Enable Experimental Web Platform features (for WebHID, etc.)
+              "--enable-experimental-web-platform-features"
+            ];
+          };
 
           git = {
             enable = lib.mkDefault cfg.enableSoftware;
