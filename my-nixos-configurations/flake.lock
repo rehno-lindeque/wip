@@ -231,11 +231,11 @@
         "nixpkgs": "nixpkgs_2"
       },
       "locked": {
-        "lastModified": 1776742251,
-        "narHash": "sha256-uLYTJip2sFi2JC090Nq/D1BVtgOtjlD6p9UJIPJ2b54=",
+        "lastModified": 1777576531,
+        "narHash": "sha256-L72wBAqU/RuWWhanL/QeMNHImftuOayhhrWdn4ssB4c=",
         "ref": "refs/heads/master",
-        "rev": "8efc66929a78310d4516e95095612937044e2781",
-        "revCount": 214,
+        "rev": "ecbb8310d8cdabab3dcd1b062569ba6d7053fe6a",
+        "revCount": 216,
         "type": "git",
         "url": "https://github.com/rehno-lindeque/impermanence.git"
       },
