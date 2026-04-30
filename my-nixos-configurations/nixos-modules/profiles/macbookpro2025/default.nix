@@ -32,8 +32,10 @@ in {
       playground.enable = true;
     };
 
-    # Using the systemd-boot EFI boot loader as it seems to be very simple
-    boot.loader.systemd-boot.enable = true;
+     networking.hostName = "macbookpro2025";
+
+     # Using the systemd-boot EFI boot loader as it seems to be very simple
+     boot.loader.systemd-boot.enable = true;
 
     # Make sure initrd can mount /nix early and create mount points
     boot.initrd = {
