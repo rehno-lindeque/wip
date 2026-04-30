@@ -160,6 +160,8 @@ in {
       });
     };
 
+    users.users.me.hashedPasswordFile = "/nix/persistent/secrets/me-password.hash";
+
     # Use the same nixpkgs/overlay as upstream apple-silicon-support so cache hits match
     hardware.asahi.pkgs = lib.mkForce (import flake.inputs.apple-silicon-support.inputs.nixpkgs {
       inherit (pkgs) system;
