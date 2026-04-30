@@ -118,6 +118,36 @@ in {
           # Retain Codex state
           ({directory = ".codex";} // permissions)
 
+          # Retain ssh keys for this computer
+          {
+            directory = ".ssh";
+            mode = "0700";
+          }
+
+          # Retain bash history
+          ".bash_history"
+
+          # Retain my projects directory (for now)
+          "projects"
+
+          # Retain trusted nix settings and repl history (repl-history, trusted-settings.json)
+          ({directory = ".local/share/nix";} // permissions)
+
+          # Retain virtualenv wheel cache
+          ({directory = ".local/share/virtualenv";} // permissions)
+
+          # Retain neovim undo files
+          ({directory = ".local/share/nvim";} // permissions)
+
+          # Retain neovim state such as undo history
+          ({directory = ".local/state/nvim";} // permissions)
+
+          # Retain nix evaluation cache, registry cache etc
+          ({directory = ".cache/nix";} // permissions)
+
+          # Retain neovim cache
+          ({directory = ".cache/nvim";} // permissions)
+
           # Retain OpenCode state
           ({directory = ".local/state/opencode";} // permissions)
 
