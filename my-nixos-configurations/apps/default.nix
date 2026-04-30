@@ -189,6 +189,7 @@ EOF
           gnugrep
           gnutar
           iproute2
+          mkpasswd
           mount
           nixos-install-tools
           rsync
@@ -330,16 +331,38 @@ EOF
 
           persist_root="$NIX_MNT/persistent"
           firmware_dest="$persist_root/etc/nixos/firmware"
+          secrets_dir="$persist_root/secrets"
+          me_password_hash="$secrets_dir/me-password.hash"
 
           for dir in \
             "$persist_root" \
             "$persist_root/etc/nixos/firmware" \
+            "$secrets_dir" \
             "$persist_root/tmp" \
             "$persist_root/var/lib/nixos" \
             "$persist_root/var/log"
           do
             mkdir -p "$dir"
           done
+
+          chmod 0700 "$secrets_dir"
+
+          ensure_me_password_hash() {
+            if [[ -s "$me_password_hash" ]]; then
+              log "Using existing persisted password hash: $me_password_hash"
+              chmod 0400 "$me_password_hash"
+              chown root:root "$me_password_hash"
+              return
+            fi
+
+            log "Creating persisted password hash for user me"
+            umask 077
+            mkpasswd --method=SHA-512 > "$me_password_hash"
+            chmod 0400 "$me_password_hash"
+            chown root:root "$me_password_hash"
+          }
+
+          ensure_me_password_hash
 
           log "Diagnostics (trimmed):"
           log "  BOOT_DEV=$BOOT_DEV -> $ESP_MNT"
