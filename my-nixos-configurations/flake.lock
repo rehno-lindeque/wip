@@ -231,17 +231,17 @@
         "nixpkgs": "nixpkgs_2"
       },
       "locked": {
-        "lastModified": 1769548169,
-        "narHash": "sha256-03+JxvzmfwRu+5JafM0DLbxgHttOQZkUtDWBmeUkN8Y=",
-        "owner": "nix-community",
-        "repo": "impermanence",
-        "rev": "7b1d382faf603b6d264f58627330f9faa5cba149",
-        "type": "github"
+        "lastModified": 1776742251,
+        "narHash": "sha256-uLYTJip2sFi2JC090Nq/D1BVtgOtjlD6p9UJIPJ2b54=",
+        "ref": "refs/heads/master",
+        "rev": "8efc66929a78310d4516e95095612937044e2781",
+        "revCount": 214,
+        "type": "git",
+        "url": "https://github.com/rehno-lindeque/impermanence.git"
       },
       "original": {
-        "owner": "nix-community",
-        "repo": "impermanence",
-        "type": "github"
+        "type": "git",
+        "url": "https://github.com/rehno-lindeque/impermanence.git"
       }
     },
     "import-tree": {
@@ -330,17 +330,17 @@
         ]
       },
       "locked": {
-        "lastModified": 1739294693,
-        "narHash": "sha256-vEwYJeaySGY2hjJpTlvCgDk1T0qPygdHJj8V1q0xwzA=",
-        "owner": "rehno-lindeque",
-        "repo": "nixos-impermanence",
-        "rev": "5b421b015f1ab8942f4282e228feebc26e4d7926",
-        "type": "github"
+        "lastModified": 1776732256,
+        "narHash": "sha256-rpmRjR9ENzxqQwlKiwc3Ex5xE8lATFRlSDlNlfcENP0=",
+        "ref": "refs/heads/master",
+        "rev": "d4a7a9cdc9cac86558f4f9642e71e81f53ed5b05",
+        "revCount": 28,
+        "type": "git",
+        "url": "https://github.com/rehno-lindeque/nixos-impermanence.git"
       },
       "original": {
-        "owner": "rehno-lindeque",
-        "repo": "nixos-impermanence",
-        "type": "github"
+        "type": "git",
+        "url": "https://github.com/rehno-lindeque/nixos-impermanence.git"
       }
     },
     "nixpkgs": {
