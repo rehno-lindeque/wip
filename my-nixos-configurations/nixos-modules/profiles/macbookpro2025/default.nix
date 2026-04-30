@@ -199,6 +199,9 @@ in {
     programs.ssh.enableAskPassword = true;
     environment.variables.SUDO_ASKPASS = config.programs.ssh.askPassword;
 
+    # Cloud password manager
+    programs._1password-gui.enable = true;
+
     # Pin state version explicitly
     system.stateVersion = "25.11";
     home-manager.users.me.home.stateVersion = "25.11";
