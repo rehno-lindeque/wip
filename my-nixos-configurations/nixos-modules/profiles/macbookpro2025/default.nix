@@ -92,8 +92,6 @@ in {
         # Log files
         "/var/log"
 
-        "/etc"
-
         # Large temp that can't fit on tmpfs
         "/tmp"
 
