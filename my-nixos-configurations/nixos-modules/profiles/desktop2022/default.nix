@@ -325,9 +325,9 @@ in {
         ''
           AllowUsers me@192.168.1.11
         ''
-        # Restrict access to me@nucbox2022 and me@macbookpro2017 on tailscale
+        # Restrict access to me@nucbox2022, me@macbookpro2017, and me@macbookpro2025 on tailscale
         + ''
-          AllowUsers me@100.102.213.117 me@100.123.235.67
+          AllowUsers me@100.102.213.117 me@100.123.235.67 me@100.68.105.112
         '';
     };
 
