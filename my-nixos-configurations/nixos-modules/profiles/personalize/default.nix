@@ -42,6 +42,8 @@ in {
     users.users.me = rec {
       name = "me";
       description = "Rehno Lindeque";
+      # Initial password is generated with nix run nixpkgs#mkpasswd -- --method=SHA-512
+      initialHashedPassword = "$6$vLC4X1jGTMwqv835$qe3.gqt6tqlPW4SVsefbn9hiI6ynY8MWQFq4YymYdq7HI6tuHWYDWyX6NHp7OykQnyBoTG6VrgultN9iP4SCY/";
       group = "users";
       uid = 1005;
       createHome = true;
@@ -144,7 +146,7 @@ in {
           # mnemonic
           # ssss
           # paperkey
-          ledger-live-desktop
+          # ledger-live-desktop
         ]
         # Security
         ++ lib.optionals cfg.enableSoftware [
@@ -160,7 +162,7 @@ in {
         # Web
         ++ lib.optionals cfg.enableSoftware [
           firefox
-          google-chrome
+          # google-chrome
           brave
           # tor-browser-bundle-bin
           # dropbox
@@ -432,15 +434,15 @@ in {
         ];
 
         programs = {
-          google-chrome = lib.mkIf cfg.enableSoftware {
-            enable = true;
-            commandLineArgs = [
-              # Enable WebSerial API
-              "--enable-features=WebSerial"
-              # Enable Experimental Web Platform features (for WebHID, etc.)
-              "--enable-experimental-web-platform-features"
-            ];
-          };
+          # google-chrome = lib.mkIf cfg.enableSoftware {
+          #   enable = true;
+          #   commandLineArgs = [
+          #     # Enable WebSerial API
+          #     "--enable-features=WebSerial"
+          #     # Enable Experimental Web Platform features (for WebHID, etc.)
+          #     "--enable-experimental-web-platform-features"
+          #   ];
+          # };
 
           git = {
             enable = lib.mkDefault cfg.enableSoftware;
