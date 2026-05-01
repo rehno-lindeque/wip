@@ -18,7 +18,7 @@ pkgs.writeShellApplication {
         -o ControlPersist=10m \
         -o "ControlPath=$HOME/.ssh/cm-%r@%h:%p" \
         desktop2022 \
-        '$HOME/.nix-profile/bin/zmx-project-list-detached' || true
+        bash -lc 'zmx-project-list-detached' || true
     } | fuzzel --dmenu --prompt "desktop2022 session> ")"
 
     if [[ -z "$selection" ]]; then
@@ -34,6 +34,6 @@ pkgs.writeShellApplication {
       -o ControlPersist=10m \
       -o "ControlPath=$HOME/.ssh/cm-%r@%h:%p" \
       -t desktop2022 \
-      sh -lc 'exec "$HOME/.nix-profile/bin/zmx" attach "$1"' _ "$session_name"
+      bash -lc 'exec zmx attach "$1"' _ "$session_name"
   '';
 }

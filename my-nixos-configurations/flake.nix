@@ -15,6 +15,7 @@
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-25.11";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     nix-colors.url = "github:misterio77/nix-colors";
+    zmx.url = "github:neurosnap/zmx/9d01661fd1bacf9d7e886332af0d94e8c939aed9"; # v0.5.0
     vscode-server.url = "github:nix-community/nixos-vscode-server";
     voxinput.url =
       # "github:richiejp/VoxInput";
@@ -30,6 +31,8 @@
       impermanence.follows = "impermanence";
     };
     nix-colors.inputs.nixpkgs-lib.follows = "nixpkgs-stable";
+    zmx.inputs.zig2nix.inputs.nixpkgs.follows = "nixpkgs-stable";
+    zmx.inputs.zig2nix.inputs.flake-utils.follows = "flake-utils";
     vscode-server.inputs = {
       nixpkgs.follows = "nixpkgs-stable";
       flake-utils.follows = "flake-utils";
@@ -55,6 +58,7 @@
     impermanence,
     nixos-impermanence,
     nixpkgs-stable,
+    zmx,
     ...
   }: let
     inherit (nixpkgs-stable) lib;
@@ -91,7 +95,9 @@
           wakeup-nucbox2022 = legacyPackages.${system}.callPackage ./packages/wakeup-nucbox2022 {};
           vgaswitcheroo-toggle = legacyPackages.${system}.callPackage ./packages/vgaswitcheroo-toggle {};
           nix-run = legacyPackages.${system}.callPackage ./packages/nix-run {};
-          zmx = legacyPackages.${system}.callPackage ./packages/zmx {};
+          zmx = legacyPackages.${system}.callPackage ./packages/zmx {
+            inherit zmx;
+          };
           zmx-project-open = legacyPackages.${system}.callPackage ./packages/zmx-project-open {
             inherit (self.packages.${system}) zmx;
           };

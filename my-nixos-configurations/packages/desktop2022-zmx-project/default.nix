@@ -26,6 +26,6 @@ pkgs.writeShellApplication {
       -o ControlPersist=10m \
       -o "ControlPath=$HOME/.ssh/cm-%r@%h:%p" \
       -t desktop2022 \
-      sh -lc 'exec "$HOME/.nix-profile/bin/zmx-project-open" "$1"' _ "$project_name"
+      bash -lc 'exec zmx-project-open "$1"' _ "$project_name"
   '';
 }
