@@ -234,10 +234,10 @@ in {
           };
 
           battery = {
-            format = "{capacity}%";
-            format-charging = "{capacity}%+";
-            format-plugged = "{capacity}%=";
-            tooltip-format = "{timeTo}";
+            format = "{capacity}% {power}W";
+            format-charging = "{capacity}% {power}W+";
+            format-plugged = "{capacity}% AC";
+            tooltip-format = "{time}";
           };
         }
       ];
@@ -275,6 +275,19 @@ in {
           color: #ff8a7a;
         }
       '';
+    };
+    home-manager.users.me.services.swayidle = {
+      enable = true;
+      timeouts = [
+        {
+          timeout = 600;
+          command = "niri msg action power-off-monitors";
+        }
+        {
+          timeout = 1800;
+          command = "systemctl suspend";
+        }
+      ];
     };
     home-manager.users.me.xdg.configFile."niri/config.kdl".text = ''
       input {
