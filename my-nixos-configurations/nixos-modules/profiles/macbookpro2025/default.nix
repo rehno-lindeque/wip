@@ -174,6 +174,7 @@ in {
     # Use iwd instead of wpa_supplicant
     # See [nixos-apple-silicon recommendation](https://github.com/nix-community/nixos-apple-silicon/blob/main/docs/uefi-standalone.md#nixos-installation)
     networking.networkmanager.wifi.backend = "iwd";
+    networking.networkmanager.wifi.powersave = true;
     networking.wireless.iwd.settings.General.EnableNetworkConfiguration = true;
 
     # Firmware extraction: expose ESP to sandboxed builds on the running system
