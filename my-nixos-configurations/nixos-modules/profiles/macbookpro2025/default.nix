@@ -32,10 +32,10 @@ in {
       playground.enable = true;
     };
 
-     networking.hostName = "macbookpro2025";
+    networking.hostName = "macbookpro2025";
 
-     # Using the systemd-boot EFI boot loader as it seems to be very simple
-     boot.loader.systemd-boot.enable = true;
+    # Using the systemd-boot EFI boot loader as it seems to be very simple
+    boot.loader.systemd-boot.enable = true;
 
     # Make sure initrd can mount /nix early and create mount points
     boot.initrd = {
@@ -180,25 +180,220 @@ in {
     hardware.asahi.peripheralFirmwareDirectory = "/etc/nixos/firmware";
     nix.settings.extra-sandbox-paths = ["/etc/nixos/firmware"];
 
-    # Start out with some basic graphical user interface that is known to work
-    services.xserver.enable = true;
-    services.xserver.desktopManager.xfce.enable = true;
+    # Start with a minimal native niri session
+    programs.niri = {
+      enable = true;
+      useNautilus = false;
+    };
+    systemd.user.services.niri.enableDefaultPath = false;
+    services.greetd.enable = true;
+    services.greetd.settings.default_session = {
+      command = "${lib.getExe pkgs.tuigreet} --time --cmd niri-session";
+      user = "greeter";
+    };
+    services.gnome.gcr-ssh-agent.enable = false;
+
     services.xserver.xkb.layout = "us";
     services.xserver.xkb.variant = "norman";
     hardware.graphics.enable = true;
-    # On Asahi, keep Xorg pinned to the display-subsystem DRM node instead of
-    # auto-adding the separate GPU DRM device, which can break LightDM startup.
-    services.xserver.serverFlagsSection = ''
-      Option "AutoAddGPU" "off"
-    '';
-    services.xserver.videoDrivers = ["modesetting"];
-    services.xserver.deviceSection = ''
-      Option "kmsdev" "/dev/dri/by-path/platform-soc:display-subsystem-card"
-    '';
 
     # Trackpad/keyboard settings (mirror macbookpro2017 style)
     services.libinput.enable = true;
     services.libinput.touchpad.disableWhileTyping = true;
+
+    home-manager.users.me.home.packages = with pkgs; [
+      fuzzel
+      wl-clipboard
+    ];
+    home-manager.users.me.home.file."projects/screenshots/.keep".text = "";
+    home-manager.users.me.xdg.configFile."niri/config.kdl".text = ''
+      input {
+          keyboard {
+              xkb {
+                  layout "us"
+                  variant "norman"
+              }
+          }
+
+          touchpad {
+              dwt
+          }
+      }
+
+      layout {
+          gaps 16
+
+          preset-column-widths {
+              proportion 0.33333
+              proportion 0.5
+              proportion 0.66667
+          }
+
+          default-column-width { proportion 0.5; }
+
+          focus-ring {
+              width 4
+              active-color "#7fc8ff"
+              inactive-color "#505050"
+          }
+
+          border {
+              off
+
+              width 4
+              active-color "#ffc87f"
+              inactive-color "#505050"
+              urgent-color "#9b0000"
+          }
+
+          shadow {
+              softness 30
+              spread 5
+              offset x=0 y=5
+              color "#0007"
+          }
+      }
+
+      hotkey-overlay {
+      }
+
+      debug {
+          render-drm-device "/dev/dri/renderD128"
+      }
+
+      prefer-no-csd
+
+      screenshot-path "~/projects/screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
+
+      animations {
+      }
+
+      window-rule {
+          match app-id=r#"firefox$"# title="^Picture-in-Picture$"
+          open-floating true
+      }
+
+      binds {
+          Mod+Shift+Slash { show-hotkey-overlay; }
+
+          Mod+Return hotkey-overlay-title="Open a Terminal: kitty" { spawn "kitty"; }
+          Mod+Space hotkey-overlay-title="Run an Application: fuzzel" { spawn "fuzzel"; }
+
+          XF86AudioRaiseVolume allow-when-locked=true { spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.1+ -l 1.0"; }
+          XF86AudioLowerVolume allow-when-locked=true { spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.1-"; }
+          XF86AudioMute allow-when-locked=true { spawn-sh "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"; }
+          XF86AudioMicMute allow-when-locked=true { spawn-sh "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"; }
+
+          XF86AudioPlay allow-when-locked=true { spawn-sh "playerctl play-pause"; }
+          XF86AudioStop allow-when-locked=true { spawn-sh "playerctl stop"; }
+          XF86AudioPrev allow-when-locked=true { spawn-sh "playerctl previous"; }
+          XF86AudioNext allow-when-locked=true { spawn-sh "playerctl next"; }
+
+          XF86MonBrightnessUp allow-when-locked=true { spawn "brightnessctl" "--class=backlight" "set" "+10%"; }
+          XF86MonBrightnessDown allow-when-locked=true { spawn "brightnessctl" "--class=backlight" "set" "10%-"; }
+
+          Mod+Tab repeat=false { toggle-overview; }
+          Mod+Q repeat=false { close-window; }
+
+          Mod+Left  { focus-column-left; }
+          Mod+Down  { focus-window-down; }
+          Mod+Up    { focus-window-up; }
+          Mod+Right { focus-column-right; }
+          Mod+Y     { focus-column-left; }
+          Mod+N     { focus-window-down; }
+          Mod+I     { focus-window-up; }
+          Mod+O     { focus-column-right; }
+
+          Mod+Ctrl+Left  { move-column-left; }
+          Mod+Ctrl+Down  { move-window-down; }
+          Mod+Ctrl+Up    { move-window-up; }
+          Mod+Ctrl+Right { move-column-right; }
+          Mod+Ctrl+Y     { move-column-left; }
+          Mod+Ctrl+N     { move-window-down; }
+          Mod+Ctrl+I     { move-window-up; }
+          Mod+Ctrl+O     { move-column-right; }
+
+          Mod+Home { focus-column-first; }
+          Mod+End  { focus-column-last; }
+          Mod+Ctrl+Home { move-column-to-first; }
+          Mod+Ctrl+End  { move-column-to-last; }
+
+          Mod+Page_Down      { focus-workspace-down; }
+          Mod+Page_Up        { focus-workspace-up; }
+          Mod+Ctrl+Page_Down { move-column-to-workspace-down; }
+          Mod+Ctrl+Page_Up   { move-column-to-workspace-up; }
+
+          Mod+Shift+Page_Down { move-workspace-down; }
+          Mod+Shift+Page_Up   { move-workspace-up; }
+
+          Mod+WheelScrollDown      cooldown-ms=150 { focus-workspace-down; }
+          Mod+WheelScrollUp        cooldown-ms=150 { focus-workspace-up; }
+          Mod+Ctrl+WheelScrollDown cooldown-ms=150 { move-column-to-workspace-down; }
+          Mod+Ctrl+WheelScrollUp   cooldown-ms=150 { move-column-to-workspace-up; }
+
+          Mod+WheelScrollRight      { focus-column-right; }
+          Mod+WheelScrollLeft       { focus-column-left; }
+          Mod+Ctrl+WheelScrollRight { move-column-right; }
+          Mod+Ctrl+WheelScrollLeft  { move-column-left; }
+
+          Mod+Shift+WheelScrollDown      { focus-column-right; }
+          Mod+Shift+WheelScrollUp        { focus-column-left; }
+          Mod+Ctrl+Shift+WheelScrollDown { move-column-right; }
+          Mod+Ctrl+Shift+WheelScrollUp   { move-column-left; }
+
+          Mod+1 { focus-workspace 1; }
+          Mod+2 { focus-workspace 2; }
+          Mod+3 { focus-workspace 3; }
+          Mod+4 { focus-workspace 4; }
+          Mod+5 { focus-workspace 5; }
+          Mod+6 { focus-workspace 6; }
+          Mod+7 { focus-workspace 7; }
+          Mod+8 { focus-workspace 8; }
+          Mod+9 { focus-workspace 9; }
+          Mod+Ctrl+1 { move-column-to-workspace 1; }
+          Mod+Ctrl+2 { move-column-to-workspace 2; }
+          Mod+Ctrl+3 { move-column-to-workspace 3; }
+          Mod+Ctrl+4 { move-column-to-workspace 4; }
+          Mod+Ctrl+5 { move-column-to-workspace 5; }
+          Mod+Ctrl+6 { move-column-to-workspace 6; }
+          Mod+Ctrl+7 { move-column-to-workspace 7; }
+          Mod+Ctrl+8 { move-column-to-workspace 8; }
+          Mod+Ctrl+9 { move-column-to-workspace 9; }
+
+          Mod+BracketLeft  { consume-or-expel-window-left; }
+          Mod+BracketRight { consume-or-expel-window-right; }
+          Mod+Comma  { consume-window-into-column; }
+          Mod+Period { expel-window-from-column; }
+
+          Mod+R { switch-preset-column-width; }
+          Mod+Shift+R { switch-preset-column-width-back; }
+          Mod+Ctrl+Shift+R { switch-preset-window-height; }
+          Mod+Ctrl+R { reset-window-height; }
+
+          Mod+F { maximize-column; }
+          Mod+Shift+F { fullscreen-window; }
+          Mod+M { maximize-window-to-edges; }
+          Mod+Ctrl+F { expand-column-to-available-width; }
+          Mod+C { center-column; }
+          Mod+Ctrl+C { center-visible-columns; }
+
+          Mod+Minus { set-column-width "-10%"; }
+          Mod+Equal { set-column-width "+10%"; }
+          Mod+Shift+Minus { set-window-height "-10%"; }
+          Mod+Shift+Equal { set-window-height "+10%"; }
+
+          Mod+V       { toggle-window-floating; }
+          Mod+Shift+V { switch-focus-between-floating-and-tiling; }
+          Mod+W { toggle-column-tabbed-display; }
+
+          Print { screenshot; }
+          Ctrl+Print { screenshot-screen; }
+          Alt+Print { screenshot-window; }
+
+          Mod+Escape allow-inhibiting=false { toggle-keyboard-shortcuts-inhibit; }
+          Ctrl+Alt+Delete { quit; }
+      }
+    '';
 
     # GUI for asking for ssh password on non-headless laptop sessions
     programs.ssh.enableAskPassword = true;
