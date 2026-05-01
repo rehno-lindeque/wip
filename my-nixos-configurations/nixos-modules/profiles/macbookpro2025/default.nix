@@ -382,7 +382,7 @@ in {
       binds {
           Mod+Shift+Slash { show-hotkey-overlay; }
 
-          Mod+Shift+Return hotkey-overlay-title="Open a Browser: firefox" { spawn "firefox"; }
+          Mod+B hotkey-overlay-title="Open a Browser: firefox" { spawn "firefox"; }
           Mod+Return hotkey-overlay-title="Open a Terminal: ghostty" { spawn "ghostty"; }
           Mod+Space hotkey-overlay-title="Run an Application: fuzzel" { spawn "fuzzel"; }
 
