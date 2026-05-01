@@ -193,6 +193,7 @@ in {
       user = "greeter";
     };
     services.gnome.gcr-ssh-agent.enable = false;
+    services.logind.settings.Login.HandleLidSwitch = "suspend";
 
     services.xserver.xkb.layout = "us";
     services.xserver.xkb.variant = "norman";
