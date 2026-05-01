@@ -518,6 +518,7 @@ in {
 
     # GUI for asking for ssh password on non-headless laptop sessions
     programs.ssh.enableAskPassword = true;
+    programs.ssh.askPassword = "${pkgs.seahorse}/libexec/seahorse/ssh-askpass";
     environment.variables.SUDO_ASKPASS = config.programs.ssh.askPassword;
 
     # Cloud password manager
