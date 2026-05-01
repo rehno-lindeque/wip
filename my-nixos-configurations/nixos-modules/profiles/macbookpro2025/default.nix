@@ -194,6 +194,7 @@ in {
     };
     services.gnome.gcr-ssh-agent.enable = false;
     services.logind.settings.Login.HandleLidSwitch = "suspend";
+    services.tlp.enable = true;
 
     services.xserver.xkb.layout = "us";
     services.xserver.xkb.variant = "norman";
