@@ -46,9 +46,9 @@ Avoid: TODO
 
 ### Capture corrections
 
-Do: TODO
+Do: Check nixpkgs first before packaging new software in-repo; only add a custom package after confirming there is no suitable packaged version or pending PR we can reuse.
 
-Avoid: TODO
+Avoid: Packaging first and discovering existing nixpkgs work later.
 
 ### Commit conventions come from git history
 
