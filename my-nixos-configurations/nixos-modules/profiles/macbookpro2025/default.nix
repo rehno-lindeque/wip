@@ -261,7 +261,7 @@ in {
             format = "{capacity}% {power}W";
             format-charging = "{capacity}% {power}W+";
             format-plugged = "{capacity}% AC";
-            tooltip-format = "{time}";
+            tooltip-format = "{capacity}%\n{power}W\n{time}";
           };
         }
       ];
