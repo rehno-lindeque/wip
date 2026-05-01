@@ -213,7 +213,7 @@ in {
           layer = "top";
           position = "top";
           height = 28;
-          modules-left = ["network"];
+          modules-left = ["network" "custom/tailscale"];
           modules-center = ["clock"];
           modules-right = ["battery"];
 
@@ -226,6 +226,15 @@ in {
             tooltip-format-ethernet = "{ifname}";
             tooltip-format-disconnected = "No network";
             on-click = "ghostty -e sh -lc 'nmtui'";
+          };
+
+          "custom/tailscale" = {
+            return-type = "json";
+            interval = 15;
+            format = "{}";
+            exec = ''
+              sh -lc 'if tailscale status --json >/tmp/tailscale-waybar.json 2>/dev/null; then jq -r '"'"'. as $s | if $s.BackendState == "Running" then {text:"ts", tooltip:(($s.Self.HostName // "-") + "\n" + ($s.Self.TailscaleIPs[0] // "-")), class:"connected"} else {text:"ts", tooltip:"offline", class:"offline"} end | @json'"'"' /tmp/tailscale-waybar.json; else printf "{\"text\":\"ts\",\"tooltip\":\"offline\",\"class\":\"offline\"}"; fi'
+            '';
           };
 
           clock = {
@@ -256,6 +265,7 @@ in {
         }
 
         #network,
+        #custom-tailscale,
         #clock,
         #battery {
           padding: 0 12px;
@@ -265,6 +275,14 @@ in {
 
         #battery.charging {
           color: #b8e986;
+        }
+
+        #custom-tailscale.connected {
+          color: #9fd7ff;
+        }
+
+        #custom-tailscale.offline {
+          color: #888888;
         }
 
         #battery.warning:not(.charging) {
