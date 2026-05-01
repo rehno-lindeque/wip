@@ -206,6 +206,76 @@ in {
       wl-clipboard
     ];
     home-manager.users.me.home.file."projects/screenshots/.keep".text = "";
+    home-manager.users.me.programs.waybar = {
+      enable = true;
+      settings = [
+        {
+          layer = "top";
+          position = "top";
+          height = 28;
+          modules-left = ["network"];
+          modules-center = ["clock"];
+          modules-right = ["battery"];
+
+          network = {
+            format-wifi = "{essid}";
+            format-ethernet = "ethernet";
+            format-linked = "linked";
+            format-disconnected = "offline";
+            tooltip-format-wifi = "{essid} ({signalStrength}%)";
+            tooltip-format-ethernet = "{ifname}";
+            tooltip-format-disconnected = "No network";
+            on-click = "ghostty -e sh -lc 'nmtui'";
+          };
+
+          clock = {
+            format = "{:%a %d %b  %H:%M}";
+            tooltip-format = "{:%Y-%m-%d}";
+          };
+
+          battery = {
+            format = "{capacity}%";
+            format-charging = "{capacity}%+";
+            format-plugged = "{capacity}%=";
+            tooltip-format = "{timeTo}";
+          };
+        }
+      ];
+      style = ''
+        * {
+          border: none;
+          border-radius: 0;
+          font-family: monospace;
+          font-size: 13px;
+          min-height: 0;
+        }
+
+        window#waybar {
+          background: rgba(20, 22, 26, 0.92);
+          color: #e6e6e6;
+        }
+
+        #network,
+        #clock,
+        #battery {
+          padding: 0 12px;
+          margin: 4px 6px;
+          background: rgba(255, 255, 255, 0.08);
+        }
+
+        #battery.charging {
+          color: #b8e986;
+        }
+
+        #battery.warning:not(.charging) {
+          color: #ffd27f;
+        }
+
+        #battery.critical:not(.charging) {
+          color: #ff8a7a;
+        }
+      '';
+    };
     home-manager.users.me.xdg.configFile."niri/config.kdl".text = ''
       input {
           keyboard {
@@ -254,6 +324,8 @@ in {
           }
       }
 
+      spawn-at-startup "waybar"
+
       hotkey-overlay {
       }
 
@@ -276,7 +348,7 @@ in {
       binds {
           Mod+Shift+Slash { show-hotkey-overlay; }
 
-          Mod+Return hotkey-overlay-title="Open a Terminal: kitty" { spawn "kitty"; }
+          Mod+Return hotkey-overlay-title="Open a Terminal: ghostty" { spawn "ghostty"; }
           Mod+Space hotkey-overlay-title="Run an Application: fuzzel" { spawn "fuzzel"; }
 
           XF86AudioRaiseVolume allow-when-locked=true { spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.1+ -l 1.0"; }
