@@ -198,6 +198,16 @@ in {
 
     services.xserver.xkb.layout = "us";
     services.xserver.xkb.variant = "norman";
+    services.keyd = {
+      enable = true;
+      keyboards.default = {
+        ids = [ "*" ];
+        settings.main = {
+          # capslock = "overload(control, esc)";
+          capslock = "enter";
+        };
+      };
+    };
     hardware.graphics.enable = true;
 
     # Trackpad/keyboard settings (mirror macbookpro2017 style)
@@ -207,6 +217,8 @@ in {
     home-manager.users.me.home.packages = with pkgs; [
       fuzzel
       wl-clipboard
+      flake.packages.${pkgs.system}.desktop2022-zmx-project
+      flake.packages.${pkgs.system}.desktop2022-zmx-resume
     ];
     home-manager.users.me.home.file."projects/screenshots/.keep".text = "";
     home-manager.users.me.programs.waybar = {
@@ -381,6 +393,8 @@ in {
 
       binds {
           Mod+Shift+Slash { show-hotkey-overlay; }
+          Mod+Shift+Return hotkey-overlay-title="Open desktop2022 project session" { spawn "desktop2022-zmx-project"; }
+          Mod+Shift+Space hotkey-overlay-title="Resume desktop2022 session" { spawn "desktop2022-zmx-resume"; }
 
           Mod+B hotkey-overlay-title="Open a Browser: firefox" { spawn "firefox"; }
           Mod+Return hotkey-overlay-title="Open a Terminal: ghostty" { spawn "ghostty"; }

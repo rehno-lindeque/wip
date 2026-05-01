@@ -91,6 +91,15 @@
           wakeup-nucbox2022 = legacyPackages.${system}.callPackage ./packages/wakeup-nucbox2022 {};
           vgaswitcheroo-toggle = legacyPackages.${system}.callPackage ./packages/vgaswitcheroo-toggle {};
           nix-run = legacyPackages.${system}.callPackage ./packages/nix-run {};
+          zmx = legacyPackages.${system}.callPackage ./packages/zmx {};
+          zmx-project-open = legacyPackages.${system}.callPackage ./packages/zmx-project-open {
+            inherit (self.packages.${system}) zmx;
+          };
+          zmx-project-list-detached = legacyPackages.${system}.callPackage ./packages/zmx-project-list-detached {
+            inherit (self.packages.${system}) zmx;
+          };
+          desktop2022-zmx-project = legacyPackages.${system}.callPackage ./packages/desktop2022-zmx-project {};
+          desktop2022-zmx-resume = legacyPackages.${system}.callPackage ./packages/desktop2022-zmx-resume {};
           desktop2022-rebuild = legacyPackages.${system}.callPackage ./packages/nixos-rebuild-system {
             name = "desktop2022-rebuild";
             inherit (self.packages.${system}) nix-run;
