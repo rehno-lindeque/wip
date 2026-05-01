@@ -774,30 +774,6 @@ in {
         #   #   # };
         #   # };
         # };
-        networking.hosts = {
-          "100.89.210.26" = ["desktop2022"];
-          "192.168.8.121" = ["desktop2022.lan"];
-          "100.123.235.67" = ["nucbox2022"];
-          "100.102.213.117" = ["macbookpro2017"];
-
-          # Broken name resolution due to Tailscale MagicDNS not working
-          "100.79.57.124" = ["server.tiger-jazz.ts.net" "pnp.circuithub" "nomad.circuithub"];
-          "100.65.218.115" = ["grid" "grid.tiger-jazz.ts.net" "grid.circuithub"];
-          "100.93.41.109" = ["internal.tiger-jazz.ts.net" "internal.circuithub"];
-          "100.116.162.39" = ["pnp-programming.tiger-jazz.ts.net" "pnp-programming.circuithub" "programming.circuithub"];
-          "100.89.205.66" = ["kitting" "kitting.circuithub"];
-          "100.118.198.38" = ["label-studio.tiger-jazz.ts.net" "label-studio.circuithub"];
-          "100.122.216.16" = ["docker-registry.tiger-jazz.ts.net" "docker-registry.circuithub"];
-          "100.124.61.62" = ["pico-server-02.tiger-jazz.ts.net" "rabbitmq.circuithub"];
-          "100.123.219.7" = ["mlflow.tiger-jazz.ts.net" "mlflow.circuithub"];
-          "100.74.164.43" = ["grafana.tiger-jazz.ts.net"];
-          "100.98.101.74" = [ "mediamtx.tiger-jazz.ts.net" "mediamtx.circuithub" ];
-          "100.109.156.47" = [ "camera-40558028.tiger-jazz.ts.net" "camera-storage-module-3-door" ];
-          "100.84.51.84" = [ "camera-40453183.tiger-jazz.ts.net" "camera-storage-module-3-ee" ];
-          "100.99.73.21" = [ "gerrit.tiger-jazz.ts.net" ];
-          "100.76.1.13" = [ "aoi-viewer" "aoi-viewer.tiger-jazz.ts.net" "aoi-viewer.circuithub" ];
-        };
-
         system.nixos.tags = ["linux-${config.boot.kernelPackages.kernel.version}"];
       })
     ]);
