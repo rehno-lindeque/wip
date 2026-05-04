@@ -2,12 +2,12 @@
   bash,
   coreutils,
   gnused,
+  hs-mx,
   pkgs,
-  zmx,
 }:
 pkgs.writeShellApplication {
   name = "zmx-project-open";
-  runtimeInputs = [bash coreutils gnused zmx];
+  runtimeInputs = [bash coreutils gnused hs-mx];
   text = ''
     #!/usr/bin/env bash
     set -euo pipefail
@@ -28,7 +28,6 @@ pkgs.writeShellApplication {
       exec "$SHELL" -l
     fi
 
-    # shellcheck disable=SC2016
-    exec zmx attach "$session_name" bash -lc 'cd "$1" && exec "$SHELL" -l' _ "$project_path"
+    exec hs-mx attach "$session_name" --cwd "$project_path" --kind project
   '';
 }

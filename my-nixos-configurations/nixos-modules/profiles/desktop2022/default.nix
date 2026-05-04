@@ -358,7 +358,7 @@ in {
 
     # Extra software packages only used on this system
     users.users.me.packages = [
-      flake.packages.${pkgs.system}.zmx
+      flake.packages.${pkgs.system}.hs-mx
       flake.packages.${pkgs.system}.zmx-project-open
       flake.packages.${pkgs.system}.zmx-project-list-detached
     ];
