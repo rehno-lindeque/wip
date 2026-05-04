@@ -370,10 +370,7 @@ in {
           }
 
           shadow {
-              softness 30
-              spread 5
-              offset x=0 y=5
-              color "#0007"
+              off
           }
       }
 
@@ -391,6 +388,7 @@ in {
       screenshot-path "~/projects/screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
 
       animations {
+          off
       }
 
       window-rule {
