@@ -1,10 +1,15 @@
 module HsMx.Metadata (
   SessionMetadata (..),
   loadSessionMetadata,
+  loadSessionMetadataFile,
+  writeSessionMetadataFile,
+  removeSessionMetadataFile,
   encodeSessionMetadataList,
   encodeProjectPlan,
+  sessionIsAlive,
 ) where
 
+import Control.Exception (IOException, catch)
 import qualified Data.Aeson as Aeson
 import qualified Data.ByteString.Lazy as BL
 import Data.List (sortOn)
@@ -13,8 +18,10 @@ import Data.Text (Text)
 import Data.Time.Clock (UTCTime)
 import GHC.Generics (Generic)
 import HsMx.Session (ProjectPlan, SessionName)
-import System.Directory (doesDirectoryExist, listDirectory)
-import System.FilePath ((</>), takeExtension)
+import System.Directory (doesDirectoryExist, doesFileExist, listDirectory, removeFile)
+import System.FilePath (takeExtension, (</>))
+import System.Posix.Signals (nullSignal, signalProcess)
+import System.Posix.Types (CPid (..))
 
 data SessionMetadata = SessionMetadata
   { sessionMetadataName :: SessionName,
@@ -22,7 +29,9 @@ data SessionMetadata = SessionMetadata
     sessionMetadataWorkingDirectory :: Text,
     sessionMetadataAttachedClients :: Int,
     sessionMetadataCreatedAt :: UTCTime,
-    sessionMetadataUpdatedAt :: UTCTime
+    sessionMetadataUpdatedAt :: UTCTime,
+    sessionMetadataDaemonPid :: Int,
+    sessionMetadataSocketPath :: Text
   }
   deriving (Eq, Show, Generic)
 
@@ -32,28 +41,60 @@ instance Aeson.ToJSON SessionMetadata where
 instance Aeson.FromJSON SessionMetadata where
   parseJSON = Aeson.genericParseJSON Aeson.defaultOptions {Aeson.fieldLabelModifier = drop 15}
 
-loadSessionMetadata :: Maybe FilePath -> IO [SessionMetadata]
-loadSessionMetadata Nothing = pure []
-loadSessionMetadata (Just stateDir) = do
+loadSessionMetadata :: FilePath -> IO [SessionMetadata]
+loadSessionMetadata stateDir = do
   exists <- doesDirectoryExist stateDir
   if not exists
     then pure []
     else do
       names <- listDirectory stateDir
-      sessions <- traverse (decodeMetadataFile stateDir) (filter ((== ".json") . takeExtension) names)
-      pure (sortOn (Down . sessionMetadataUpdatedAt) (foldr collect [] sessions))
+      sessions <- traverse (loadSessionMetadataFile . (stateDir </>)) (filter ((== ".json") . takeExtension) names)
+      alive <- filterMExisting sessions
+      pure (sortOn (Down . sessionMetadataUpdatedAt) alive)
 
-decodeMetadataFile :: FilePath -> FilePath -> IO (Maybe SessionMetadata)
-decodeMetadataFile stateDir entry = do
-  payload <- BL.readFile (stateDir </> entry)
-  pure (Aeson.decode payload)
+loadSessionMetadataFile :: FilePath -> IO (Maybe SessionMetadata)
+loadSessionMetadataFile metadataFile = do
+  exists <- doesFileExist metadataFile
+  if not exists
+    then pure Nothing
+    else do
+      payload <- BL.readFile metadataFile
+      case Aeson.decode payload of
+        Nothing -> pure Nothing
+        Just metadata -> do
+          alive <- sessionIsAlive metadata
+          if alive then pure (Just metadata) else pure Nothing
 
-collect :: Maybe a -> [a] -> [a]
-collect Nothing acc = acc
-collect (Just value) acc = value : acc
+writeSessionMetadataFile :: FilePath -> SessionMetadata -> IO ()
+writeSessionMetadataFile metadataFile = BL.writeFile metadataFile . Aeson.encode
+
+removeSessionMetadataFile :: FilePath -> IO ()
+removeSessionMetadataFile metadataFile = removeFile metadataFile `catch` ignoreMissing
+
+sessionIsAlive :: SessionMetadata -> IO Bool
+sessionIsAlive metadata =
+  (signalProcess nullSignal (CPid (fromIntegral (sessionMetadataDaemonPid metadata))) >> pure True)
+    `catch` \(_ :: IOException) -> pure False
 
 encodeSessionMetadataList :: [SessionMetadata] -> BL.ByteString
 encodeSessionMetadataList = Aeson.encode
 
 encodeProjectPlan :: ProjectPlan -> BL.ByteString
 encodeProjectPlan = Aeson.encode
+
+filterMExisting :: [Maybe SessionMetadata] -> IO [SessionMetadata]
+filterMExisting = fmap foldPresent . traverse keepAlive
+  where
+    keepAlive Nothing = pure Nothing
+    keepAlive (Just metadata) = do
+      alive <- sessionIsAlive metadata
+      pure (if alive then Just metadata else Nothing)
+
+foldPresent :: [Maybe a] -> [a]
+foldPresent = foldr step []
+  where
+    step Nothing acc = acc
+    step (Just value) acc = value : acc
+
+ignoreMissing :: IOException -> IO ()
+ignoreMissing _ = pure ()

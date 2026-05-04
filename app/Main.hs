@@ -4,7 +4,9 @@ import qualified Data.ByteString.Lazy.Char8 as BL8
 import qualified Data.Text as Text
 import Data.Text (Text)
 import Data.Time.Format.ISO8601 (iso8601Show)
+import HsMx.Attach
 import HsMx.Cli
+import HsMx.Daemon
 import HsMx.Metadata
 import HsMx.Paths
 import HsMx.Session
@@ -24,28 +26,32 @@ main = do
       plan <- buildProjectPlan opts
       if openJson opts
         then BL8.putStrLn (encodeProjectPlan plan)
-        else mapM_ putStrLn (renderProjectPlan plan)
+        else openProjectSession opts
+    StartCommand opts ->
+      do
+        _ <- startSession opts
+        pure ()
+    AttachCommand opts ->
+      attachSession opts
     ListCommand opts -> do
       paths <- getHsMxPaths
       let sessionDir = maybe (Text.unpack (hsMxSessionDir paths)) id (listStateDir opts)
-      sessions <- loadSessionMetadata (Just sessionDir)
+      sessions <- loadSessionMetadata sessionDir
       if listJson opts
         then BL8.putStrLn (encodeSessionMetadataList sessions)
         else mapM_ putStrLn (renderSessionSummary <$> sessions)
+    KillCommand opts ->
+      killSession opts
+    HistoryCommand opts ->
+      printSessionHistory opts
+    DaemonCommand opts ->
+      runDaemon opts
 
 renderPaths :: HsMxPaths -> [String]
 renderPaths paths =
   [ "runtime-dir=" ++ showText (hsMxRuntimeDir paths),
     "session-dir=" ++ showText (hsMxSessionDir paths),
     "socket-dir=" ++ showText (hsMxSocketDir paths)
-  ]
-
-renderProjectPlan :: ProjectPlan -> [String]
-renderProjectPlan plan =
-  [ "session-name=" ++ showText (sessionNameText (projectSessionNameValue plan)),
-    "project-path=" ++ showText (projectPathText (projectPlanPath plan)),
-    "exists=" ++ show (projectPlanExists plan),
-    "kind=" ++ showText (projectPlanKind plan)
   ]
 
 renderSessionSummary :: SessionMetadata -> String
@@ -55,6 +61,7 @@ renderSessionSummary metadata =
       "clients=" ++ show (sessionMetadataAttachedClients metadata),
       "kind=" ++ showText (sessionMetadataKind metadata),
       "cwd=" ++ showText (sessionMetadataWorkingDirectory metadata),
+      "pid=" ++ show (sessionMetadataDaemonPid metadata),
       "updated=" ++ iso8601Show (sessionMetadataUpdatedAt metadata)
     ]
 
