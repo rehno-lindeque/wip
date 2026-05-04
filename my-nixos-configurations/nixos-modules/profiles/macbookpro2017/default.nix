@@ -95,9 +95,6 @@ in {
             }
             // permissions)
 
-          # Retain bash history
-          ".bash_history"
-
           # Retain neovim undo files
           ({directory = ".local/share/nvim";} // permissions)
 
@@ -113,6 +110,9 @@ in {
             file = ".aws/credentials";
             parentDirectory = {mode = "u=rwx,g=xr,o=";};
           }
+
+          # Retain bash history
+          ".bash_history"
         ];
       };
     };

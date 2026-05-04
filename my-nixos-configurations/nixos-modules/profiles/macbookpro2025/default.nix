@@ -126,9 +126,6 @@ in {
             mode = "0700";
           }
 
-          # Retain bash history
-          ".bash_history"
-
           # Retain my projects directory (for now)
           "projects"
 
@@ -158,6 +155,11 @@ in {
 
           # Retain OpenCode cache
           ({directory = ".cache/opencode";} // permissions)
+        ];
+
+        files = [
+          # Retain bash history
+          ".bash_history"
         ];
       });
     };
