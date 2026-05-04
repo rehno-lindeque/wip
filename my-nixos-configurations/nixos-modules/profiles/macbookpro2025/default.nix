@@ -178,6 +178,11 @@ in {
     networking.networkmanager.wifi.backend = "iwd";
     networking.networkmanager.wifi.powersave = true;
     networking.wireless.iwd.settings.General.EnableNetworkConfiguration = true;
+    systemd.services.iwd = {
+      after = ["sys-subsystem-net-devices-wlan0.device"];
+      wants = ["sys-subsystem-net-devices-wlan0.device"];
+      serviceConfig.ExecStartPre = ["${lib.getExe' pkgs.iproute2 "ip"} link set wlan0 up"];
+    };
 
     # Firmware extraction: expose ESP to sandboxed builds on the running system
     hardware.asahi.peripheralFirmwareDirectory = "/etc/nixos/firmware";
