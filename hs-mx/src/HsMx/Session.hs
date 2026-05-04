@@ -3,10 +3,12 @@ module HsMx.Session (
   ProjectPath,
   ProjectPlan (..),
   mkSessionName,
+  parseSessionName,
   projectSessionName,
   sessionNameText,
   projectPathText,
   buildProjectPlan,
+  shellEscape,
 ) where
 
 import Data.Aeson (FromJSON (parseJSON), ToJSON (toJSON))
@@ -58,6 +60,9 @@ instance ToJSON ProjectPlan where
 mkSessionName :: Text -> SessionName
 mkSessionName = SessionName
 
+parseSessionName :: String -> SessionName
+parseSessionName = SessionName . Text.pack
+
 projectSessionName :: FilePath -> SessionName
 projectSessionName relPath =
   SessionName (Text.pack "projects." <> sanitize (Text.pack relPath))
@@ -92,3 +97,9 @@ sanitize = squashDots . Text.map replaceChar
       Text.intercalate (Text.pack ".")
         . filter (not . Text.null)
         . Text.splitOn (Text.pack ".")
+
+shellEscape :: FilePath -> String
+shellEscape value = '\'' : foldr step "'" value
+  where
+    step '\'' acc = "'\\''" <> acc
+    step ch acc = ch : acc

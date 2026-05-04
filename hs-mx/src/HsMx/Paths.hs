@@ -1,16 +1,20 @@
 module HsMx.Paths (
   HsMxPaths (..),
+  SessionPaths (..),
   getHsMxPaths,
   defaultProjectsRoot,
+  ensureHsMxDirectories,
+  getSessionPaths,
   encodePaths,
 ) where
 
 import qualified Data.Aeson as Aeson
 import qualified Data.Aeson.Key as AesonKey
 import qualified Data.ByteString.Lazy as BL
+import Data.Char (isAlphaNum)
 import Data.Text (Text)
 import qualified Data.Text as Text
-import System.Directory (getHomeDirectory)
+import System.Directory (createDirectoryIfMissing, getHomeDirectory)
 import System.Environment (lookupEnv)
 import System.FilePath ((</>))
 
@@ -18,6 +22,14 @@ data HsMxPaths = HsMxPaths
   { hsMxRuntimeDir :: Text,
     hsMxSessionDir :: Text,
     hsMxSocketDir :: Text
+  }
+  deriving (Eq, Show)
+
+data SessionPaths = SessionPaths
+  { sessionRootName :: FilePath,
+    sessionMetadataFile :: FilePath,
+    sessionSocketPath :: FilePath,
+    sessionHistoryFile :: FilePath
   }
   deriving (Eq, Show)
 
@@ -38,6 +50,24 @@ defaultProjectsRoot = do
   home <- getHomeDirectory
   pure (home </> "projects")
 
+ensureHsMxDirectories :: HsMxPaths -> IO ()
+ensureHsMxDirectories paths = do
+  createDirectoryIfMissing True (Text.unpack (hsMxRuntimeDir paths))
+  createDirectoryIfMissing True (Text.unpack (hsMxSessionDir paths))
+  createDirectoryIfMissing True (Text.unpack (hsMxSocketDir paths))
+
+getSessionPaths :: HsMxPaths -> Text -> SessionPaths
+getSessionPaths paths sessionName =
+  let rootName = sessionFileStem sessionName
+      sessionDir = Text.unpack (hsMxSessionDir paths)
+      socketDir = Text.unpack (hsMxSocketDir paths)
+   in SessionPaths
+        { sessionRootName = rootName,
+          sessionMetadataFile = sessionDir </> (rootName <> ".json"),
+          sessionSocketPath = socketDir </> (rootName <> ".sock"),
+          sessionHistoryFile = sessionDir </> (rootName <> ".log")
+        }
+
 resolveRuntimeDir :: IO FilePath
 resolveRuntimeDir = do
   explicit <- lookupEnv "HS_MX_DIR"
@@ -50,6 +80,14 @@ resolveRuntimeDir = do
         Nothing -> do
           home <- getHomeDirectory
           pure (home </> ".local" </> "state" </> "hs-mx")
+
+sessionFileStem :: Text -> FilePath
+sessionFileStem = Text.unpack . Text.map replaceChar
+  where
+    replaceChar c
+      | isAlphaNum c = c
+      | c `elem` ['.', '_', '-'] = c
+      | otherwise = '_'
 
 encodePaths :: HsMxPaths -> BL.ByteString
 encodePaths = Aeson.encode . toPathsJson
