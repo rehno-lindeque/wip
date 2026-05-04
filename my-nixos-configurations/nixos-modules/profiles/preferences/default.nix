@@ -356,6 +356,8 @@ in {
       settings.trusted-users = ["root" "@wheel"];
     };
 
+    programs.gh.nixAuth.enable = true;
+
     programs = {
       git.config = {
         init.defaultBranch = "main";

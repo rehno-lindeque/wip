@@ -142,6 +142,9 @@
       macbookpro2025 = import ./nixos-modules/profiles/macbookpro2025;
       nucbox2022 = import ./nixos-modules/profiles/nucbox2022;
       circuithubDeveloperWorkstation = import ./nixos-modules/profiles/circuithub-developer-workstation.nix;
+      gh = {
+        auth = import ./nixos-modules/gh/auth;
+      };
       # installer = import ./nixos-modules/profiles/installer;
       dotool = import ./nixos-modules/dotool;
       llm = import ./nixos-modules/llm;
@@ -154,6 +157,7 @@
           personalize
           playground
           preferences
+          gh.auth
           workstation
           impermanence.nixosModules.impermanence
           nixos-impermanence.nixosModules.default
