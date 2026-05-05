@@ -1,29 +1,55 @@
-# hs-mx
+# sesh
 
-`hs-mx` is a Haskell-first rewrite of the remote session workflow currently
-built around `zmx`.
+`sesh` is a small Haskell session manager aimed mostly at my own remote-shell workflow.
 
-The first milestone is intentionally narrow and verifiable:
+It exists partly because `zmx` was awkward to package and integrate cleanly in my Nix setup. If you want the more mature and more fully featured tool, use `zmx` first. `sesh` is narrower: it focuses on detached shell sessions, simple metadata, and local/remote session selection.
 
-- model session names and metadata cleanly
-- provide structured `list --json` output for remote wrappers
-- keep all state in simple files under a deterministic runtime directory
-- support persistent detached shell sessions with a small Haskell daemon
+## Status
 
-Current commands:
+- personal-use tool first
+- works well for detached shell sessions and remote attach workflows
+- much less mature than `zmx`
+- not trying to compete on terminal-state restoration breadth
 
-- `hs-mx paths`
-- `hs-mx session-name <project-path>`
-- `hs-mx start <session-name> [--cwd <dir>] [--command <shell-snippet>]`
-- `hs-mx attach <session-name> [--cwd <dir>]`
-- `hs-mx list [--json]`
-- `hs-mx history <session-name>`
-- `hs-mx kill <session-name>`
-- `hs-mx open-project <project-path> [--json]`
+## Scope
 
-Example detached workflow:
+Core `sesh` stays generic:
+
+- start a named session with an optional working directory
+- attach and detach clients without killing the session
+- list sessions as JSON for wrappers and pickers
+- track tags and attached-client count
+- persist a plain output log for later inspection
+
+Project naming conventions and paths such as `~/projects/...` intentionally live outside the core tool in wrappers.
+
+## Commands
+
+- `sesh paths`
+- `sesh start <session-name> [--cwd <dir>] [--tags tag,tag] [--command <shell-snippet>]`
+- `sesh attach <session-name> [--cwd <dir>] [--tags tag,tag] [--command <shell-snippet>]`
+- `sesh list [--json]`
+- `sesh history <session-name>`
+- `sesh kill <session-name>`
+
+Example:
 
 ```bash
-nix run .#hs-mx -- start smoke --cwd /tmp --command "echo hello"
-nix run .#hs-mx -- history smoke
+nix run .#sesh -- start smoke --cwd /tmp --tags test --command "echo hello"
+nix run .#sesh -- history smoke
 ```
+
+## Prior Art
+
+`sesh` is inspired primarily by `zmx`, which remains the more mature project and the best point of comparison.
+
+- `zmx`: session persistence, multiple clients, strong terminal behavior, broader feature set
+- `zmosh`: interesting remote-first fork of `zmx` with encrypted UDP auto-reconnect
+
+Right now `sesh` does not try to copy `zmosh`'s reconnecting network transport. The immediate goal is a simple, Nix-friendly remote session workflow.
+
+## License
+
+`sesh` is MIT-licensed.
+
+`zmx` and `zmosh` are also MIT-licensed. This project is an independent reimplementation inspired by their design, not a source fork.

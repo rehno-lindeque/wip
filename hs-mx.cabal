@@ -9,7 +9,8 @@ maintainer:         me@example.invalid
 category:           System
 synopsis:           Remote-first persistent session manager
 description:
-  sesh is a Haskell-first remote session manager.
+  sesh is a small Haskell-first remote session manager focused on
+  detached shell sessions and simple remote workflows.
 
 common common-options
   default-language: GHC2021
