@@ -5,7 +5,6 @@ module HsMx.Metadata (
   writeSessionMetadataFile,
   removeSessionMetadataFile,
   encodeSessionMetadataList,
-  encodeProjectPlan,
   sessionIsAlive,
 ) where
 
@@ -17,7 +16,7 @@ import Data.Ord (Down (..))
 import Data.Text (Text)
 import Data.Time.Clock (UTCTime)
 import GHC.Generics (Generic)
-import HsMx.Session (ProjectPlan, SessionName)
+import HsMx.Session (SessionName)
 import System.Directory (doesDirectoryExist, doesFileExist, listDirectory, removeFile)
 import System.FilePath (takeExtension, (</>))
 import System.Posix.Signals (nullSignal, signalProcess)
@@ -25,7 +24,7 @@ import System.Posix.Types (CPid (..))
 
 data SessionMetadata = SessionMetadata
   { sessionMetadataName :: SessionName,
-    sessionMetadataKind :: Text,
+    sessionMetadataTags :: [Text],
     sessionMetadataWorkingDirectory :: Text,
     sessionMetadataAttachedClients :: Int,
     sessionMetadataCreatedAt :: UTCTime,
@@ -78,9 +77,6 @@ sessionIsAlive metadata =
 
 encodeSessionMetadataList :: [SessionMetadata] -> BL.ByteString
 encodeSessionMetadataList = Aeson.encode
-
-encodeProjectPlan :: ProjectPlan -> BL.ByteString
-encodeProjectPlan = Aeson.encode
 
 filterMExisting :: [Maybe SessionMetadata] -> IO [SessionMetadata]
 filterMExisting = fmap foldPresent . traverse keepAlive
