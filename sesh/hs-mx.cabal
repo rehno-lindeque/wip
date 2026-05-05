@@ -1,0 +1,47 @@
+cabal-version:      3.0
+name:               sesh
+version:            0.1.0.0
+build-type:         Simple
+license:            MIT
+license-file:       LICENSE
+author:             Rehno Lindeque
+maintainer:         me@example.invalid
+category:           System
+synopsis:           Remote-first persistent session manager
+description:
+  sesh is a small Haskell-first remote session manager focused on
+  detached shell sessions and simple remote workflows.
+
+common common-options
+  default-language: GHC2021
+  ghc-options:      -Wall -threaded
+  build-depends:
+      async >=2.2 && <2.3
+    , aeson >=2.1 && <2.3
+    , base >=4.18 && <4.21
+    , bytestring >=0.11 && <0.13
+    , containers >=0.6 && <0.8
+    , directory >=1.3 && <1.4
+    , filepath >=1.4 && <1.6
+    , network >=3.1 && <3.3
+    , optparse-applicative >=0.18 && <0.20
+    , posix-pty >=0.2 && <0.3
+    , process >=1.6 && <1.7
+    , stm >=2.5 && <2.6
+    , terminal-size >=0.3 && <0.4
+    , text >=2.0 && <2.2
+    , time >=1.12 && <1.15
+    , unix >=2.8 && <2.9
+
+executable sesh
+  import:           common-options
+  main-is:          Main.hs
+  hs-source-dirs:   app, src
+  other-modules:
+      HsMx.Attach
+      HsMx.Cli
+      HsMx.Daemon
+      HsMx.Metadata
+      HsMx.Paths
+      HsMx.Session
+      HsMx.Terminal
