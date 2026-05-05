@@ -1,5 +1,5 @@
 cabal-version:      3.0
-name:               hs-mx
+name:               sesh
 version:            0.1.0.0
 build-type:         Simple
 license:            MIT
@@ -9,9 +9,7 @@ maintainer:         me@example.invalid
 category:           System
 synopsis:           Remote-first persistent session manager
 description:
-  hs-mx is a Haskell-first rewrite of the remote session workflow
-  currently built around zmx. The initial focus is structured session
-  metadata and elegant remote listing.
+  sesh is a Haskell-first remote session manager.
 
 common common-options
   default-language: GHC2021
@@ -34,7 +32,7 @@ common common-options
     , time >=1.12 && <1.15
     , unix >=2.8 && <2.9
 
-executable hs-mx
+executable sesh
   import:           common-options
   main-is:          Main.hs
   hs-source-dirs:   app, src
