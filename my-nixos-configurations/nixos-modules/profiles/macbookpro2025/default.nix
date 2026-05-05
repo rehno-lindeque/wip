@@ -224,8 +224,8 @@ in {
     home-manager.users.me.home.packages = with pkgs; [
       fuzzel
       wl-clipboard
-      flake.packages.${pkgs.system}.desktop2022-zmx-project
-      flake.packages.${pkgs.system}.desktop2022-zmx-resume
+      flake.packages.${pkgs.system}.desktop2022-project-session
+      flake.packages.${pkgs.system}.session-picker
     ];
     home-manager.users.me.home.file."projects/screenshots/.keep".text = "";
     home-manager.users.me.programs.waybar = {
@@ -398,8 +398,8 @@ in {
 
       binds {
           Mod+Shift+Slash { show-hotkey-overlay; }
-          Mod+Shift+Return hotkey-overlay-title="Open desktop2022 project session" { spawn "desktop2022-zmx-project"; }
-          Mod+Shift+Space hotkey-overlay-title="Resume desktop2022 session" { spawn "desktop2022-zmx-resume"; }
+          Mod+Shift+Return hotkey-overlay-title="Open desktop2022 project session" { spawn "desktop2022-project-session"; }
+          Mod+Shift+Space hotkey-overlay-title="Pick a detached session" { spawn "session-picker"; }
 
           Mod+B hotkey-overlay-title="Open a Browser: firefox" { spawn "firefox"; }
           Mod+Return hotkey-overlay-title="Open a Terminal: ghostty" { spawn "ghostty"; }

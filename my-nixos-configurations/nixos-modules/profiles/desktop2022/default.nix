@@ -358,9 +358,7 @@ in {
 
     # Extra software packages only used on this system
     users.users.me.packages = [
-      flake.packages.${pkgs.system}.hs-mx
-      flake.packages.${pkgs.system}.zmx-project-open
-      flake.packages.${pkgs.system}.zmx-project-list-detached
+      flake.packages.${pkgs.system}.sesh
     ];
 
     # System first installed with release 21.11

@@ -34,6 +34,6 @@ pkgs.writeShellApplication {
       -o ControlPersist=10m \
       -o "ControlPath=$HOME/.ssh/cm-%r@%h:%p" \
       -t desktop2022 \
-      bash -lc 'exec zmx attach "$1"' _ "$session_name"
+      bash -lc 'exec sesh attach "$1"' _ "$session_name"
   '';
 }

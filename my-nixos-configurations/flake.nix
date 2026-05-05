@@ -101,6 +101,10 @@
           zmx-project-list-detached = legacyPackages.${system}.callPackage ./packages/zmx-project-list-detached {
             inherit (self.packages.${system}) sesh;
           };
+          desktop2022-project-session = legacyPackages.${system}.callPackage ./packages/desktop2022-project-session {};
+          session-picker = legacyPackages.${system}.callPackage ./packages/session-picker {
+            inherit (self.packages.${system}) sesh;
+          };
           desktop2022-zmx-project = legacyPackages.${system}.callPackage ./packages/desktop2022-zmx-project {};
           desktop2022-zmx-resume = legacyPackages.${system}.callPackage ./packages/desktop2022-zmx-resume {};
           desktop2022-rebuild = legacyPackages.${system}.callPackage ./packages/nixos-rebuild-system {
