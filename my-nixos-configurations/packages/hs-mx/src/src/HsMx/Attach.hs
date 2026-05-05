@@ -18,7 +18,7 @@ import HsMx.Cli (AttachOptions (..), HistoryOptions (..), KillOptions (..), Open
 import HsMx.Metadata
 import HsMx.Paths
 import HsMx.Session
-import HsMx.Terminal (currentTerminalSize, withRawInput)
+import HsMx.Terminal (currentTerminalSize, prepareTerminalForAttach, restoreTerminalAfterDetach, withRawInput)
 import Network.Socket
   ( Family (AF_UNIX),
     ShutdownCmd (ShutdownBoth, ShutdownSend),
@@ -128,11 +128,13 @@ connectAndProxy metadata = withSocketsDo $ do
     NBS.sendAll sessionSocket (encodeDimensions dimensions)
     hSetBuffering stdin NoBuffering
     hSetBuffering stdout NoBuffering
+    prepareTerminalForAttach
     withRawInput $ do
       reader <- Async.async (socketToStdout sessionSocket)
       writer <- Async.async (stdinToSocket sessionSocket)
       void (Async.waitCatch reader)
       Async.cancel writer
+    restoreTerminalAfterDetach
 
 openSocket :: FilePath -> IO Socket
 openSocket socketPath = do
