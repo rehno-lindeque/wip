@@ -91,7 +91,7 @@
           wakeup-nucbox2022 = legacyPackages.${system}.callPackage ./packages/wakeup-nucbox2022 {};
           vgaswitcheroo-toggle = legacyPackages.${system}.callPackage ./packages/vgaswitcheroo-toggle {};
           nix-run = legacyPackages.${system}.callPackage ./packages/nix-run {};
-          sesh = legacyPackages.${system}.callPackage ./packages/hs-mx {};
+          sesh = legacyPackages.${system}.callPackage ./packages/sesh {};
           desktop2022-project-session = legacyPackages.${system}.callPackage ./packages/desktop2022-project-session {};
           session-picker = legacyPackages.${system}.callPackage ./packages/session-picker {
             inherit (self.packages.${system}) sesh;
