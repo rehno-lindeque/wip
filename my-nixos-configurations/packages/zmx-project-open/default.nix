@@ -2,12 +2,12 @@
   bash,
   coreutils,
   gnused,
-  hs-mx,
+  sesh,
   pkgs,
 }:
 pkgs.writeShellApplication {
   name = "zmx-project-open";
-  runtimeInputs = [bash coreutils gnused hs-mx];
+  runtimeInputs = [bash coreutils gnused sesh];
   text = ''
     #!/usr/bin/env bash
     set -euo pipefail
@@ -28,6 +28,6 @@ pkgs.writeShellApplication {
       exec "$SHELL" -l
     fi
 
-    exec hs-mx attach "$session_name" --cwd "$project_path" --kind project
+    exec sesh attach "$session_name" --cwd "$project_path" --tags project
   '';
 }

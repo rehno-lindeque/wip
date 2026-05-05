@@ -64,16 +64,20 @@ getSessionPaths paths sessionName =
 
 resolveRuntimeDir :: IO FilePath
 resolveRuntimeDir = do
-  explicit <- lookupEnv "HS_MX_DIR"
+  explicit <- lookupEnv "SESH_DIR"
   case explicit of
     Just path -> pure path
     Nothing -> do
-      xdgRuntimeDir <- lookupEnv "XDG_RUNTIME_DIR"
-      case xdgRuntimeDir of
-        Just path -> pure (path </> "hs-mx")
+      legacy <- lookupEnv "HS_MX_DIR"
+      case legacy of
+        Just path -> pure path
         Nothing -> do
-          home <- getHomeDirectory
-          pure (home </> ".local" </> "state" </> "hs-mx")
+          xdgRuntimeDir <- lookupEnv "XDG_RUNTIME_DIR"
+          case xdgRuntimeDir of
+            Just path -> pure (path </> "sesh")
+            Nothing -> do
+              home <- getHomeDirectory
+              pure (home </> ".local" </> "state" </> "sesh")
 
 sessionFileStem :: Text -> FilePath
 sessionFileStem = Text.unpack . Text.map replaceChar

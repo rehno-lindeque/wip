@@ -91,14 +91,15 @@
           wakeup-nucbox2022 = legacyPackages.${system}.callPackage ./packages/wakeup-nucbox2022 {};
           vgaswitcheroo-toggle = legacyPackages.${system}.callPackage ./packages/vgaswitcheroo-toggle {};
           nix-run = legacyPackages.${system}.callPackage ./packages/nix-run {};
-          hs-mx = legacyPackages.${system}.callPackage ./packages/hs-mx {};
+          sesh = legacyPackages.${system}.callPackage ./packages/hs-mx {};
+          hs-mx = self.packages.${system}.sesh;
           zmx = legacyPackages.${system}.callPackage ./packages/zmx {};
           zmx-update-lock = legacyPackages.${system}.callPackage ./packages/zmx-update-lock {};
           zmx-project-open = legacyPackages.${system}.callPackage ./packages/zmx-project-open {
-            inherit (self.packages.${system}) hs-mx;
+            inherit (self.packages.${system}) sesh;
           };
           zmx-project-list-detached = legacyPackages.${system}.callPackage ./packages/zmx-project-list-detached {
-            inherit (self.packages.${system}) hs-mx;
+            inherit (self.packages.${system}) sesh;
           };
           desktop2022-zmx-project = legacyPackages.${system}.callPackage ./packages/desktop2022-zmx-project {};
           desktop2022-zmx-resume = legacyPackages.${system}.callPackage ./packages/desktop2022-zmx-resume {};

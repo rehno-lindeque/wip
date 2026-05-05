@@ -3,7 +3,7 @@
 , posix-pty, process, stm, terminal-size, text, time, unix
 }:
 mkDerivation {
-  pname = "hs-mx";
+  pname = "sesh";
   version = "0.1.0.0";
   src = ./src;
   isLibrary = false;
@@ -15,5 +15,5 @@ mkDerivation {
   ];
   description = "Remote-first persistent session manager";
   license = lib.licenses.mit;
-  mainProgram = "hs-mx";
+  mainProgram = "sesh";
 }
