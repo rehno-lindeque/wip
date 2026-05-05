@@ -1,6 +1,7 @@
 module Main (main) where
 
 import qualified Data.ByteString.Lazy.Char8 as BL8
+import Data.List (intersperse)
 import qualified Data.Text as Text
 import Data.Text (Text)
 import Data.Time.Format.ISO8601 (iso8601Show)
@@ -20,13 +21,6 @@ main = do
       if jsonOutput
         then BL8.putStrLn (encodePaths paths)
         else mapM_ putStrLn (renderPaths paths)
-    SessionNameCommand projectPath ->
-      putStrLn (Text.unpack (sessionNameText (projectSessionName projectPath)))
-    OpenProjectCommand opts -> do
-      plan <- buildProjectPlan opts
-      if openJson opts
-        then BL8.putStrLn (encodeProjectPlan plan)
-        else openProjectSession opts
     StartCommand opts ->
       do
         _ <- startSession opts
@@ -59,7 +53,7 @@ renderSessionSummary metadata =
   unwords
     [ showText (sessionNameText (sessionMetadataName metadata)),
       "clients=" ++ show (sessionMetadataAttachedClients metadata),
-      "kind=" ++ showText (sessionMetadataKind metadata),
+      "tags=" ++ showTags (sessionMetadataTags metadata),
       "cwd=" ++ showText (sessionMetadataWorkingDirectory metadata),
       "pid=" ++ show (sessionMetadataDaemonPid metadata),
       "updated=" ++ iso8601Show (sessionMetadataUpdatedAt metadata)
@@ -67,3 +61,6 @@ renderSessionSummary metadata =
 
 showText :: Text -> String
 showText = Text.unpack
+
+showTags :: [Text] -> String
+showTags = concat . intersperse "," . fmap Text.unpack

@@ -69,7 +69,7 @@ runDaemon options = withSocketsDo $ do
   let initialMetadata =
         SessionMetadata
           { sessionMetadataName = sessionName,
-            sessionMetadataKind = Text.pack (daemonKind options),
+            sessionMetadataTags = map Text.pack (daemonTags options),
             sessionMetadataWorkingDirectory = Text.pack startupDirectory,
             sessionMetadataAttachedClients = 0,
             sessionMetadataCreatedAt = now,

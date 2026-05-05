@@ -1,7 +1,6 @@
 module HsMx.Attach (
   startSession,
   attachSession,
-  openProjectSession,
   killSession,
   printSessionHistory,
 ) where
@@ -14,7 +13,7 @@ import qualified Data.ByteString as BS
 import qualified Data.ByteString.Char8 as BS8
 import qualified Data.Text as Text
 import Data.Word (Word8)
-import HsMx.Cli (AttachOptions (..), HistoryOptions (..), KillOptions (..), OpenProjectOptions (..))
+import HsMx.Cli (AttachOptions (..), HistoryOptions (..), KillOptions (..))
 import HsMx.Metadata
 import HsMx.Paths
 import HsMx.Session
@@ -49,24 +48,12 @@ startSession options = do
   cwd <- maybe getCurrentDirectory pure (attachWorkingDirectory options)
   let sessionName = parseSessionName (attachSessionNameArg options)
       sessionPaths = getSessionPaths paths (sessionNameText sessionName)
-  ensureSessionDaemon paths sessionPaths sessionName cwd (attachKind options) (attachStartupCommand options)
+  ensureSessionDaemon paths sessionPaths sessionName cwd (attachTags options) (attachStartupCommand options)
 
 attachSession :: AttachOptions -> IO ()
 attachSession options = withSocketsDo $ do
   metadata <- startSession options
   connectAndProxy metadata
-
-openProjectSession :: OpenProjectOptions -> IO ()
-openProjectSession options = do
-  plan <- buildProjectPlan options
-  let attachOptions =
-        AttachOptions
-          { attachSessionNameArg = Text.unpack (sessionNameText (projectSessionNameValue plan)),
-            attachWorkingDirectory = Just (Text.unpack (projectPathText (projectPlanPath plan))),
-            attachKind = "project",
-            attachStartupCommand = Nothing
-          }
-  attachSession attachOptions
 
 killSession :: KillOptions -> IO ()
 killSession options = do
@@ -91,8 +78,8 @@ printSessionHistory options = do
     then BS.readFile (sessionHistoryFile sessionPaths) >>= BS.hPut stdout
     else die "No history for that session"
 
-ensureSessionDaemon :: HsMxPaths -> SessionPaths -> SessionName -> FilePath -> String -> Maybe String -> IO SessionMetadata
-ensureSessionDaemon paths sessionPaths sessionName cwd kind startupCommand = do
+ensureSessionDaemon :: HsMxPaths -> SessionPaths -> SessionName -> FilePath -> [String] -> Maybe String -> IO SessionMetadata
+ensureSessionDaemon paths sessionPaths sessionName cwd tags startupCommand = do
   existing <- loadSessionMetadataFile (sessionMetadataFile sessionPaths)
   case existing of
     Just metadata -> do
@@ -101,23 +88,23 @@ ensureSessionDaemon paths sessionPaths sessionName cwd kind startupCommand = do
         then pure metadata
         else do
           removeStaleSession sessionPaths
-          spawnSessionDaemon paths sessionPaths sessionName cwd kind startupCommand
-    Nothing -> spawnSessionDaemon paths sessionPaths sessionName cwd kind startupCommand
+          spawnSessionDaemon paths sessionPaths sessionName cwd tags startupCommand
+    Nothing -> spawnSessionDaemon paths sessionPaths sessionName cwd tags startupCommand
 
-spawnSessionDaemon :: HsMxPaths -> SessionPaths -> SessionName -> FilePath -> String -> Maybe String -> IO SessionMetadata
-spawnSessionDaemon _paths sessionPaths sessionName cwd kind startupCommand = do
+spawnSessionDaemon :: HsMxPaths -> SessionPaths -> SessionName -> FilePath -> [String] -> Maybe String -> IO SessionMetadata
+spawnSessionDaemon _paths sessionPaths sessionName cwd tags startupCommand = do
   executable <- getExecutablePath
   _ <- forkProcess $ do
     void createSession
     redirectToDevNull
-    executeFile executable True (daemonArgs sessionName cwd kind startupCommand) Nothing
+    executeFile executable True (daemonArgs sessionName cwd tags startupCommand) Nothing
   waitForSocket (sessionSocketPath sessionPaths)
   metadata <- loadSessionMetadataFile (sessionMetadataFile sessionPaths)
   maybe (die "Session daemon did not write metadata") pure metadata
 
-daemonArgs :: SessionName -> FilePath -> String -> Maybe String -> [String]
-daemonArgs sessionName cwd kind startupCommand =
-  ["daemon", Text.unpack (sessionNameText sessionName), "--cwd", cwd, "--kind", kind]
+daemonArgs :: SessionName -> FilePath -> [String] -> Maybe String -> [String]
+daemonArgs sessionName cwd tags startupCommand =
+  ["daemon", Text.unpack (sessionNameText sessionName), "--cwd", cwd, "--tags", renderTags tags]
     <> maybe [] (\commandText -> ["--command", commandText]) startupCommand
 
 connectAndProxy :: SessionMetadata -> IO ()
@@ -195,6 +182,12 @@ escapeByte = BS.singleton 27
 
 rawDetachByte :: Word8
 rawDetachByte = 28
+
+renderTags :: [String] -> String
+renderTags = foldr join ""
+  where
+    join tagText "" = tagText
+    join tagText rest = tagText <> "," <> rest
 
 redirectToDevNull :: IO ()
 redirectToDevNull = do

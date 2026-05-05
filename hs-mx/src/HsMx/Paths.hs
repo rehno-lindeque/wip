@@ -2,7 +2,6 @@ module HsMx.Paths (
   HsMxPaths (..),
   SessionPaths (..),
   getHsMxPaths,
-  defaultProjectsRoot,
   ensureHsMxDirectories,
   getSessionPaths,
   encodePaths,
@@ -44,11 +43,6 @@ getHsMxPaths = do
         hsMxSessionDir = Text.pack sessionDir,
         hsMxSocketDir = Text.pack socketDir
       }
-
-defaultProjectsRoot :: IO FilePath
-defaultProjectsRoot = do
-  home <- getHomeDirectory
-  pure (home </> "projects")
 
 ensureHsMxDirectories :: HsMxPaths -> IO ()
 ensureHsMxDirectories paths = do

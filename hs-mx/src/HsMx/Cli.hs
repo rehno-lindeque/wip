@@ -1,6 +1,5 @@
 module HsMx.Cli (
   Command (..),
-  OpenProjectOptions (..),
   AttachOptions (..),
   ListOptions (..),
   KillOptions (..),
@@ -13,8 +12,6 @@ import Options.Applicative
 
 data Command
   = PathsCommand Bool
-  | SessionNameCommand FilePath
-  | OpenProjectCommand OpenProjectOptions
   | StartCommand AttachOptions
   | AttachCommand AttachOptions
   | ListCommand ListOptions
@@ -22,16 +19,10 @@ data Command
   | HistoryCommand HistoryOptions
   | DaemonCommand DaemonOptions
 
-data OpenProjectOptions = OpenProjectOptions
-  { openProjectPath :: FilePath,
-    openProjectsRoot :: Maybe FilePath,
-    openJson :: Bool
-  }
-
 data AttachOptions = AttachOptions
   { attachSessionNameArg :: String,
     attachWorkingDirectory :: Maybe FilePath,
-    attachKind :: String,
+    attachTags :: [String],
     attachStartupCommand :: Maybe String
   }
 
@@ -51,7 +42,7 @@ data HistoryOptions = HistoryOptions
 data DaemonOptions = DaemonOptions
   { daemonSessionNameArg :: String,
     daemonWorkingDirectory :: FilePath,
-    daemonKind :: String,
+    daemonTags :: [String],
     daemonStartupCommand :: Maybe String
   }
 
@@ -67,9 +58,7 @@ parserInfo =
 commandParser :: Parser Command
 commandParser =
   hsubparser
-    ( command "paths" (info pathsParser (progDesc "Print hs-mx runtime paths"))
-        <> command "session-name" (info sessionNameParser (progDesc "Derive a stable session name"))
-        <> command "open-project" (info openProjectParser (progDesc "Attach to or create a project session"))
+    ( command "paths" (info pathsParser (progDesc "Print runtime paths"))
         <> command "start" (info startParser (progDesc "Start a named session without attaching"))
         <> command "attach" (info attachParser (progDesc "Attach to or create a named session"))
         <> command "list" (info listParser (progDesc "List known session metadata"))
@@ -80,26 +69,6 @@ commandParser =
 
 pathsParser :: Parser Command
 pathsParser = PathsCommand <$> switch (long "json" <> help "Output JSON")
-
-sessionNameParser :: Parser Command
-sessionNameParser =
-  SessionNameCommand
-    <$> strArgument (metavar "PROJECT_PATH" <> help "Relative project path")
-
-openProjectParser :: Parser Command
-openProjectParser =
-  OpenProjectCommand
-    <$> ( OpenProjectOptions
-            <$> strArgument (metavar "PROJECT_PATH" <> help "Relative project path under the projects root")
-            <*> optional
-              ( strOption
-                  ( long "projects-root"
-                      <> metavar "DIR"
-                      <> help "Override the default projects root"
-                  )
-              )
-            <*> switch (long "json" <> help "Output the resolved session plan as JSON and exit")
-        )
 
 attachParser :: Parser Command
 attachParser =
@@ -122,11 +91,12 @@ attachOptionsParser =
               <> help "Initial working directory for a newly created session"
           )
       )
-    <*> strOption
-      ( long "kind"
-          <> metavar "KIND"
-          <> value "shell"
-          <> help "Session kind to record in metadata"
+    <*> option
+      (maybeReader (Just . splitTags))
+      ( long "tags"
+          <> metavar "TAG,TAG"
+          <> value []
+          <> help "Comma-separated tags to record in metadata"
       )
     <*> optional
       ( strOption
@@ -170,6 +140,15 @@ daemonParser =
     <$> ( DaemonOptions
             <$> strArgument (metavar "SESSION_NAME")
             <*> strOption (long "cwd" <> metavar "DIR")
-            <*> strOption (long "kind" <> metavar "KIND" <> value "shell")
+            <*> option (maybeReader (Just . splitTags)) (long "tags" <> metavar "TAG,TAG" <> value [])
             <*> optional (strOption (long "command" <> metavar "SHELL_SNIPPET"))
         )
+
+splitTags :: String -> [String]
+splitTags raw = filter (not . null) (go raw)
+  where
+    go [] = [[]]
+    go (',':rest) = [] : go rest
+    go (ch:rest) = case go rest of
+      [] -> [[ch]]
+      current : remaining -> (ch : current) : remaining
