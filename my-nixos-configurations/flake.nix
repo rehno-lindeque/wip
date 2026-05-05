@@ -92,21 +92,10 @@
           vgaswitcheroo-toggle = legacyPackages.${system}.callPackage ./packages/vgaswitcheroo-toggle {};
           nix-run = legacyPackages.${system}.callPackage ./packages/nix-run {};
           sesh = legacyPackages.${system}.callPackage ./packages/hs-mx {};
-          hs-mx = self.packages.${system}.sesh;
-          zmx = legacyPackages.${system}.callPackage ./packages/zmx {};
-          zmx-update-lock = legacyPackages.${system}.callPackage ./packages/zmx-update-lock {};
-          zmx-project-open = legacyPackages.${system}.callPackage ./packages/zmx-project-open {
-            inherit (self.packages.${system}) sesh;
-          };
-          zmx-project-list-detached = legacyPackages.${system}.callPackage ./packages/zmx-project-list-detached {
-            inherit (self.packages.${system}) sesh;
-          };
           desktop2022-project-session = legacyPackages.${system}.callPackage ./packages/desktop2022-project-session {};
           session-picker = legacyPackages.${system}.callPackage ./packages/session-picker {
             inherit (self.packages.${system}) sesh;
           };
-          desktop2022-zmx-project = legacyPackages.${system}.callPackage ./packages/desktop2022-zmx-project {};
-          desktop2022-zmx-resume = legacyPackages.${system}.callPackage ./packages/desktop2022-zmx-resume {};
           desktop2022-rebuild = legacyPackages.${system}.callPackage ./packages/nixos-rebuild-system {
             name = "desktop2022-rebuild";
             inherit (self.packages.${system}) nix-run;
