@@ -17,7 +17,6 @@
     in {
       packages.default = sesh;
       packages.sesh = sesh;
-      packages.hs-mx = sesh;
 
       apps.default = {
         type = "app";
