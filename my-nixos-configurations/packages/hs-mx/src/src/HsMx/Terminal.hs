@@ -9,12 +9,14 @@ import qualified System.Console.Terminal.Size as Terminal
 import System.IO (BufferMode (NoBuffering), hSetBuffering, hSetEcho, stdin)
 import System.Posix.IO (stdInput)
 import System.Posix.Terminal
-  ( TerminalAttributes,
+  ( ControlCharacter (Quit),
+    TerminalAttributes,
     TerminalMode (EnableEcho, ExtendedFunctions, KeyboardInterrupts, ProcessInput),
     TerminalState (Immediately),
     getTerminalAttributes,
     queryTerminal,
     setTerminalAttributes,
+    withoutCC,
     withoutMode,
   )
 
@@ -48,4 +50,6 @@ withRawInput action = do
 
     rawAttributes :: TerminalAttributes -> TerminalAttributes
     rawAttributes attrs =
-      foldl withoutMode attrs [EnableEcho, ProcessInput, KeyboardInterrupts, ExtendedFunctions]
+      withoutCC
+        (foldl withoutMode attrs [EnableEcho, ProcessInput, KeyboardInterrupts, ExtendedFunctions])
+        Quit

@@ -13,6 +13,7 @@ import Control.Monad (unless, void)
 import qualified Data.ByteString as BS
 import qualified Data.ByteString.Char8 as BS8
 import qualified Data.Text as Text
+import Data.Word (Word8)
 import HsMx.Cli (AttachOptions (..), HistoryOptions (..), KillOptions (..), OpenProjectOptions (..))
 import HsMx.Metadata
 import HsMx.Paths
@@ -35,7 +36,7 @@ import qualified Network.Socket.ByteString as NBS
 import System.Directory (doesFileExist, getCurrentDirectory, removeFile)
 import System.Environment (getExecutablePath)
 import System.Exit (die)
-import System.IO (BufferMode (NoBuffering), hFlush, hSetBuffering, stdin, stdout)
+import System.IO (BufferMode (NoBuffering), hFlush, hSetBuffering, hWaitForInput, stdin, stdout)
 import qualified System.Posix.IO as PosixIO
 import System.Posix.Process (createSession, executeFile, forkProcess)
 import System.Posix.Signals (sigKILL, signalProcess)
@@ -141,12 +142,20 @@ openSocket socketPath = do
 
 stdinToSocket :: Socket -> IO ()
 stdinToSocket sessionSocket = do
-  chunk <- BS.hGetSome stdin 4096
-  if BS.null chunk
+  nextByte <- BS.hGetSome stdin 1
+  if BS.null nextByte
     then ignoreIO (shutdown sessionSocket ShutdownSend)
-    else do
-      NBS.sendAll sessionSocket chunk
-      stdinToSocket sessionSocket
+    else
+      if nextByte == BS.singleton rawDetachByte
+        then ignoreIO (shutdown sessionSocket ShutdownSend)
+        else
+          if nextByte == escapeByte
+            then do
+              escapeSequence <- readEscapeSequence nextByte
+              if escapeSequence `elem` detachPatterns
+                then ignoreIO (shutdown sessionSocket ShutdownSend)
+                else NBS.sendAll sessionSocket escapeSequence >> stdinToSocket sessionSocket
+            else NBS.sendAll sessionSocket nextByte >> stdinToSocket sessionSocket
 
 socketToStdout :: Socket -> IO ()
 socketToStdout sessionSocket = do
@@ -158,6 +167,32 @@ socketToStdout sessionSocket = do
 
 encodeDimensions :: (Int, Int) -> BS.ByteString
 encodeDimensions (widthValue, heightValue) = BS8.pack (show widthValue <> " " <> show heightValue <> "\n")
+
+readEscapeSequence :: BS.ByteString -> IO BS.ByteString
+readEscapeSequence initialByte = go initialByte
+  where
+    go acc = do
+      hasMore <- hWaitForInput stdin 10
+      if not hasMore
+        then pure acc
+        else do
+          chunk <- BS.hGetSome stdin 1
+          if BS.null chunk
+            then pure acc
+            else go (acc <> chunk)
+
+detachPatterns :: [BS.ByteString]
+detachPatterns =
+  [ BS8.pack "\ESC[92;5u",
+    BS8.pack "\ESC[92;5:1u",
+    BS8.pack "\ESC[27;5;92~"
+  ]
+
+escapeByte :: BS.ByteString
+escapeByte = BS.singleton 27
+
+rawDetachByte :: Word8
+rawDetachByte = 28
 
 redirectToDevNull :: IO ()
 redirectToDevNull = do
