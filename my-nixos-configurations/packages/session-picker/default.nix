@@ -20,7 +20,7 @@ pkgs.writeShellApplication {
         -o ControlPersist=10m \
         -o "ControlPath=$HOME/.ssh/cm-%r@%h:%p" \
         desktop2022 \
-        bash -lc 'exec sesh list --json'
+        'exec sesh list --json'
     } 2>/dev/null || printf '[]')"
 
     selection="$({
@@ -58,13 +58,13 @@ pkgs.writeShellApplication {
         exec ghostty -e sesh attach "$session_name"
         ;;
       desktop2022)
-        # shellcheck disable=SC2016
+        quoted_session_name="$(printf '%q' "$session_name")"
         exec ghostty -e ssh \
           -o ControlMaster=auto \
           -o ControlPersist=10m \
           -o "ControlPath=$HOME/.ssh/cm-%r@%h:%p" \
           -t desktop2022 \
-          bash -lc 'exec sesh attach "$1"' _ "$session_name"
+          "exec sesh attach $quoted_session_name"
         ;;
       *)
         printf 'Unknown session scope: %s\n' "$scope" >&2
