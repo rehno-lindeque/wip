@@ -19,7 +19,7 @@ pkgs.writeShellApplication {
           -o ControlPersist=10m \
           -o "ControlPath=$HOME/.ssh/cm-%r@%h:%p" \
           desktop2022 \
-          'cd "$HOME/projects" 2>/dev/null && for path in */; do [[ -d "$path" ]] && printf "%s\n" "''${path%/}"; done'
+          'cd "$HOME/projects" 2>/dev/null && for path in */ */*/; do [[ -d "$path" ]] && printf "%s\n" "''${path%/}"; done'
       } 2>/dev/null || true)"
       project_name="$(printf '%s\n' "$project_names" | fuzzel --dmenu --prompt "desktop2022 project> ")"
     fi
