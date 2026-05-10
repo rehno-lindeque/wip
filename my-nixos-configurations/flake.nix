@@ -93,6 +93,35 @@
           nix-run = legacyPackages.${system}.callPackage ./packages/nix-run {};
           sesh = legacyPackages.${system}.callPackage ./packages/sesh {};
           desktop2022-project-session = legacyPackages.${system}.callPackage ./packages/desktop2022-project-session {};
+          sidecar = self.inputs.llm-agents.packages.${system}.sidecar.overrideAttrs (old: {
+            patches = (old.patches or []) ++ [
+              (legacyPackages.${system}.writeText "sidecar-gitstatus-folder-truncation.patch" ''
+                diff --git a/internal/plugins/gitstatus/sidebar_view.go b/internal/plugins/gitstatus/sidebar_view.go
+                index a9a1d5b..c4f3bb0 100644
+                --- a/internal/plugins/gitstatus/sidebar_view.go
+                +++ b/internal/plugins/gitstatus/sidebar_view.go
+                @@ -361,8 +361,15 @@ func (p *Plugin) renderSidebarEntry(entry *FileEntry, selected bool, maxWidth in
+
+                		// Calculate available width
+                		availableWidth := maxWidth - 2 - len(indicator) // status + indicator + spacing
+                +		nameWidth := availableWidth - len(countStr) - 4
+                		displayName := folderName
+                -		if len(folderName)+len(countStr)+1 > availableWidth && availableWidth > 10 {
+                -			displayName = folderName[:availableWidth-len(countStr)-4] + "…/"
+                +		if len(folderName)+len(countStr)+1 > availableWidth {
+                +			if nameWidth > 0 {
+                +				displayName = folderName[:nameWidth] + "…/"
+                +			} else if availableWidth > 0 {
+                +				displayName = "…/"
+                +			} else {
+                +				displayName = ""
+                +			}
+                		}
+
+                		if selected {
+              '')
+            ];
+          });
           session-picker = legacyPackages.${system}.callPackage ./packages/session-picker {
             inherit (self.packages.${system}) sesh;
           };

@@ -38,6 +38,12 @@ in {
 
     home-manager.sharedModules = [
       {
+        home.packages = [
+          flake.inputs.llm-agents.packages.${pkgs.system}.pi
+          flake.packages.${pkgs.system}.sidecar
+          flake.inputs.llm-agents.packages.${pkgs.system}.td
+        ];
+
         programs = {
           bash.enable = true;
 
