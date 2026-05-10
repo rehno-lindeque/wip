@@ -240,6 +240,6 @@
       # };
     };
 
-    overlays.default = final: prev: {};
+    overlays.default = import ./overlays;
   };
 }

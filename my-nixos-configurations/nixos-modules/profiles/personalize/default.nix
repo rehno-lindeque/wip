@@ -21,6 +21,16 @@ in {
           Whether to include software packages and services that I use somewhat frequently
         '';
       };
+      webPackages = mkOption {
+        type = types.listOf types.package;
+        default = with pkgs; [
+          firefox
+          brave
+        ];
+        description = ''
+          Browser packages to install.
+        '';
+      };
       enableProblematicSoftware = mkOption {
         type = types.bool;
         default = false;
@@ -188,13 +198,7 @@ in {
           # trickle
         ]
         # Web
-        ++ lib.optionals cfg.enableSoftware [
-          firefox
-          brave
-          # tor-browser-bundle-bin
-          # dropbox
-          # dropbox-cli
-        ]
+        ++ lib.optionals cfg.enableSoftware cfg.webPackages
         ++ lib.optionals (cfg.enableSoftware && chromeSupported) [
           google-chrome
         ]

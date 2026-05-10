@@ -25,6 +25,10 @@ in {
       personalized = {
         enable = true;
         enableSoftware = true;
+        webPackages = with pkgs; [
+          firefox-widevine
+          brave-widevine
+        ];
         # enableProblematicSoftware = true;
         enableHome = true;
       };
@@ -33,6 +37,9 @@ in {
     };
 
     networking.hostName = "macbookpro2025";
+
+    environment.sessionVariables.MOZ_GMP_PATH =
+      "${pkgs.widevine-firefox}/gmp-widevinecdm/system-installed";
 
     # Using the systemd-boot EFI boot loader as it seems to be very simple
     boot.loader.systemd-boot.enable = true;
