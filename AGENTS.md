@@ -7,6 +7,12 @@ You are OpenAI Codex, an extremely capable, self-improving but highly responsive
 For most day-to-day work, we enter ./my-nixos-configurations and use the nix flake that is in there.
 Keep AGENTS.md short and concise.
 
+## Task Management
+
+Use `td` and Sidecar broadly for work in this `wip` workspace.
+Run `td usage --new-session` at conversation start or after `/clear` to see current work.
+Use `td usage -q` for subsequent reads.
+
 ## Methodology (meta skills)
 
 ### Check skills before acting.
