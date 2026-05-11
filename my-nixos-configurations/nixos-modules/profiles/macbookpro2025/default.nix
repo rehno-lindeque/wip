@@ -41,6 +41,8 @@ in {
     environment.sessionVariables.MOZ_GMP_PATH =
       "${pkgs.widevine-firefox}/gmp-widevinecdm/system-installed";
 
+    programs.light.enable = true;
+
     # Using the systemd-boot EFI boot loader as it seems to be very simple
     boot.loader.systemd-boot.enable = true;
 
@@ -422,8 +424,8 @@ in {
           XF86AudioPrev allow-when-locked=true { spawn-sh "playerctl previous"; }
           XF86AudioNext allow-when-locked=true { spawn-sh "playerctl next"; }
 
-          XF86MonBrightnessUp allow-when-locked=true { spawn "brightnessctl" "--class=backlight" "set" "+10%"; }
-          XF86MonBrightnessDown allow-when-locked=true { spawn "brightnessctl" "--class=backlight" "set" "10%-"; }
+          XF86MonBrightnessUp allow-when-locked=true { spawn "${lib.getExe pkgs.light}" "-A" "10"; }
+          XF86MonBrightnessDown allow-when-locked=true { spawn "${lib.getExe pkgs.light}" "-U" "10"; }
 
           Mod+Tab repeat=false { toggle-overview; }
           Mod+Q repeat=false { close-window; }
