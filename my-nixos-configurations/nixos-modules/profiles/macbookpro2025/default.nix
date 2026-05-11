@@ -52,6 +52,10 @@ in {
 
     networking.hostName = "macbookpro2025";
 
+    time.timeZone = lib.mkDefault "America/New_York";
+    location.provider = "geoclue2";
+    services.automatic-timezoned.enable = true;
+
     environment.sessionVariables.MOZ_GMP_PATH =
       "${pkgs.widevine-firefox}/gmp-widevinecdm/system-installed";
 
