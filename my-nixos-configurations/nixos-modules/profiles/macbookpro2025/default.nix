@@ -254,6 +254,9 @@ in {
 
     home-manager.users.me.home.packages = with pkgs; [
       fuzzel
+      grim
+      satty
+      slurp
       wl-clipboard
       flake.packages.${pkgs.system}.desktop2022-project-session
       flake.packages.${pkgs.system}.session-picker
@@ -578,9 +581,7 @@ in {
           Mod+Shift+V { switch-focus-between-floating-and-tiling; }
           Mod+W { toggle-column-tabbed-display; }
 
-          Print { screenshot; }
-          Ctrl+Print { screenshot-screen; }
-          Alt+Print { screenshot-window; }
+          Mod+Shift+S hotkey-overlay-title="Screenshot and Annotate" { spawn-sh "grim -g \"$(slurp)\" - | satty -f -"; }
 
           Mod+Escape allow-inhibiting=false { toggle-keyboard-shortcuts-inhibit; }
           Ctrl+Alt+Delete { quit; }
