@@ -254,7 +254,7 @@ in {
             tooltip-format-wifi = "{essid} ({signalStrength}%)";
             tooltip-format-ethernet = "{ifname}";
             tooltip-format-disconnected = "No network";
-            on-click = "ghostty -e sh -lc 'nmtui'";
+            on-click = "ghostty -e sh -lc 'iwctl station wlan0 scan >/dev/null 2>&1 || true; nmtui'";
           };
 
           "custom/tailscale" = {
