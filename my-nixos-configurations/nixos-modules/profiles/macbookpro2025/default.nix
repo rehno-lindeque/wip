@@ -6,6 +6,20 @@
   ...
 }: let
   cfg = config.profiles.macbookpro2025;
+  waybarIcons = {
+    audio = "";
+    audioMuted = "󰝟";
+    backlight = "󰃠";
+    battery = "󰁹";
+    batteryCharging = "󰂄";
+    batteryPlugged = "󰚥";
+    ethernet = "󰈀";
+    link = "󰈁";
+    networkOffline = "󰖪";
+    vpn = "󰒃";
+    vpnOffline = "󰦝";
+    wifi = "󰖩";
+  };
 in {
   options = with lib; {
     profiles.macbookpro2025 = {
@@ -40,6 +54,10 @@ in {
 
     environment.sessionVariables.MOZ_GMP_PATH =
       "${pkgs.widevine-firefox}/gmp-widevinecdm/system-installed";
+
+    fonts.packages = [
+      pkgs.nerd-fonts.symbols-only
+    ];
 
     programs.light.enable = true;
 
@@ -249,11 +267,11 @@ in {
           modules-right = ["pulseaudio" "backlight" "battery"];
 
           network = {
-            format-wifi = "{essid}";
-            format-ethernet = "ethernet";
-            format-linked = "linked";
-            format-disconnected = "offline";
-            tooltip-format-wifi = "{essid} ({signalStrength}%)";
+            format-wifi = "${waybarIcons.wifi} {essid} {signalStrength}%";
+            format-ethernet = waybarIcons.ethernet;
+            format-linked = waybarIcons.link;
+            format-disconnected = waybarIcons.networkOffline;
+            tooltip-format-wifi = "Wi-Fi: {essid} ({signalStrength}%)";
             tooltip-format-ethernet = "{ifname}";
             tooltip-format-disconnected = "No network";
             on-click = "ghostty -e sh -lc 'iwctl station wlan0 scan >/dev/null 2>&1 || true; nmtui'";
@@ -264,7 +282,7 @@ in {
             interval = 15;
             format = "{}";
             exec = ''
-              sh -lc 'if tailscale status --json >/tmp/tailscale-waybar.json 2>/dev/null; then jq -r '"'"'. as $s | if $s.BackendState == "Running" then {text:"ts", tooltip:(($s.Self.HostName // "-") + "\n" + ($s.Self.TailscaleIPs[0] // "-")), class:"connected"} else {text:"ts", tooltip:"offline", class:"offline"} end | @json'"'"' /tmp/tailscale-waybar.json; else printf "{\"text\":\"ts\",\"tooltip\":\"offline\",\"class\":\"offline\"}"; fi'
+              sh -lc 'if tailscale status --json >/tmp/tailscale-waybar.json 2>/dev/null; then jq -r '"'"'. as $s | if $s.BackendState == "Running" then {text:"${waybarIcons.vpn} VPN", tooltip:("VPN: " + ($s.Self.HostName // "-") + "\n" + ($s.Self.TailscaleIPs[0] // "-")), class:"connected"} else {text:"${waybarIcons.vpnOffline} VPN", tooltip:"VPN offline", class:"offline"} end | @json'"'"' /tmp/tailscale-waybar.json; else printf "{\"text\":\"${waybarIcons.vpnOffline} VPN\",\"tooltip\":\"VPN offline\",\"class\":\"offline\"}"; fi'
             '';
           };
 
@@ -274,9 +292,9 @@ in {
           };
 
           pulseaudio = {
-            format = "vol {volume}%";
-            format-muted = "vol muted";
-            tooltip-format = "{desc}";
+            format = "${waybarIcons.audio} {volume}%";
+            format-muted = waybarIcons.audioMuted;
+            tooltip-format = "Audio: {desc}";
             on-click = "${lib.getExe' pkgs.wireplumber "wpctl"} set-mute @DEFAULT_AUDIO_SINK@ toggle";
             on-scroll-up = "${lib.getExe' pkgs.wireplumber "wpctl"} set-volume @DEFAULT_AUDIO_SINK@ 0.05+ -l 1.0";
             on-scroll-down = "${lib.getExe' pkgs.wireplumber "wpctl"} set-volume @DEFAULT_AUDIO_SINK@ 0.05-";
@@ -284,16 +302,16 @@ in {
 
           backlight = {
             device = "apple-panel-bl";
-            format = "br {percent}%";
+            format = "${waybarIcons.backlight} {percent}%";
             on-scroll-up = "${lib.getExe pkgs.light} -A 5";
             on-scroll-down = "${lib.getExe pkgs.light} -U 5";
           };
 
           battery = {
-            format = "{capacity}% {power}W";
-            format-charging = "{capacity}% {power}W+";
-            format-plugged = "{capacity}% AC";
-            tooltip-format = "{capacity}%\n{power}W\n{time}";
+            format = "${waybarIcons.battery} {capacity}% {power}W";
+            format-charging = "${waybarIcons.batteryCharging} {capacity}% {power}W";
+            format-plugged = "${waybarIcons.batteryPlugged} {capacity}% AC";
+            tooltip-format = "Battery: {capacity}%\n{power}W\n{time}";
           };
         }
       ];
@@ -301,13 +319,13 @@ in {
         * {
           border: none;
           border-radius: 0;
-          font-family: monospace;
+          font-family: monospace, "Symbols Nerd Font";
           font-size: 13px;
           min-height: 0;
         }
 
         window#waybar {
-          background: rgba(20, 22, 26, 0.92);
+          background: rgba(14, 16, 20, 0.86);
           color: #e6e6e6;
         }
 
@@ -317,9 +335,26 @@ in {
         #pulseaudio,
         #backlight,
         #battery {
-          padding: 0 12px;
+          padding: 0 11px;
           margin: 4px 6px;
-          background: rgba(255, 255, 255, 0.08);
+          border-radius: 8px;
+          background: rgba(255, 255, 255, 0.06);
+        }
+
+        #network {
+          color: #a7d8ff;
+        }
+
+        #pulseaudio {
+          color: #d7c1ff;
+        }
+
+        #pulseaudio.muted {
+          color: #888888;
+        }
+
+        #backlight {
+          color: #ffe0a3;
         }
 
         #battery.charging {
