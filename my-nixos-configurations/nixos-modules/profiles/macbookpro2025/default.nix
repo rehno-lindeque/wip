@@ -6,6 +6,9 @@
   ...
 }: let
   cfg = config.profiles.macbookpro2025;
+  screenshotAndAnnotate = pkgs.writeShellScriptBin "screenshot-and-annotate" ''
+    ${lib.getExe pkgs.grim} -g "$(${lib.getExe pkgs.slurp})" - | ${lib.getExe pkgs.satty} -f -
+  '';
   waybarIcons = {
     audio = "";
     audioMuted = "󰝟";
@@ -13,6 +16,7 @@
     battery = "󰁹";
     batteryCharging = "󰂄";
     batteryPlugged = "󰚥";
+    screenshot = "󰹑";
     ethernet = "󰈀";
     link = "󰈁";
     networkOffline = "󰖪";
@@ -256,6 +260,7 @@ in {
       fuzzel
       grim
       satty
+      screenshotAndAnnotate
       slurp
       wl-clipboard
       flake.packages.${pkgs.system}.desktop2022-project-session
@@ -271,7 +276,7 @@ in {
           height = 28;
           modules-left = ["network" "custom/tailscale"];
           modules-center = ["clock"];
-          modules-right = ["pulseaudio" "backlight" "battery"];
+          modules-right = ["custom/screenshot" "pulseaudio" "backlight" "battery"];
 
           network = {
             format-wifi = "${waybarIcons.wifi} {essid} {signalStrength}%";
@@ -291,6 +296,13 @@ in {
             exec = ''
               sh -lc 'if tailscale status --json >/tmp/tailscale-waybar.json 2>/dev/null; then jq -r '"'"'. as $s | if $s.BackendState == "Running" then {text:"${waybarIcons.vpn} VPN", tooltip:("VPN: " + ($s.Self.HostName // "-") + "\n" + ($s.Self.TailscaleIPs[0] // "-")), class:"connected"} else {text:"${waybarIcons.vpnOffline} VPN", tooltip:"VPN offline", class:"offline"} end | @json'"'"' /tmp/tailscale-waybar.json; else printf "{\"text\":\"${waybarIcons.vpnOffline} VPN\",\"tooltip\":\"VPN offline\",\"class\":\"offline\"}"; fi'
             '';
+          };
+
+          "custom/screenshot" = {
+            format = waybarIcons.screenshot;
+            tooltip = true;
+            tooltip-format = "Screenshot and annotate (Mod+Shift+S)";
+            on-click = lib.getExe screenshotAndAnnotate;
           };
 
           clock = {
@@ -338,6 +350,7 @@ in {
 
         #network,
         #custom-tailscale,
+        #custom-screenshot,
         #clock,
         #pulseaudio,
         #backlight,
@@ -350,6 +363,10 @@ in {
 
         #network {
           color: #a7d8ff;
+        }
+
+        #custom-screenshot {
+          color: #cfcfcf;
         }
 
         #pulseaudio {
@@ -581,7 +598,7 @@ in {
           Mod+Shift+V { switch-focus-between-floating-and-tiling; }
           Mod+W { toggle-column-tabbed-display; }
 
-          Mod+Shift+S hotkey-overlay-title="Screenshot and Annotate" { spawn-sh "grim -g \"$(slurp)\" - | satty -f -"; }
+          Mod+Shift+S hotkey-overlay-title="Screenshot and Annotate" { spawn "${lib.getExe screenshotAndAnnotate}"; }
 
           Mod+Escape allow-inhibiting=false { toggle-keyboard-shortcuts-inhibit; }
           Ctrl+Alt+Delete { quit; }
