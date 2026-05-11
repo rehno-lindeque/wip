@@ -246,7 +246,7 @@ in {
           height = 28;
           modules-left = ["network" "custom/tailscale"];
           modules-center = ["clock"];
-          modules-right = ["battery"];
+          modules-right = ["pulseaudio" "backlight" "battery"];
 
           network = {
             format-wifi = "{essid}";
@@ -271,6 +271,22 @@ in {
           clock = {
             format = "{:%a %d %b  %H:%M}";
             tooltip-format = "{:%Y-%m-%d}";
+          };
+
+          pulseaudio = {
+            format = "vol {volume}%";
+            format-muted = "vol muted";
+            tooltip-format = "{desc}";
+            on-click = "${lib.getExe' pkgs.wireplumber "wpctl"} set-mute @DEFAULT_AUDIO_SINK@ toggle";
+            on-scroll-up = "${lib.getExe' pkgs.wireplumber "wpctl"} set-volume @DEFAULT_AUDIO_SINK@ 0.05+ -l 1.0";
+            on-scroll-down = "${lib.getExe' pkgs.wireplumber "wpctl"} set-volume @DEFAULT_AUDIO_SINK@ 0.05-";
+          };
+
+          backlight = {
+            device = "apple-panel-bl";
+            format = "br {percent}%";
+            on-scroll-up = "${lib.getExe pkgs.light} -A 5";
+            on-scroll-down = "${lib.getExe pkgs.light} -U 5";
           };
 
           battery = {
@@ -298,6 +314,8 @@ in {
         #network,
         #custom-tailscale,
         #clock,
+        #pulseaudio,
+        #backlight,
         #battery {
           padding: 0 12px;
           margin: 4px 6px;
