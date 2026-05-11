@@ -9,6 +9,56 @@
   screenshotAndAnnotate = pkgs.writeShellScriptBin "screenshot-and-annotate" ''
     ${lib.getExe pkgs.grim} -g "$(${lib.getExe pkgs.slurp})" - | ${lib.getExe pkgs.satty} -f -
   '';
+  asahiAudioControl = pkgs.writeShellScript "asahi-audio-control" ''
+    set -eu
+
+    refresh_waybar() {
+      ${lib.getExe' pkgs.procps "pkill"} -RTMIN+8 waybar >/dev/null 2>&1 || true
+    }
+
+    cache_file="''${XDG_RUNTIME_DIR:-/tmp}/asahi-audio-control-sink-id"
+    sink_id=""
+
+    if [ -r "$cache_file" ]; then
+      IFS= read -r cached_sink_id < "$cache_file" || cached_sink_id=""
+      if [ -n "$cached_sink_id" ] && ${lib.getExe' pkgs.wireplumber "wpctl"} inspect "$cached_sink_id" >/dev/null 2>&1; then
+        sink_id="$cached_sink_id"
+      fi
+    fi
+
+    if [ -z "$sink_id" ]; then
+      sink_id="$(${lib.getExe' pkgs.pipewire "pw-dump"} | ${lib.getExe pkgs.jq} -r '
+        map(select(
+          .type == "PipeWire:Interface:Node"
+          and .info.props."media.class" == "Audio/Sink"
+          and .info.props."device.api" == "alsa"
+        ))[0].id // empty
+      ')"
+      [ -n "$sink_id" ] && printf '%s\n' "$sink_id" > "$cache_file"
+    fi
+
+    [ -n "$sink_id" ] || exit 0
+
+    case "$1" in
+      raise) ${lib.getExe' pkgs.wireplumber "wpctl"} set-volume "$sink_id" 0.1+ -l 1.0; refresh_waybar ;;
+      lower) ${lib.getExe' pkgs.wireplumber "wpctl"} set-volume "$sink_id" 0.1-; refresh_waybar ;;
+      raise-small) ${lib.getExe' pkgs.wireplumber "wpctl"} set-volume "$sink_id" 0.05+ -l 1.0; refresh_waybar ;;
+      lower-small) ${lib.getExe' pkgs.wireplumber "wpctl"} set-volume "$sink_id" 0.05-; refresh_waybar ;;
+      mute) ${lib.getExe' pkgs.wireplumber "wpctl"} set-mute "$sink_id" toggle; refresh_waybar ;;
+      status)
+        ${lib.getExe' pkgs.wireplumber "wpctl"} get-volume "$sink_id" | ${lib.getExe pkgs.jq} -cRn --arg audio "$2" --arg muted "$3" '
+          input
+          | capture("Volume: (?<volume>[0-9.]+)(?<muted> \\[MUTED\\])?")
+          | (.volume | tonumber * 100 | round) as $percent
+          | if .muted == null then
+              {text: ($audio + " " + ($percent | tostring) + "%"), class: "normal"}
+            else
+              {text: $muted, class: "muted"}
+            end
+        '
+        ;;
+    esac
+  '';
   waybarIcons = {
     audio = "";
     audioMuted = "󰝟";
@@ -276,7 +326,7 @@ in {
           height = 28;
           modules-left = ["network" "custom/tailscale"];
           modules-center = ["clock"];
-          modules-right = ["custom/screenshot" "pulseaudio" "backlight" "battery"];
+          modules-right = ["custom/screenshot" "custom/audio" "backlight" "battery"];
 
           network = {
             format-wifi = "${waybarIcons.wifi} {essid} {signalStrength}%";
@@ -310,13 +360,15 @@ in {
             tooltip-format = "{:%Y-%m-%d}";
           };
 
-          pulseaudio = {
-            format = "${waybarIcons.audio} {volume}%";
-            format-muted = waybarIcons.audioMuted;
-            tooltip-format = "Audio: {desc}";
-            on-click = "${lib.getExe' pkgs.wireplumber "wpctl"} set-mute @DEFAULT_AUDIO_SINK@ toggle";
-            on-scroll-up = "${lib.getExe' pkgs.wireplumber "wpctl"} set-volume @DEFAULT_AUDIO_SINK@ 0.05+ -l 1.0";
-            on-scroll-down = "${lib.getExe' pkgs.wireplumber "wpctl"} set-volume @DEFAULT_AUDIO_SINK@ 0.05-";
+          "custom/audio" = {
+            return-type = "json";
+            interval = 5;
+            signal = 8;
+            format = "{}";
+            exec = "${asahiAudioControl} status '${waybarIcons.audio}' '${waybarIcons.audioMuted}'";
+            on-click = "${asahiAudioControl} mute";
+            on-scroll-up = "${asahiAudioControl} raise-small";
+            on-scroll-down = "${asahiAudioControl} lower-small";
           };
 
           backlight = {
@@ -352,7 +404,7 @@ in {
         #custom-tailscale,
         #custom-screenshot,
         #clock,
-        #pulseaudio,
+        #custom-audio,
         #backlight,
         #battery {
           padding: 0 11px;
@@ -369,11 +421,11 @@ in {
           color: #cfcfcf;
         }
 
-        #pulseaudio {
+        #custom-audio {
           color: #d7c1ff;
         }
 
-        #pulseaudio.muted {
+        #custom-audio.muted {
           color: #888888;
         }
 
@@ -491,9 +543,9 @@ in {
           Mod+Return hotkey-overlay-title="Open a Terminal: ghostty" { spawn "ghostty"; }
           Mod+Space hotkey-overlay-title="Run an Application: fuzzel" { spawn "fuzzel"; }
 
-          XF86AudioRaiseVolume allow-when-locked=true { spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.1+ -l 1.0"; }
-          XF86AudioLowerVolume allow-when-locked=true { spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.1-"; }
-          XF86AudioMute allow-when-locked=true { spawn-sh "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"; }
+          XF86AudioRaiseVolume allow-when-locked=true { spawn "${asahiAudioControl}" "raise"; }
+          XF86AudioLowerVolume allow-when-locked=true { spawn "${asahiAudioControl}" "lower"; }
+          XF86AudioMute allow-when-locked=true { spawn "${asahiAudioControl}" "mute"; }
           XF86AudioMicMute allow-when-locked=true { spawn-sh "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"; }
 
           XF86AudioPlay allow-when-locked=true { spawn-sh "playerctl play-pause"; }
