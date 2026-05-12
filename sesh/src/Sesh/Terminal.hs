@@ -14,7 +14,7 @@ import System.Posix.IO (stdInput)
 import System.Posix.Terminal
   ( ControlCharacter (Quit),
     TerminalAttributes,
-    TerminalMode (EnableEcho, ExtendedFunctions, KeyboardInterrupts, ProcessInput),
+    TerminalMode (EnableEcho, ExtendedFunctions, KeyboardInterrupts, MapCRtoLF, ProcessInput),
     TerminalState (Immediately, WhenFlushed),
     getTerminalAttributes,
     queryTerminal,
@@ -60,7 +60,7 @@ withRawInput action = do
     rawAttributes :: TerminalAttributes -> TerminalAttributes
     rawAttributes attrs =
       withoutCC
-        (foldl withoutMode attrs [EnableEcho, ProcessInput, KeyboardInterrupts, ExtendedFunctions])
+        (foldl withoutMode attrs [EnableEcho, ProcessInput, KeyboardInterrupts, ExtendedFunctions, MapCRtoLF])
         Quit
 
 clearSequence :: BS8.ByteString
