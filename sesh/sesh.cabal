@@ -41,6 +41,7 @@ executable sesh
       Sesh.Attach
       Sesh.Cli
       Sesh.Daemon
+      Sesh.Ipc
       Sesh.Metadata
       Sesh.Paths
       Sesh.Session

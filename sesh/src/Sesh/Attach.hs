@@ -5,7 +5,7 @@ module Sesh.Attach (
   printSessionHistory,
 ) where
 
-import Control.Concurrent (threadDelay)
+import Control.Concurrent (MVar, newMVar, threadDelay, withMVar)
 import qualified Control.Concurrent.Async as Async
 import Control.Exception (IOException, bracket, bracket_, catch)
 import Control.Monad (unless, void)
@@ -14,6 +14,7 @@ import qualified Data.ByteString.Char8 as BS8
 import qualified Data.Text as Text
 import Data.Word (Word8)
 import Sesh.Cli (AttachOptions (..), HistoryOptions (..), KillOptions (..))
+import Sesh.Ipc (ClientFrame (..), encodeClientFrame)
 import Sesh.Metadata
 import Sesh.Paths
 import Sesh.Session
@@ -112,15 +113,18 @@ connectAndProxy metadata = withSocketsDo $ do
   let socketPath = Text.unpack (sessionMetadataSocketPath metadata)
   bracket (openSocket socketPath) close $ \sessionSocket -> do
     dimensions <- currentTerminalSize
-    NBS.sendAll sessionSocket (encodeDimensions dimensions)
+    sendLock <- newMVar ()
+    sendFrame sendLock sessionSocket (ClientInit dimensions)
     hSetBuffering stdin NoBuffering
     hSetBuffering stdout NoBuffering
     bracket_ prepareTerminalForAttach restoreTerminalAfterDetach $ do
       withRawInput $ do
         reader <- Async.async (socketToStdout sessionSocket)
-        writer <- Async.async (stdinToSocket sessionSocket)
+        writer <- Async.async (stdinToSocket sendLock sessionSocket)
+        resizer <- Async.async (resizeToSocket sendLock sessionSocket dimensions)
         void (Async.waitCatch reader)
         Async.cancel writer
+        Async.cancel resizer
 
 openSocket :: FilePath -> IO Socket
 openSocket socketPath = do
@@ -128,22 +132,43 @@ openSocket socketPath = do
   connect sessionSocket (SockAddrUnix socketPath)
   pure sessionSocket
 
-stdinToSocket :: Socket -> IO ()
-stdinToSocket sessionSocket = do
+stdinToSocket :: MVar () -> Socket -> IO ()
+stdinToSocket sendLock sessionSocket = do
   nextByte <- BS.hGetSome stdin 1
   if BS.null nextByte
     then ignoreIO (shutdown sessionSocket ShutdownSend)
     else
       if nextByte == BS.singleton rawDetachByte
-        then ignoreIO (shutdown sessionSocket ShutdownSend)
+        then detach
         else
           if nextByte == escapeByte
             then do
               escapeSequence <- readEscapeSequence nextByte
               if escapeSequence `elem` detachPatterns
-                then ignoreIO (shutdown sessionSocket ShutdownSend)
-                else NBS.sendAll sessionSocket escapeSequence >> stdinToSocket sessionSocket
-            else NBS.sendAll sessionSocket nextByte >> stdinToSocket sessionSocket
+                then detach
+                else sendInput escapeSequence >> stdinToSocket sendLock sessionSocket
+            else sendInput nextByte >> stdinToSocket sendLock sessionSocket
+  where
+    sendInput bytes = sendFrame sendLock sessionSocket (ClientInput bytes)
+    detach = do
+      ignoreIO (sendFrame sendLock sessionSocket ClientDetach)
+      ignoreIO (shutdown sessionSocket ShutdownSend)
+
+resizeToSocket :: MVar () -> Socket -> (Int, Int) -> IO ()
+resizeToSocket sendLock sessionSocket = go
+  where
+    go previous = do
+      threadDelay 250000
+      dimensions <- currentTerminalSize
+      if dimensions == previous
+        then go previous
+        else do
+          sendFrame sendLock sessionSocket (ClientResize dimensions)
+          go dimensions
+
+sendFrame :: MVar () -> Socket -> ClientFrame -> IO ()
+sendFrame sendLock sessionSocket frame =
+  withMVar sendLock $ \() -> NBS.sendAll sessionSocket (encodeClientFrame frame)
 
 socketToStdout :: Socket -> IO ()
 socketToStdout sessionSocket = do
@@ -152,9 +177,6 @@ socketToStdout sessionSocket = do
     BS.hPut stdout chunk
     hFlush stdout
     socketToStdout sessionSocket
-
-encodeDimensions :: (Int, Int) -> BS.ByteString
-encodeDimensions (widthValue, heightValue) = BS8.pack (show widthValue <> " " <> show heightValue <> "\n")
 
 readEscapeSequence :: BS.ByteString -> IO BS.ByteString
 readEscapeSequence initialByte = go initialByte

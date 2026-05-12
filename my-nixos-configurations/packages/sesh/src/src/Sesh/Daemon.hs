@@ -11,6 +11,7 @@ import qualified Data.ByteString.Char8 as BS8
 import qualified Data.Text as Text
 import Data.Time.Clock (getCurrentTime)
 import Sesh.Cli (DaemonOptions (..))
+import Sesh.Ipc (ClientFrame (..), decodeClientFrames, encodeClientFrame)
 import Sesh.Metadata
 import Sesh.Paths
 import Sesh.Session
@@ -115,19 +116,18 @@ acceptLoop listenSocket pty bufferVar clientVar metadataVar metadataFile =
         ignoreIO (NBS.sendAll client (BS8.pack "session already attached\n"))
         close client
       Nothing -> do
-        (dimensions, initialInput) <- receiveHandshake client
+        (dimensions, initialFrames) <- receiveHandshake client
         resizePty pty dimensions
         backlog <- readMVar bufferVar
         updateAttachedClients metadataVar metadataFile 1
         setClient clientVar (Just client)
         ignoreIO (NBS.sendAll client backlog)
-        unlessNull initialInput (writePty pty initialInput)
         let cleanupClient = do
               setClient clientVar Nothing
               ignoreIO (shutdown client ShutdownBoth)
               ignoreIO (close client)
               updateAttachedClients metadataVar metadataFile 0
-        proxyClientInput pty client `finally` cleanupClient
+        proxyClientInput pty client initialFrames `finally` cleanupClient
 
 ptyReaderLoop :: Pty -> MVar BS.ByteString -> MVar (Maybe Socket) -> FilePath -> IO ()
 ptyReaderLoop pty bufferVar clientVar historyFile =
@@ -141,37 +141,47 @@ ptyReaderLoop pty bufferVar clientVar historyFile =
       Just client ->
         ignoreIO (NBS.sendAll client chunk)
 
-proxyClientInput :: Pty -> Socket -> IO ()
-proxyClientInput pty client = do
-  chunk <- NBS.recv client 4096
-  if BS.null chunk
-    then pure ()
-    else do
-      writePty pty chunk
-      proxyClientInput pty client
+proxyClientInput :: Pty -> Socket -> BS.ByteString -> IO ()
+proxyClientInput pty client initialBuffer = go initialBuffer
+  where
+    go buffer = do
+      let (frames, rest) = decodeClientFrames buffer
+      continue <- handleFrames frames
+      if not continue
+        then pure ()
+        else do
+          chunk <- NBS.recv client 4096
+          if BS.null chunk
+            then pure ()
+            else go (rest <> chunk)
+
+    handleFrames [] = pure True
+    handleFrames (frame : frames) = do
+      continue <- handleFrame frame
+      if continue then handleFrames frames else pure False
+
+    handleFrame frame = case frame of
+      ClientInit dimensions -> resizePty pty dimensions >> pure True
+      ClientInput bytes -> writePty pty bytes >> pure True
+      ClientResize dimensions -> resizePty pty dimensions >> pure True
+      ClientDetach -> pure False
 
 receiveHandshake :: Socket -> IO ((Int, Int), BS.ByteString)
-receiveHandshake client = do
-  payload <- NBS.recv client 64
-  pure $ case fmap BS8.unpack (nonEmpty payload) of
-    Nothing -> (defaultTerminalSize, BS.empty)
-    Just raw ->
-      let (dimensionText, restWithNewline) = break (== '\n') raw
-          remainder = BS8.pack (drop 1 restWithNewline)
-       in case words dimensionText of
-        [widthText, heightText] ->
-          case (reads widthText, reads heightText) of
-            ([(widthValue, _)], [(heightValue, _)]) -> ((widthValue, heightValue), remainder)
-            _ -> (defaultTerminalSize, remainder)
-        _ -> (defaultTerminalSize, remainder)
+receiveHandshake client = go BS.empty
   where
-    nonEmpty bs
-      | BS.null bs = Nothing
-      | otherwise = Just bs
+    go buffer = do
+      let (frames, rest) = decodeClientFrames buffer
+      case break isInit frames of
+        (_, ClientInit dimensions : trailingFrames) ->
+          pure (dimensions, BS.concat (map encodeClientFrame trailingFrames) <> rest)
+        _ -> do
+          chunk <- NBS.recv client 4096
+          if BS.null chunk
+            then pure (defaultTerminalSize, BS.empty)
+            else go (rest <> chunk)
 
-unlessNull :: BS.ByteString -> IO () -> IO ()
-unlessNull payload action =
-  if BS.null payload then pure () else action
+    isInit (ClientInit _) = True
+    isInit _ = False
 
 appendChunk :: MVar BS.ByteString -> BS.ByteString -> IO ()
 appendChunk bufferVar chunk =
