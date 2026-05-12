@@ -14,11 +14,29 @@ import System.Posix.IO (stdInput)
 import System.Posix.Terminal
   ( ControlCharacter (Quit),
     TerminalAttributes,
-    TerminalMode (EnableEcho, ExtendedFunctions, KeyboardInterrupts, MapCRtoLF, ProcessInput),
+    TerminalMode
+      ( EnableEcho,
+        EnableParity,
+        ExtendedFunctions,
+        IgnoreBreak,
+        IgnoreCR,
+        InterruptOnBreak,
+        KeyboardInterrupts,
+        MapCRtoLF,
+        MapLFtoCR,
+        MarkParityErrors,
+        ProcessInput,
+        ProcessOutput,
+        StartStopOutput,
+        StripHighBit
+      ),
     TerminalState (Immediately, WhenFlushed),
     getTerminalAttributes,
     queryTerminal,
     setTerminalAttributes,
+    withBits,
+    withMinInput,
+    withTime,
     withoutCC,
     withoutMode,
   )
@@ -60,8 +78,34 @@ withRawInput action = do
     rawAttributes :: TerminalAttributes -> TerminalAttributes
     rawAttributes attrs =
       withoutCC
-        (foldl withoutMode attrs [EnableEcho, ProcessInput, KeyboardInterrupts, ExtendedFunctions, MapCRtoLF])
+        ( withTime
+            ( withMinInput
+                (withBits (foldl withoutMode attrs cfmakerawModes) 8)
+                1
+            )
+            0
+        )
         Quit
+
+    -- Match cfmakeraw(3) closely so sesh forwards bytes without local
+    -- terminal translation before the PTY's own termios settings apply.
+    cfmakerawModes :: [TerminalMode]
+    cfmakerawModes =
+      [ IgnoreBreak,
+        InterruptOnBreak,
+        MarkParityErrors,
+        StripHighBit,
+        MapLFtoCR,
+        IgnoreCR,
+        MapCRtoLF,
+        StartStopOutput,
+        ProcessOutput,
+        EnableParity,
+        EnableEcho,
+        ProcessInput,
+        KeyboardInterrupts,
+        ExtendedFunctions
+      ]
 
 clearSequence :: BS8.ByteString
 clearSequence = BS8.pack "\ESC[2J\ESC[H"
