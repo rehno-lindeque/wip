@@ -7,7 +7,7 @@ module Sesh.Attach (
 
 import Control.Concurrent (threadDelay)
 import qualified Control.Concurrent.Async as Async
-import Control.Exception (IOException, bracket, catch)
+import Control.Exception (IOException, bracket, bracket_, catch)
 import Control.Monad (unless, void)
 import qualified Data.ByteString as BS
 import qualified Data.ByteString.Char8 as BS8
@@ -115,13 +115,12 @@ connectAndProxy metadata = withSocketsDo $ do
     NBS.sendAll sessionSocket (encodeDimensions dimensions)
     hSetBuffering stdin NoBuffering
     hSetBuffering stdout NoBuffering
-    prepareTerminalForAttach
-    withRawInput $ do
-      reader <- Async.async (socketToStdout sessionSocket)
-      writer <- Async.async (stdinToSocket sessionSocket)
-      void (Async.waitCatch reader)
-      Async.cancel writer
-    restoreTerminalAfterDetach
+    bracket_ prepareTerminalForAttach restoreTerminalAfterDetach $ do
+      withRawInput $ do
+        reader <- Async.async (socketToStdout sessionSocket)
+        writer <- Async.async (stdinToSocket sessionSocket)
+        void (Async.waitCatch reader)
+        Async.cancel writer
 
 openSocket :: FilePath -> IO Socket
 openSocket socketPath = do
