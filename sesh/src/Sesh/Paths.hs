@@ -1,8 +1,8 @@
-module HsMx.Paths (
-  HsMxPaths (..),
+module Sesh.Paths (
+  SeshPaths (..),
   SessionPaths (..),
-  getHsMxPaths,
-  ensureHsMxDirectories,
+  getSeshPaths,
+  ensureSeshDirectories,
   getSessionPaths,
   encodePaths,
 ) where
@@ -17,10 +17,10 @@ import System.Directory (createDirectoryIfMissing, getHomeDirectory)
 import System.Environment (lookupEnv)
 import System.FilePath ((</>))
 
-data HsMxPaths = HsMxPaths
-  { hsMxRuntimeDir :: Text,
-    hsMxSessionDir :: Text,
-    hsMxSocketDir :: Text
+data SeshPaths = SeshPaths
+  { seshRuntimeDir :: Text,
+    seshSessionDir :: Text,
+    seshSocketDir :: Text
   }
   deriving (Eq, Show)
 
@@ -32,29 +32,29 @@ data SessionPaths = SessionPaths
   }
   deriving (Eq, Show)
 
-getHsMxPaths :: IO HsMxPaths
-getHsMxPaths = do
+getSeshPaths :: IO SeshPaths
+getSeshPaths = do
   runtimeDir <- resolveRuntimeDir
   let sessionDir = runtimeDir </> "sessions"
       socketDir = runtimeDir </> "sockets"
   pure
-    HsMxPaths
-      { hsMxRuntimeDir = Text.pack runtimeDir,
-        hsMxSessionDir = Text.pack sessionDir,
-        hsMxSocketDir = Text.pack socketDir
+    SeshPaths
+      { seshRuntimeDir = Text.pack runtimeDir,
+        seshSessionDir = Text.pack sessionDir,
+        seshSocketDir = Text.pack socketDir
       }
 
-ensureHsMxDirectories :: HsMxPaths -> IO ()
-ensureHsMxDirectories paths = do
-  createDirectoryIfMissing True (Text.unpack (hsMxRuntimeDir paths))
-  createDirectoryIfMissing True (Text.unpack (hsMxSessionDir paths))
-  createDirectoryIfMissing True (Text.unpack (hsMxSocketDir paths))
+ensureSeshDirectories :: SeshPaths -> IO ()
+ensureSeshDirectories paths = do
+  createDirectoryIfMissing True (Text.unpack (seshRuntimeDir paths))
+  createDirectoryIfMissing True (Text.unpack (seshSessionDir paths))
+  createDirectoryIfMissing True (Text.unpack (seshSocketDir paths))
 
-getSessionPaths :: HsMxPaths -> Text -> SessionPaths
+getSessionPaths :: SeshPaths -> Text -> SessionPaths
 getSessionPaths paths sessionName =
   let rootName = sessionFileStem sessionName
-      sessionDir = Text.unpack (hsMxSessionDir paths)
-      socketDir = Text.unpack (hsMxSocketDir paths)
+      sessionDir = Text.unpack (seshSessionDir paths)
+      socketDir = Text.unpack (seshSocketDir paths)
    in SessionPaths
         { sessionRootName = rootName,
           sessionMetadataFile = sessionDir </> (rootName <> ".json"),
@@ -68,16 +68,12 @@ resolveRuntimeDir = do
   case explicit of
     Just path -> pure path
     Nothing -> do
-      legacy <- lookupEnv "HS_MX_DIR"
-      case legacy of
-        Just path -> pure path
+      xdgRuntimeDir <- lookupEnv "XDG_RUNTIME_DIR"
+      case xdgRuntimeDir of
+        Just path -> pure (path </> "sesh")
         Nothing -> do
-          xdgRuntimeDir <- lookupEnv "XDG_RUNTIME_DIR"
-          case xdgRuntimeDir of
-            Just path -> pure (path </> "sesh")
-            Nothing -> do
-              home <- getHomeDirectory
-              pure (home </> ".local" </> "state" </> "sesh")
+          home <- getHomeDirectory
+          pure (home </> ".local" </> "state" </> "sesh")
 
 sessionFileStem :: Text -> FilePath
 sessionFileStem = Text.unpack . Text.map replaceChar
@@ -87,13 +83,13 @@ sessionFileStem = Text.unpack . Text.map replaceChar
       | c `elem` ['.', '_', '-'] = c
       | otherwise = '_'
 
-encodePaths :: HsMxPaths -> BL.ByteString
+encodePaths :: SeshPaths -> BL.ByteString
 encodePaths = Aeson.encode . toPathsJson
 
-toPathsJson :: HsMxPaths -> Aeson.Value
+toPathsJson :: SeshPaths -> Aeson.Value
 toPathsJson paths =
   Aeson.object
-    [ AesonKey.fromString "runtime_dir" Aeson..= hsMxRuntimeDir paths,
-      AesonKey.fromString "session_dir" Aeson..= hsMxSessionDir paths,
-      AesonKey.fromString "socket_dir" Aeson..= hsMxSocketDir paths
+    [ AesonKey.fromString "runtime_dir" Aeson..= seshRuntimeDir paths,
+      AesonKey.fromString "session_dir" Aeson..= seshSessionDir paths,
+      AesonKey.fromString "socket_dir" Aeson..= seshSocketDir paths
     ]

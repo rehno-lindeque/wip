@@ -1,4 +1,4 @@
-module HsMx.Session (
+module Sesh.Session (
   SessionName,
   mkSessionName,
   parseSessionName,

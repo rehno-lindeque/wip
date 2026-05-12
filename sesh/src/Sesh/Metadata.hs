@@ -1,4 +1,4 @@
-module HsMx.Metadata (
+module Sesh.Metadata (
   SessionMetadata (..),
   loadSessionMetadata,
   loadSessionMetadataFile,
@@ -16,7 +16,7 @@ import Data.Ord (Down (..))
 import Data.Text (Text)
 import Data.Time.Clock (UTCTime)
 import GHC.Generics (Generic)
-import HsMx.Session (SessionName)
+import Sesh.Session (SessionName)
 import System.Directory (doesDirectoryExist, doesFileExist, listDirectory, removeFile)
 import System.FilePath (takeExtension, (</>))
 import System.Posix.Signals (nullSignal, signalProcess)

@@ -38,10 +38,10 @@ executable sesh
   main-is:          Main.hs
   hs-source-dirs:   app, src
   other-modules:
-      HsMx.Attach
-      HsMx.Cli
-      HsMx.Daemon
-      HsMx.Metadata
-      HsMx.Paths
-      HsMx.Session
-      HsMx.Terminal
+      Sesh.Attach
+      Sesh.Cli
+      Sesh.Daemon
+      Sesh.Metadata
+      Sesh.Paths
+      Sesh.Session
+      Sesh.Terminal

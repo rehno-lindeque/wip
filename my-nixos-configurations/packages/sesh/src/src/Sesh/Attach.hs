@@ -1,4 +1,4 @@
-module HsMx.Attach (
+module Sesh.Attach (
   startSession,
   attachSession,
   killSession,
@@ -13,11 +13,11 @@ import qualified Data.ByteString as BS
 import qualified Data.ByteString.Char8 as BS8
 import qualified Data.Text as Text
 import Data.Word (Word8)
-import HsMx.Cli (AttachOptions (..), HistoryOptions (..), KillOptions (..))
-import HsMx.Metadata
-import HsMx.Paths
-import HsMx.Session
-import HsMx.Terminal (currentTerminalSize, prepareTerminalForAttach, restoreTerminalAfterDetach, withRawInput)
+import Sesh.Cli (AttachOptions (..), HistoryOptions (..), KillOptions (..))
+import Sesh.Metadata
+import Sesh.Paths
+import Sesh.Session
+import Sesh.Terminal (currentTerminalSize, prepareTerminalForAttach, restoreTerminalAfterDetach, withRawInput)
 import Network.Socket
   ( Family (AF_UNIX),
     ShutdownCmd (ShutdownBoth, ShutdownSend),
@@ -43,8 +43,8 @@ import System.Posix.Types (CPid (..))
 
 startSession :: AttachOptions -> IO SessionMetadata
 startSession options = do
-  paths <- getHsMxPaths
-  ensureHsMxDirectories paths
+  paths <- getSeshPaths
+  ensureSeshDirectories paths
   cwd <- maybe getCurrentDirectory pure (attachWorkingDirectory options)
   let sessionName = parseSessionName (attachSessionNameArg options)
       sessionPaths = getSessionPaths paths (sessionNameText sessionName)
@@ -57,7 +57,7 @@ attachSession options = withSocketsDo $ do
 
 killSession :: KillOptions -> IO ()
 killSession options = do
-  paths <- getHsMxPaths
+  paths <- getSeshPaths
   let sessionName = parseSessionName (killSessionNameArg options)
       sessionPaths = getSessionPaths paths (sessionNameText sessionName)
   metadata <- loadSessionMetadataFile (sessionMetadataFile sessionPaths)
@@ -70,7 +70,7 @@ killSession options = do
 
 printSessionHistory :: HistoryOptions -> IO ()
 printSessionHistory options = do
-  paths <- getHsMxPaths
+  paths <- getSeshPaths
   let sessionName = parseSessionName (historySessionNameArg options)
       sessionPaths = getSessionPaths paths (sessionNameText sessionName)
   exists <- doesFileExist (sessionHistoryFile sessionPaths)
@@ -78,7 +78,7 @@ printSessionHistory options = do
     then BS.readFile (sessionHistoryFile sessionPaths) >>= BS.hPut stdout
     else die "No history for that session"
 
-ensureSessionDaemon :: HsMxPaths -> SessionPaths -> SessionName -> FilePath -> [String] -> Maybe String -> IO SessionMetadata
+ensureSessionDaemon :: SeshPaths -> SessionPaths -> SessionName -> FilePath -> [String] -> Maybe String -> IO SessionMetadata
 ensureSessionDaemon paths sessionPaths sessionName cwd tags startupCommand = do
   existing <- loadSessionMetadataFile (sessionMetadataFile sessionPaths)
   case existing of
@@ -91,7 +91,7 @@ ensureSessionDaemon paths sessionPaths sessionName cwd tags startupCommand = do
           spawnSessionDaemon paths sessionPaths sessionName cwd tags startupCommand
     Nothing -> spawnSessionDaemon paths sessionPaths sessionName cwd tags startupCommand
 
-spawnSessionDaemon :: HsMxPaths -> SessionPaths -> SessionName -> FilePath -> [String] -> Maybe String -> IO SessionMetadata
+spawnSessionDaemon :: SeshPaths -> SessionPaths -> SessionName -> FilePath -> [String] -> Maybe String -> IO SessionMetadata
 spawnSessionDaemon _paths sessionPaths sessionName cwd tags startupCommand = do
   executable <- getExecutablePath
   _ <- forkProcess $ do

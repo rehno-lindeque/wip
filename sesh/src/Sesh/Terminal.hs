@@ -1,4 +1,4 @@
-module HsMx.Terminal (
+module Sesh.Terminal (
   defaultTerminalSize,
   currentTerminalSize,
   prepareTerminalForAttach,

@@ -1,4 +1,4 @@
-module HsMx.Daemon (runDaemon) where
+module Sesh.Daemon (runDaemon) where
 
 import Control.Concurrent (MVar, newEmptyMVar, newMVar, putMVar, readMVar, tryPutMVar)
 import Control.Concurrent.MVar (modifyMVar_, swapMVar, takeMVar)
@@ -10,11 +10,11 @@ import qualified Data.ByteString as BS
 import qualified Data.ByteString.Char8 as BS8
 import qualified Data.Text as Text
 import Data.Time.Clock (getCurrentTime)
-import HsMx.Cli (DaemonOptions (..))
-import HsMx.Metadata
-import HsMx.Paths
-import HsMx.Session
-import HsMx.Terminal (defaultTerminalSize)
+import Sesh.Cli (DaemonOptions (..))
+import Sesh.Metadata
+import Sesh.Paths
+import Sesh.Session
+import Sesh.Terminal (defaultTerminalSize)
 import Network.Socket
   ( Family (AF_UNIX),
     ShutdownCmd (ShutdownBoth),
@@ -52,8 +52,8 @@ import System.Process (terminateProcess)
 
 runDaemon :: DaemonOptions -> IO ()
 runDaemon options = withSocketsDo $ do
-  paths <- getHsMxPaths
-  ensureHsMxDirectories paths
+  paths <- getSeshPaths
+  ensureSeshDirectories paths
   let sessionName = parseSessionName (daemonSessionNameArg options)
       sessionPaths = getSessionPaths paths (sessionNameText sessionName)
   removeIfExists (sessionSocketPath sessionPaths)

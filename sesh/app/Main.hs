@@ -5,19 +5,19 @@ import Data.List (intersperse)
 import qualified Data.Text as Text
 import Data.Text (Text)
 import Data.Time.Format.ISO8601 (iso8601Show)
-import HsMx.Attach
-import HsMx.Cli
-import HsMx.Daemon
-import HsMx.Metadata
-import HsMx.Paths
-import HsMx.Session
+import Sesh.Attach
+import Sesh.Cli
+import Sesh.Daemon
+import Sesh.Metadata
+import Sesh.Paths
+import Sesh.Session
 
 main :: IO ()
 main = do
   command <- parseCommand
   case command of
     PathsCommand jsonOutput -> do
-      paths <- getHsMxPaths
+      paths <- getSeshPaths
       if jsonOutput
         then BL8.putStrLn (encodePaths paths)
         else mapM_ putStrLn (renderPaths paths)
@@ -28,8 +28,8 @@ main = do
     AttachCommand opts ->
       attachSession opts
     ListCommand opts -> do
-      paths <- getHsMxPaths
-      let sessionDir = maybe (Text.unpack (hsMxSessionDir paths)) id (listStateDir opts)
+      paths <- getSeshPaths
+      let sessionDir = maybe (Text.unpack (seshSessionDir paths)) id (listStateDir opts)
       sessions <- loadSessionMetadata sessionDir
       if listJson opts
         then BL8.putStrLn (encodeSessionMetadataList sessions)
@@ -41,11 +41,11 @@ main = do
     DaemonCommand opts ->
       runDaemon opts
 
-renderPaths :: HsMxPaths -> [String]
+renderPaths :: SeshPaths -> [String]
 renderPaths paths =
-  [ "runtime-dir=" ++ showText (hsMxRuntimeDir paths),
-    "session-dir=" ++ showText (hsMxSessionDir paths),
-    "socket-dir=" ++ showText (hsMxSocketDir paths)
+  [ "runtime-dir=" ++ showText (seshRuntimeDir paths),
+    "session-dir=" ++ showText (seshSessionDir paths),
+    "socket-dir=" ++ showText (seshSocketDir paths)
   ]
 
 renderSessionSummary :: SessionMetadata -> String

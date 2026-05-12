@@ -15,6 +15,7 @@
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-25.11";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     nix-colors.url = "github:misterio77/nix-colors";
+    niri.url = "path:/home/me/projects/niri";
     vscode-server.url = "github:nix-community/nixos-vscode-server";
     voxinput.url =
       # "github:richiejp/VoxInput";

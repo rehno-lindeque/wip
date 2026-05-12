@@ -6,6 +6,7 @@
   ...
 }: let
   cfg = config.profiles.macbookpro2025;
+  niriPackage = flake.inputs.niri.packages.${pkgs.system}.niri;
   screenshotAndAnnotate = pkgs.writeShellScriptBin "screenshot-and-annotate" ''
     ${lib.getExe pkgs.grim} -g "$(${lib.getExe pkgs.slurp})" - | ${lib.getExe pkgs.satty} -f -
   '';
@@ -276,9 +277,17 @@ in {
     # Start with a minimal native niri session
     programs.niri = {
       enable = true;
+      package = niriPackage;
       useNautilus = false;
     };
-    systemd.user.services.niri.enableDefaultPath = false;
+    systemd.user.services.niri = {
+      enableDefaultPath = false;
+      serviceConfig = {
+        ExecStart = lib.mkForce "${lib.getExe niriPackage} --session";
+        Type = lib.mkForce "notify";
+        Slice = lib.mkForce "session.slice";
+      };
+    };
     services.greetd.enable = true;
     services.greetd.settings.default_session = {
       command = "${lib.getExe pkgs.tuigreet} --time --cmd niri-session";
@@ -478,6 +487,10 @@ in {
 
           touchpad {
               dwt
+
+              gestures {
+                  snap-while-dragging
+              }
           }
       }
 
@@ -599,6 +612,11 @@ in {
           Mod+WheelScrollLeft       { focus-column-left; }
           Mod+Ctrl+WheelScrollRight { move-column-right; }
           Mod+Ctrl+WheelScrollLeft  { move-column-left; }
+
+          TouchpadSwipe fingers=3 direction="up"    sensitivity=3.0 { focus-workspace-up; }
+          TouchpadSwipe fingers=3 direction="down"  sensitivity=3.0 { focus-workspace-down; }
+          TouchpadSwipe fingers=3 direction="left"  sensitivity=3.0 { focus-column-right; }
+          TouchpadSwipe fingers=3 direction="right" sensitivity=3.0 { focus-column-left; }
 
           Mod+Shift+WheelScrollDown      { focus-column-right; }
           Mod+Shift+WheelScrollUp        { focus-column-left; }

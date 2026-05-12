@@ -1,4 +1,4 @@
-module HsMx.Cli (
+module Sesh.Cli (
   Command (..),
   AttachOptions (..),
   ListOptions (..),
