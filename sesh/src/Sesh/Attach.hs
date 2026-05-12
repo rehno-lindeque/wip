@@ -14,7 +14,7 @@ import qualified Data.ByteString.Char8 as BS8
 import qualified Data.Text as Text
 import Data.Word (Word8)
 import Sesh.Cli (AttachOptions (..), HistoryOptions (..), KillOptions (..))
-import Sesh.Ipc (ClientFrame (..), encodeClientFrame)
+import Sesh.Ipc (ClientFrame (..), ServerFrame (..), decodeServerFrames, encodeClientFrame)
 import Sesh.Metadata
 import Sesh.Paths
 import Sesh.Session
@@ -171,12 +171,17 @@ sendFrame sendLock sessionSocket frame =
   withMVar sendLock $ \() -> NBS.sendAll sessionSocket (encodeClientFrame frame)
 
 socketToStdout :: Socket -> IO ()
-socketToStdout sessionSocket = do
-  chunk <- NBS.recv sessionSocket 4096
-  unless (BS.null chunk) $ do
-    BS.hPut stdout chunk
-    hFlush stdout
-    socketToStdout sessionSocket
+socketToStdout sessionSocket = go BS.empty
+  where
+    go buffer = do
+      let (frames, rest) = decodeServerFrames buffer
+      mapM_ writeFrame frames
+      chunk <- NBS.recv sessionSocket 4096
+      unless (BS.null chunk) (go (rest <> chunk))
+
+    writeFrame (ServerOutput bytes) = do
+      BS.hPut stdout bytes
+      hFlush stdout
 
 readEscapeSequence :: BS.ByteString -> IO BS.ByteString
 readEscapeSequence initialByte = go initialByte

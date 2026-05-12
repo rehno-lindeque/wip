@@ -1,7 +1,10 @@
 module Sesh.Ipc (
   ClientFrame (..),
   decodeClientFrames,
+  decodeServerFrames,
   encodeClientFrame,
+  encodeServerFrame,
+  ServerFrame (..),
 ) where
 
 import Data.Bits (shiftL, shiftR, (.|.))
@@ -16,9 +19,13 @@ data ClientFrame
   | ClientDetach
   deriving (Eq, Show)
 
+data ServerFrame
+  = ServerOutput BS.ByteString
+  deriving (Eq, Show)
+
 encodeClientFrame :: ClientFrame -> BS.ByteString
 encodeClientFrame frame =
-  BS.cons tag (encodeLength (fromIntegral (BS.length payload)) <> payload)
+  encodeFrame tag payload
   where
     (tag, payload) = case frame of
       ClientInit dimensions -> (1, encodeDimensions dimensions)
@@ -26,8 +33,21 @@ encodeClientFrame frame =
       ClientResize dimensions -> (3, encodeDimensions dimensions)
       ClientDetach -> (4, BS.empty)
 
+encodeServerFrame :: ServerFrame -> BS.ByteString
+encodeServerFrame frame =
+  encodeFrame tag payload
+  where
+    (tag, payload) = case frame of
+      ServerOutput bytes -> (1, bytes)
+
 decodeClientFrames :: BS.ByteString -> ([ClientFrame], BS.ByteString)
-decodeClientFrames = go []
+decodeClientFrames = decodeFrames decodeClientPayload
+
+decodeServerFrames :: BS.ByteString -> ([ServerFrame], BS.ByteString)
+decodeServerFrames = decodeFrames decodeServerPayload
+
+decodeFrames :: (Word8 -> BS.ByteString -> Maybe frame) -> BS.ByteString -> ([frame], BS.ByteString)
+decodeFrames decodePayload = go []
   where
     go frames input
       | BS.length input < headerLength = (reverse frames, input)
@@ -50,15 +70,24 @@ headerLength = 5
 maxFrameLength :: Int
 maxFrameLength = 1024 * 1024
 
+encodeFrame :: Word8 -> BS.ByteString -> BS.ByteString
+encodeFrame tag payload =
+  BS.cons tag (encodeLength (fromIntegral (BS.length payload)) <> payload)
+
 encodeDimensions :: (Int, Int) -> BS.ByteString
 encodeDimensions (widthValue, heightValue) = BS8.pack (show widthValue <> " " <> show heightValue)
 
-decodePayload :: Word8 -> BS.ByteString -> Maybe ClientFrame
-decodePayload tag payload = case tag of
+decodeClientPayload :: Word8 -> BS.ByteString -> Maybe ClientFrame
+decodeClientPayload tag payload = case tag of
   1 -> ClientInit <$> decodeDimensions payload
   2 -> Just (ClientInput payload)
   3 -> ClientResize <$> decodeDimensions payload
   4 -> Just ClientDetach
+  _ -> Nothing
+
+decodeServerPayload :: Word8 -> BS.ByteString -> Maybe ServerFrame
+decodeServerPayload tag payload = case tag of
+  1 -> Just (ServerOutput payload)
   _ -> Nothing
 
 decodeDimensions :: BS.ByteString -> Maybe (Int, Int)

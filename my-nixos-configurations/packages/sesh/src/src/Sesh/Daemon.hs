@@ -11,7 +11,7 @@ import qualified Data.ByteString.Char8 as BS8
 import qualified Data.Text as Text
 import Data.Time.Clock (getCurrentTime)
 import Sesh.Cli (DaemonOptions (..))
-import Sesh.Ipc (ClientFrame (..), decodeClientFrames, encodeClientFrame)
+import Sesh.Ipc (ClientFrame (..), ServerFrame (..), decodeClientFrames, encodeClientFrame, encodeServerFrame)
 import Sesh.Metadata
 import Sesh.Paths
 import Sesh.Session
@@ -113,7 +113,7 @@ acceptLoop listenSocket pty bufferVar clientVar metadataVar metadataFile =
     currentClient <- readMVar clientVar
     case currentClient of
       Just _existing -> do
-        ignoreIO (NBS.sendAll client (BS8.pack "session already attached\n"))
+        ignoreIO (sendOutput client (BS8.pack "session already attached\n"))
         close client
       Nothing -> do
         (dimensions, initialFrames) <- receiveHandshake client
@@ -121,7 +121,7 @@ acceptLoop listenSocket pty bufferVar clientVar metadataVar metadataFile =
         backlog <- readMVar bufferVar
         updateAttachedClients metadataVar metadataFile 1
         setClient clientVar (Just client)
-        ignoreIO (NBS.sendAll client backlog)
+        ignoreIO (sendOutput client backlog)
         let cleanupClient = do
               setClient clientVar Nothing
               ignoreIO (shutdown client ShutdownBoth)
@@ -139,7 +139,10 @@ ptyReaderLoop pty bufferVar clientVar historyFile =
     case maybeClient of
       Nothing -> pure ()
       Just client ->
-        ignoreIO (NBS.sendAll client chunk)
+        ignoreIO (sendOutput client chunk)
+
+sendOutput :: Socket -> BS.ByteString -> IO ()
+sendOutput client bytes = NBS.sendAll client (encodeServerFrame (ServerOutput bytes))
 
 proxyClientInput :: Pty -> Socket -> BS.ByteString -> IO ()
 proxyClientInput pty client initialBuffer = go initialBuffer
