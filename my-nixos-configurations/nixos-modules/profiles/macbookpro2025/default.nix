@@ -233,6 +233,9 @@ in {
           # Retain neovim cache
           ({directory = ".cache/nvim";} // permissions)
 
+          # Retain Firefox cache outside tmpfs
+          ({directory = ".cache/mozilla";} // permissions)
+
           # Retain OpenCode state
           ({directory = ".local/state/opencode";} // permissions)
 
