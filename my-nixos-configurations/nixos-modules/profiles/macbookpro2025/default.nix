@@ -17,16 +17,32 @@
       ${lib.getExe' pkgs.procps "pkill"} -RTMIN+8 waybar >/dev/null 2>&1 || true
     }
 
+    set_default_sink() {
+      command="$1"
+      shift
+      ${lib.getExe' pkgs.wireplumber "wpctl"} "$command" "$sink_id" "$@" || true
+      refresh_waybar
+    }
+
+    audio_unavailable() {
+      ${lib.getExe pkgs.jq} -cn --arg muted "$1" '{text: $muted, tooltip: "No default audio sink", class: "muted"}'
+    }
+
     sink_id="@DEFAULT_AUDIO_SINK@"
 
     case "$1" in
-      raise) ${lib.getExe' pkgs.wireplumber "wpctl"} set-volume "$sink_id" 0.1+ -l 1.0; refresh_waybar ;;
-      lower) ${lib.getExe' pkgs.wireplumber "wpctl"} set-volume "$sink_id" 0.1-; refresh_waybar ;;
-      raise-small) ${lib.getExe' pkgs.wireplumber "wpctl"} set-volume "$sink_id" 0.05+ -l 1.0; refresh_waybar ;;
-      lower-small) ${lib.getExe' pkgs.wireplumber "wpctl"} set-volume "$sink_id" 0.05-; refresh_waybar ;;
-      mute) ${lib.getExe' pkgs.wireplumber "wpctl"} set-mute "$sink_id" toggle; refresh_waybar ;;
+      raise) set_default_sink set-volume 0.1+ -l 1.0 ;;
+      lower) set_default_sink set-volume 0.1- ;;
+      raise-small) set_default_sink set-volume 0.05+ -l 1.0 ;;
+      lower-small) set_default_sink set-volume 0.05- ;;
+      mute) set_default_sink set-mute toggle ;;
       status)
-        ${lib.getExe' pkgs.wireplumber "wpctl"} get-volume "$sink_id" | ${lib.getExe pkgs.jq} -cRn --arg audio "$2" --arg muted "$3" '
+        if ! volume="$(${lib.getExe' pkgs.wireplumber "wpctl"} get-volume "$sink_id" 2>/dev/null)"; then
+          audio_unavailable "$3"
+          exit 0
+        fi
+
+        printf '%s\n' "$volume" | ${lib.getExe pkgs.jq} -cRn --arg audio "$2" --arg muted "$3" '
           input
           | capture("Volume: (?<volume>[0-9.]+)(?<muted> \\[MUTED\\])?")
           | (.volume | tonumber * 100 | round) as $percent
