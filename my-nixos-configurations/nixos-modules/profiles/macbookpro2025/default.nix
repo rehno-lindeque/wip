@@ -259,14 +259,6 @@ in {
       package = niriPackage;
       useNautilus = false;
     };
-    systemd.user.services.niri = {
-      enableDefaultPath = false;
-      serviceConfig = {
-        ExecStart = lib.mkForce "${lib.getExe niriPackage} --session";
-        Type = lib.mkForce "notify";
-        Slice = lib.mkForce "session.slice";
-      };
-    };
     services.greetd.enable = true;
     services.greetd.settings.default_session = {
       command = "${lib.getExe pkgs.tuigreet} --time --cmd niri-session";
