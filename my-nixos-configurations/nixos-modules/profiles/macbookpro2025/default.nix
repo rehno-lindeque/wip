@@ -210,6 +210,11 @@ in {
           # Retain my projects directory (for now)
           "projects"
 
+          # Retain downloaded files; /home/me itself is tmpfs on this host.
+          "Downloads"
+          "download"
+          "downloads"
+
           # Retain trusted nix settings and repl history (repl-history, trusted-settings.json)
           ({directory = ".local/share/nix";} // permissions)
 
