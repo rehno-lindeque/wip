@@ -17,28 +17,7 @@
       ${lib.getExe' pkgs.procps "pkill"} -RTMIN+8 waybar >/dev/null 2>&1 || true
     }
 
-    cache_file="''${XDG_RUNTIME_DIR:-/tmp}/asahi-audio-control-sink-id"
-    sink_id=""
-
-    if [ -r "$cache_file" ]; then
-      IFS= read -r cached_sink_id < "$cache_file" || cached_sink_id=""
-      if [ -n "$cached_sink_id" ] && ${lib.getExe' pkgs.wireplumber "wpctl"} inspect "$cached_sink_id" >/dev/null 2>&1; then
-        sink_id="$cached_sink_id"
-      fi
-    fi
-
-    if [ -z "$sink_id" ]; then
-      sink_id="$(${lib.getExe' pkgs.pipewire "pw-dump"} | ${lib.getExe pkgs.jq} -r '
-        map(select(
-          .type == "PipeWire:Interface:Node"
-          and .info.props."media.class" == "Audio/Sink"
-          and .info.props."device.api" == "alsa"
-        ))[0].id // empty
-      ')"
-      [ -n "$sink_id" ] && printf '%s\n' "$sink_id" > "$cache_file"
-    fi
-
-    [ -n "$sink_id" ] || exit 0
+    sink_id="@DEFAULT_AUDIO_SINK@"
 
     case "$1" in
       raise) ${lib.getExe' pkgs.wireplumber "wpctl"} set-volume "$sink_id" 0.1+ -l 1.0; refresh_waybar ;;
