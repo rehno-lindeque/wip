@@ -161,7 +161,13 @@ in {
       };
     };
 
+    boot.kernelModules = ["zram"];
     swapDevices = [];
+    zramSwap = {
+      enable = true;
+      memoryPercent = 100;
+    };
+    systemd.oomd.enableUserSlices = true;
 
     environment.automaticPersistence = {
       normal.path = "/nix/persistent";
