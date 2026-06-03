@@ -32,8 +32,9 @@ import Network.Socket
     withSocketsDo,
   )
 import qualified Network.Socket.ByteString as NBS
-import System.Directory (removeFile)
+import System.Directory (getFileSize, removeFile, renameFile)
 import System.Environment (lookupEnv)
+import System.IO (IOMode (ReadMode), SeekMode (AbsoluteSeek), hSeek, withFile)
 import System.Posix.Process (getProcessID)
 import System.Posix.Pty
   ( Pty,
@@ -134,12 +135,46 @@ ptyReaderLoop pty bufferVar clientVar historyFile =
   forever $ do
     chunk <- readPty pty
     appendChunk bufferVar chunk
-    BS.appendFile historyFile chunk
+    appendHistoryChunk historyFile chunk
     maybeClient <- readMVar clientVar
     case maybeClient of
       Nothing -> pure ()
       Just client ->
         ignoreIO (sendOutput client chunk)
+
+appendHistoryChunk :: FilePath -> BS.ByteString -> IO ()
+appendHistoryChunk historyFile chunk = do
+  limit <- historyLimitBytes
+  if limit <= 0
+    then pure ()
+    else do
+      BS.appendFile historyFile chunk
+      trimHistoryFile historyFile limit
+
+historyLimitBytes :: IO Int
+historyLimitBytes = do
+  rawLimit <- lookupEnv "SESH_HISTORY_LIMIT_BYTES"
+  pure $ case rawLimit of
+    Nothing -> defaultHistoryLimitBytes
+    Just value -> case reads value of
+      [(limit, "")] | limit >= 0 -> limit
+      _ -> defaultHistoryLimitBytes
+
+defaultHistoryLimitBytes :: Int
+defaultHistoryLimitBytes = 16 * 1024 * 1024
+
+trimHistoryFile :: FilePath -> Int -> IO ()
+trimHistoryFile historyFile limit = do
+  fileSize <- getFileSize historyFile
+  if fileSize <= fromIntegral limit
+    then pure ()
+    else do
+      bytes <- withFile historyFile ReadMode $ \handle -> do
+        hSeek handle AbsoluteSeek (fileSize - fromIntegral limit)
+        BS.hGet handle limit
+      let tempFile = historyFile <> ".tmp"
+      BS.writeFile tempFile bytes
+      renameFile tempFile historyFile
 
 sendOutput :: Socket -> BS.ByteString -> IO ()
 sendOutput client bytes = NBS.sendAll client (encodeServerFrame (ServerOutput bytes))

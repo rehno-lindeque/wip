@@ -21,6 +21,10 @@ Core `sesh` stays generic:
 - track tags and attached-client count
 - persist a plain output log for later inspection
 
+History logs are capped at 16 MiB per session by default. Set
+`SESH_HISTORY_LIMIT_BYTES` to override the cap, or set it to `0` to disable
+history writes.
+
 Project naming conventions and paths such as `~/projects/...` intentionally live outside the core tool in wrappers.
 
 ## Commands

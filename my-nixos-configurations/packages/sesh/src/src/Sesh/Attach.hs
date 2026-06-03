@@ -68,6 +68,7 @@ killSession options = do
       signalProcess sigKILL (CPid (fromIntegral (sessionMetadataDaemonPid details)))
       ignoreIO (removeFile (sessionSocketPath sessionPaths))
       ignoreIO (removeFile (sessionMetadataFile sessionPaths))
+      ignoreIO (removeFile (sessionHistoryFile sessionPaths))
 
 printSessionHistory :: HistoryOptions -> IO ()
 printSessionHistory options = do
