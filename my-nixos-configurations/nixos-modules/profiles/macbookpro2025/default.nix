@@ -381,7 +381,7 @@ in {
           layer = "top";
           position = "top";
           height = 28;
-          margin = "8 14 0";
+          margin = "8 14 8";
           modules-left = ["network" "custom/tailscale"];
           modules-center = ["clock"];
           modules-right = ["custom/screenshot" "custom/audio" "backlight" "battery"];
@@ -562,6 +562,10 @@ in {
 
       layout {
           gaps 14
+
+          struts {
+              top -14
+          }
 
           preset-column-widths {
               proportion 0.33333
