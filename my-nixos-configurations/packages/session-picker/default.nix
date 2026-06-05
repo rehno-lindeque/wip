@@ -68,10 +68,9 @@ pkgs.writeShellApplication {
           | @tsv
         '
     } | fuzzel \
+      --config "''${XDG_CONFIG_HOME:-$HOME/.config}/fuzzel/session-picker.ini" \
       --dmenu \
       --prompt "detached session> " \
-      --width 76 \
-      --lines 20 \
       --with-nth 6)"
 
     if [[ -z "$selection" ]]; then

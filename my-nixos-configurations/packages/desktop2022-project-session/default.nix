@@ -21,7 +21,10 @@ pkgs.writeShellApplication {
           desktop2022 \
           'cd "$HOME/projects" 2>/dev/null && for path in */ */*/; do [[ -d "$path" ]] && printf "%s\n" "''${path%/}"; done'
       } 2>/dev/null || true)"
-      project_name="$(printf '%s\n' "$project_names" | fuzzel --dmenu --prompt "desktop2022 project> ")"
+      project_name="$(printf '%s\n' "$project_names" | fuzzel \
+        --config "''${XDG_CONFIG_HOME:-$HOME/.config}/fuzzel/desktop2022-project-session.ini" \
+        --dmenu \
+        --prompt "desktop2022> ")"
     fi
 
     if [[ -z "$project_name" ]]; then

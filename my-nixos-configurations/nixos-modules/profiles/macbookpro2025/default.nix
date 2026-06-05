@@ -70,6 +70,75 @@
     vpnOffline = "󰦝";
     wifi = "󰖩";
   };
+  uiPalette = flake.inputs.nix-colors.colorSchemes.default-dark.palette;
+  uiTheme = {
+    bg = uiPalette.base00;
+    bgAlt = uiPalette.base01;
+    fg = uiPalette.base05;
+    fgStrong = uiPalette.base07;
+    muted = uiPalette.base03;
+    blue = uiPalette.base0D;
+    amber = uiPalette.base09;
+    yellow = uiPalette.base0A;
+    purple = uiPalette.base0E;
+    green = uiPalette.base0B;
+    red = uiPalette.base08;
+  };
+  mkFuzzelConfig = {
+    accent,
+    width,
+    lines,
+  }: ''
+    font=monospace:size=13,Symbols Nerd Font:size=13
+    width=${toString width}
+    lines=${toString lines}
+    horizontal-pad=24
+    vertical-pad=10
+    inner-pad=8
+
+    [colors]
+    background=${uiTheme.bg}ee
+    text=${uiTheme.fg}ff
+    prompt=${accent}ff
+    placeholder=${uiTheme.muted}ff
+    input=${uiTheme.fgStrong}ff
+    match=${accent}ff
+    selection=${uiTheme.bgAlt}ff
+    selection-text=${uiTheme.fgStrong}ff
+    selection-match=${accent}ff
+    counter=${uiTheme.muted}ff
+    border=${accent}ff
+
+    [border]
+    width=2
+    radius=10
+    selection-radius=8
+  '';
+  wallpaper = pkgs.runCommand "macbookpro2025-wallpaper.png" {nativeBuildInputs = [pkgs.resvg];} ''
+    cat > wallpaper.svg <<'SVG'
+    <svg xmlns="http://www.w3.org/2000/svg" width="3456" height="2234" viewBox="0 0 3456 2234">
+      <defs>
+        <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#${uiTheme.bg}"/>
+          <stop offset="0.58" stop-color="#${uiTheme.bgAlt}"/>
+          <stop offset="1" stop-color="#${uiPalette.base02}"/>
+        </linearGradient>
+        <radialGradient id="blue" cx="78%" cy="18%" r="70%">
+          <stop offset="0" stop-color="#${uiTheme.blue}" stop-opacity="0.28"/>
+          <stop offset="1" stop-color="#${uiTheme.blue}" stop-opacity="0"/>
+        </radialGradient>
+        <radialGradient id="amber" cx="14%" cy="86%" r="58%">
+          <stop offset="0" stop-color="#${uiTheme.amber}" stop-opacity="0.20"/>
+          <stop offset="1" stop-color="#${uiTheme.amber}" stop-opacity="0"/>
+        </radialGradient>
+      </defs>
+      <rect width="3456" height="2234" fill="url(#bg)"/>
+      <rect width="3456" height="2234" fill="url(#blue)"/>
+      <rect width="3456" height="2234" fill="url(#amber)"/>
+    </svg>
+    SVG
+    resvg wallpaper.svg "$out"
+  '';
 in {
   options = with lib; {
     profiles.macbookpro2025 = {
@@ -320,6 +389,7 @@ in {
       satty
       screenshotAndAnnotate
       slurp
+      swaybg
       wl-clipboard
       flake.packages.${pkgs.system}.desktop2022-project-session
       flake.packages.${pkgs.system}.session-picker
@@ -404,8 +474,8 @@ in {
         }
 
         window#waybar {
-          background: rgba(14, 16, 20, 0.86);
-          color: #e6e6e6;
+          background: rgba(24, 24, 24, 0.86);
+          color: #${uiTheme.fg};
         }
 
         #network,
@@ -418,49 +488,66 @@ in {
           padding: 0 11px;
           margin: 4px 6px;
           border-radius: 8px;
-          background: rgba(255, 255, 255, 0.06);
+          background: rgba(40, 40, 40, 0.86);
         }
 
         #network {
-          color: #a7d8ff;
+          color: #${uiTheme.blue};
         }
 
         #custom-screenshot {
-          color: #cfcfcf;
+          color: #${uiTheme.fg};
         }
 
         #custom-audio {
-          color: #d7c1ff;
+          color: #${uiTheme.purple};
         }
 
         #custom-audio.muted {
-          color: #888888;
+          color: #${uiTheme.muted};
         }
 
         #backlight {
-          color: #ffe0a3;
+          color: #${uiTheme.amber};
         }
 
         #battery.charging {
-          color: #b8e986;
+          color: #${uiTheme.green};
         }
 
         #custom-tailscale.connected {
-          color: #9fd7ff;
+          color: #${uiTheme.blue};
         }
 
         #custom-tailscale.offline {
-          color: #888888;
+          color: #${uiTheme.muted};
         }
 
         #battery.warning:not(.charging) {
-          color: #ffd27f;
+          color: #${uiTheme.amber};
         }
 
         #battery.critical:not(.charging) {
-          color: #ff8a7a;
+          color: #${uiTheme.red};
         }
       '';
+    };
+    home-manager.users.me.xdg.configFile = {
+      "fuzzel/fuzzel.ini".text = mkFuzzelConfig {
+        accent = uiTheme.blue;
+        width = 52;
+        lines = 15;
+      };
+      "fuzzel/session-picker.ini".text = mkFuzzelConfig {
+        accent = uiTheme.yellow;
+        width = 76;
+        lines = 20;
+      };
+      "fuzzel/desktop2022-project-session.ini".text = mkFuzzelConfig {
+        accent = uiTheme.amber;
+        width = 64;
+        lines = 16;
+      };
     };
     home-manager.users.me.services.swayidle = {
       enable = true;
@@ -506,17 +593,17 @@ in {
 
           focus-ring {
               width 4
-              active-color "#7fc8ff"
-              inactive-color "#505050"
+              active-color "#${uiTheme.blue}"
+              inactive-color "#${uiTheme.muted}"
           }
 
           border {
               off
 
               width 4
-              active-color "#ffc87f"
-              inactive-color "#505050"
-              urgent-color "#9b0000"
+              active-color "#${uiTheme.amber}"
+              inactive-color "#${uiTheme.muted}"
+              urgent-color "#${uiTheme.red}"
           }
 
           shadow {
@@ -524,6 +611,7 @@ in {
           }
       }
 
+      spawn-at-startup "${lib.getExe pkgs.swaybg}" "--image" "${wallpaper}" "--mode" "fill"
       spawn-at-startup "waybar"
 
       hotkey-overlay {
