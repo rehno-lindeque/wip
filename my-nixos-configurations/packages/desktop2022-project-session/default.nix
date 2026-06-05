@@ -19,7 +19,7 @@ pkgs.writeShellApplication {
           -o ControlPersist=10m \
           -o "ControlPath=$HOME/.ssh/cm-%r@%h:%p" \
           desktop2022 \
-          'cd "$HOME/projects" 2>/dev/null && find . \( -type d \( -name .git -o -name node_modules -o -name .direnv -o -name result -o -name target -o -name dist -o -name build -o -name vendor \) -prune \) -o \( -type f -name flake.nix -printf "%h\n" \) | sed "s#^\./##" | sort -u'
+          'cd "$HOME/projects" 2>/dev/null && find . -maxdepth 4 \( -type d \( -name .git -o -name node_modules -o -name .direnv -o -name result -o -name target -o -name dist -o -name build -o -name vendor \) -prune \) -o \( -type f -name flake.nix -printf "%h\n" \) | sed "s#^\./##" | sort -u'
       } 2>/dev/null || true)"
 
       project_name="$(printf '%s\n' "$project_names" | fuzzel \
