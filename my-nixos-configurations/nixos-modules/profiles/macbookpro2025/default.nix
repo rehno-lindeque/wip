@@ -381,6 +381,7 @@ in {
           layer = "top";
           position = "top";
           height = 28;
+          margin = "8 14 0";
           modules-left = ["network" "custom/tailscale"];
           modules-center = ["clock"];
           modules-right = ["custom/screenshot" "custom/audio" "backlight" "battery"];
@@ -453,7 +454,7 @@ in {
         }
 
         window#waybar {
-          background: rgba(24, 24, 24, 0.86);
+          background: transparent;
           color: #${uiTheme.fg};
         }
 
@@ -465,9 +466,9 @@ in {
         #backlight,
         #battery {
           padding: 0 11px;
-          margin: 4px 6px;
-          border-radius: 8px;
-          background: rgba(40, 40, 40, 0.86);
+          margin: 2px 5px;
+          border-radius: 999px;
+          background: #${uiTheme.bgAlt};
         }
 
         #network {
@@ -560,7 +561,7 @@ in {
       }
 
       layout {
-          gaps 16
+          gaps 14
 
           preset-column-widths {
               proportion 0.33333
