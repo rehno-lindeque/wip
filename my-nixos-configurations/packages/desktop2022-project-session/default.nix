@@ -34,7 +34,8 @@ pkgs.writeShellApplication {
     project_name="\''${project_name#./}"
     project_path="\$HOME/projects/\$project_name"
     session_suffix="\$(printf '%s' "\$project_name" | tr '/[:space:]' '..' | tr -cs '[:alnum:]._-' '-')"
-    session_name="projects.\$session_suffix"
+    session_id="\$(date -u +%Y%m%dT%H%M%SZ)-\$\$"
+    session_name="projects.\$session_suffix.\$session_id"
 
     if [[ ! -d "\$project_path" ]]; then
       printf 'No such project: %s\n' "\$project_path" >&2
