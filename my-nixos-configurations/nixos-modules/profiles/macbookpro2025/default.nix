@@ -114,31 +114,10 @@
     radius=10
     selection-radius=8
   '';
-  wallpaper = pkgs.runCommand "macbookpro2025-wallpaper.png" {nativeBuildInputs = [pkgs.resvg];} ''
-    cat > wallpaper.svg <<'SVG'
-    <svg xmlns="http://www.w3.org/2000/svg" width="3456" height="2234" viewBox="0 0 3456 2234">
-      <defs>
-        <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stop-color="#${uiTheme.bg}"/>
-          <stop offset="0.58" stop-color="#${uiTheme.bgAlt}"/>
-          <stop offset="1" stop-color="#${uiPalette.base02}"/>
-        </linearGradient>
-        <radialGradient id="blue" cx="78%" cy="18%" r="70%">
-          <stop offset="0" stop-color="#${uiTheme.blue}" stop-opacity="0.28"/>
-          <stop offset="1" stop-color="#${uiTheme.blue}" stop-opacity="0"/>
-        </radialGradient>
-        <radialGradient id="amber" cx="14%" cy="86%" r="58%">
-          <stop offset="0" stop-color="#${uiTheme.amber}" stop-opacity="0.20"/>
-          <stop offset="1" stop-color="#${uiTheme.amber}" stop-opacity="0"/>
-        </radialGradient>
-      </defs>
-      <rect width="3456" height="2234" fill="url(#bg)"/>
-      <rect width="3456" height="2234" fill="url(#blue)"/>
-      <rect width="3456" height="2234" fill="url(#amber)"/>
-    </svg>
-    SVG
-    resvg wallpaper.svg "$out"
-  '';
+  wallpaper = pkgs.fetchurl {
+    url = "https://cdna.artstation.com/p/assets/images/images/098/161/548/4k/harish-rajan-train-03.webp?1776282613";
+    hash = "sha256-RI/KERuKYPLcIpjawRsElocoOtEcZy6UR/D4dqoLqSg=";
+  };
 in {
   options = with lib; {
     profiles.macbookpro2025 = {
