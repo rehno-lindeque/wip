@@ -27,11 +27,33 @@ pkgs.writeShellApplication {
       jq -rn \
         --argjson local "$local_json" \
         --argjson remote "$remote_json" '
+          def display_path:
+            if startswith($ENV.HOME + "/projects/") then .[($ENV.HOME | length + 10):]
+            elif startswith($ENV.HOME + "/") then "~/" + .[($ENV.HOME | length + 1):]
+            elif . == $ENV.HOME then "~"
+            else .
+            end;
+
+          def short_time:
+            split(".")[0]
+            | strptime("%Y-%m-%dT%H:%M:%S")
+            | strftime("%b ") + (strftime("%d") | tonumber | tostring) + strftime(", %H:%M");
+
           [
             ($local[]? | . + {scope: "local"}),
             ($remote[]? | . + {scope: "desktop2022"})
           ]
           | map(select(.AttachedClients == 0))
+          | sort_by(.scope, .WorkingDirectory)
+          | group_by([.scope, .WorkingDirectory])
+          | map(
+              if length > 1 then
+                map(. + {display: (.scope + "  " + (.WorkingDirectory | display_path) + "  (" + (.CreatedAt | short_time) + ")")})
+              else
+                map(. + {display: (.scope + "  " + (.WorkingDirectory | display_path))})
+              end
+            )
+          | flatten
           | sort_by(.UpdatedAt)
           | reverse
           | .[]
@@ -40,11 +62,17 @@ pkgs.writeShellApplication {
               .Name,
               (.Tags | join(",")),
               .WorkingDirectory,
-              .UpdatedAt
+              .UpdatedAt,
+              .display
             ]
           | @tsv
         '
-    } | fuzzel --dmenu --prompt "detached session> ")"
+    } | fuzzel \
+      --dmenu \
+      --prompt "detached session> " \
+      --width 76 \
+      --lines 20 \
+      --with-nth 6)"
 
     if [[ -z "$selection" ]]; then
       exit 0
