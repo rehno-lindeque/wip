@@ -488,7 +488,14 @@ in {
 
           # Terminal emulator
           kitty.enable = lib.mkDefault cfg.enableSoftware;
-          ghostty.enable = lib.mkDefault cfg.enableSoftware;
+          ghostty = {
+            enable = lib.mkDefault cfg.enableSoftware;
+            settings.keybind = [
+              "ctrl+shift+f12=write_screen_file:copy"
+              "ctrl+shift+f11=write_scrollback_file:copy"
+              "ctrl+shift+f10=reset"
+            ];
+          };
         };
       };
     };
