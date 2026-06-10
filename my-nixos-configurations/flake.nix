@@ -1,4 +1,4 @@
-{
+rec {
   inputs = {
     apple-silicon-support.url = "github:nix-community/nixos-apple-silicon";
     clump.url = "github:rehno-lindeque/clump";
@@ -59,6 +59,8 @@
     ...
   }: let
     inherit (nixpkgs-stable) lib;
+
+    flake = self // {inherit nixConfig;};
 
     system = lib.genAttrs lib.platforms.all (system: system);
 
@@ -166,7 +168,7 @@
     nixosConfigurations = {
       desktop2022 = lib.nixosSystem {
         system = system.x86_64-linux;
-        specialArgs = {flake = self;};
+        specialArgs = {inherit flake;};
         modules = [
           self.nixosModules.default
           self.nixosModules.desktop2022
@@ -191,11 +193,11 @@
           self.inputs.apple-silicon-support.nixosModules.apple-silicon-support
           {profiles.macbookpro2025.enable = true;}
         ];
-        specialArgs = {flake = self;};
+        specialArgs = {inherit flake;};
       };
       macbookpro2017 = lib.nixosSystem {
         system = system.x86_64-linux;
-        specialArgs = {flake = self;};
+        specialArgs = {inherit flake;};
         modules = [
           self.nixosModules.default
           self.nixosModules.macbookpro2017
@@ -218,11 +220,11 @@
           self.inputs.apple-silicon-support.nixosModules.apple-silicon-support
           {profiles.macbookpro2025Install.enable = true;}
         ];
-        specialArgs = {flake = self;};
+        specialArgs = {inherit flake;};
       };
       nucbox2022 = lib.nixosSystem {
         system = system.x86_64-linux;
-        specialArgs = {flake = self;};
+        specialArgs = {inherit flake;};
         modules = [
           self.nixosModules.default
           self.nixosModules.nucbox2022

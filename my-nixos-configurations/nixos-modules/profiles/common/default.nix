@@ -37,6 +37,11 @@ in {
         "experimental-features = nix-command flakes impure-derivations ca-derivations"
       ];
 
+      settings = {
+        extra-substituters = flake.nixConfig.extra-substituters;
+        extra-trusted-public-keys = flake.nixConfig.extra-trusted-public-keys;
+      };
+
       # setting the old <nixpkgs> path is necessary for some legacy nix files
       nixPath = ["nixpkgs=${flake.inputs.nixpkgs-stable}"];
     };
