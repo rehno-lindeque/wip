@@ -234,6 +234,7 @@ in {
           # tree
 
           # Quickly preview image files (I was using this with actkbd to display cheatsheets)
+          viu
           # feh
 
           # Display text overlay over the screen
