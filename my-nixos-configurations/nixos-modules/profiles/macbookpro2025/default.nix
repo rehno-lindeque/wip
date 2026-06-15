@@ -150,6 +150,29 @@ in {
 
     networking.hostName = "macbookpro2025";
 
+    services.printing = {
+      enable = true;
+      drivers = [pkgs.hplip];
+    };
+
+    services.avahi = {
+      enable = true;
+      nssmdns4 = true;
+      openFirewall = true;
+    };
+
+    hardware.printers = {
+      ensureDefaultPrinter = "HP_Envy_6055";
+      ensurePrinters = [
+        {
+          name = "HP_Envy_6055";
+          description = "HP Envy 6055";
+          deviceUri = "ipp://192.168.1.7/ipp/print";
+          model = "everywhere";
+        }
+      ];
+    };
+
     time.timeZone = lib.mkDefault "America/New_York";
     location.provider = "geoclue2";
     services.automatic-timezoned.enable = true;
