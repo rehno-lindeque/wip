@@ -186,8 +186,12 @@ in {
 
     programs.light.enable = true;
 
-    # Using the systemd-boot EFI boot loader as it seems to be very simple
-    boot.loader.systemd-boot.enable = true;
+    # Using the systemd-boot EFI boot loader as it seems to be very simple.
+    # Keep only a few generations because the EFI partition is space-constrained.
+    boot.loader.systemd-boot = {
+      enable = true;
+      configurationLimit = 3;
+    };
 
     # Make sure initrd can mount /nix early and create mount points
     boot.initrd = {
