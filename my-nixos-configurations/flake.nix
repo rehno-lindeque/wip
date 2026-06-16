@@ -26,7 +26,7 @@ rec {
     # Redirect inputs
     clump.inputs.nixpkgs.follows = "nixpkgs-stable";
     headroom.inputs.flake-utils.follows = "flake-utils";
-    headroom.inputs.nixpkgs.follows = "nixpkgs-unstable";
+    headroom.inputs.nixpkgs.follows = "nixpkgs-stable";
     home-manager.inputs.nixpkgs.follows = "nixpkgs-stable";
     llm-agents.inputs.nixpkgs.follows = "nixpkgs-unstable";
     nixos-hardware.inputs.nixpkgs.follows = "nixpkgs-stable";
@@ -100,9 +100,6 @@ rec {
           nix-run = legacyPackages.${system}.callPackage ./packages/nix-run {};
           sesh = legacyPackages.${system}.callPackage ./packages/sesh {};
           desktop2022-project-session = legacyPackages.${system}.callPackage ./packages/desktop2022-project-session {};
-          headroom = legacyPackages.${system}.callPackage ./packages/headroom {
-            headroom = self.inputs.headroom.packages.${system}.headroom-ai;
-          };
           sidecar = legacyPackages.${system}.callPackage ./packages/sidecar {
             sidecar = self.inputs.llm-agents.packages.${system}.sidecar;
           };
@@ -124,6 +121,11 @@ rec {
           nucbox2022-rebuild = legacyPackages.${system}.callPackage ./packages/nixos-rebuild-system {
             name = "nucbox2022-rebuild";
             inherit (self.packages.${system}) nix-run;
+          };
+        }
+        // lib.optionalAttrs (system == "x86_64-linux") {
+          headroom = legacyPackages.${system}.callPackage ./packages/headroom {
+            headroom = self.inputs.headroom.packages.${system}.headroom-ai;
           };
         }))
         {

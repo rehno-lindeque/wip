@@ -31,6 +31,10 @@ in {
     };
     circuithubConfigurations.developerWorkstation.enable = true;
 
+    home-manager.users.me.home.packages = [
+      flake.packages.${pkgs.system}.headroom
+    ];
+
     # Using the systemd-boot EFI boot loader as it seems to be very simple.
     # Keep only a few generations because the EFI partition is space-constrained.
     boot.loader.systemd-boot = {
