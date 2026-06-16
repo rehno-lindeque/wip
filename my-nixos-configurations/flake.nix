@@ -26,6 +26,7 @@ rec {
     clump.inputs.nixpkgs.follows = "nixpkgs-stable";
     home-manager.inputs.nixpkgs.follows = "nixpkgs-stable";
     llm-agents.inputs.nixpkgs.follows = "nixpkgs-unstable";
+    nixos-hardware.inputs.nixpkgs.follows = "nixpkgs-stable";
     nixos-impermanence.inputs = {
       nixpkgs.follows = "nixpkgs-stable";
       impermanence.follows = "impermanence";
