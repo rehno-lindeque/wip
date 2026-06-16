@@ -380,6 +380,7 @@ in {
         settings.main = {
           # capslock = "overload(control, esc)";
           capslock = "enter";
+          rightshift = "overload(shift, enter)";
         };
       };
     };
