@@ -40,7 +40,7 @@ in {
       {
         home.packages = [
           flake.inputs.llm-agents.packages.${pkgs.system}.pi
-          flake.packages.${pkgs.system}.headroom-proxy-paranoid
+          flake.packages.${pkgs.system}.headroom
           flake.packages.${pkgs.system}.sidecar
           flake.inputs.llm-agents.packages.${pkgs.system}.td
         ];

@@ -23,13 +23,12 @@ writeShellApplication {
     export ANTHROPIC_TARGET_API_URL="''${ANTHROPIC_TARGET_API_URL:-https://api.anthropic.com}"
     export OPENAI_TARGET_API_URL="''${OPENAI_TARGET_API_URL:-https://api.openai.com}"
 
-    exec ${lib.getExe headroom} proxy \
+    exec ${lib.getExe' headroom "headroom"} proxy \
       --host 127.0.0.1 \
       --port "''${HEADROOM_PORT:-8787}" \
       --no-telemetry \
       --no-subscription-tracking \
       --stateless \
-      --disable-kompress \
       "$@"
   '';
 }

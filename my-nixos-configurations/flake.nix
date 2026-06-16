@@ -5,7 +5,7 @@ rec {
     flake-help.url = "github:rehno-lindeque/flake-help";
     flake-utils.url = "github:numtide/flake-utils";
     home-manager.url = "github:nix-community/home-manager/release-25.11";
-    headroom.url = "github:axelbdt/headroom-flake";
+    headroom.url = "github:michnicki/headroom-nix";
     impermanence.url = "git+https://github.com/rehno-lindeque/impermanence.git";
     llm-agents.url = "github:numtide/llm-agents.nix";
     via.url = "github:rehno-lindeque/via";
@@ -25,7 +25,8 @@ rec {
 
     # Redirect inputs
     clump.inputs.nixpkgs.follows = "nixpkgs-stable";
-    headroom.inputs.nixpkgs.follows = "nixpkgs-stable";
+    headroom.inputs.flake-utils.follows = "flake-utils";
+    headroom.inputs.nixpkgs.follows = "nixpkgs-unstable";
     home-manager.inputs.nixpkgs.follows = "nixpkgs-stable";
     llm-agents.inputs.nixpkgs.follows = "nixpkgs-unstable";
     nixos-hardware.inputs.nixpkgs.follows = "nixpkgs-stable";
@@ -99,9 +100,8 @@ rec {
           nix-run = legacyPackages.${system}.callPackage ./packages/nix-run {};
           sesh = legacyPackages.${system}.callPackage ./packages/sesh {};
           desktop2022-project-session = legacyPackages.${system}.callPackage ./packages/desktop2022-project-session {};
-          headroom = self.inputs.headroom.packages.${system}.headroom-ai;
-          headroom-proxy-paranoid = legacyPackages.${system}.callPackage ./packages/headroom-proxy-paranoid {
-            inherit (self.packages.${system}) headroom;
+          headroom = legacyPackages.${system}.callPackage ./packages/headroom {
+            headroom = self.inputs.headroom.packages.${system}.headroom-ai;
           };
           sidecar = legacyPackages.${system}.callPackage ./packages/sidecar {
             sidecar = self.inputs.llm-agents.packages.${system}.sidecar;
