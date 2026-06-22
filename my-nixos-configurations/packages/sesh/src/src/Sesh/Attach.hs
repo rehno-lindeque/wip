@@ -144,7 +144,7 @@ stdinToSocket sendLock sessionSocket = do
         else
           if nextByte == escapeByte
             then do
-              escapeSequence <- readEscapeSequence nextByte
+              escapeSequence <- readPotentialDetachSequence nextByte
               if escapeSequence `elem` detachPatterns
                 then detach
                 else sendInput escapeSequence >> stdinToSocket sendLock sessionSocket
@@ -184,18 +184,26 @@ socketToStdout sessionSocket = go BS.empty
       BS.hPut stdout bytes
       hFlush stdout
 
-readEscapeSequence :: BS.ByteString -> IO BS.ByteString
-readEscapeSequence initialByte = go initialByte
+readPotentialDetachSequence :: BS.ByteString -> IO BS.ByteString
+readPotentialDetachSequence initialByte = go initialByte
   where
     go acc = do
-      hasMore <- hWaitForInput stdin 10
-      if not hasMore
+      if BS.length acc >= maxDetachPatternLength || not (couldMatchDetachPattern acc)
         then pure acc
         else do
-          chunk <- BS.hGetSome stdin 1
-          if BS.null chunk
+          hasMore <- hWaitForInput stdin 10
+          if not hasMore
             then pure acc
-            else go (acc <> chunk)
+            else do
+              chunk <- BS.hGetSome stdin 1
+              if BS.null chunk
+                then pure acc
+                else go (acc <> chunk)
+
+    couldMatchDetachPattern acc = any (acc `BS.isPrefixOf`) detachPatterns
+
+maxDetachPatternLength :: Int
+maxDetachPatternLength = maximum (map BS.length detachPatterns)
 
 detachPatterns :: [BS.ByteString]
 detachPatterns =
