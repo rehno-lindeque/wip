@@ -41,6 +41,28 @@ in {
       flake.packages.${pkgs.system}.headroom
     ];
 
+    # direnv auto-loads a project's .envrc on entry. The use_secret helper is
+    # opt-in per project: a .envrc that calls it gets the sops secret exported,
+    # everything else is unaffected. The helper is just a definition here — it
+    # does nothing until an .envrc invokes it.
+    home-manager.users.me.programs.direnv = {
+      enable = true;
+      nix-direnv.enable = true;
+      stdlib = ''
+        # Export a sops-nix secret (decrypted to /run/secrets/<name>) as an env var.
+        # usage in .envrc:  use_secret WANDB_API_KEY wandb-api-key
+        use_secret() {
+          local var="$1" path="/run/secrets/$2"
+          if [ -r "$path" ]; then
+            export "$var=$(cat "$path")"
+            watch_file "$path"
+          else
+            log_error "use_secret: $path not readable (rebuild desktop2022, or check sops.secrets.$2.owner)"
+          fi
+        }
+      '';
+    };
+
     # Using the systemd-boot EFI boot loader as it seems to be very simple.
     # Keep only a few generations because the EFI partition is space-constrained.
     boot.loader.systemd-boot = {
