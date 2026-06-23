@@ -31,6 +31,12 @@ in {
     };
     circuithubConfigurations.developerWorkstation.enable = true;
 
+    # Secrets are sops-encrypted under ../../../secrets and decrypted at
+    # activation using this host's ssh key (sops.age.sshKeyPaths defaults to
+    # /etc/ssh/ssh_host_ed25519_key). Recipients live in ../../../.sops.yaml.
+    sops.defaultSopsFile = ../../../secrets/desktop2022.yaml;
+    sops.secrets.wandb-api-key.owner = "me";
+
     home-manager.users.me.home.packages = [
       flake.packages.${pkgs.system}.headroom
     ];

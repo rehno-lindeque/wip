@@ -17,6 +17,7 @@ rec {
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     nix-colors.url = "github:misterio77/nix-colors";
     niri.url = "path:/home/me/projects/niri";
+    sops-nix.url = "github:Mic92/sops-nix";
     vscode-server.url = "github:nix-community/nixos-vscode-server";
     voxinput.url =
       # "github:richiejp/VoxInput";
@@ -35,6 +36,7 @@ rec {
       impermanence.follows = "impermanence";
     };
     nix-colors.inputs.nixpkgs-lib.follows = "nixpkgs-stable";
+    sops-nix.inputs.nixpkgs.follows = "nixpkgs-stable";
     vscode-server.inputs = {
       nixpkgs.follows = "nixpkgs-stable";
       flake-utils.follows = "flake-utils";
@@ -186,6 +188,7 @@ rec {
           self.nixosModules.llm
           self.nixosModules.mymux
           self.nixosModules.whisper
+          self.inputs.sops-nix.nixosModules.sops
           # self.inputs.nixos-hardware.nixosModules.mediatek-mt7921k
           {profiles.desktop2022.enable = true;}
         ];

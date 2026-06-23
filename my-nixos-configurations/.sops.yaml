@@ -1,0 +1,12 @@
+# age recipients (public keys):
+#   desktop2022 = host ssh key  -> decrypts at boot (sops.age.sshKeyPaths)
+#   me          = ~/.ssh/id_ed25519.pub -> decrypts when editing with sops
+keys:
+  - &desktop2022 age162wrjw9q4gkyjajpp0u73prk60qetr4egvsvdpp66qumcy60fe9q86pjau
+  - &me age1kwquexrf8z3jczllyt0mxfqw6u8ust3vtu40hpk0ge8svwf0g5tsyvvnup
+creation_rules:
+  - path_regex: secrets/.*\.yaml$
+    key_groups:
+      - age:
+          - *desktop2022
+          - *me
