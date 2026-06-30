@@ -602,11 +602,11 @@
         "systems": "systems_3"
       },
       "locked": {
-        "lastModified": 1773085459,
-        "narHash": "sha256-jBQuLEahraSf6+wzNZfdfJgwv2vdIK78czqUMIwyHjA=",
+        "lastModified": 1782780555,
+        "narHash": "sha256-aoLDllqLRf0WIGcQT/Jd7gmlIQXzq5Gppn4crvKs2fg=",
         "owner": "rehno-lindeque",
         "repo": "via",
-        "rev": "ad0d170edd45497ef3e62b418748c573888d1499",
+        "rev": "0b5e2b3b19ceb43c54036d621a05e527e250de69",
         "type": "github"
       },
       "original": {
