@@ -39,6 +39,7 @@ in {
 
     home-manager.users.me.home.packages = [
       flake.packages.${pkgs.system}.headroom
+      flake.inputs.hunk.packages.${pkgs.system}.hunk
     ];
 
     # direnv auto-loads a project's .envrc on entry. The use_secret helper is

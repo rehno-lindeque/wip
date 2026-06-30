@@ -6,6 +6,7 @@ rec {
     flake-utils.url = "github:numtide/flake-utils";
     home-manager.url = "github:nix-community/home-manager/release-25.11";
     headroom.url = "github:michnicki/headroom-nix";
+    hunk.url = "github:modem-dev/hunk";
     impermanence.url = "git+https://github.com/rehno-lindeque/impermanence.git";
     llm-agents.url = "github:numtide/llm-agents.nix";
     via.url = "github:rehno-lindeque/via";
@@ -29,6 +30,7 @@ rec {
     headroom.inputs.flake-utils.follows = "flake-utils";
     headroom.inputs.nixpkgs.follows = "nixpkgs-stable";
     home-manager.inputs.nixpkgs.follows = "nixpkgs-stable";
+    hunk.inputs.nixpkgs.follows = "nixpkgs-stable";
     llm-agents.inputs.nixpkgs.follows = "nixpkgs-unstable";
     nixos-hardware.inputs.nixpkgs.follows = "nixpkgs-stable";
     nixos-impermanence.inputs = {
