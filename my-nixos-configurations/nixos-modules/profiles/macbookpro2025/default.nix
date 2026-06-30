@@ -362,6 +362,13 @@ in {
       package = niriPackage;
       useNautilus = false;
     };
+    xdg.portal.config.niri = {
+      default = ["gnome" "gtk"];
+      "org.freedesktop.impl.portal.Access" = "gtk";
+      "org.freedesktop.impl.portal.FileChooser" = "gtk";
+      "org.freedesktop.impl.portal.Notification" = "gtk";
+      "org.freedesktop.impl.portal.Secret" = "gnome-keyring";
+    };
     services.greetd.enable = true;
     services.greetd.settings.default_session = {
       command = "${lib.getExe pkgs.tuigreet} --time --cmd niri-session";
