@@ -143,6 +143,9 @@ in {
           # Retain virtualenv wheel cache
           ({directory = ".local/share/virtualenv";} // permissions)
 
+          # Retain direnv allow database
+          ({directory = ".local/share/direnv";} // permissions)
+
           # Retain neovim undo files
           ({directory = ".local/share/nvim";} // permissions)
 
