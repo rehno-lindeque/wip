@@ -182,6 +182,9 @@ in {
 
           # Retain bash history
           ".bash_history"
+
+          # Retain Claude Code login/preferences stored outside ~/.claude
+          ".claude.json"
         ];
       };
 
