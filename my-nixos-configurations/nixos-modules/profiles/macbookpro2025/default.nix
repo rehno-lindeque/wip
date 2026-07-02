@@ -679,12 +679,12 @@ in {
           Mod+Q repeat=false { close-window; }
 
           Mod+Left  { focus-column-left; }
-          Mod+Down  { focus-window-down; }
-          Mod+Up    { focus-window-up; }
+          Mod+Down  { focus-workspace-down; }
+          Mod+Up    { focus-workspace-up; }
           Mod+Right { focus-column-right; }
           Mod+Y     { focus-column-left; }
-          Mod+N     { focus-window-down; }
-          Mod+I     { focus-window-up; }
+          Mod+N     { focus-workspace-down; }
+          Mod+I     { focus-workspace-up; }
           Mod+O     { focus-column-right; }
 
           Mod+Ctrl+Left  { move-column-left; }
