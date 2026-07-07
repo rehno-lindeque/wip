@@ -124,6 +124,111 @@ in
         (writeScript "readme" ''${mdr}/bin/mdr ${../README.md}'')
       .outPath;
     };
+    record-video = let
+      recorder = pkgs.writeShellApplication {
+        name = "record-video";
+        runtimeInputs = with pkgs; [
+          coreutils
+          slurp
+          wf-recorder
+        ];
+        text = ''
+          #!/usr/bin/env bash
+          set -euo pipefail
+
+          usage() {
+            cat <<'EOF'
+Usage: record-video [--region] [--no-audio] [output.mp4]
+
+Examples:
+  record-video
+  record-video --no-audio
+  record-video --region demo.mp4
+EOF
+          }
+
+          region=0
+          audio=1
+          output=""
+          while [[ $# -gt 0 ]]; do
+            case "$1" in
+              --region)
+                region=1
+                shift
+                ;;
+              --audio)
+                audio=1
+                shift
+                ;;
+              --no-audio)
+                audio=0
+                shift
+                ;;
+              -h|--help)
+                usage
+                exit 0
+                ;;
+              *)
+                if [[ -n "$output" ]]; then
+                  usage >&2
+                  exit 2
+                fi
+                output="$1"
+                shift
+                ;;
+            esac
+          done
+
+          if [[ -z "$output" ]]; then
+            mkdir -p "$HOME/projects/videos"
+            output="$HOME/projects/videos/Recording from $(date '+%Y-%m-%d %H-%M-%S').mp4"
+          fi
+
+          args=(-f "$output")
+          if [[ $audio -eq 1 ]]; then
+            args=(-a "''${args[@]}")
+          fi
+          if [[ $region -eq 1 ]]; then
+            args=(-g "$(slurp)" "''${args[@]}")
+          fi
+
+          echo "Recording to: $output"
+          echo "Press Ctrl+C to stop."
+          exec wf-recorder "''${args[@]}"
+        '';
+      };
+    in {
+      type = "app";
+      description = "Record the Wayland screen with wf-recorder";
+      program = "${recorder}/bin/record-video";
+    };
+    edit-video = let
+      videoEditor =
+        if pkgs.stdenv.hostPlatform.isAarch64 && pkgs.stdenv.hostPlatform.isLinux
+        then {
+          package = pkgs.shotcut;
+          command = pkgs.lib.getExe pkgs.shotcut;
+          name = "Shotcut";
+        }
+        else {
+          package = pkgs.losslesscut-bin;
+          command = pkgs.lib.getExe pkgs.losslesscut-bin;
+          name = "LosslessCut";
+        };
+      editor = pkgs.writeShellApplication {
+        name = "edit-video";
+        runtimeInputs = [videoEditor.package];
+        text = ''
+          #!/usr/bin/env bash
+          set -euo pipefail
+          exec ${videoEditor.command} "$@"
+        '';
+      };
+    in {
+      type = "app";
+      description = "Edit/cut video with ${videoEditor.name}";
+      program = "${editor}/bin/edit-video";
+    };
     desktop2022-rebuild = mkRebuildApp {name = "desktop2022"; host = "desktop2022";};
     macbookpro2017-rebuild = mkRebuildApp {name = "macbookpro2017"; host = "macbookpro2017";};
     macbookpro2025-rebuild = mkRebuildApp {name = "macbookpro2025"; host = "macbookpro2025";};

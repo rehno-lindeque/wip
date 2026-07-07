@@ -93,6 +93,7 @@ rec {
 
     devShells = lib.genAttrs mySystems (system: {
       default = legacyPackages.${system}.callPackage ./dev-shells/default {};
+      video-tools = legacyPackages.${system}.callPackage ./dev-shells/video-tools {};
     });
 
     packages =
