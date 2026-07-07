@@ -1,11 +1,11 @@
 {
-  losslesscut-bin,
   mkShell,
+  shotcut,
   wf-recorder,
 }:
 mkShell {
   packages = [
-    losslesscut-bin
+    shotcut
     wf-recorder
   ];
 }
