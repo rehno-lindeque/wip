@@ -6,56 +6,6 @@
   ...
 }: let
   cfg = config.profiles.workstation;
-  claudeStatusLine = pkgs.writeShellApplication {
-    name = "claude-statusline";
-    runtimeInputs = with pkgs; [coreutils gh jq];
-    text = ''
-      input=$(cat)
-
-      model=$(jq -r '.model.display_name // empty' <<<"$input")
-      dir=$(jq -r '.workspace.current_dir // .cwd // empty' <<<"$input")
-      pr_number=$(jq -r '.pr.number // empty' <<<"$input")
-
-      segments=()
-      [ -n "$model" ] && segments+=("[$model]")
-      [ -n "$dir" ] && segments+=("''${dir##*/}")
-
-      if [ -n "$pr_number" ]; then
-        pr_text="PR #$pr_number"
-        title=""
-
-        session_id=$(jq -r '.session_id // "global"' <<<"$input")
-        cache_dir="''${XDG_CACHE_HOME:-/tmp}/claude-statusline-pr"
-        cache_file="$cache_dir/$session_id-$pr_number.title"
-
-        mkdir -p "$cache_dir"
-        if [ -f "$cache_file" ] && [ $(( $(date +%s) - $(stat -c %Y "$cache_file") )) -lt 60 ]; then
-          title=$(<"$cache_file")
-        else
-          if [ -n "$dir" ] && [ -d "$dir" ]; then
-            title=$(cd "$dir" && gh pr view "$pr_number" --json title -q .title 2>/dev/null || true)
-          else
-            title=$(gh pr view "$pr_number" --json title -q .title 2>/dev/null || true)
-          fi
-          printf '%s' "$title" >"$cache_file"
-        fi
-
-        [ -n "$title" ] && pr_text="$pr_text: $title"
-        segments+=("$pr_text")
-      fi
-
-      output=""
-      for segment in "''${segments[@]}"; do
-        if [ -z "$output" ]; then
-          output="$segment"
-        else
-          output="$output | $segment"
-        fi
-      done
-
-      printf '%s\n' "$output"
-    '';
-  };
 in {
   options = with lib; {
     profiles.workstation = {
@@ -193,11 +143,6 @@ in {
           };
           claude-code.settings = {
             includeCoAuthoredBy = false;
-            statusLine = {
-              type = "command";
-              command = "${claudeStatusLine}/bin/claude-statusline";
-              refreshInterval = 30;
-            };
           };
           codex.enable = lib.mkDefault true;
           codex.package = flake.inputs.llm-agents.packages.${pkgs.system}.codex;
