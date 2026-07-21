@@ -692,8 +692,8 @@ in {
           Mod+Ctrl+Up    { move-column-to-workspace-up; }
           Mod+Ctrl+Right { move-column-right; }
           Mod+Ctrl+Y     { move-column-left; }
-          Mod+Ctrl+N     { move-window-down; }
-          Mod+Ctrl+I     { move-window-up; }
+          Mod+Ctrl+N     { move-column-to-workspace-down; }
+          Mod+Ctrl+I     { move-column-to-workspace-up; }
           Mod+Ctrl+O     { move-column-right; }
 
           Mod+Home { focus-column-first; }
