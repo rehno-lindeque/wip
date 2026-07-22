@@ -180,6 +180,12 @@ in {
     environment.sessionVariables.MOZ_GMP_PATH =
       "${pkgs.widevine-firefox}/gmp-widevinecdm/system-installed";
 
+    programs.firefox = {
+      enable = true;
+      package = pkgs.firefox-widevine;
+      preferences."widget.disable-swipe-tracker" = true;
+    };
+
     fonts.packages = [
       pkgs.nerd-fonts.symbols-only
     ];
