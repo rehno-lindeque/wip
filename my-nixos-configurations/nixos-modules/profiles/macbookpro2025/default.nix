@@ -708,6 +708,10 @@ in {
 
           Mod+Shift+Page_Down { move-workspace-down; }
           Mod+Shift+Page_Up   { move-workspace-up; }
+          Mod+Shift+Down      { move-workspace-down; }
+          Mod+Shift+Up        { move-workspace-up; }
+          Mod+Shift+N         { move-workspace-down; }
+          Mod+Shift+I         { move-workspace-up; }
 
           Mod+WheelScrollDown      cooldown-ms=150 { focus-workspace-down; }
           Mod+WheelScrollUp        cooldown-ms=150 { focus-workspace-up; }
