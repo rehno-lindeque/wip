@@ -69,7 +69,6 @@ in {
       "100.98.101.74" = ["mediamtx.tiger-jazz.ts.net" "mediamtx.circuithub"];
       "100.109.156.47" = ["camera-40558028.tiger-jazz.ts.net" "camera-storage-module-3-door"];
       "100.84.51.84" = ["camera-40453183.tiger-jazz.ts.net" "camera-storage-module-3-ee"];
-      "100.99.73.21" = ["gerrit.tiger-jazz.ts.net"];
       "100.76.1.13" = ["aoi-viewer" "aoi-viewer.tiger-jazz.ts.net" "aoi-viewer.circuithub"];
     };
 
