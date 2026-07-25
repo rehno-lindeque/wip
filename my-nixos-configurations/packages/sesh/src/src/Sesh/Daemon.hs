@@ -1,7 +1,7 @@
 module Sesh.Daemon (runDaemon) where
 
-import Control.Concurrent (MVar, newEmptyMVar, newMVar, putMVar, readMVar, tryPutMVar)
-import Control.Concurrent.MVar (modifyMVar_, swapMVar, takeMVar)
+import Control.Concurrent (MVar, forkIO, newEmptyMVar, newMVar, putMVar, readMVar, tryPutMVar)
+import Control.Concurrent.MVar (modifyMVar, modifyMVar_, swapMVar, takeMVar)
 import Control.Concurrent.Async (cancel, waitAnyCatch)
 import qualified Control.Concurrent.Async as Async
 import Control.Exception (IOException, finally, handle)
@@ -111,24 +111,26 @@ acceptLoop :: Socket -> Pty -> MVar BS.ByteString -> MVar (Maybe Socket) -> MVar
 acceptLoop listenSocket pty bufferVar clientVar metadataVar metadataFile =
   forever $ do
     (client, _) <- accept listenSocket
-    currentClient <- readMVar clientVar
-    case currentClient of
-      Just _existing -> do
+    claimedClient <- tryClaimClient clientVar client
+    if not claimedClient
+      then do
         ignoreIO (sendOutput client (BS8.pack "session already attached\n"))
         close client
-      Nothing -> do
-        (dimensions, initialFrames) <- receiveHandshake client
-        resizePty pty dimensions
-        backlog <- readMVar bufferVar
-        updateAttachedClients metadataVar metadataFile 1
-        setClient clientVar (Just client)
-        ignoreIO (sendOutput client backlog)
+      else void $ forkIO $ do
         let cleanupClient = do
               setClient clientVar Nothing
               ignoreIO (shutdown client ShutdownBoth)
               ignoreIO (close client)
               updateAttachedClients metadataVar metadataFile 0
-        proxyClientInput pty client initialFrames `finally` cleanupClient
+        ( do
+            (dimensions, initialFrames) <- receiveHandshake client
+            resizePty pty dimensions
+            backlog <- readMVar bufferVar
+            updateAttachedClients metadataVar metadataFile 1
+            ignoreIO (sendOutput client backlog)
+            proxyClientInput pty client initialFrames
+          )
+          `finally` cleanupClient
 
 ptyReaderLoop :: Pty -> MVar BS.ByteString -> MVar (Maybe Socket) -> FilePath -> IO ()
 ptyReaderLoop pty bufferVar clientVar historyFile =
@@ -203,6 +205,13 @@ proxyClientInput pty client initialBuffer = go initialBuffer
       ClientInput bytes -> writePty pty bytes >> pure True
       ClientResize dimensions -> resizePty pty dimensions >> pure True
       ClientDetach -> pure False
+
+tryClaimClient :: MVar (Maybe Socket) -> Socket -> IO Bool
+tryClaimClient clientVar client =
+  modifyMVar clientVar $ \current ->
+    case current of
+      Just _existing -> pure (current, False)
+      Nothing -> pure (Just client, True)
 
 receiveHandshake :: Socket -> IO ((Int, Int), BS.ByteString)
 receiveHandshake client = go BS.empty
