@@ -64,6 +64,8 @@ Do:
 > you: git add .codex/skills
 > you: git commit -m '.codex/skills: note nix --extra-experimental-features for installer'
 
+Do: Make atomic commits promptly after discrete verified changes; do not leave implemented fixes only in the working tree before telling the user to push.
+
 Avoid:  
 > you: git commit -m 'note nix --extra-experimental-features for installer'
 
