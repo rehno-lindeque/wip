@@ -195,6 +195,7 @@ in {
     boot.loader.systemd-boot = {
       enable = true;
       configurationLimit = 3;
+      graceful = true;
     };
 
     # Make sure initrd can mount /nix early and create mount points
