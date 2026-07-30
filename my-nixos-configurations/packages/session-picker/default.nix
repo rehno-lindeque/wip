@@ -1,4 +1,5 @@
 {
+  autossh,
   fuzzel,
   ghostty,
   jq,
@@ -8,7 +9,7 @@
 }:
 pkgs.writeShellApplication {
   name = "session-picker";
-  runtimeInputs = [fuzzel ghostty jq openssh sesh];
+  runtimeInputs = [autossh fuzzel ghostty jq openssh sesh];
   text = ''
     #!/usr/bin/env bash
     set -euo pipefail
@@ -86,10 +87,9 @@ pkgs.writeShellApplication {
         ;;
       desktop2022)
         quoted_session_name="$(printf '%q' "$session_name")"
-        exec ghostty -e ssh \
-          -o ControlMaster=auto \
-          -o ControlPersist=10m \
-          -o "ControlPath=$HOME/.ssh/cm-%r@%h:%p" \
+        exec ghostty -e autossh -M 0 -q \
+          -o ServerAliveInterval=30 \
+          -o ServerAliveCountMax=3 \
           -t desktop2022 \
           "exec sesh attach $quoted_session_name"
         ;;

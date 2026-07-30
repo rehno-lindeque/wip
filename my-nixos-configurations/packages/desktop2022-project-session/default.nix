@@ -1,4 +1,5 @@
 {
+  autossh,
   fuzzel,
   ghostty,
   openssh,
@@ -6,7 +7,7 @@
 }:
 pkgs.writeShellApplication {
   name = "desktop2022-project-session";
-  runtimeInputs = [fuzzel ghostty openssh];
+  runtimeInputs = [autossh fuzzel ghostty openssh];
   text = ''
     #!/usr/bin/env bash
     set -euo pipefail
@@ -32,14 +33,29 @@ pkgs.writeShellApplication {
       exit 0
     fi
 
+    session_suffix="$(printf '%s' "$project_name" | tr '/[:space:]' '..' | tr -cs '[:alnum:]._-' '-')"
+    session_id="$(date -u +%Y%m%dT%H%M%SZ)-$$"
+    session_name="projects.$session_suffix.$session_id"
+
     quoted_project_name="$(printf '%q' "$project_name")"
+    quoted_session_name="$(printf '%q' "$session_name")"
     remote_command="$(cat <<REMOTE
     project_name=$quoted_project_name
+    session_name=$quoted_session_name
     project_name="\''${project_name#./}"
     project_path="\$HOME/projects/\$project_name"
-    session_suffix="\$(printf '%s' "\$project_name" | tr '/[:space:]' '..' | tr -cs '[:alnum:]._-' '-')"
-    session_id="\$(date -u +%Y%m%dT%H%M%SZ)-\$\$"
-    session_name="projects.\$session_suffix.\$session_id"
+
+    if [[ ! -d "\$project_path" ]]; then
+      mapfile -t project_matches < <(
+        cd "\$HOME/projects" 2>/dev/null &&
+          find . -type f -path "*/\$project_name/flake.nix" -printf '%h\n' |
+          sed 's#^\./##'
+      )
+      if [[ "\''${#project_matches[@]}" -eq 1 ]]; then
+        project_name="\''${project_matches[0]}"
+        project_path="\$HOME/projects/\$project_name"
+      fi
+    fi
 
     if [[ ! -d "\$project_path" ]]; then
       printf 'No such project: %s\n' "\$project_path" >&2
@@ -50,10 +66,9 @@ pkgs.writeShellApplication {
 REMOTE
     )"
 
-    exec ghostty -e ssh \
-      -o ControlMaster=auto \
-      -o ControlPersist=10m \
-      -o "ControlPath=$HOME/.ssh/cm-%r@%h:%p" \
+    exec ghostty -e autossh -M 0 -q \
+      -o ServerAliveInterval=30 \
+      -o ServerAliveCountMax=3 \
       -t desktop2022 \
       "$remote_command"
   '';
