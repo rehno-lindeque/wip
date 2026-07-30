@@ -190,8 +190,6 @@ in {
       pkgs.nerd-fonts.symbols-only
     ];
 
-    programs.light.enable = true;
-
     # Using the systemd-boot EFI boot loader as it seems to be very simple.
     # Keep only a few generations because the EFI partition is space-constrained.
     boot.loader.systemd-boot = {
@@ -473,8 +471,8 @@ in {
           backlight = {
             device = "apple-panel-bl";
             format = "${waybarIcons.backlight} {percent}%";
-            on-scroll-up = "${lib.getExe pkgs.light} -A 5";
-            on-scroll-down = "${lib.getExe pkgs.light} -U 5";
+            on-scroll-up = "${lib.getExe pkgs.brightnessctl} set +5%";
+            on-scroll-down = "${lib.getExe pkgs.brightnessctl} set 5%-";
           };
 
           battery = {
@@ -678,8 +676,8 @@ in {
           XF86AudioPrev allow-when-locked=true { spawn-sh "playerctl previous"; }
           XF86AudioNext allow-when-locked=true { spawn-sh "playerctl next"; }
 
-          XF86MonBrightnessUp allow-when-locked=true { spawn "${lib.getExe pkgs.light}" "-A" "10"; }
-          XF86MonBrightnessDown allow-when-locked=true { spawn "${lib.getExe pkgs.light}" "-U" "10"; }
+          XF86MonBrightnessUp allow-when-locked=true { spawn "${lib.getExe pkgs.brightnessctl}" "set" "+10%"; }
+          XF86MonBrightnessDown allow-when-locked=true { spawn "${lib.getExe pkgs.brightnessctl}" "set" "10%-"; }
 
           Mod+Tab repeat=false { toggle-overview; }
           Mod+Q repeat=false { close-window; }

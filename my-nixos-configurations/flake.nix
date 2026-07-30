@@ -4,7 +4,7 @@ rec {
     clump.url = "github:rehno-lindeque/clump";
     flake-help.url = "github:rehno-lindeque/flake-help";
     flake-utils.url = "github:numtide/flake-utils";
-    home-manager.url = "github:nix-community/home-manager/release-25.11";
+    home-manager.url = "github:nix-community/home-manager/release-26.05";
     headroom.url = "github:michnicki/headroom-nix";
     hunk.url = "github:modem-dev/hunk";
     impermanence.url = "git+https://github.com/rehno-lindeque/impermanence.git";
@@ -14,7 +14,7 @@ rec {
     nixos-hardware.url = "github:nixos/nixos-hardware";
     nixos-impermanence.url = "git+https://github.com/rehno-lindeque/nixos-impermanence.git";
     # nixpkgs-shim.url = "path:/home/me/projects/nixpkgs-shim";
-    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-25.11";
+    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-26.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     nix-colors.url = "github:misterio77/nix-colors";
     niri.url = "path:/home/me/projects/niri";
