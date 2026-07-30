@@ -143,6 +143,7 @@ in {
           };
           claude-code.settings = {
             includeCoAuthoredBy = false;
+            permissions.defaultMode = "auto";
           };
           codex.enable = lib.mkDefault true;
           codex.package = flake.inputs.llm-agents.packages.${pkgs.system}.codex;
