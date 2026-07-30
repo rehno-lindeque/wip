@@ -341,6 +341,7 @@ in {
     users.users.me.initialHashedPassword = lib.mkForce null;
 
     # Use the same nixpkgs/overlay as upstream apple-silicon-support so cache hits match
+    hardware.asahi.enable = true;
     hardware.asahi.pkgs = lib.mkForce (import flake.inputs.apple-silicon-support.inputs.nixpkgs {
       inherit (pkgs) system;
       overlays = [flake.inputs.apple-silicon-support.overlays.apple-silicon-overlay];
