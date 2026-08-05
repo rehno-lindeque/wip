@@ -287,6 +287,9 @@ in {
           # Retain Codex state
           ({directory = ".codex";} // permissions)
 
+          # Retain Pi state
+          ({directory = ".pi";} // permissions)
+
           # Retain ssh keys for this computer
           {
             directory = ".ssh";

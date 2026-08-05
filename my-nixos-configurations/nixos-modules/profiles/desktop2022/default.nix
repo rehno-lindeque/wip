@@ -119,6 +119,9 @@ in {
           # Retain Codex state
           ({directory = ".codex";} // permissions)
 
+          # Retain Pi state
+          ({directory = ".pi";} // permissions)
+
           # Retain OpenCode state
           ({directory = ".local/state/opencode";} // permissions)
 
