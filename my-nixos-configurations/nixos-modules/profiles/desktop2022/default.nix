@@ -350,6 +350,8 @@ in {
       enable = true;
       settings.PasswordAuthentication = true; # TODO remove
       settings.MaxSessions = 40;
+      settings.ClientAliveInterval = 30;
+      settings.ClientAliveCountMax = 3;
       listenAddresses = [
         # accessible via the tailscale ip
         {
