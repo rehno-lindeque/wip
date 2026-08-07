@@ -182,7 +182,13 @@ in {
     programs.firefox = {
       enable = true;
       package = pkgs.firefox-widevine;
-      preferences."widget.disable-swipe-tracker" = true;
+      preferences = {
+        "widget.disable-swipe-tracker" = true;
+
+        # Firefox's Linux default disables its built-in low-memory tab unloader.
+        "browser.tabs.unloadOnLowMemory" = true;
+        "browser.low_commit_space_threshold_percent" = 15;
+      };
     };
 
     fonts.packages = [
