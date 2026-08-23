@@ -306,6 +306,7 @@ in {
       # Ports used for software development
       8080
       8081
+      8082
       # openvscode-server
       3000
     ];
