@@ -34,6 +34,7 @@ in {
       flake.packages.${pkgs.system}.macbookpro2025-rebuild
       flake.packages.${pkgs.system}.nucbox2022-rebuild
       flake.inputs.via.packages.${pkgs.system}.via
+      pkgs.sops
     ];
 
     home-manager.sharedModules = [
