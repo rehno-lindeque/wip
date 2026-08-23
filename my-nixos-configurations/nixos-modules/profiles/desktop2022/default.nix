@@ -78,6 +78,7 @@ in {
     boot.kernelModules = [
       # Fails to lazy load with the opensource driver (see https://github.com/NixOS/nixpkgs/issues/334180)
       "nvidia-uvm"
+      "zram"
     ];
 
     # We don't want /tmp to be persisted, but it is on persistent storage due to lack of tmpfs storage space
@@ -248,6 +249,11 @@ in {
         size = 16 * 1024;
       }
     ];
+    zramSwap = {
+      enable = true;
+      memoryPercent = 50;
+    };
+    systemd.oomd.enableUserSlices = true;
 
     hardware = {
       # Required by many wayland compositors
