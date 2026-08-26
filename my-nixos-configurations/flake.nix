@@ -145,6 +145,7 @@ rec {
       playground = import ./nixos-modules/profiles/playground;
       preferences = import ./nixos-modules/profiles/preferences;
       workstation = import ./nixos-modules/profiles/workstation;
+      niri-workstation = import ./nixos-modules/profiles/niri-workstation;
       desktop2022 = import ./nixos-modules/profiles/desktop2022;
       macbookpro2017 = import ./nixos-modules/profiles/macbookpro2017;
       macbookpro2025-install = import ./nixos-modules/profiles/macbookpro2025-install.nix;
@@ -166,6 +167,7 @@ rec {
           personalize
           playground
           preferences
+          niri-workstation
           gh.auth
           workstation
           impermanence.nixosModules.impermanence

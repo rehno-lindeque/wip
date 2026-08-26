@@ -28,6 +28,19 @@ in {
       };
       preferences.enable = true;
       # playground.enable = true;
+      niriWorkstation = {
+        enable = true;
+        audio = {
+          raise = "${lib.getExe' pkgs.wireplumber "wpctl"} set-volume @DEFAULT_AUDIO_SINK@ 0.1+ -l 1.0";
+          lower = "${lib.getExe' pkgs.wireplumber "wpctl"} set-volume @DEFAULT_AUDIO_SINK@ 0.1-";
+          mute = "${lib.getExe' pkgs.wireplumber "wpctl"} set-mute @DEFAULT_AUDIO_SINK@ toggle";
+          micMute = "${lib.getExe' pkgs.wireplumber "wpctl"} set-mute @DEFAULT_AUDIO_SOURCE@ toggle";
+        };
+        idle = {
+          lock = 3600;
+          monitorOff = 5400;
+        };
+      };
     };
     circuithubConfigurations.developerWorkstation.enable = true;
 
@@ -402,14 +415,16 @@ in {
       wants = ["tailscaled.service"];
     };
 
-    # Adjust screen brightness at night
-    services.redshift.enable = true;
+    # Adjust screen brightness at night using a Wayland-native service.
+    home-manager.users.me.services.gammastep = {
+      enable = true;
+      provider = "manual";
+      latitude = config.location.latitude;
+      longitude = config.location.longitude;
+    };
 
     # Proprietary Nvidia drivers for either X or Wayland
     services.xserver.videoDrivers = ["nvidia"];
-
-    # Display manager (GDM works without X)
-    services.displayManager.gdm.enable = true;
 
     # Extra software packages only used on this system
     users.users.me.packages = [
@@ -427,29 +442,8 @@ in {
       }
     ];
 
-    # Desktop
-    programs.hyprland.enable = true;
-    home-manager.users.me.programs.rofi.enable = true;
-    home-manager.users.me.programs.swaylock.enable = true;
-    home-manager.users.me.programs.waybar.enable = true;
+    # Desktop-specific notification service.
     home-manager.users.me.services.dunst.enable = true;
-    home-manager.users.me.services.swayidle.enable = true;
-
-    # Lock the screen after booting
-    home-manager.users.me.wayland.windowManager.hyprland.enable = true;
-    home-manager.users.me.wayland.windowManager.hyprland.settings.exec-once = [
-      "swaylock"
-    ];
-
-    # Login manager
-    services.greetd.enable = true;
-    services.greetd.settings = rec {
-      initial_session = {
-        command = "${lib.getExe config.programs.hyprland.package}";
-        user = "me";
-      };
-      default_session = initial_session;
-    };
   };
 
 }
