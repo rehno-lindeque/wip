@@ -8,11 +8,10 @@
   nix,
   nix-run,
   openssh,
-  sudo,
 }:
   writeShellApplication {
     inherit name;
-    runtimeInputs = [gh nix nix-run openssh sudo];
+    runtimeInputs = [gh nix nix-run openssh];
     text = ''
       #!/usr/bin/env bash
       set -euo pipefail
