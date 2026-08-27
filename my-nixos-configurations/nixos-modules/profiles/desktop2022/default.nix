@@ -297,7 +297,7 @@ in {
       # Assign a fixed address so that sshd can always bind to it
       ipv4.addresses = [
         {
-          address = "100.89.210.26";
+          address = "100.85.31.82";
           prefixLength = 32;
         }
       ];
@@ -366,7 +366,7 @@ in {
       listenAddresses = [
         # accessible via the tailscale ip
         {
-          addr = "100.89.210.26";
+          addr = "100.85.31.82";
           port = 22;
         }
         # accessible via LAN ip

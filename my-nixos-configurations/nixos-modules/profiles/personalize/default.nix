@@ -50,7 +50,7 @@ in {
 
   config = lib.mkIf cfg.enable {
     networking.hosts = {
-      "100.89.210.26" = ["desktop2022"];
+      "100.85.31.82" = ["desktop2022"];
       "192.168.8.121" = ["desktop2022.lan"];
       "100.123.235.67" = ["nucbox2022"];
       "100.102.213.117" = ["macbookpro2017"];
