@@ -1,13 +1,18 @@
 {
   name,
+  targetHost ? "",
+  nixosConfiguration ? targetHost,
+  lib,
   writeShellApplication,
   gh,
   nix,
   nix-run,
+  openssh,
+  sudo,
 }:
   writeShellApplication {
     inherit name;
-    runtimeInputs = [gh nix nix-run];
+    runtimeInputs = [gh nix nix-run openssh sudo];
     text = ''
       #!/usr/bin/env bash
       set -euo pipefail
@@ -26,6 +31,26 @@
         fi
         export NIX_CONFIG
       fi
+
+      ${lib.optionalString (targetHost != "") ''
+        local_host="$(hostname -s)"
+        if [[ "${targetHost}" != "$local_host" && "$EUID" -eq 0 ]]; then
+          if [[ -z "''${SUDO_USER:-}" || "$SUDO_USER" == root ]]; then
+            echo "${name}: run via sudo from a non-root user" >&2
+            exit 1
+          fi
+
+          remote_args=(
+            sudo -n /run/current-system/sw/bin/nixos-rebuild
+            "$@"
+            --flake "$FLAKE_REF#${nixosConfiguration}"
+          )
+          printf -v remote_command '%q ' "''${remote_args[@]}"
+          exec sudo -H -u "$SUDO_USER" \
+            ssh -o BatchMode=yes -- "${targetHost}" "$remote_command"
+        fi
+      ''}
+
       exec nix-run "''${FLAKE_REF}#${name}" "$@"
     '';
   }

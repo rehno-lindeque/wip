@@ -112,6 +112,8 @@ rec {
           };
           desktop2022-rebuild = legacyPackages.${system}.callPackage ./packages/nixos-rebuild-system {
             name = "desktop2022-rebuild";
+            targetHost = "desktop2022";
+            nixosConfiguration = "desktop2022";
             inherit (self.packages.${system}) nix-run;
           };
           macbookpro2017-rebuild = legacyPackages.${system}.callPackage ./packages/nixos-rebuild-system {
