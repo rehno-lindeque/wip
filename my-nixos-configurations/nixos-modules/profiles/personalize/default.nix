@@ -59,7 +59,7 @@ in {
       "100.79.57.124" = ["server.tiger-jazz.ts.net" "pnp.circuithub" "nomad.circuithub"];
       "100.65.218.115" = ["grid" "grid.tiger-jazz.ts.net" "grid.circuithub"];
       "100.93.41.109" = ["internal.tiger-jazz.ts.net" "internal.circuithub"];
-      "100.116.162.39" = ["pnp-programming.tiger-jazz.ts.net" "pnp-programming.circuithub" "programming.circuithub"];
+      "100.116.162.38" = ["pnp-programming.tiger-jazz.ts.net" "pnp-programming.circuithub" "programming.circuithub"];
       "100.89.205.66" = ["kitting" "kitting.circuithub"];
       "100.118.198.38" = ["label-studio.tiger-jazz.ts.net" "label-studio.circuithub"];
       "100.122.216.16" = ["docker-registry.tiger-jazz.ts.net" "docker-registry.circuithub"];
