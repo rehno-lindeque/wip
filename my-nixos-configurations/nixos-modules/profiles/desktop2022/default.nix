@@ -6,6 +6,12 @@
   ...
 }: let
   cfg = config.profiles.desktop2022;
+  vaultLoginGithub = pkgs.writeShellScriptBin "vault-login-github" ''
+    set -euo pipefail
+    token="$(vault login -method=github -token-only)"
+    printf '%s' "$token" > "$HOME/.vault-token"
+    unset token
+  '';
 in {
   options = with lib; {
     profiles.desktop2022 = {
@@ -53,6 +59,7 @@ in {
     home-manager.users.me.home.packages = [
       flake.packages.${pkgs.system}.headroom
       flake.inputs.hunk.packages.${pkgs.system}.hunk
+      vaultLoginGithub
     ];
 
     # direnv auto-loads a project's .envrc on entry. The use_secret helper is
@@ -205,6 +212,9 @@ in {
 
           # Retain Claude Code login/preferences stored outside ~/.claude
           ".claude.json"
+
+          # Retain Vault login credentials
+          ".vault-token"
         ];
       };
 
