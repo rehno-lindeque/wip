@@ -315,6 +315,8 @@ in {
         }
       ];
     };
+    # Let sshd bind the fixed Tailscale address before tailscale0 is ready.
+    boot.kernel.sysctl."net.ipv4.ip_nonlocal_bind" = 1;
 
     # Open additional ports
     networking.firewall.interfaces.tailscale0.allowedTCPPorts = [
