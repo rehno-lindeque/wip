@@ -334,14 +334,16 @@ in {
       6006
       # The default port for aim-ui
       43800
-      # Ports used for software development
-      8080
-      8081
-      8082
       # openvscode-server
       3000
     ];
-
+    networking.firewall.interfaces.tailscale0.allowedTCPPortRanges = [
+      # Ports used for software development
+      {
+        from = 8080;
+        to = 8089;
+      }
+    ];
 
     # Make this machine a remote nix builder
     nix.sshServe = {
