@@ -369,6 +369,9 @@ in {
     services.libinput.enable = true;
     services.libinput.touchpad.disableWhileTyping = true;
 
+    # Wacom tablet support
+    services.xserver.wacom.enable = true;
+
     home-manager.users.me.programs.waybar = {
       enable = true;
       settings = [
