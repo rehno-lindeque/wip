@@ -223,7 +223,7 @@ in {
       };
     };
 
-    boot.kernelModules = ["zram"];
+    boot.kernelModules = ["zram" "wacom"];
     swapDevices = [];
     zramSwap = {
       enable = true;
