@@ -160,6 +160,8 @@ in {
           # Neovim, configured as an IDE
           neovim = {
             enable = lib.mkDefault true;
+            withPython3 = true;
+            withRuby = true;
             plugins = with config.profiles.preferences.customizedVimPlugins; [
               # Programming language integrations: Language servers
               nvim-lspconfig
