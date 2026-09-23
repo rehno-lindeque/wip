@@ -204,29 +204,6 @@
         "type": "github"
       }
     },
-    "headroom": {
-      "inputs": {
-        "flake-utils": [
-          "flake-utils"
-        ],
-        "nixpkgs": [
-          "nixpkgs-stable"
-        ]
-      },
-      "locked": {
-        "lastModified": 1780822414,
-        "narHash": "sha256-9TLSYMqc2uDUoiVjRTTLmofu6OH7oollKfDmy20wFJs=",
-        "owner": "michnicki",
-        "repo": "headroom-nix",
-        "rev": "fb73023d2278e9c63b53215e88e0801b6f1e967f",
-        "type": "github"
-      },
-      "original": {
-        "owner": "michnicki",
-        "repo": "headroom-nix",
-        "type": "github"
-      }
-    },
     "home-manager": {
       "inputs": {
         "nixpkgs": [
@@ -514,7 +491,6 @@
         "clump": "clump",
         "flake-help": "flake-help",
         "flake-utils": "flake-utils",
-        "headroom": "headroom",
         "home-manager": "home-manager",
         "hunk": "hunk",
         "impermanence": "impermanence",

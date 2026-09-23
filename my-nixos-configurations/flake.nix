@@ -5,7 +5,6 @@ rec {
     flake-help.url = "github:rehno-lindeque/flake-help";
     flake-utils.url = "github:numtide/flake-utils";
     home-manager.url = "github:nix-community/home-manager/release-26.05";
-    headroom.url = "github:michnicki/headroom-nix";
     hunk.url = "github:modem-dev/hunk";
     impermanence.url = "git+https://github.com/rehno-lindeque/impermanence.git";
     llm-agents.url = "github:numtide/llm-agents.nix";
@@ -29,8 +28,6 @@ rec {
 
     # Redirect inputs
     clump.inputs.nixpkgs.follows = "nixpkgs-stable";
-    headroom.inputs.flake-utils.follows = "flake-utils";
-    headroom.inputs.nixpkgs.follows = "nixpkgs-stable";
     home-manager.inputs.nixpkgs.follows = "nixpkgs-stable";
     hunk.inputs.nixpkgs.follows = "nixpkgs-stable";
     llm-agents.inputs.nixpkgs.follows = "nixpkgs-unstable";
@@ -126,11 +123,6 @@ rec {
           nucbox2022-rebuild = legacyPackages.${system}.callPackage ./packages/nixos-rebuild-system {
             name = "nucbox2022-rebuild";
             inherit (self.packages.${system}) nix-run;
-          };
-        }
-        // lib.optionalAttrs (system == "x86_64-linux") {
-          headroom = legacyPackages.${system}.callPackage ./packages/headroom {
-            headroom = self.inputs.headroom.packages.${system}.headroom-ai;
           };
         }))
         {

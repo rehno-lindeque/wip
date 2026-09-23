@@ -61,7 +61,6 @@ in {
     };
 
     home-manager.users.me.home.packages = [
-      flake.packages.${pkgs.stdenv.hostPlatform.system}.headroom
       flake.inputs.hunk.packages.${pkgs.stdenv.hostPlatform.system}.hunk
       vaultLoginGithub
     ];
