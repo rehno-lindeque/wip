@@ -38,6 +38,7 @@ in {
       ];
 
       settings = {
+        accept-flake-config = true;
         extra-substituters = flake.nixConfig.extra-substituters;
         extra-trusted-public-keys = flake.nixConfig.extra-trusted-public-keys;
       };
