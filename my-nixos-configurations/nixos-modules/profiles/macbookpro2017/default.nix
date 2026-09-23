@@ -151,7 +151,7 @@ in {
     ];
 
     environment.systemPackages = [
-      flake.packages.${pkgs.system}.vgaswitcheroo-toggle
+      flake.packages.${pkgs.stdenv.hostPlatform.system}.vgaswitcheroo-toggle
     ];
 
     # Hardware acceleration

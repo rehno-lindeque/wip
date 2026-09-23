@@ -57,8 +57,8 @@ in {
     sops.secrets.wandb-api-key.owner = "me";
 
     home-manager.users.me.home.packages = [
-      flake.packages.${pkgs.system}.headroom
-      flake.inputs.hunk.packages.${pkgs.system}.hunk
+      flake.packages.${pkgs.stdenv.hostPlatform.system}.headroom
+      flake.inputs.hunk.packages.${pkgs.stdenv.hostPlatform.system}.hunk
       vaultLoginGithub
     ];
 
@@ -442,7 +442,7 @@ in {
 
     # Extra software packages only used on this system
     users.users.me.packages = [
-      flake.packages.${pkgs.system}.sesh
+      flake.packages.${pkgs.stdenv.hostPlatform.system}.sesh
     ];
 
     # System first installed with release 21.11

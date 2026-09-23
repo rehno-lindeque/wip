@@ -122,8 +122,8 @@ in {
         swaybg
         wl-clipboard
         xwayland-satellite
-        flake.packages.${pkgs.system}.desktop2022-project-session
-        flake.packages.${pkgs.system}.session-picker
+        flake.packages.${pkgs.stdenv.hostPlatform.system}.desktop2022-project-session
+        flake.packages.${pkgs.stdenv.hostPlatform.system}.session-picker
       ];
       home.file."projects/screenshots/.keep".text = "";
 

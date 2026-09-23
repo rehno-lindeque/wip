@@ -29,20 +29,20 @@ in {
     fonts.enableDefaultPackages = lib.mkDefault true;
 
     environment.systemPackages = [
-      flake.packages.${pkgs.system}.desktop2022-rebuild
-      flake.packages.${pkgs.system}.macbookpro2017-rebuild
-      flake.packages.${pkgs.system}.macbookpro2025-rebuild
-      flake.packages.${pkgs.system}.nucbox2022-rebuild
-      flake.inputs.via.packages.${pkgs.system}.via
+      flake.packages.${pkgs.stdenv.hostPlatform.system}.desktop2022-rebuild
+      flake.packages.${pkgs.stdenv.hostPlatform.system}.macbookpro2017-rebuild
+      flake.packages.${pkgs.stdenv.hostPlatform.system}.macbookpro2025-rebuild
+      flake.packages.${pkgs.stdenv.hostPlatform.system}.nucbox2022-rebuild
+      flake.inputs.via.packages.${pkgs.stdenv.hostPlatform.system}.via
       pkgs.sops
     ];
 
     home-manager.sharedModules = [
       {
         home.packages = [
-          flake.inputs.llm-agents.packages.${pkgs.system}.pi
-          flake.packages.${pkgs.system}.sidecar
-          flake.inputs.llm-agents.packages.${pkgs.system}.td
+          flake.inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.pi
+          flake.packages.${pkgs.stdenv.hostPlatform.system}.sidecar
+          flake.inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.td
         ];
 
         programs = {
@@ -50,7 +50,7 @@ in {
 
           # Coding assistants
           claude-code.enable = lib.mkDefault true;
-          claude-code.package = flake.inputs.llm-agents.packages.${pkgs.system}.claude-code;
+          claude-code.package = flake.inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.claude-code;
           claude-code.commands = {
             assess = ''
               ---
@@ -147,9 +147,9 @@ in {
             permissions.defaultMode = "auto";
           };
           codex.enable = lib.mkDefault true;
-          codex.package = flake.inputs.llm-agents.packages.${pkgs.system}.codex;
+          codex.package = flake.inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.codex;
           opencode.enable = lib.mkDefault true;
-          opencode.package = flake.inputs.llm-agents.packages.${pkgs.system}.opencode;
+          opencode.package = flake.inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.opencode;
 
           # Fuzzy find file names
           fzf.enable = lib.mkDefault true;
