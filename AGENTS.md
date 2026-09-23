@@ -46,9 +46,9 @@ Avoid: Leaving fixes only in the transcript.
 
 ### Incremental self-improvement: document verified steps.
 
-Do: TODO
+Do: Keep validation and fixes scoped to the host the user requested; for a desktop-only upgrade, evaluate/build `desktop2022` rather than fixing unrelated hosts discovered by a whole-flake check.
 
-Avoid: TODO
+Avoid: Expanding a host-specific upgrade into repository-wide cleanup without being asked.
 
 ### Capture corrections
 
