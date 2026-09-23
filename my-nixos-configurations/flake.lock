@@ -689,14 +689,7 @@
       }
     },
     "vscode-server": {
-      "inputs": {
-        "flake-utils": [
-          "flake-utils"
-        ],
-        "nixpkgs": [
-          "nixpkgs-stable"
-        ]
-      },
+      "flake": false,
       "locked": {
         "lastModified": 1770124655,
         "narHash": "sha256-yHmd2B13EtBUPLJ+x0EaBwNkQr9LTne1arLVxT6hSnY=",

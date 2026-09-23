@@ -18,7 +18,10 @@ rec {
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     nix-colors.url = "github:misterio77/nix-colors";
     sops-nix.url = "github:Mic92/sops-nix";
-    vscode-server.url = "github:nix-community/nixos-vscode-server";
+    vscode-server = {
+      url = "github:nix-community/nixos-vscode-server";
+      flake = false;
+    };
     voxinput.url =
       # "github:richiejp/VoxInput";
       # Temporarily increase the timeout to 300 seconds
@@ -38,10 +41,6 @@ rec {
     };
     nix-colors.inputs.nixpkgs-lib.follows = "nixpkgs-stable";
     sops-nix.inputs.nixpkgs.follows = "nixpkgs-stable";
-    vscode-server.inputs = {
-      nixpkgs.follows = "nixpkgs-stable";
-      flake-utils.follows = "flake-utils";
-    };
     voxinput.inputs.nixpkgs.follows = "nixpkgs-stable";
   };
 

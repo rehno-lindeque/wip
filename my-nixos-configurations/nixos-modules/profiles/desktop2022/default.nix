@@ -378,7 +378,7 @@ in {
 
     # Enable vscode server for use with cursor IDE
     home-manager.users.me.imports = [
-      flake.inputs.vscode-server.homeModules.default
+      "${flake.inputs.vscode-server.outPath}/modules/vscode-server/home.nix"
     ];
     home-manager.users.me.services.vscode-server.enable = true;
     home-manager.users.me.services.vscode-server.installPath = "$HOME/.cursor-server";
