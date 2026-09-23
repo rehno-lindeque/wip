@@ -243,7 +243,7 @@ in {
           # tldr
 
           # Modify keyboard layout on the fly
-          xorg.xmodmap
+          xmodmap
 
           # Execute programs from a top-level menu
           # dmenu
