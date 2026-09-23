@@ -43,7 +43,10 @@
           "hunk",
           "nixpkgs"
         ],
-        "systems": "systems_2",
+        "systems": [
+          "hunk",
+          "systems"
+        ],
         "treefmt-nix": "treefmt-nix"
       },
       "locked": {
@@ -271,14 +274,15 @@
         "bun2nix": "bun2nix",
         "nixpkgs": [
           "nixpkgs-stable"
-        ]
+        ],
+        "systems": "systems_2"
       },
       "locked": {
-        "lastModified": 1782739581,
-        "narHash": "sha256-0zK4mQsx4dTQ0D8xY/6REuvE+onPfKSUvvZz+bAVwIw=",
+        "lastModified": 1790038607,
+        "narHash": "sha256-DVtJTF11Zz2ESb+tFDqj8OE7Kg2Yj25186CltXfJpio=",
         "owner": "modem-dev",
         "repo": "hunk",
-        "rev": "65a27400099dd5db29d10e1dcbdd0918748cadba",
+        "rev": "bc714dedabe8a8351c05101bdbfd07ad88958ec9",
         "type": "github"
       },
       "original": {
@@ -563,16 +567,16 @@
     },
     "systems_2": {
       "locked": {
-        "lastModified": 1681028828,
-        "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
+        "lastModified": 1776166891,
+        "narHash": "sha256-bI8yrEGjrohR5hkQox7UrxDH7XqrYMwI8SL/LrJ1+S8=",
         "owner": "nix-systems",
-        "repo": "default",
-        "rev": "da67096a3b9bf56a91d16901293e51ba5b49a27e",
+        "repo": "triplet",
+        "rev": "6de7bc09397911ce03636afbcf6118745ab2cda0",
         "type": "github"
       },
       "original": {
         "owner": "nix-systems",
-        "repo": "default",
+        "repo": "triplet",
         "type": "github"
       }
     },
