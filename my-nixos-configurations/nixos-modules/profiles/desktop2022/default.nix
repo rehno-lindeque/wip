@@ -55,6 +55,10 @@ in {
     # /etc/ssh/ssh_host_ed25519_key). Recipients live in ../../../.sops.yaml.
     sops.defaultSopsFile = ../../../secrets/desktop2022.yaml;
     sops.secrets.wandb-api-key.owner = "me";
+    sops.secrets.cloudflare-api-token = {
+      owner = "me";
+      mode = "0400";
+    };
     sops.secrets.hcloud-api-token = {
       owner = "me";
       mode = "0400";
