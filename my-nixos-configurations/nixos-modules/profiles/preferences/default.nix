@@ -358,6 +358,9 @@ in {
 
     programs.gh.nixAuth.enable = true;
 
+    # Use the OpenSSH agent configured below instead of GNOME's agent.
+    services.gnome.gcr-ssh-agent.enable = false;
+
     programs = {
       git.config = {
         init.defaultBranch = "main";

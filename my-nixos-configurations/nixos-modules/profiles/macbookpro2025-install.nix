@@ -24,6 +24,7 @@ in {
     profiles.preferences.enable = lib.mkForce false;
     profiles.personalized.enable = lib.mkForce false;
     profiles.playground.enable = lib.mkForce false;
+    profiles.niriWorkstation.enable = lib.mkForce false;
 
     # Persist only machine-id during install to keep systemd-boot happy.
     environment.persistence."/nix/persistent".files = lib.mkForce [

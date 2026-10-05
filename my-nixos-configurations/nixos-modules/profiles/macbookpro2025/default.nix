@@ -322,8 +322,10 @@ in {
       });
     };
 
-    users.users.me.hashedPasswordFile = "/nix/persistent/secrets/me-password.hash";
-    users.users.me.initialHashedPassword = lib.mkForce null;
+    users.users.me = lib.mkIf config.profiles.personalized.enable {
+      hashedPasswordFile = "/nix/persistent/secrets/me-password.hash";
+      initialHashedPassword = lib.mkForce null;
+    };
 
     # Use the same nixpkgs/overlay as upstream apple-silicon-support so cache hits match
     hardware.asahi.enable = true;
@@ -372,9 +374,9 @@ in {
     # Wacom tablet support
     services.xserver.wacom.enable = true;
 
-    home-manager.users.me.programs.waybar = {
-      enable = true;
-      settings = [
+    home-manager.users.me = lib.mkIf config.profiles.personalized.enable {
+      programs.waybar.enable = true;
+      programs.waybar.settings = [
         {
           layer = "top";
           position = "top";
@@ -442,7 +444,7 @@ in {
           };
         }
       ];
-      style = ''
+      programs.waybar.style = ''
         * {
           border: none;
           border-radius: 0;
@@ -509,7 +511,9 @@ in {
           color: #${uiTheme.red};
         }
       '';
+      home.stateVersion = "25.11";
     };
+
     # GUI for asking for ssh password on non-headless laptop sessions
     programs.ssh.enableAskPassword = true;
     programs.ssh.askPassword = "${pkgs.seahorse}/libexec/seahorse/ssh-askpass";
@@ -520,6 +524,5 @@ in {
 
     # Pin state version explicitly
     system.stateVersion = "25.11";
-    home-manager.users.me.home.stateVersion = "25.11";
   };
 }

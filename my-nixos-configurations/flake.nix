@@ -1,4 +1,6 @@
 rec {
+  description = "Rehno Lindeque's NixOS configurations";
+
   inputs = {
     apple-silicon-support.url = "github:nix-community/nixos-apple-silicon";
     clump.url = "github:rehno-lindeque/clump";
@@ -80,11 +82,11 @@ rec {
       });
   in {
     apps = lib.genAttrs mySystems (system:
-      legacyPackages.${system}.callPackages ./apps {
+      removeAttrs (legacyPackages.${system}.callPackage ./apps {
         inherit system;
         flake = self;
         inherit (flake-help.lib) mkHelp;
-      });
+      }) ["override" "overrideDerivation"]);
 
     devShells = lib.genAttrs mySystems (system: {
       default = legacyPackages.${system}.callPackage ./dev-shells/default {};

@@ -346,8 +346,8 @@ in {
         # Power management protocol for application (turned on automatically by some display managers)
         services.upower.enable = true;
 
-        # Control the screen brightness with light
-        programs.light.enable = true;
+        # Control the screen brightness
+        environment.systemPackages = [pkgs.brightnessctl];
 
         # Handling for power events (keyboard power button, lid close, etc)
         # TODO: investigate how this works in practice

@@ -87,14 +87,14 @@
     };
   in {
     type = "app";
-    description = "nixos-rebuild ${name} via ${host}";
+    meta.description = "nixos-rebuild ${name} via ${host}";
     program = "${script}/bin/${name}-rebuild";
   };
 in
   {
     help = {
       type = "app";
-      description = "display this help message";
+      meta.description = "display this help message";
       program =
         (mkHelp {
           name = "my-nixos-configurations";
@@ -119,7 +119,7 @@ in
 
     readme = {
       type = "app";
-      description = "get more detailed help";
+      meta.description = "get more detailed help";
       program =
         (writeScript "readme" ''${mdr}/bin/mdr ${../README.md}'')
       .outPath;
@@ -173,7 +173,7 @@ EOF
       };
     in {
       type = "app";
-      description = "Run install-macbookpro2025 on a remote installer over SSH";
+      meta.description = "Run install-macbookpro2025 on a remote installer over SSH";
       program = "${installer}/bin/install-macbookpro2025-remote";
     };
   }
@@ -432,7 +432,7 @@ EOF
       };
     in {
       type = "app";
-      description = "Preflight + install macbookpro2025 (checks partitions, copies firmware, runs nixos-install)";
+      meta.description = "Preflight + install macbookpro2025 (checks partitions, copies firmware, runs nixos-install)";
       program = "${installer}/bin/install-macbookpro2025";
     };
   }
