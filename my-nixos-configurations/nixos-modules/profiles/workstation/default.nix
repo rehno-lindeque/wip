@@ -143,6 +143,7 @@ in {
             '';
           };
           claude-code.settings = {
+            enabledPlugins."cc-plugin-you-should-know@builtin" = true;
             includeCoAuthoredBy = false;
             permissions.defaultMode = "auto";
           };
