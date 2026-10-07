@@ -54,7 +54,11 @@ Avoid: Expanding a host-specific upgrade into repository-wide cleanup without be
 
 Do: Check nixpkgs first before packaging new software in-repo; only add a custom package after confirming there is no suitable packaged version or pending PR we can reuse.
 
+Do: Before editing mutable agent config under `~`, inspect whether the package input or Home Manager module already provides a declarative setting.
+
 Avoid: Packaging first and discovering existing nixpkgs work later.
+
+Avoid: Editing generated or declaratively managed agent configuration before checking its Nix integration.
 
 ### Commit conventions come from git history
 
