@@ -6,7 +6,6 @@
   ...
 }: let
   cfg = config.profiles.personalized;
-  chromeSupported = !pkgs.stdenv.hostPlatform.isAarch64;
   ledgerLiveSupported = pkgs.stdenv.hostPlatform.system == "x86_64-linux";
 in {
   options = with lib; {
@@ -198,7 +197,7 @@ in {
         ]
         # Web
         ++ lib.optionals cfg.enableSoftware cfg.webPackages
-        ++ lib.optionals (cfg.enableSoftware && chromeSupported) [
+        ++ lib.optionals cfg.enableSoftware [
           google-chrome
         ]
         # Communication
@@ -468,7 +467,7 @@ in {
         ];
 
         programs = {
-          google-chrome = lib.mkIf (cfg.enableSoftware && chromeSupported) {
+          google-chrome = lib.mkIf cfg.enableSoftware {
             enable = true;
             commandLineArgs = [
               # Enable WebSerial API
