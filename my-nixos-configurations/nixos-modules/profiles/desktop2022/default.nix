@@ -54,6 +54,14 @@ in {
     # activation using this host's ssh key (sops.age.sshKeyPaths defaults to
     # /etc/ssh/ssh_host_ed25519_key). Recipients live in ../../../.sops.yaml.
     sops.defaultSopsFile = ../../../secrets/desktop2022.yaml;
+    sops.secrets."tailscale/oauth-client-id" = {
+      owner = "me";
+      mode = "0400";
+    };
+    sops.secrets."tailscale/oauth-client-secret" = {
+      owner = "me";
+      mode = "0400";
+    };
     sops.secrets.wandb-api-key.owner = "me";
     sops.secrets.cloudflare-api-token = {
       owner = "me";
