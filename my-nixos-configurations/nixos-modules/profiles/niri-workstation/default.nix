@@ -63,6 +63,12 @@ in {
   options.profiles.niriWorkstation = {
     enable = lib.mkEnableOption "the shared niri workstation environment";
 
+    wallpaper = lib.mkOption {
+      type = lib.types.str;
+      default = "${wallpaper}";
+      description = "Wallpaper filename; a string allows local images outside the Nix store and Git.";
+    };
+
     audio = {
       raise = lib.mkOption {type = lib.types.str;};
       lower = lib.mkOption {type = lib.types.str;};
@@ -203,7 +209,7 @@ in {
               }
           }
 
-          spawn-at-startup "${lib.getExe pkgs.swaybg}" "--image" "${wallpaper}" "--mode" "fill"
+          spawn-at-startup "${lib.getExe pkgs.swaybg}" "--image" "${cfg.wallpaper}" "--mode" "fill"
           spawn-at-startup "${lib.getExe pkgs.waybar}"
 
           hotkey-overlay {

@@ -110,6 +110,8 @@ in {
       playground.enable = true;
       niriWorkstation = {
         enable = true;
+        # Kept outside Git in the already-persistent .config directory.
+        wallpaper = "/home/me/.config/backgrounds/first-customer.png";
         audio = {
           raise = "${asahiAudioControl} raise";
           lower = "${asahiAudioControl} lower";
