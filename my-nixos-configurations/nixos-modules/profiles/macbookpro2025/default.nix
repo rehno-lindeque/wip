@@ -149,6 +149,18 @@ in {
       ];
     };
 
+    # The nixpkgs unit only orders itself after cups.service, so on boot it runs
+    # lpadmin before wlan0 is associated and the LAN is unreachable
+    # ("Unable to connect to 192.168.1.7:631: Host is down"). It is a oneshot
+    # with no retry, so the queue never gets created. Wait for the network and
+    # retry on failure. Restart=always is rejected for Type=oneshot.
+    systemd.services.ensure-printers = {
+      after = ["network-online.target"];
+      wants = ["network-online.target"];
+      serviceConfig.Restart = "on-failure";
+      serviceConfig.RestartSec = 30;
+    };
+
     time.timeZone = lib.mkDefault "America/New_York";
     location.provider = "geoclue2";
     services.automatic-timezoned.enable = true;
