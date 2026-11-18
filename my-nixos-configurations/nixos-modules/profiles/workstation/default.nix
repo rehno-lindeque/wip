@@ -40,7 +40,7 @@ in {
     home-manager.sharedModules = [
       {
         home.packages = [
-          flake.inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.pi
+          flake.packages.${pkgs.stdenv.hostPlatform.system}.pi
           flake.packages.${pkgs.stdenv.hostPlatform.system}.sidecar
           flake.inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.td
         ];
@@ -148,7 +148,12 @@ in {
             permissions.defaultMode = "auto";
           };
           codex.enable = lib.mkDefault true;
-          codex.package = flake.inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.codex;
+          # Pending upstream fix: https://github.com/numtide/llm-agents.nix/pull/12320
+          codex.package = flake.inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.codex.overrideAttrs (old: {
+            buildInputs = old.buildInputs ++ lib.optionals pkgs.stdenv.hostPlatform.isLinux [
+              flake.inputs.nixpkgs-unstable.legacyPackages.${pkgs.stdenv.hostPlatform.system}.openssl
+            ];
+          });
           opencode.enable = lib.mkDefault true;
           opencode.package = flake.inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.opencode;
 

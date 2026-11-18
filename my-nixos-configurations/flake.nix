@@ -17,6 +17,7 @@ rec {
     # nixpkgs-shim.url = "path:/home/me/projects/nixpkgs-shim";
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-26.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
+    pi.url = "github:earendil-works/pi/05fd3fbda0bbb9a1c7a76e4bf92ab58ed77c8d94";
     nix-colors.url = "github:misterio77/nix-colors";
     sops-nix.url = "github:Mic92/sops-nix";
     vscode-server = {
@@ -33,6 +34,7 @@ rec {
     home-manager.inputs.nixpkgs.follows = "nixpkgs-stable";
     hunk.inputs.nixpkgs.follows = "nixpkgs-stable";
     llm-agents.inputs.nixpkgs.follows = "nixpkgs-unstable";
+    pi.inputs.nixpkgs.follows = "nixpkgs-unstable";
     nixos-hardware.inputs.nixpkgs.follows = "nixpkgs-stable";
     nixos-impermanence.inputs = {
       nixpkgs.follows = "nixpkgs-stable";
@@ -104,6 +106,9 @@ rec {
           desktop2022-project-session = legacyPackages.${system}.callPackage ./packages/desktop2022-project-session {};
           sidecar = legacyPackages.${system}.callPackage ./packages/sidecar {
             sidecar = self.inputs.llm-agents.packages.${system}.sidecar;
+          };
+          pi = self.inputs.nixpkgs-unstable.legacyPackages.${system}.callPackage ./packages/pi {
+            piSource = self.inputs.pi;
           };
           session-picker = legacyPackages.${system}.callPackage ./packages/session-picker {
             inherit (self.packages.${system}) sesh;

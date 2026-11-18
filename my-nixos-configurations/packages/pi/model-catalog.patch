@@ -1,0 +1,7 @@
+--- a/model-catalog.json
++++ b/model-catalog.json
+@@ -1,3 +1,3 @@
+ {
+-  "revision": "sha256-4cbd75daee429216860f6e5b7e13b4ddb12b495f6947061e5777edd27ce0b4f1"
++  "revision": "sha256-67b16a5c8ca6f458ff313736825946bb3eda71b658fe118cd6728e80e51dce22"
+ }
