@@ -56,6 +56,8 @@ Do: Check nixpkgs first before packaging new software in-repo; only add a custom
 
 Do: Before editing mutable agent config under `~`, inspect whether the package input or Home Manager module already provides a declarative setting.
 
+Do: Verify coding-agent model support in the built package with fresh state and the intended provider; source entries or a refreshed API-key catalog do not establish ChatGPT/OAuth model availability.
+
 Avoid: Packaging first and discovering existing nixpkgs work later.
 
 Avoid: Editing generated or declaratively managed agent configuration before checking its Nix integration.
